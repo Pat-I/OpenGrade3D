@@ -16,7 +16,8 @@ namespace OpenGrade
         public double cutDelta;
         private double minDist;
         private double minDistMap;
-        private double minDistMap2;
+        private double minDistMapDist = 25;
+        private double drawPtWidth = 1;
 
         //the point in the real world made from clicked screen coords
         vec2 screen2FieldPt = new vec2();
@@ -706,12 +707,12 @@ namespace OpenGrade
             }
             else
             {
-                eastingMin -= 2; eastingMax += 2; northingMax += 2; northingMin -= 2;
+                eastingMin -= minDistMapDist; eastingMax += minDistMapDist; northingMax += minDistMapDist; northingMin -= minDistMapDist;
             }
 
-            for (double h = (double)eastingMin; h < (double)eastingMax; h++)
+            for (double h = (double)eastingMin; h < (double)eastingMax; h += drawPtWidth)
             {
-                for (double i = (double)northingMin; i < (double)northingMax; i++)
+                for (double i = (double)northingMin; i < (double)northingMax; i += drawPtWidth)
                 {
 
                     int ptCnt = ct.ptList.Count;
@@ -738,37 +739,15 @@ namespace OpenGrade
 
 
 
-                        if (minDistMap < 25)
+                        if (minDistMap < minDistMapDist)
                         {
 
-                            mapListPt point = new mapListPt(h, i, ct.ptList[closestPointMap].altitude, ct.ptList[closestPointMap].cutAltitude, ct.ptList[closestPointMap].lastPassAltitude);
+                            mapListPt point = new mapListPt(h, i, drawPtWidth, ct.ptList[closestPointMap].altitude, ct.ptList[closestPointMap].cutAltitude, ct.ptList[closestPointMap].lastPassAltitude);
                             ct.mapList.Add(point);
 
                         }
 
-                        int closestPointMap2 = 0;
-                        int ptCount2 = ct.ptList.Count - 1;
-
-                        //find the closest point to current fix
-                        for (int t = 0; t < ptCount2; t++)
-                        {
-                            minDistMap2 = 100000000;
-                            double distMap2 = (((h + 1) - ct.ptList[t].easting) * ((h + 1) - ct.ptList[t].easting))
-                                            + ((i - ct.ptList[t].northing) * (i - ct.ptList[t].northing));
-                            if (distMap2 < minDistMap2) { minDistMap2 = distMap2; closestPointMap2 = t; }
-                        }
-
-
-
-
-
-                        if (minDistMap2 < 25)
-                        {
-
-                            mapListPt point2 = new mapListPt((h + 1), i, ct.ptList[closestPointMap2].altitude, ct.ptList[closestPointMap2].cutAltitude, ct.ptList[closestPointMap2].lastPassAltitude);
-                            ct.mapList.Add(point2);
-
-                        }
+                        
 
                     }
 

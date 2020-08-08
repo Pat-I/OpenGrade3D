@@ -41,7 +41,7 @@ namespace OpenGrade
         public double altitudeMap { get; set; }
         public double eastingMap { get; set; }
         public double northingMap { get; set; }
-      
+        public double drawPtWidthMap { get; set; }
         public double cutAltitudeMap { get; set; }
         public double lastPassAltitudeMap { get; set; }
         
@@ -49,13 +49,13 @@ namespace OpenGrade
         //public double distance { get; set; }
 
         //constructor
-        public mapListPt(double _eastingMap, double _northingMap,
+        public mapListPt(double _eastingMap, double _northingMap, double _drawPtWidthMap,
                             double _altitudeMap,
                             double _cutAltitudeMap = -1, double _lastPassAltitudeMap = -1)
         {
             eastingMap = _eastingMap;
             northingMap = _northingMap;
-            //heading = _heading;
+            drawPtWidthMap = _drawPtWidthMap;
             altitudeMap = _altitudeMap;
             //latitude = _lat;
             //longitude = _long;
@@ -419,36 +419,43 @@ namespace OpenGrade
             //p gl.End();
 
             gl.PointSize(4.0f);
-            gl.Begin(OpenGL.GL_QUAD_STRIP);
+            //gl.Begin(OpenGL.GL_QUAD_STRIP);
 
             //p gl.Color(0.97f, 0.42f, 0.45f);
             //p for (int h = 0; h < ptCount; h++) gl.Vertex(ptList[h].easting, ptList[h].northing, 0);
 
             //dot test by Pat
-            lastMapValue = -9999999;
-            sndLastMapValue = -9999999;
-
-            for (int h = 0; h < ptCount; h++)
+            //lastMapValue = -9999999;
+            //sndLastMapValue = -9999999;
+            if (ptCount > 0)
             {
 
-                if (mapList[h].altitudeMap < 100) gl.Color(0.5f, 0.900f, 0.90f);
-                else gl.Color(0.98f, 0.2f, 0.0f);
 
-                
-                
-                
-                if (mapList[h].northingMap < lastMapValue )
+                for (int h = 0; h < ptCount; h++)
                 {
+
+                    if (mapList[h].altitudeMap < 100) gl.Color(0.5f, 0.900f, 0.90f);
+                    else gl.Color(0.98f, 0.2f, 0.0f);
+
+
+
+
+
+
+                    gl.Begin(OpenGL.GL_QUADS);
+                    gl.Vertex(mapList[h].eastingMap - (mapList[h].drawPtWidthMap / 2), mapList[h].northingMap - (mapList[h].drawPtWidthMap / 2), 0);
+                    gl.Vertex(mapList[h].eastingMap - (mapList[h].drawPtWidthMap / 2), mapList[h].northingMap + (mapList[h].drawPtWidthMap / 2), 0);
+                    gl.Vertex(mapList[h].eastingMap + (mapList[h].drawPtWidthMap / 2), mapList[h].northingMap + (mapList[h].drawPtWidthMap / 2), 0);
+                    gl.Vertex(mapList[h].eastingMap + (mapList[h].drawPtWidthMap / 2), mapList[h].northingMap - (mapList[h].drawPtWidthMap / 2), 0);
                     gl.End();
-                    gl.Begin(OpenGL.GL_QUAD_STRIP);
-                    gl.Vertex(mapList[h].eastingMap, mapList[h].northingMap, 0);
+
+
+                    //sndLastMapValue = lastMapValue;
+                    //lastMapValue = mapList[h].northingMap;
+
+
+
                 }
-                else gl.Vertex(mapList[h].eastingMap, mapList[h].northingMap, 0);
-
-
-                sndLastMapValue = lastMapValue;
-                lastMapValue = mapList[h].northingMap;
-
 
 
             }
@@ -464,12 +471,9 @@ namespace OpenGrade
 
 
 
-
-
-
             // end dot test
 
-            gl.End();
+            //gl.End();
             gl.PointSize(1.0f);
 
             //draw the reference line

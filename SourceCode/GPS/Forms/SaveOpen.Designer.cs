@@ -891,6 +891,7 @@ namespace OpenGrade
                         writer.WriteLine(Math.Round((ct.mapList[i].eastingMap), 3).ToString(CultureInfo.InvariantCulture) + "," +
 
                             Math.Round(ct.mapList[i].northingMap, 3).ToString(CultureInfo.InvariantCulture) + "," +
+                            Math.Round(ct.mapList[i].drawPtWidthMap, 3).ToString(CultureInfo.InvariantCulture) + "," +
                             Math.Round(ct.mapList[i].altitudeMap, 3).ToString(CultureInfo.InvariantCulture) + "," +
                             
                             Math.Round(ct.mapList[i].cutAltitudeMap, 7).ToString(CultureInfo.InvariantCulture) + "," +
