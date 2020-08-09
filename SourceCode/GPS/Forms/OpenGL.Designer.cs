@@ -710,22 +710,23 @@ namespace OpenGrade
                 eastingMin -= minDistMapDist; eastingMax += minDistMapDist; northingMax += minDistMapDist; northingMin -= minDistMapDist;
             }
 
-            for (double h = (double)eastingMin; h < (double)eastingMax; h += drawPtWidth)
+            int ptCnt = ct.ptList.Count;
+
+            if (ptCnt > 0)
             {
-                for (double i = (double)northingMin; i < (double)northingMax; i += drawPtWidth)
+                for (double h = (double)eastingMin; h < (double)eastingMax; h += drawPtWidth)
                 {
-
-                    int ptCnt = ct.ptList.Count;
-
-                    if (ptCnt > 0)
+                    for (double i = (double)northingMin; i < (double)northingMax; i += drawPtWidth)
                     {
+
+                   
                         int closestPointMap = 0;
                         int ptCount = ct.ptList.Count - 1;
+                        minDistMap = 100000000;
 
                         //find the closest point to current fix
                         for (int t = 0; t < ptCount; t++)
                         {
-                            minDistMap = 100000000;
                             double distMap = ((h - ct.ptList[t].easting) * (h - ct.ptList[t].easting))
                                             + ((i - ct.ptList[t].northing) * (i - ct.ptList[t].northing));
                             if (distMap < minDistMap)
