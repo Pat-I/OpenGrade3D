@@ -894,7 +894,8 @@ namespace OpenGrade
                             Math.Round(ct.mapList[i].drawPtWidthMap, 3).ToString(CultureInfo.InvariantCulture) + "," +
                             Math.Round(ct.mapList[i].altitudeMap, 3).ToString(CultureInfo.InvariantCulture) + "," +
                             
-                            Math.Round(ct.mapList[i].cutAltitudeMap, 7).ToString(CultureInfo.InvariantCulture) + "," +
+                            Math.Round(ct.mapList[i].cutAltitudeMap, 3).ToString(CultureInfo.InvariantCulture) + "," +
+                            Math.Round(ct.mapList[i].cutDeltaMap, 3).ToString(CultureInfo.InvariantCulture) + "," +
                             Math.Round(ct.mapList[i].lastPassAltitudeMap, 3).ToString(CultureInfo.InvariantCulture));
                             
                     }

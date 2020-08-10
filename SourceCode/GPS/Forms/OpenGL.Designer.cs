@@ -16,8 +16,8 @@ namespace OpenGrade
         public double cutDelta;
         private double minDist;
         private double minDistMap;
-        private double minDistMapDist = 25;
-        private double drawPtWidth = 1;
+        private double minDistMapDist = 100; // how far from a survey point it will draw the map 100 is 10 meters
+        private double drawPtWidth = 1; // the size of the map pixel in meter
 
         //the point in the real world made from clicked screen coords
         vec2 screen2FieldPt = new vec2();
@@ -671,13 +671,13 @@ namespace OpenGrade
             }
         }
 
-        public double eastingMin, eastingMax, northingMin, northingMax;
+        #region 3D mapping
 
+        public double eastingMin, eastingMax, northingMin, northingMax;
+        
         // determine ptList min and max easting and northing -by Pat
         private void CalculateMinMaxEastNort()
         {
-
-
             eastingMin = 9999999;
             eastingMax = -9999999;
             northingMin = 9999999;
@@ -736,50 +736,23 @@ namespace OpenGrade
                             }
                         }
 
-
-
-
-
                         if (minDistMap < minDistMapDist)
                         {
+                            double cutFillMap;
+                            if (ct.ptList[closestPointMap].cutAltitude == -1) cutFillMap = 9999;
+                            else cutFillMap = ct.ptList[closestPointMap].cutAltitude - ct.ptList[closestPointMap].altitude;
 
-                            mapListPt point = new mapListPt(h, i, drawPtWidth, ct.ptList[closestPointMap].altitude, ct.ptList[closestPointMap].cutAltitude, ct.ptList[closestPointMap].lastPassAltitude);
+                            mapListPt point = new mapListPt(h, i, drawPtWidth, ct.ptList[closestPointMap].altitude, ct.ptList[closestPointMap].cutAltitude,
+                                cutFillMap,ct.ptList[closestPointMap].lastPassAltitude);
                             ct.mapList.Add(point);
-
                         }
-
-                        
-
                     }
-
-
-
                 }
-
             }
-
-
-
-
-            FileSaveMapPt();
-
-
-
-
-
-
-
-
-
-
-
+            FileSaveMapPt(); // For debugging only
         }
 
-
-
-
-
-
+        #endregion
 
         double maxFieldX, maxFieldY, minFieldX, minFieldY, centerX, centerY, cameraDistanceZ;
 

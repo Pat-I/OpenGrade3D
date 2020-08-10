@@ -1903,7 +1903,7 @@
             this.btnContour.Name = "btnContour";
             this.btnContour.Size = new System.Drawing.Size(90, 90);
             this.btnContour.TabIndex = 105;
-            this.btnContour.Text = "Contour";
+            this.btnContour.Text = "Altitude";
             this.btnContour.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnContour.UseVisualStyleBackColor = false;
             this.btnContour.Click += new System.EventHandler(this.btnContour_Click);

@@ -38,12 +38,14 @@ namespace OpenGrade
     // by pat
     public class mapListPt
     {
-        public double altitudeMap { get; set; }
         public double eastingMap { get; set; }
         public double northingMap { get; set; }
         public double drawPtWidthMap { get; set; }
+        public double altitudeMap { get; set; }
         public double cutAltitudeMap { get; set; }
+        public double cutDeltaMap { get; set; }
         public double lastPassAltitudeMap { get; set; }
+
         
         //public double longitude { get; set; }
         //public double distance { get; set; }
@@ -51,19 +53,18 @@ namespace OpenGrade
         //constructor
         public mapListPt(double _eastingMap, double _northingMap, double _drawPtWidthMap,
                             double _altitudeMap,
-                            double _cutAltitudeMap = -1, double _lastPassAltitudeMap = -1)
+                            double _cutAltitudeMap = -1, 
+                            double _cutDeltaMap = 9999,
+                            double _lastPassAltitudeMap = -1)
         {
             eastingMap = _eastingMap;
             northingMap = _northingMap;
             drawPtWidthMap = _drawPtWidthMap;
             altitudeMap = _altitudeMap;
-            //latitude = _lat;
-            //longitude = _long;
-
-            //optional parameters
             cutAltitudeMap = _cutAltitudeMap;
+            cutDeltaMap = _cutDeltaMap;
             lastPassAltitudeMap = _lastPassAltitudeMap;
-            //distance = _distance;
+            
         }
     }
 
@@ -77,6 +78,7 @@ namespace OpenGrade
         private double lastMapValue = -9999999, sndLastMapValue = -9999999;
 
         public bool isContourOn, isContourBtnOn;
+        public bool is3DmodeOn = true;
         public double slope = 0.002;
         public double zeroAltitude = 0;
 
@@ -400,114 +402,116 @@ namespace OpenGrade
         //draw the red follow me line
         public void DrawContourLine()
         {
-            //gl.Color(0.98f, 0.98f, 0.50f);
-            //gl.Begin(OpenGL.GL_LINE_STRIP);
-            ////for (int h = 0; h < ptCount; h++) gl.Vertex(guideList[h].x, 0, guideList[h].z);
-            //gl.Vertex(boxA.easting, boxA.northing, 0);
-            //gl.Vertex(boxB.easting, boxB.northing, 0);
-            //gl.Vertex(boxC.easting, boxC.northing, 0);
-            //gl.Vertex(boxD.easting, boxD.northing, 0);
-            //gl.Vertex(boxA.easting, boxA.northing, 0);
-            //gl.End();
-
-            ////draw the guidance line
-            int ptCount = mapList.Count;
-            gl.LineWidth(2);
-            gl.Color(0.98f, 0.2f, 0.0f);
-            //p gl.Begin(OpenGL.GL_LINE_STRIP);
-            //p for (int h = 0; h < ptCount; h++) gl.Vertex(ptList[h].easting, ptList[h].northing, 0);
-            //p gl.End();
-
-            gl.PointSize(4.0f);
-            //gl.Begin(OpenGL.GL_QUAD_STRIP);
-
-            //p gl.Color(0.97f, 0.42f, 0.45f);
-            //p for (int h = 0; h < ptCount; h++) gl.Vertex(ptList[h].easting, ptList[h].northing, 0);
-
-            //dot test by Pat
-            //lastMapValue = -9999999;
-            //sndLastMapValue = -9999999;
-            if (ptCount > 0)
+            if (is3DmodeOn)
             {
 
 
+                int ptCount = mapList.Count;
+
+                double maxAltitude = -9999, minAltitude = 9999, maxCut = -9999, maxFill = 9999;
                 for (int h = 0; h < ptCount; h++)
                 {
+                    if (mapList[h].altitudeMap < minAltitude) minAltitude = mapList[h].altitudeMap;
+                    if (mapList[h].altitudeMap > maxAltitude) maxAltitude = mapList[h].altitudeMap;
+                    if (mapList[h].cutDeltaMap < maxFill) maxFill = mapList[h].cutDeltaMap;
 
-                    if (mapList[h].altitudeMap < 100) gl.Color(0.5f, 0.900f, 0.90f);
-                    else gl.Color(0.98f, 0.2f, 0.0f);
-
-
-
-
-
-
-                    gl.Begin(OpenGL.GL_QUADS);
-                    gl.Vertex(mapList[h].eastingMap - (mapList[h].drawPtWidthMap / 2), mapList[h].northingMap - (mapList[h].drawPtWidthMap / 2), 0);
-                    gl.Vertex(mapList[h].eastingMap - (mapList[h].drawPtWidthMap / 2), mapList[h].northingMap + (mapList[h].drawPtWidthMap / 2), 0);
-                    gl.Vertex(mapList[h].eastingMap + (mapList[h].drawPtWidthMap / 2), mapList[h].northingMap + (mapList[h].drawPtWidthMap / 2), 0);
-                    gl.Vertex(mapList[h].eastingMap + (mapList[h].drawPtWidthMap / 2), mapList[h].northingMap - (mapList[h].drawPtWidthMap / 2), 0);
-                    gl.End();
-
-
-                    //sndLastMapValue = lastMapValue;
-                    //lastMapValue = mapList[h].northingMap;
-
-
-
+                    if (mapList[h].cutDeltaMap != 9999)
+                    {
+                        if (mapList[h].cutDeltaMap > maxCut) maxCut = mapList[h].cutDeltaMap;
+                    }
                 }
 
-
-            }
-
-
+                if (maxCut == -9999) maxCut = 0;
+                if (maxFill == 9999) maxFill = 0;
 
 
 
 
-
-
-
-
-
-
-            // end dot test
-
-            //gl.End();
-            gl.PointSize(1.0f);
-
-            //draw the reference line
-            gl.PointSize(3.0f);
-            //if (isContourBtnOn)
-            {
-                ptCount = ptList.Count;
+                    //dot test by Pat
+                    //lastMapValue = -9999999;
+                    //sndLastMapValue = -9999999;
                 if (ptCount > 0)
                 {
-                    gl.Begin(OpenGL.GL_POINTS);
-                    for (int i = 0; i < ptCount; i++)
+
+
+                    for (int h = 0; h < ptCount; h++)
                     {
-                        gl.Vertex(ptList[i].easting, ptList[i].northing, 0);
+                        // red, green, blue
+
+                        if (mapList[h].cutDeltaMap != 9999)
+                        {
+                            if (mapList[h].cutDeltaMap == 0)
+                                gl.Color(1.0f, 1.0f, 1.0f);
+
+                            if (mapList[h].cutDeltaMap < 0)
+                                gl.Color((1 - (mapList[h].cutDeltaMap/maxFill)), 1.0f, (1 - (mapList[h].cutDeltaMap / maxCut)));
+
+                            if (mapList[h].cutDeltaMap > 0)
+                                gl.Color(1.0f, (1 - (mapList[h].cutDeltaMap / maxCut)), (1 - (mapList[h].cutDeltaMap / maxCut)));
+
+
+
+                        }
+                        else gl.Color(0.0f, 0.0f, 0.0f);
+
+
+                        gl.Begin(OpenGL.GL_QUADS);
+                        gl.Vertex(mapList[h].eastingMap - (mapList[h].drawPtWidthMap / 2), mapList[h].northingMap - (mapList[h].drawPtWidthMap / 2), 0);
+                        gl.Vertex(mapList[h].eastingMap - (mapList[h].drawPtWidthMap / 2), mapList[h].northingMap + (mapList[h].drawPtWidthMap / 2), 0);
+                        gl.Vertex(mapList[h].eastingMap + (mapList[h].drawPtWidthMap / 2), mapList[h].northingMap + (mapList[h].drawPtWidthMap / 2), 0);
+                        gl.Vertex(mapList[h].eastingMap + (mapList[h].drawPtWidthMap / 2), mapList[h].northingMap - (mapList[h].drawPtWidthMap / 2), 0);
+                        gl.End();
+
+
+                        //sndLastMapValue = lastMapValue;
+                        //lastMapValue = mapList[h].northingMap;
+
+
+
                     }
-                    gl.End();
+
+
+                }
+
+            }
+            else
+            {
+                ////draw the guidance line
+                int ptCount = ptList.Count;
+                gl.LineWidth(2);
+                gl.Color(0.98f, 0.2f, 0.0f);
+                gl.Begin(OpenGL.GL_LINE_STRIP);
+                for (int h = 0; h < ptCount; h++) gl.Vertex(ptList[h].easting, ptList[h].northing, 0);
+                gl.End();
+
+                gl.PointSize(4.0f);
+                gl.Begin(OpenGL.GL_POINTS);
+
+                gl.Color(0.97f, 0.42f, 0.45f);
+                for (int h = 0; h < ptCount; h++) gl.Vertex(ptList[h].easting, ptList[h].northing, 0);
+
+                gl.End();
+                gl.PointSize(1.0f);
+
+                //draw the reference line
+                gl.PointSize(3.0f);
+                //if (isContourBtnOn)
+                {
+                    ptCount = ptList.Count;
+                    if (ptCount > 0)
+                    {
+                        gl.Begin(OpenGL.GL_POINTS);
+                        for (int i = 0; i < ptCount; i++)
+                        {
+                            gl.Vertex(ptList[i].easting, ptList[i].northing, 0);
+                        }
+                        gl.End();
+                    }
                 }
             }
 
-            //ptCount = conList.Count;
-            //if (ptCount > 0)
-            //{
-            ////draw closest point and side of line points
-            //gl.Color(0.5f, 0.900f, 0.90f);
-            //gl.PointSize(4.0f);
-            //gl.Begin(OpenGL.GL_POINTS);
-            //for (int i = 0; i < ptCount; i++)  gl.Vertex(conList[i].x, conList[i].z, 0);
-            //gl.End();
 
-            //gl.Color(0.35f, 0.30f, 0.90f);
-            //gl.PointSize(6.0f);
-            //gl.Begin(OpenGL.GL_POINTS);
-            //gl.Vertex(conList[closestRefPoint].x, conList[closestRefPoint].z, 0);
-            //gl.End();
-            //}
+            //*---------  end paste
             if (mf.isPureDisplayOn)
             {
                 const int numSegments = 100;
