@@ -772,6 +772,191 @@ namespace OpenGrade
             }
         }
 
+        #region Load Optisuface .agd file
+
+        //Load the Optisuface design file, by Pat
+
+        public void FileOpenAgdDesign()
+        {
+            ct.designList.Clear();
+
+            OpenFileDialog ofd = new OpenFileDialog();
+
+            //get the directory where the fields are stored
+            string directoryName = fieldsDirectory;
+
+            //make sure the directory exists, if not, create it
+            if ((directoryName.Length > 0) && (!Directory.Exists(directoryName)))
+            { Directory.CreateDirectory(directoryName); }
+
+            //the initial directory, fields, for the open dialog
+            ofd.InitialDirectory = directoryName;
+
+            //When leaving dialog put windows back where it was
+            ofd.RestoreDirectory = true;
+
+            //set the filter to agd files only
+            ofd.Filter = "agd files (*.agd)|*.agd";
+
+            //was a file selected
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                //if job started close it
+                //if (isJobStarted) JobClose();
+
+                //make sure the file if fully valid and vehicle matches sections
+                string line;
+                using (StreamReader reader = new StreamReader(ofd.FileName))
+                {
+                    try
+                    {
+                        //read the lines and skip them
+                        line = reader.ReadLine();
+                        
+
+                        while (!reader.EndOfStream)
+                        {
+                            //read how many vertices in the following patch
+                            //line = reader.ReadLine();
+                            //int verts = int.Parse(line);
+                            //CContourPt vecFix = new vec4(0, 0, 0, 0);
+
+                            //for (int v = 0; v < verts; v++)
+                            {
+                                line = reader.ReadLine();
+                                string[] words = line.Split(',');
+
+
+                                //if (words[5] == "2PER" | words[5] == " 2PER")
+                                //{
+                                    designPt point = new designPt(
+                                    double.Parse(words[0], CultureInfo.InvariantCulture),
+                                    double.Parse(words[1], CultureInfo.InvariantCulture),
+                                    double.Parse(words[2], CultureInfo.InvariantCulture),
+                                    double.Parse(words[3], CultureInfo.InvariantCulture),
+                                    double.Parse(words[4], CultureInfo.InvariantCulture),
+                                    3, 0, 0
+                                    );
+
+                                    ct.designList.Add(point);
+
+
+                                /*
+                                //read the Offsets 
+                                line = reader.ReadLine();
+                                string[] offs = line.Split(',');
+                                pn.utmEast = int.Parse(offs[0]);
+                                pn.utmNorth = int.Parse(offs[1]);
+                                pn.zone = int.Parse(offs[2]);
+                                //}
+                                
+                                 if (words[5] == "3GRD" | words[5] == " 3GRD")
+                                 {
+                                     designPt point = new designPt(
+                                     double.Parse(words[0], CultureInfo.InvariantCulture),
+                                     double.Parse(words[1], CultureInfo.InvariantCulture),
+                                     double.Parse(words[2], CultureInfo.InvariantCulture),
+                                     double.Parse(words[3], CultureInfo.InvariantCulture),
+                                     double.Parse(words[4], CultureInfo.InvariantCulture),
+                                     3, 0, 0
+                                     );
+
+                                     ct.designList.Add(point);
+
+                                 }
+                                */
+
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        WriteErrorLog("Loading Design file" + e.ToString());
+
+                        var form = new FormTimedMessage(4000, "Design File is Corrupt", "But Field is Loaded");
+                        form.Show();
+                    }
+
+                    //calc mins maxes
+                    //CalculateMinMaxZoom();
+                    //CalculateTotalCutFillLabels();
+                    //ct.mapList.Clear();
+                    //CalculateMinMaxEastNort();
+                }
+            }      //cancelled out of open file
+
+            FileSaveDesignList(); // for testing
+        }//end of open file
+
+        #endregion
+
+        //save the contour points which include elevation values
+        public void FileSaveDesignList()
+        {
+            //1  - points in patch
+            //64.697,0.168,-21.654,0 - east, heading, north, altitude
+            //Saturday, February 11, 2017  -->  7:26:52 AM
+            //12  - points in patch
+            //64.697,0.168,-21.654,0 - east, heading, north, altitude
+            //$ContourDir
+            //Bob_Feb11
+            //$Offsets
+            //533172,5927719,12
+
+            //get the directory and make sure it exists, create if not
+            string dirField = fieldsDirectory + currentFieldDirectory + "\\";
+
+            string directoryName = Path.GetDirectoryName(dirField);
+            if ((directoryName.Length > 0) && (!Directory.Exists(directoryName)))
+            { Directory.CreateDirectory(directoryName); }
+
+            string myFileName = "DesignList.txt";
+
+            //write out the file
+            using (StreamWriter writer = new StreamWriter(dirField + myFileName))
+            {
+                //Write out the date
+                writer.WriteLine(DateTime.Now.ToString("yyyy-MMMM-dd hh:mm:ss tt", CultureInfo.InvariantCulture));
+                writer.WriteLine("Latitude (deg), Longitude (deg), Elevation Existing(m), Elevation Proposed(m), CutFill(m), Code");
+
+                //which field directory
+                writer.WriteLine("$DesignListDir");
+                writer.WriteLine(currentFieldDirectory);
+
+                //write out the easting and northing Offsets
+                writer.WriteLine("$Offsets");
+                writer.WriteLine(pn.utmEast.ToString(CultureInfo.InvariantCulture) +
+                    "," + pn.utmNorth.ToString(CultureInfo.InvariantCulture) + "," + pn.zone.ToString(CultureInfo.InvariantCulture));
+
+
+                //make sure there is something to save
+                if (ct.designList.Count() > 0)
+                {
+                    int count3 = ct.designList.Count;
+
+                    //for every new chunk of patch in the whole section
+
+                    writer.WriteLine(count3.ToString(CultureInfo.InvariantCulture));
+
+                    for (int i = 0; i < count3; i++)
+                    {
+                        writer.WriteLine(Math.Round((ct.designList[i].latitude), 9).ToString(CultureInfo.InvariantCulture) + "," +
+
+                            Math.Round(ct.designList[i].longitude, 9).ToString(CultureInfo.InvariantCulture) + "," +
+                            Math.Round(ct.designList[i].altitude, 3).ToString(CultureInfo.InvariantCulture) + "," +
+                            Math.Round(ct.designList[i].cutAltitude, 3).ToString(CultureInfo.InvariantCulture) + "," +
+
+                            Math.Round(ct.designList[i].cutfill, 3).ToString(CultureInfo.InvariantCulture) + "," +
+                            Math.Round(ct.designList[i].code, 3).ToString(CultureInfo.InvariantCulture) + "," +
+                            Math.Round(ct.designList[i].easting, 3).ToString(CultureInfo.InvariantCulture));
+
+                    }
+                }
+            }
+            //set saving flag off
+            //isSavingFile = false;
+        }
+
         //save the contour points which include elevation values
         public void FileSaveContour()
         {
@@ -826,9 +1011,9 @@ namespace OpenGrade
                             Math.Round(ct.ptList[i].heading, 3).ToString(CultureInfo.InvariantCulture) + "," +
                             Math.Round(ct.ptList[i].northing, 3).ToString(CultureInfo.InvariantCulture) + "," +
                             Math.Round(ct.ptList[i].altitude, 3).ToString(CultureInfo.InvariantCulture) + "," +
-                            Math.Round(ct.ptList[i].latitude, 7).ToString(CultureInfo.InvariantCulture) + "," +
-                            Math.Round(ct.ptList[i].longitude, 7).ToString(CultureInfo.InvariantCulture) + "," +
-                            Math.Round(ct.ptList[i].cutAltitude, 7).ToString(CultureInfo.InvariantCulture) + "," +
+                            Math.Round(ct.ptList[i].latitude, 9).ToString(CultureInfo.InvariantCulture) + "," +
+                            Math.Round(ct.ptList[i].longitude, 9).ToString(CultureInfo.InvariantCulture) + "," +
+                            Math.Round(ct.ptList[i].cutAltitude, 3).ToString(CultureInfo.InvariantCulture) + "," +
                             Math.Round(ct.ptList[i].lastPassAltitude, 3).ToString(CultureInfo.InvariantCulture) + "," +
                             Math.Round(ct.ptList[i].distance, 3).ToString(CultureInfo.InvariantCulture));
                     }
@@ -865,7 +1050,7 @@ namespace OpenGrade
             {
                 //Write out the date
                 writer.WriteLine(DateTime.Now.ToString("yyyy-MMMM-dd hh:mm:ss tt", CultureInfo.InvariantCulture));
-                writer.WriteLine("Points in Patch followed by easting, heading, northing, altitude");
+                writer.WriteLine("easting, northing, pts distance, Elevation Existing(m), Elevation Proposed(m), CutFill(m), last pass altitude ");
 
                 //which field directory
                 writer.WriteLine("$MapPtDir");
@@ -898,6 +1083,85 @@ namespace OpenGrade
                             Math.Round(ct.mapList[i].cutDeltaMap, 3).ToString(CultureInfo.InvariantCulture) + "," +
                             Math.Round(ct.mapList[i].lastPassAltitudeMap, 3).ToString(CultureInfo.InvariantCulture));
                             
+                    }
+                }
+            }
+            //set saving flag off
+            //isSavingFile = false;
+        }
+
+
+        //save the contour points which include elevation values
+        public void FileSaveSurveyPt()
+        {
+            //1  - points in patch
+            //64.697,0.168,-21.654,0 - east, heading, north, altitude
+            //Saturday, February 11, 2017  -->  7:26:52 AM
+            //12  - points in patch
+            //64.697,0.168,-21.654,0 - east, heading, north, altitude
+            //$ContourDir
+            //Bob_Feb11
+            //$Offsets
+            //533172,5927719,12
+
+            //get the directory and make sure it exists, create if not
+            string dirField = fieldsDirectory + currentFieldDirectory + "\\";
+
+            string directoryName = Path.GetDirectoryName(dirField);
+            if ((directoryName.Length > 0) && (!Directory.Exists(directoryName)))
+            { Directory.CreateDirectory(directoryName); }
+
+            string myFileName = "Survey.ags";
+
+            //write out the file
+            using (StreamWriter writer = new StreamWriter(dirField + myFileName))
+            {
+                
+
+
+                //make sure there is something to save
+                if (ct.surveyList.Count() > 0)
+                {
+                    int count4 = ct.surveyList.Count;
+
+                    //for every new chunk of patch in the whole section
+
+                    //writer.WriteLine(count4.ToString(CultureInfo.InvariantCulture));
+
+                    for (int i = 0; i < count4; i++)
+                    {
+                        if (ct.surveyList[i].code == 0)
+                        {
+                            writer.WriteLine(Math.Round((ct.surveyList[i].latitude), 9).ToString(CultureInfo.InvariantCulture) + ", " +
+
+                            Math.Round(ct.surveyList[i].longitude, 9).ToString(CultureInfo.InvariantCulture) + ", " +
+                            Math.Round(ct.surveyList[i].altitude, 3).ToString(CultureInfo.InvariantCulture) + ", " +
+                            Math.Round(ct.surveyList[i].code, 0).ToString(CultureInfo.InvariantCulture) + "mb_4g");
+
+                        }
+
+                        if (ct.surveyList[i].code == 2)
+                        {
+                            writer.WriteLine(Math.Round((ct.surveyList[i].latitude), 9).ToString(CultureInfo.InvariantCulture) + ", " +
+
+                            Math.Round(ct.surveyList[i].longitude, 9).ToString(CultureInfo.InvariantCulture) + ", " +
+                            Math.Round(ct.surveyList[i].altitude, 3).ToString(CultureInfo.InvariantCulture) + ", " +
+                            Math.Round(ct.surveyList[i].code, 0).ToString(CultureInfo.InvariantCulture) + "PER");
+
+                        }
+
+                        if (ct.surveyList[i].code == 3)
+                        {
+                            writer.WriteLine(Math.Round((ct.surveyList[i].latitude), 9).ToString(CultureInfo.InvariantCulture) + ", " +
+
+                            Math.Round(ct.surveyList[i].longitude, 9).ToString(CultureInfo.InvariantCulture) + ", " +
+                            Math.Round(ct.surveyList[i].altitude, 3).ToString(CultureInfo.InvariantCulture) + ", " +
+                            Math.Round(ct.surveyList[i].code, 0).ToString(CultureInfo.InvariantCulture) + "GRD");
+
+                        }
+
+
+
                     }
                 }
             }

@@ -59,7 +59,7 @@ namespace OpenGrade
         public bool isJobStarted = false, isAreaOnRight = true, isAutoSteerBtnOn = false;
 
         // Manual, 3 states possible
-        public enum btnStates { Off, Rec, Work }
+        public enum btnStates { Off, Rec, RecBnd, Work, StandBy }
 
         public btnStates manualBtnState = btnStates.Off;
 
@@ -953,14 +953,13 @@ namespace OpenGrade
             ct.isContourBtnOn = false;
             ct.isContourOn = false;
             ct.ptList.Clear();
-            ct.drawList.Clear();
             lblCut.Text = "*";
             lblFill.Text = "*";
             lblCutFillRatio.Text = "*";
             lblDrawSlope.Text = "*";
 
             cboxLastPass.Checked = false;
-            cboxRecLastOnOff.Checked = false;
+            
             cboxLaserModeOnOff.Checked = false;
 
             //update the menu
@@ -993,7 +992,6 @@ namespace OpenGrade
             ct.isContourBtnOn = false;
             ct.isContourOn = false;
             ct.ptList.Clear();
-            ct.drawList.Clear();
             lblCut.Text = "*";
             lblFill.Text = "*";
             lblCutFillRatio.Text = "*";
@@ -1001,7 +999,7 @@ namespace OpenGrade
 
             cboxLastPass.Checked = false;
             cboxLaserModeOnOff.Checked = false;
-            cboxRecLastOnOff.Checked = false;
+            
 
             //change images to reflect on off
             btnABLine.Image = Properties.Resources.ABLineOff;

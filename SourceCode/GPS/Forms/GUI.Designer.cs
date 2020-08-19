@@ -15,7 +15,7 @@ namespace OpenGrade
 {
     public partial class FormGPS
     {
-       
+
 
         private void LoadGUI()
         {
@@ -77,9 +77,9 @@ namespace OpenGrade
                 timerSim.Enabled = false;
             }
 
-            btnDoneDraw.Enabled = false;
-            btnDeleteLastPoint.Enabled = false;
-            btnStartDraw.Enabled = true;
+            //btnDoneDraw.Enabled = false;
+            //btnDeleteLastPoint.Enabled = false;
+            //btnStartDraw.Enabled = true;
             lblBarGraphMax.Text = barGraphMax.ToString();
         }
 
@@ -88,13 +88,37 @@ namespace OpenGrade
         {
             if (openGLControlBack.Visible)
             {
-                openGLControl.Height = this.Height - 200;
+                openGLControl.Height = this.Height - 150;
                 openGLControlBack.Visible = false;
             }
             else
             {
                 openGLControl.Height = 300;
                 openGLControlBack.Visible = true;
+            }
+        }
+
+        // Select between Grade Mode and Survey Mode
+        public void SelectMode()
+        {
+            if (ct.surveyMode)
+            {
+                if (ct.isSurveyOn)
+                {
+
+                }
+                else
+                {
+                    ct.surveyMode = false;
+                    stripSelectMode.Text = "Grade Mode";
+                    btnManualOffOn.Visible = false;
+                }
+            }
+            else
+            {
+                ct.surveyMode = true;
+                stripSelectMode.Text = "Survey Mode";
+                btnManualOffOn.Visible = true;
             }
         }
 
@@ -113,10 +137,12 @@ namespace OpenGrade
         //auto steer off and on
         private void btnAutoSteer_Click(object sender, EventArgs e)
         {
+            FileOpenAgdDesign();
             if (isAutoSteerBtnOn)
             {
                 isAutoSteerBtnOn = false;
                 btnAutoSteer.Image = Properties.Resources.AutoSteerOff;
+                
             }
             else
             {
@@ -127,7 +153,7 @@ namespace OpenGrade
                 }
                 else
                 {
-                    var form = new FormTimedMessage(2000,(gStr.gsNoGuidanceLines),(gStr.gsTurnOnContourOrABLine));
+                    var form = new FormTimedMessage(2000, (gStr.gsNoGuidanceLines), (gStr.gsTurnOnContourOrABLine));
                     form.Show();
                 }
             }
@@ -175,6 +201,11 @@ namespace OpenGrade
         {
             ct.isContourBtnOn = !ct.isContourBtnOn;
             btnContour.Image = ct.isContourBtnOn ? Properties.Resources.ContourOn : Properties.Resources.ContourOff;
+
+            ct.DrawContourLine();
+            if (ct.isContourBtnOn) btnContour.Text = "Cut/Fill";
+            else btnContour.Text = "Altitude";
+                  
         }
 
         //zoom up close and far away
@@ -200,8 +231,9 @@ namespace OpenGrade
             switch (manualBtnState)
             {
                 case btnStates.Off:
-                    manualBtnState = btnStates.Rec;
-                    btnManualOffOn.Image = Properties.Resources.ManualOn;
+                    manualBtnState = btnStates.StandBy;
+                    btnManualOffOn.Image = null;
+                    btnManualOffOn.Text = "BenchMark";
                     userDistance = 0;
                     lblCut.Text = "*";
                     lblFill.Text = "*";
@@ -209,11 +241,68 @@ namespace OpenGrade
                     lblDrawSlope.Text = "*";
 
                     cboxLastPass.Checked = false;
-                    cboxRecLastOnOff.Checked = false;
+                    //cboxRecLastOnOff.Checked = false;
                     cboxLaserModeOnOff.Checked = false;
-                    btnDoneDraw.Enabled = false;
-                    btnDeleteLastPoint.Enabled = false;
-                    btnStartDraw.Enabled = false;
+                    //btnDoneDraw.Enabled = false;
+                    //btnDeleteLastPoint.Enabled = false;
+                    //btnStartDraw.Enabled = false;
+                    ct.isSurveyOn = true;
+                    ct.clearSurveyList = true;
+                    ct.isBtnStartPause = false;
+                    btnStartPause.Text = "START";
+
+                    break;
+
+                case btnStates.StandBy:
+                    manualBtnState = btnStates.RecBnd;
+                    btnManualOffOn.Image = null;
+                    btnManualOffOn.Text = "Recording Boundary";
+                    userDistance = 0;
+                    lblCut.Text = "*";
+                    lblFill.Text = "*";
+                    lblCutFillRatio.Text = "*";
+                    lblDrawSlope.Text = "*";
+                    btnStartPause.Visible = true;
+                    btnBoundarySide.Visible = true;
+                    ct.isBtnStartPause = false;
+                    btnStartPause.Text = "START";
+
+
+                    cboxLastPass.Checked = false;
+                    //cboxRecLastOnOff.Checked = false;
+                    cboxLaserModeOnOff.Checked = false;
+                    //btnDoneDraw.Enabled = false;
+                    //btnDeleteLastPoint.Enabled = false;
+                    //btnStartDraw.Enabled = false;
+                    ct.isSurveyOn = true;
+                    ct.markBM = true;
+                    
+
+
+                    break;
+
+                case btnStates.RecBnd:
+                    manualBtnState = btnStates.Rec;
+                    btnManualOffOn.Image = Properties.Resources.ManualOn;
+                    btnManualOffOn.Text = null;
+                    userDistance = 0;
+                    lblCut.Text = "*";
+                    lblFill.Text = "*";
+                    lblCutFillRatio.Text = "*";
+                    lblDrawSlope.Text = "*";
+                    btnBoundarySide.Visible = false;
+                    ct.isBtnStartPause = false;
+                    btnStartPause.Text = "START";
+
+                    cboxLastPass.Checked = false;
+                    //cboxRecLastOnOff.Checked = false;
+                    cboxLaserModeOnOff.Checked = false;
+                    //btnDoneDraw.Enabled = false;
+                    //btnDeleteLastPoint.Enabled = false;
+                    //btnStartDraw.Enabled = false;
+                    ct.isSurveyOn = true;
+                    ct.recBoundary = false;
+                    ct.recSurveyPt = true;
 
 
                     break;
@@ -221,15 +310,49 @@ namespace OpenGrade
                 case btnStates.Rec:
                     manualBtnState = btnStates.Off;
                     btnManualOffOn.Image = Properties.Resources.ManualOff;
+                    btnManualOffOn.Text = null;
                     CalculateContourPointDistances();
-                    FileSaveContour();
-                    btnDoneDraw.Enabled = false;
-                    btnDeleteLastPoint.Enabled = false;
-                    btnStartDraw.Enabled = true;
+                    //FileSaveContour();
+                    //btnDoneDraw.Enabled = false;
+                    //btnDeleteLastPoint.Enabled = false;
+                    //btnStartDraw.Enabled = true;
+                    ct.isSurveyOn = false;
+                    btnStartPause.Visible = false;
+                    btnManualOffOn.Enabled = false;
+
 
                     break;
             }
         }
+
+        private void btnStartPause_Click(object sender, EventArgs e)
+        {
+            if (ct.isBtnStartPause)
+            {
+                btnStartPause.Text = "START";
+                ct.isBtnStartPause = false;
+            }
+            else
+            {
+                btnStartPause.Text = "PAUSE";
+                ct.isBtnStartPause = true;
+            }
+        }
+
+        private void btnBoundarySide_Click(object sender, EventArgs e)
+        {
+            if (ct.isBoundarySideRight)
+            {
+                btnBoundarySide.Text = "Boundary Left";
+                ct.isBoundarySideRight = false;
+            }
+            else
+            {
+                btnBoundarySide.Text = "Boundary Right";
+                ct.isBoundarySideRight = true;
+            }
+        }
+
 
         //The main flag marker button 
         private void btnFlag_Click(object sender, EventArgs e)
@@ -272,7 +395,7 @@ namespace OpenGrade
 
         private void btnSnap_Click(object sender, EventArgs e)
         {
-           ABLine.SnapABLine();
+            ABLine.SnapABLine();
         }
 
         //panel buttons
@@ -348,69 +471,11 @@ namespace OpenGrade
         {
             ct.zeroAltitude = pn.altitude;
         }
-        private void btnStartDraw_Click(object sender, EventArgs e)
-        {
-            if (ct.ptList.Count > 5)
-            {
-                cboxLastPass.Checked = false;
 
-                ct.drawList.Clear();
-                ct.isDrawingRefLine = true;
-                lblCut.Text = "-";
-                lblFill.Text = "-";
-                lblCutFillRatio.Text = "-";
 
-                btnDoneDraw.Enabled = true;
-                btnDeleteLastPoint.Enabled = true;
-                btnStartDraw.Enabled = false;
-            }
-            else TimedMessageBox(1500, "No Surveyed Points", "Survey a Contour First");
-        }
-        private void btnDoneDraw_Click(object sender, EventArgs e)
-        {
-            btnDoneDraw.Enabled = false;
-            btnDeleteLastPoint.Enabled = false;
-            btnStartDraw.Enabled = true;
 
-            ct.isDrawingRefLine = false;
-            int cnt = ct.ptList.Count;
-            int drawPts = ct.drawList.Count-1;
-            double slope = 0.5;
 
-            if (drawPts > 0)
-            {
-                for (int i = 0; i < cnt; i++)
-                {
-                    //points before the drawn line are -1
-                    if (i < ct.drawList[0].easting)
-                    {
-                        ct.ptList[i].cutAltitude = -1;
-                        continue;
-                    }
 
-                    //points after drawn line are -1
-                    if (i > ct.drawList[drawPts].easting)
-                    {
-                        ct.ptList[i].cutAltitude = -1;
-                        continue;
-                    }
-
-                    //find out where its between
-                    for (int j = 0; j < drawPts; j++)
-                    {
-                        if (i >= ct.drawList[j].easting && i <= ct.drawList[j + 1].easting)
-                        {
-                            slope = (ct.drawList[j + 1].northing - ct.drawList[j].northing) / (ct.drawList[j + 1].easting - ct.drawList[j].easting);
-                            ct.ptList[i].cutAltitude = ((i - ct.drawList[j].easting) * slope) + ct.drawList[j].northing;
-                            break;
-                        }
-                    }
-                }
-
-                //Fill in cut and fill
-                CalculateTotalCutFillLabels();
-            }
-        }
         private void CalculateTotalCutFillLabels()
         {
             lblDrawSlope.Text = "-";
@@ -447,8 +512,8 @@ namespace OpenGrade
                 }
                 else
                 {
-                    lblCut.Text = (1.308*cut).ToString("N2");
-                    lblFill.Text = (1.308*fill).ToString("N2");
+                    lblCut.Text = (1.308 * cut).ToString("N2");
+                    lblFill.Text = (1.308 * fill).ToString("N2");
                 }
 
                 delta = (cut - fill);
@@ -461,11 +526,7 @@ namespace OpenGrade
                 lblCutFillRatio.Text = "-";
             }
         }
-        private void btnDeleteLastPoint_Click(object sender, EventArgs e)
-        {
-            int ptCnt = ct.drawList.Count;
-            if (ptCnt > 0) ct.drawList.RemoveAt(ptCnt - 1);
-        }
+
 
         //progress bar "buttons" for gain
         private void pbarCutAbove_Click(object sender, EventArgs e)
@@ -520,7 +581,7 @@ namespace OpenGrade
 
             if (fbd.ShowDialog() == DialogResult.OK)
             {
-                RegistryKey regKey = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\OpenGrade",true);
+                RegistryKey regKey = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\OpenGrade", true);
 
                 if (fbd.SelectedPath != Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments))
                 {
@@ -885,8 +946,13 @@ namespace OpenGrade
         private void btnHideTabs_Click(object sender, EventArgs e)
         {
             HideTabControl();
-        }        
-        
+        }
+
+        private void stripSelectMode_Click(object sender, EventArgs e)
+        {
+            SelectMode();
+        }
+
         //Sim controls
         private void timerSim_Tick(object sender, EventArgs e)
         {

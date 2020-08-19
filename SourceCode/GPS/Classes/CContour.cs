@@ -35,6 +35,32 @@ namespace OpenGrade
         }
     }
 
+    //Survey list by Pat
+    public class SurveyPt
+    {
+        public double easting { get; set; }
+        public double northing { get; set; }
+        public double latitude { get; set; }
+        public double longitude { get; set; }
+        public double altitude { get; set; }
+        public double code { get; set; }
+
+
+        //constructor
+        public SurveyPt(double _easting, double _northing, double _lat, double _long, double _altitude = -1, double _code = -1)
+        {
+
+            easting = _easting;
+            northing = _northing;
+            latitude = _lat;
+            longitude = _long;
+            altitude = _altitude;
+
+            code = _code;
+            
+        }
+    }
+
     // by pat
     public class mapListPt
     {
@@ -68,6 +94,38 @@ namespace OpenGrade
         }
     }
 
+    //  to import Optisurface design points by pat
+    public class designPt
+    {
+        public double altitude { get; set; }
+        public double easting { get; set; }
+        public double northing { get; set; }
+        
+        public double cutAltitude { get; set; }
+        public double cutfill { get; set; }
+        public double latitude { get; set; }
+        public double longitude { get; set; }
+        public double code { get; set; }
+
+        //constructor
+        public designPt(double _lat, double _long, double _altitude,
+                            double _cutAltitude = -1, double _cutfill = 9999,
+                              double _code = -1, double _easting = 0, double _northing = 0)
+        {
+            easting = _easting;
+            northing = _northing;
+            //heading = _heading;
+            altitude = _altitude;
+            latitude = _lat;
+            longitude = _long;
+
+            //optional parameters
+            cutAltitude = _cutAltitude;
+            cutfill = _cutfill;
+            code = _code;
+        }
+    }
+
     public class CContour
     {
         //copy of the mainform address
@@ -75,16 +133,29 @@ namespace OpenGrade
 
         private readonly OpenGL gl;
 
-        private double lastMapValue = -9999999, sndLastMapValue = -9999999;
-
         public bool isContourOn, isContourBtnOn;
-        public bool is3DmodeOn = true;
+        public bool surveyMode;
+        public bool isSurveyOn;
+        public bool markBM;
+        public bool clearSurveyList;
+        public bool recBoundary;
+        public bool recSurveyPt;
+        public bool isBtnStartPause;
+        public bool isBoundarySideRight;
+
         public double slope = 0.002;
         public double zeroAltitude = 0;
+
+        public double nearestSurveyEasting;
+        public double nearestSurveyNorthing;
 
         public List<CContourPt> ptList = new List<CContourPt>();
 
         public List<mapListPt> mapList = new List<mapListPt>();
+
+        public List<SurveyPt> surveyList = new List<SurveyPt>();
+
+        public List<designPt> designList = new List<designPt>();
 
         //used to determine if section was off and now is on or vice versa
         public bool wasSectionOn;
@@ -128,7 +199,7 @@ namespace OpenGrade
         //public List<vec4> ptList = new List<vec4>();
 
         //the manually picked list
-        public List<vec2> drawList = new List<vec2>();
+        //public List<vec2> drawList = new List<vec2>();
 
         //converted from drawn line to all points cut line
         //public List<vec4> cutList = new List<vec4>();
@@ -151,24 +222,24 @@ namespace OpenGrade
         {
             isContourOn = true;
             //reuse ptList
-            ptList.Clear();
+            //surveyList.Clear();
 
-            CContourPt point = new CContourPt(mf.pn.easting, mf.fixHeading, mf.pn.northing, mf.pn.altitude, mf.pn.latitude, mf.pn.longitude);
-            ptList.Add(point);
+            //SurveyPt point = new SurveyPt(mf.pn.latitude, mf.pn.longitude, mf.pn.altitude, 2);
+            //surveyList.Add(point);
         }
 
         //Add current position to ptList
         public void AddPoint()
         {
-            CContourPt point = new CContourPt(mf.pn.easting, mf.fixHeading, mf.pn.northing, mf.pn.altitude, mf.pn.latitude, mf.pn.longitude);
-            ptList.Add(point);
+            //SurveyPt point = new SurveyPt(mf.pn.latitude, mf.pn.longitude, mf.pn.altitude, 2);
+            //surveyList.Add(point);
         }
 
         //End the strip
         public void StopContourLine()
         {
-            CContourPt point = new CContourPt(mf.pn.easting, mf.fixHeading, mf.pn.northing, mf.pn.altitude, mf.pn.latitude, mf.pn.longitude);
-            ptList.Add(point);
+            //SurveyPt point = new SurveyPt(mf.pn.latitude, mf.pn.longitude, mf.pn.altitude, 2);
+            //surveyList.Add(point);
 
             //turn it off
             isContourOn = false;
@@ -402,17 +473,159 @@ namespace OpenGrade
         //draw the red follow me line
         public void DrawContourLine()
         {
-            if (is3DmodeOn)
+
+            #region Survey ----------------------------------------------------------------------------------------------------------------
+
+            if (isSurveyOn)
+            {
+                if (clearSurveyList)
+                {
+                    surveyList.Clear();
+                    clearSurveyList = false;
+                }
+
+                if (markBM)
+                { 
+                   
+                    SurveyPt point = new SurveyPt(mf.pn.easting, mf.pn.northing, mf.pn.latitude, mf.pn.longitude, mf.pn.altitude, 0);
+                    surveyList.Add(point);
+
+                    nearestSurveyEasting = mf.pn.easting;
+                    nearestSurveyNorthing = mf.pn.northing;
+
+                    markBM = false;
+                    recBoundary = true;
+
+                }
+
+                // Start recording contour
+
+                if (recBoundary)
+                {
+                    if (isBtnStartPause)
+                    {
+                        double surveyDistance = ((nearestSurveyEasting - mf.pn.easting) * (nearestSurveyEasting - mf.pn.easting) +
+                        (nearestSurveyNorthing - mf.pn.northing) * (nearestSurveyNorthing - mf.pn.northing));
+
+                        if (surveyDistance > 9)
+                        {
+                            SurveyPt point = new SurveyPt(mf.pn.easting, mf.pn.northing, mf.pn.latitude, mf.pn.longitude, mf.pn.altitude, 2);
+                            surveyList.Add(point);
+
+                            nearestSurveyEasting = mf.pn.easting;
+                            nearestSurveyNorthing = mf.pn.northing;
+
+                        }
+
+                    }
+                    
+                }
+
+                if (recSurveyPt)
+                {
+                    if (isBtnStartPause)
+                    {
+                        // check for the nearest point in the surveyList
+
+                        int surveyCount = surveyList.Count;
+                        double minSurveyDistance = 1000000;
+
+                        for (int i = 0; i < surveyCount; i++ )
+                        {
+                            double surveyDistance = ((surveyList[i].easting - mf.pn.easting) * (surveyList[i].easting - mf.pn.easting) +
+                                (surveyList[i].northing - mf.pn.northing) * (surveyList[i].northing - mf.pn.northing));
+
+                            if (surveyDistance < minSurveyDistance) minSurveyDistance = surveyDistance;
+                        }
+                         
+                        // if there is no point 3 metre around add a point
+                        if (minSurveyDistance > 9)
+                        {
+                            SurveyPt point = new SurveyPt(mf.pn.easting, mf.pn.northing, mf.pn.latitude, mf.pn.longitude, mf.pn.altitude, 3);
+                            surveyList.Add(point);
+
+                            nearestSurveyEasting = mf.pn.easting;
+                            nearestSurveyNorthing = mf.pn.northing;
+
+                        }
+
+                    }
+                    
+                    
+                }
+
+            }
+            else
+            {
+                // finish the survey
+                if (recSurveyPt)
+                {
+                    mf.FileSaveSurveyPt();
+
+                    recSurveyPt = false;
+                }
+            }
+
+            #endregion survey ----------------------------------------------------------------------------------------------
+
+            if (surveyMode)
+            {
+                int ptCount = surveyList.Count;
+
+                if (ptCount > 0)
+                {
+
+
+                    gl.PointSize(4.0f);
+                    gl.Begin(OpenGL.GL_POINTS);
+
+                    gl.Color(0.97f, 0.42f, 0.45f);
+                    for (int h = 0; h < ptCount; h++)
+                    {
+                        gl.Color(0.97f, 0.42f, 0.45f);
+
+                        if (surveyList[h].code == 0) gl.Color(0.97f, 0.82f, 0.05f);
+                        if (surveyList[h].code == 2) gl.Color(0.5f, 0.82f, 0.55f);
+
+                        gl.Vertex(surveyList[h].easting, surveyList[h].northing, 0);
+                    }
+
+                    gl.End();
+                }
+
+                //Draw a contour line
+
+               
+                int ptCount2 = surveyList.Count;
+                gl.LineWidth(2);
+                gl.Color(0.98f, 0.2f, 0.0f);
+                gl.Begin(OpenGL.GL_LINE_STRIP);
+                for (int h = 0; h < ptCount; h++)
+                {
+                    if (surveyList[h].code == 2)
+                        gl.Vertex(surveyList[h].easting, surveyList[h].northing, 0);
+
+                }
+                gl.End();
+
+
+            }
+            else
             {
 
 
                 int ptCount = mapList.Count;
 
-                double maxAltitude = -9999, minAltitude = 9999, maxCut = -9999, maxFill = 9999;
+                double maxAltitude = -9999, minAltitude = 9999, maxCut = -9999, maxFill = 9999, midAltitude;
                 for (int h = 0; h < ptCount; h++)
                 {
-                    if (mapList[h].altitudeMap < minAltitude) minAltitude = mapList[h].altitudeMap;
-                    if (mapList[h].altitudeMap > maxAltitude) maxAltitude = mapList[h].altitudeMap;
+                    if (mapList[h].cutAltitudeMap != -1)
+                    {
+                        if (mapList[h].cutAltitudeMap < minAltitude) minAltitude = mapList[h].cutAltitudeMap;
+                    }
+
+                    if (mapList[h].cutAltitudeMap > maxAltitude) maxAltitude = mapList[h].cutAltitudeMap;
+                    
                     if (mapList[h].cutDeltaMap < maxFill) maxFill = mapList[h].cutDeltaMap;
 
                     if (mapList[h].cutDeltaMap != 9999)
@@ -424,91 +637,115 @@ namespace OpenGrade
                 if (maxCut == -9999) maxCut = 0;
                 if (maxFill == 9999) maxFill = 0;
 
+                midAltitude = ((maxAltitude + minAltitude) / 2);
 
 
 
-                    //dot test by Pat
-                    //lastMapValue = -9999999;
-                    //sndLastMapValue = -9999999;
-                if (ptCount > 0)
-                {
 
+                //dot test by Pat
+                
 
-                    for (int h = 0; h < ptCount; h++)
-                    {
-                        // red, green, blue
-
-                        if (mapList[h].cutDeltaMap != 9999)
-                        {
-                            if (mapList[h].cutDeltaMap == 0)
-                                gl.Color(1.0f, 1.0f, 1.0f);
-
-                            if (mapList[h].cutDeltaMap < 0)
-                                gl.Color((1 - (mapList[h].cutDeltaMap/maxFill)), 1.0f, (1 - (mapList[h].cutDeltaMap / maxCut)));
-
-                            if (mapList[h].cutDeltaMap > 0)
-                                gl.Color(1.0f, (1 - (mapList[h].cutDeltaMap / maxCut)), (1 - (mapList[h].cutDeltaMap / maxCut)));
-
-
-
-                        }
-                        else gl.Color(0.0f, 0.0f, 0.0f);
-
-
-                        gl.Begin(OpenGL.GL_QUADS);
-                        gl.Vertex(mapList[h].eastingMap - (mapList[h].drawPtWidthMap / 2), mapList[h].northingMap - (mapList[h].drawPtWidthMap / 2), 0);
-                        gl.Vertex(mapList[h].eastingMap - (mapList[h].drawPtWidthMap / 2), mapList[h].northingMap + (mapList[h].drawPtWidthMap / 2), 0);
-                        gl.Vertex(mapList[h].eastingMap + (mapList[h].drawPtWidthMap / 2), mapList[h].northingMap + (mapList[h].drawPtWidthMap / 2), 0);
-                        gl.Vertex(mapList[h].eastingMap + (mapList[h].drawPtWidthMap / 2), mapList[h].northingMap - (mapList[h].drawPtWidthMap / 2), 0);
-                        gl.End();
-
-
-                        //sndLastMapValue = lastMapValue;
-                        //lastMapValue = mapList[h].northingMap;
-
-
-
-                    }
-
-
-                }
-
-            }
-            else
-            {
-                ////draw the guidance line
-                int ptCount = ptList.Count;
-                gl.LineWidth(2);
-                gl.Color(0.98f, 0.2f, 0.0f);
-                gl.Begin(OpenGL.GL_LINE_STRIP);
-                for (int h = 0; h < ptCount; h++) gl.Vertex(ptList[h].easting, ptList[h].northing, 0);
-                gl.End();
-
-                gl.PointSize(4.0f);
-                gl.Begin(OpenGL.GL_POINTS);
-
-                gl.Color(0.97f, 0.42f, 0.45f);
-                for (int h = 0; h < ptCount; h++) gl.Vertex(ptList[h].easting, ptList[h].northing, 0);
-
-                gl.End();
-                gl.PointSize(1.0f);
-
-                //draw the reference line
-                gl.PointSize(3.0f);
-                //if (isContourBtnOn)
-                {
-                    ptCount = ptList.Count;
                     if (ptCount > 0)
                     {
-                        gl.Begin(OpenGL.GL_POINTS);
-                        for (int i = 0; i < ptCount; i++)
+
+
+                        for (int h = 0; h < ptCount; h++)
                         {
-                            gl.Vertex(ptList[i].easting, ptList[i].northing, 0);
+
+                        // red, green, blue
+                            if (isContourBtnOn)
+                            {
+                                if (mapList[h].cutDeltaMap != 9999)
+                                {
+                                    if (mapList[h].cutDeltaMap == 0)
+                                    gl.Color(0.75f, 0.75f, 0.75f);
+
+                                    if (mapList[h].cutDeltaMap < 0)
+                                    gl.Color(.75 * (1 - (mapList[h].cutDeltaMap / maxFill)), 0.75f, .75 * (1 - (mapList[h].cutDeltaMap / maxFill)));
+
+                                    if (mapList[h].cutDeltaMap > 0)
+                                    gl.Color(0.75f, .75 * (1 - (mapList[h].cutDeltaMap / maxCut)), .75 * (1 - (mapList[h].cutDeltaMap / maxCut)));
+
+
+
+                                }
+                                else gl.Color(0.0f, 0.0f, 0.0f);
+                            }
+                            else
+                            {
+                                if (mapList[h].cutAltitudeMap != -1)
+                                {
+                                    if (mapList[h].cutAltitudeMap == midAltitude)
+                                    gl.Color(0.75f, 0.75f, 0.75f);
+
+                                    if (mapList[h].cutAltitudeMap < midAltitude)
+                                    gl.Color(.75 * (1 - ((mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude))),
+                                        0.75f,
+                                        .75 * (1 - ((mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude))));
+
+                                    if (mapList[h].cutAltitudeMap > midAltitude)
+                                    gl.Color(0.75f,
+                                        .75 * (1 - ((mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude))),
+                                        .75 * (1 - ((mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude))));
+                                }
+                                else gl.Color(0.0f, 0.0f, 0.0f);
+                            }
+
+
+                            gl.Begin(OpenGL.GL_QUADS);
+                            gl.Vertex(mapList[h].eastingMap - (mapList[h].drawPtWidthMap / 2), mapList[h].northingMap - (mapList[h].drawPtWidthMap / 2), 0);
+                            gl.Vertex(mapList[h].eastingMap - (mapList[h].drawPtWidthMap / 2), mapList[h].northingMap + (mapList[h].drawPtWidthMap / 2), 0);
+                            gl.Vertex(mapList[h].eastingMap + (mapList[h].drawPtWidthMap / 2), mapList[h].northingMap + (mapList[h].drawPtWidthMap / 2), 0);
+                            gl.Vertex(mapList[h].eastingMap + (mapList[h].drawPtWidthMap / 2), mapList[h].northingMap - (mapList[h].drawPtWidthMap / 2), 0);
+                            gl.End();
+
+
+
+
+
+
                         }
-                        gl.End();
+
+
                     }
-                }
+                
+
             }
+            //else
+            //{
+                ////draw the guidance line
+                //int ptCount = ptList.Count;
+                //gl.LineWidth(2);
+                //gl.Color(0.98f, 0.2f, 0.0f);
+                //gl.Begin(OpenGL.GL_LINE_STRIP);
+                //for (int h = 0; h < ptCount; h++) gl.Vertex(ptList[h].easting, ptList[h].northing, 0);
+                //gl.End();
+
+                //gl.PointSize(4.0f);
+                //gl.Begin(OpenGL.GL_POINTS);
+
+                //gl.Color(0.97f, 0.42f, 0.45f);
+                //for (int h = 0; h < ptCount; h++) gl.Vertex(ptList[h].easting, ptList[h].northing, 0);
+
+               // gl.End();
+                //gl.PointSize(1.0f);
+
+                //draw the reference line
+                //gl.PointSize(3.0f);
+                //if (isContourBtnOn)
+                //{
+                    //ptCount = ptList.Count;
+                    //if (ptCount > 0)
+                    //{
+                        //gl.Begin(OpenGL.GL_POINTS);
+                        //for (int i = 0; i < ptCount; i++)
+                        //{
+                           // gl.Vertex(ptList[i].easting, ptList[i].northing, 0);
+                        //}
+                        //gl.End();
+                    //}
+                //}
+            //}
 
 
             //*---------  end paste

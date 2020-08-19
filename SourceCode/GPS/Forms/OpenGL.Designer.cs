@@ -15,7 +15,12 @@ namespace OpenGrade
         //difference between blade tip and guide line
         public double cutDelta;
         private double minDist;
+        private double minDistSE;
         private double minDistMap;
+        private double minDistSW;
+        private double minDistNE;
+        private double minDistNW;
+
         private double minDistMapDist = 100; // how far from a survey point it will draw the map 100 is 10 meters
         private double drawPtWidth = 1; // the size of the map pixel in meter
 
@@ -412,7 +417,7 @@ namespace OpenGrade
             cutDelta = 9999;
 
             int closestPoint = 0;
-            int ptCnt = ct.ptList.Count;
+            int ptCnt = ct.mapList.Count;
             gl.LineWidth(4);
 
 
@@ -427,13 +432,13 @@ namespace OpenGrade
             if (ptCnt > 0)
             {
                 minDist = 1000000; //original is 1000000
-                int ptCount = ct.ptList.Count - 1;
+                int ptCount = ct.mapList.Count - 1;
 
                 //find the closest point to current fix
                 for (int t = 0; t < ptCount; t++)
                 {
-                    double dist = ((pn.easting - ct.ptList[t].easting) * (pn.easting - ct.ptList[t].easting))
-                                    + ((pn.northing - ct.ptList[t].northing) * (pn.northing - ct.ptList[t].northing));
+                    double dist = ((pn.easting - ct.mapList[t].eastingMap) * (pn.easting - ct.mapList[t].eastingMap))
+                                    + ((pn.northing - ct.mapList[t].northingMap) * (pn.northing - ct.mapList[t].northingMap));
                     if (dist < minDist) { minDist = dist; closestPoint = t; }
                 }
 
@@ -443,21 +448,21 @@ namespace OpenGrade
                 for (int i = 0; i < ptCnt; i++)
                 {
                     gl.Vertex(i,
-                      (((ct.ptList[i].altitude - centerY) * altitudeWindowGain) + centerY), 0);
+                      (((ct.mapList[i].altitudeMap - centerY) * altitudeWindowGain) + centerY), 0);
                     gl.Vertex(i, -10000, 0);
                 }
                 gl.End();
 
                 //cut line drawn in full
-                int cutPts = ct.ptList.Count;
+                int cutPts = ct.mapList.Count;
                 if (cutPts > 0)
                 {
                     gl.Color(0.974f, 0.0f, 0.12f);
                     gl.Begin(OpenGL.GL_LINE_STRIP);
                     for (int i = 0; i < ptCnt; i++)
                     {
-                        if (ct.ptList[i].cutAltitude > 0)
-                            gl.Vertex(i, (((ct.ptList[i].cutAltitude - centerY) * altitudeWindowGain) + centerY), 0);
+                        if (ct.mapList[i].cutAltitudeMap > 0)
+                            gl.Vertex(i, (((ct.mapList[i].cutAltitudeMap - centerY) * altitudeWindowGain) + centerY), 0);
                     }
                     gl.End();
                 }
@@ -477,8 +482,8 @@ namespace OpenGrade
                 gl.Disable(OpenGL.GL_LINE_STIPPLE);
 
                 //draw last pass if rec on
-                if (cboxRecLastOnOff.Checked & ct.ptList[closestPoint].cutAltitude > 0)
-                    ct.ptList[closestPoint].lastPassAltitude = pn.altitude;
+                //if (cboxRecLastOnOff.Checked & ct.ptList[closestPoint].cutAltitude > 0)
+                    //ct.ptList[closestPoint].lastPassAltitude = pn.altitude;
 
                 //draw if on
                 if (cboxLastPass.Checked)
@@ -489,42 +494,14 @@ namespace OpenGrade
                     gl.Color(0.40f, 0.970f, 0.400f);
                     for (int i = 0; i < ptCnt; i++)
                     {
-                        if (ct.ptList[i].cutAltitude > 0 & ct.ptList[i].lastPassAltitude > 0)
-                            gl.Vertex(i, (((ct.ptList[i].lastPassAltitude - centerY) * altitudeWindowGain) + centerY), 0);
+                        if (ct.mapList[i].cutAltitudeMap > 0 & ct.mapList[i].lastPassAltitudeMap > 0)
+                            gl.Vertex(i, (((ct.mapList[i].lastPassAltitudeMap - centerY) * altitudeWindowGain) + centerY), 0);
                     }
                     gl.End();
                 }
 
 
-                //draw the guide line being built
-                if (ct.isDrawingRefLine)
-                {
-                    gl.LineWidth(2);
-                    gl.Color(0.15f, 0.950f, 0.150f);
-                    int cutCnt = ct.drawList.Count;
-                    if (cutCnt > 0)
-                    {
-                        gl.Begin(OpenGL.GL_LINE_STRIP);
-                        for (int i = 0; i < cutCnt; i++)
-                            gl.Vertex(ct.drawList[i].easting, (((ct.drawList[i].northing - centerY) * altitudeWindowGain) + centerY), 0);
-                        gl.End();
-
-                        if (slopeDraw < vehicle.minSlope) gl.Color(0.25f, 0.970f, 0.350f);
-                        else gl.Color(0.915f, 0.0f, 0.970f);
-                        gl.Begin(OpenGL.GL_LINES);
-                        //for (int i = 0; i < cutCnt; i++)
-                        gl.Vertex(ct.drawList[cutCnt - 1].easting, (((ct.drawList[cutCnt - 1].northing - centerY) * altitudeWindowGain) + centerY), 0);
-                        gl.Vertex(screen2FieldPt.easting, (((screen2FieldPt.northing - centerY) * altitudeWindowGain) + centerY), 0);
-                        gl.End();
-
-                        gl.Color(1.0f, 1.0f, 0.0f);
-                        gl.PointSize(4);
-                        gl.Begin(OpenGL.GL_POINTS);
-                        for (int i = 0; i < cutCnt; i++)
-                            gl.Vertex(ct.drawList[i].easting, (((ct.drawList[i].northing - centerY) * altitudeWindowGain) + centerY), 0);
-                        gl.End();
-                    }
-                }
+                
 
                 if (minDist < (vehicle.gradeDistFromLine * vehicle.gradeDistFromLine)) // original is 15, meter form the line scare, for 5 meter put 25
                 {
@@ -585,10 +562,10 @@ namespace OpenGrade
                     }
                     else
                     {
-                        if (ct.ptList[closestPoint].cutAltitude > 0)
+                        if (ct.mapList[closestPoint].cutAltitudeMap > 0)
                         {
                             //in cm
-                            cutDelta = (pn.altitude - ct.ptList[closestPoint].cutAltitude) * 100;
+                            cutDelta = (pn.altitude - ct.mapList[closestPoint].cutAltitudeMap) * 100;
                         }
                     }
                 }
@@ -617,58 +594,20 @@ namespace OpenGrade
             {
                 if (ct.ptList.Count > 0)
                 {
-                    if (isMetric) stripTopoLocation.Text = ((int)(screen2FieldPt.easting)).ToString() + ": " + screen2FieldPt.northing.ToString("N3") + ": " + ((screen2FieldPt.northing - ct.ptList[(int)(screen2FieldPt.easting)].altitude) * 100).ToString("N1");
-                    else stripTopoLocation.Text = ((int)(screen2FieldPt.easting)).ToString() + ": " + ((screen2FieldPt.northing) / .0254 / 12).ToString("N3") + ": " + ((screen2FieldPt.northing - ct.ptList[(int)(screen2FieldPt.easting)].altitude) / .0254).ToString("N1");
+                    if (isMetric) stripTopoLocation.Text = ((int)(screen2FieldPt.easting)).ToString() + ": " + screen2FieldPt.northing.ToString("N3") + ": " + ((screen2FieldPt.northing - ct.mapList[(int)(screen2FieldPt.easting)].altitudeMap) * 100).ToString("N1");
+                    else stripTopoLocation.Text = ((int)(screen2FieldPt.easting)).ToString() + ": " + ((screen2FieldPt.northing) / .0254 / 12).ToString("N3") + ": " + ((screen2FieldPt.northing - ct.mapList[(int)(screen2FieldPt.easting)].altitudeMap) / .0254).ToString("N1");
                 }
                 else stripTopoLocation.Text = " 0 " + ": " + " 0.000" + ": " + " 0.0";
             }
 
-            if (ct.isDrawingRefLine)
-            {
-                int cnt = ct.drawList.Count;
-                if (cnt > 0)
-                {
-                    slopeDraw = (((screen2FieldPt.northing - ct.drawList[cnt - 1].northing)
-                   / (screen2FieldPt.easting - ct.drawList[cnt - 1].easting)));
-                    lblDrawSlope.Text = (slopeDraw*100).ToString("N4");
-
-                    CalculateCutFillWhileMouseMove();
-                }
-            }
+            
         }
 
         private void openGLControlBack_MouseClick(object sender, MouseEventArgs e)
         {
             Point fixPt = new Point();
             vec2 plotPt = new vec2();
-            if (ct.isDrawingRefLine)
-            {
-                //OpenGL has line 0 at bottom, Windows at top, so convert
-                Point pt = openGLControlBack.PointToClient(Cursor.Position);
-
-                ////Convert to Origin in the center of window, 700 pixels
-                fixPt.X = pt.X;
-                fixPt.Y = ((openGLControlBack.Height - pt.Y) - openGLControlBack.Height / 2);
-
-                //convert screen coordinates to field coordinates
-                plotPt.easting = (int)(((double)fixPt.X) * (double)cameraDistanceZ / openGLControlBack.Width);
-                plotPt.northing = ((double)fixPt.Y) * (double)cameraDistanceZ / (openGLControlBack.Height * altitudeWindowGain);
-                plotPt.northing += centerY;
-
-                //make sure not going backwards
-                int cnt = ct.drawList.Count;
-                if (cnt > 0)
-                {
-                    if (ct.drawList[cnt - 1].easting < plotPt.easting)
-                        ct.drawList.Add(plotPt);
-                    else TimedMessageBox(1500, "Point Invalid", "Ahead of Last Point Only");
-                }
-                //is first point
-                else
-                {
-                    ct.drawList.Add(plotPt);
-                }
-            }
+            
         }
 
         #region 3D mapping
@@ -721,8 +660,17 @@ namespace OpenGrade
 
                    
                         int closestPointMap = 0;
+                        int closestPointMapSE = 0;
+                        int closestPointMapSW = 0;
+                        int closestPointMapNE = 0;
+                        int closestPointMapNW = 0;
+
                         int ptCount = ct.ptList.Count - 1;
                         minDistMap = 100000000;
+                        minDistSE = 100000000;
+                        minDistSW = 100000000;
+                        minDistNE = 100000000;
+                        minDistNW = 100000000;
 
                         //find the closest point to current fix
                         for (int t = 0; t < ptCount; t++)
@@ -732,17 +680,100 @@ namespace OpenGrade
                             if (distMap < minDistMap)
                             {
                                 minDistMap = distMap;
-                                closestPointMap = t;
+                                closestPointMap = t;       
                             }
+
+                            //Search closest point South West
+                            if (h >= ct.ptList[t].easting && i >= ct.ptList[t].northing)
+                            {
+                                double distMapSW = ((h - ct.ptList[t].easting) * (h - ct.ptList[t].easting))
+                                            + ((i - ct.ptList[t].northing) * (i - ct.ptList[t].northing));
+                                if (distMapSW < minDistSW)
+                                {
+                                    minDistSW = distMapSW;
+                                    closestPointMapSW = t;
+                                }
+                            }
+
+                            //Search closest point South East
+                            if (h <= ct.ptList[t].easting && i >= ct.ptList[t].northing)
+                            {
+                                double distMapSE = ((h - ct.ptList[t].easting) * (h - ct.ptList[t].easting))
+                                            + ((i - ct.ptList[t].northing) * (i - ct.ptList[t].northing));
+                                if (distMapSE < minDistSE)
+                                {
+                                    minDistSE = distMapSE;
+                                    closestPointMapSE = t;
+                                }
+                            }
+
+                            //Search closest point North West
+                            if (h >= ct.ptList[t].easting && i <= ct.ptList[t].northing)
+                            {
+                                double distMapNW = ((h - ct.ptList[t].easting) * (h - ct.ptList[t].easting))
+                                            + ((i - ct.ptList[t].northing) * (i - ct.ptList[t].northing));
+                                if (distMapNW < minDistNW)
+                                {
+                                    minDistNW = distMapNW;
+                                    closestPointMapNW = t;
+                                }
+                            }
+
+                            //Search closest point North East
+                            if (h <= ct.ptList[t].easting && i <= ct.ptList[t].northing)
+                            {
+                                double distMapNE = ((h - ct.ptList[t].easting) * (h - ct.ptList[t].easting))
+                                            + ((i - ct.ptList[t].northing) * (i - ct.ptList[t].northing));
+                                if (distMapNE < minDistNE)
+                                {
+                                    minDistNE = distMapNE;
+                                    closestPointMapNE = t;
+                                }
+                            }
+
+
                         }
+
+
+
+
+
 
                         if (minDistMap < minDistMapDist)
                         {
                             double cutFillMap;
-                            if (ct.ptList[closestPointMap].cutAltitude == -1) cutFillMap = 9999;
-                            else cutFillMap = ct.ptList[closestPointMap].cutAltitude - ct.ptList[closestPointMap].altitude;
+                            double avgAltitude;
+                            double avgCutAltitude;
+                            double sumofCloseDist = 1 / Math.Sqrt(minDistSE) + 1 / Math.Sqrt(minDistSW) + 1 / Math.Sqrt(minDistNW) + 1 / Math.Sqrt(minDistNE);
 
-                            mapListPt point = new mapListPt(h, i, drawPtWidth, ct.ptList[closestPointMap].altitude, ct.ptList[closestPointMap].cutAltitude,
+                            if (minDistMap <= drawPtWidth | minDistSE == 100000000 | minDistSW == 100000000 | minDistNE == 100000000 | minDistNW == 100000000)
+                            {
+                                avgAltitude = ct.ptList[closestPointMap].altitude;
+                                avgCutAltitude = ct.ptList[closestPointMap].cutAltitude;
+                            }
+                            else
+                            {                         
+                                avgAltitude = ((ct.ptList[closestPointMapNE].altitude / Math.Sqrt(minDistNE)) + (ct.ptList[closestPointMapNW].altitude / Math.Sqrt(minDistNW)) +
+                                (ct.ptList[closestPointMapSE].altitude / Math.Sqrt(minDistSE)) + (ct.ptList[closestPointMapSW].altitude / Math.Sqrt(minDistSW))) / sumofCloseDist;
+
+                                if (ct.ptList[closestPointMapNE].cutAltitude == -1 | ct.ptList[closestPointMapNW].cutAltitude == -1 | ct.ptList[closestPointMapSE].cutAltitude == -1 | ct.ptList[closestPointMapSW].cutAltitude == -1)
+                                {
+                                    avgCutAltitude = ct.ptList[closestPointMap].cutAltitude;
+                                }
+                                else
+                                {
+                                    avgCutAltitude = ((ct.ptList[closestPointMapNE].cutAltitude / Math.Sqrt(minDistNE)) + (ct.ptList[closestPointMapNW].cutAltitude / Math.Sqrt(minDistNW)) +
+                                (ct.ptList[closestPointMapSE].cutAltitude / Math.Sqrt(minDistSE)) + (ct.ptList[closestPointMapSW].cutAltitude / Math.Sqrt(minDistSW))) / sumofCloseDist;
+
+                                }
+
+                                    
+                            }
+
+                            if (avgCutAltitude == -1) cutFillMap = 9999;
+                            else cutFillMap = avgCutAltitude - avgAltitude;
+
+                            mapListPt point = new mapListPt(h, i, drawPtWidth, avgAltitude, avgCutAltitude,
                                 cutFillMap,ct.ptList[closestPointMap].lastPassAltitude);
                             ct.mapList.Add(point);
                         }
@@ -763,14 +794,14 @@ namespace OpenGrade
             maxFieldX = -9999999; maxFieldY = -9999999;
 
             //every time the section turns off and on is a new patch
-            int cnt = ct.ptList.Count;
+            int cnt = ct.mapList.Count;
 
             if (cnt > 0)
             {
                 for (int i = 0; i < cnt; i++)
                 {
                     double x = i;
-                    double y = ct.ptList[i].altitude;
+                    double y = ct.mapList[i].altitudeMap;
 
                     //also tally the max/min of Cut x and z
                     if (minFieldX > x) minFieldX = x;
@@ -804,78 +835,11 @@ namespace OpenGrade
             }
         }
 
-        public List<vec2> tList = new List<vec2>();
+        
         double slopeDraw = 0.0;
 
-        //calculate cut fill slope while moving mouse
-        private void CalculateCutFillWhileMouseMove()
-        {
-            vec2 temp = new vec2();
-            int i = 0;
-            double cut = 0; double fill = 0, delta, slope;
-
-            //empty the temp drawList
-            tList.Clear();
-
-            //make a line including current cursor position
-            int drawPts = ct.drawList.Count;
-            for (i = 0; i < drawPts; i++)
-            {
-                temp.easting = ct.drawList[i].easting;
-                temp.northing = ct.drawList[i].northing;
-                tList.Add(temp);
-            }
-            //add current screen point
-            tList.Add(screen2FieldPt);
-
-            drawPts = tList.Count-1;
-            int ptCnt = ct.ptList.Count;
-
-            if (drawPts > 0)
-            {
-                for (i = 0; i < ptCnt; i++)
-                {
-                    //points before the drawn line
-                    if (i < tList[0].easting) continue;
-
-                    //points after drawn line
-                    if (i > tList[drawPts].easting)continue;
-
-                    //find out where its between
-                    for (int j = 0; j < drawPts; j++)
-                    {
-                        if (i >= tList[j].easting && i <= tList[j + 1].easting)
-                        {
-                            slope = (tList[j + 1].northing - tList[j].northing) / (tList[j + 1].easting - tList[j].easting);
-                            delta = ((i - tList[j].easting) * slope) + tList[j].northing - ct.ptList[i].altitude;
-                            delta *= (ct.ptList[i].distance * vehicle.toolWidth);
-
-                            if (delta > 0)
-                            {
-                                fill += delta;
-                                delta = 0;
-                            }
-                            else
-                            {
-                                delta *= -1;
-                                cut += delta;
-                                delta = 0;
-                            }
-                            break;
-                        }
-                    }
-                }
-
-                //clean out the list
-                tList.Clear();
-
-                lblCut.Text = cut.ToString("N2");
-                lblFill.Text = fill.ToString("N2");
-
-                delta = (cut - fill);
-                lblCutFillRatio.Text = delta.ToString("N2") ;
-            }
-        }
+       
+        
 
         private void CalculateContourPointDistances()
         {

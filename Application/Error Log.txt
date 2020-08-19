@@ -7853,3 +7853,551 @@ Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
    at System.IO.Ports.SerialPort.Open()
    at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/9/2020 9:44:43 PM
 
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/10/2020 7:09:50 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/10/2020 7:21:33 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/12/2020 10:05:15 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/12/2020 10:12:49 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/12/2020 11:02:56 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/12/2020 11:09:08 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/14/2020 10:38:01 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/14/2020 11:00:10 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/14/2020 11:11:44 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/14/2020 11:17:52 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/14/2020 11:19:20 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/14/2020 11:34:36 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/17/2020 3:16:56 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/17/2020 3:43:27 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/17/2020 3:53:07 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/17/2020 4:56:24 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/17/2020 4:59:53 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/17/2020 5:05:59 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/17/2020 5:08:12 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/17/2020 5:22:47 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/17/2020 6:07:34 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/17/2020 6:22:00 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/17/2020 6:29:48 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/17/2020 6:52:40 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/17/2020 7:02:52 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/17/2020 7:08:01 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/17/2020 7:14:32 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/17/2020 8:19:58 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/17/2020 9:05:38 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/17/2020 9:29:56 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/17/2020 9:37:11 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/17/2020 9:40:23 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/17/2020 9:47:12 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/17/2020 10:00:40 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/17/2020 10:03:57 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/17/2020 11:23:15 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/17/2020 11:32:14 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 8:44:15 AM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 8:50:54 AM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 8:55:41 AM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 8:56:33 AM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 8:58:34 AM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 9:01:17 AM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 9:08:25 AM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 4:49:47 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 5:04:38 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 5:10:27 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 5:43:13 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 5:49:43 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 5:53:28 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 6:06:13 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 6:08:08 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 7:20:17 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 7:21:24 PM
+
+Loading Design fileSystem.FormatException: Input string was not in a correct format.
+   at System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   at System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+   at System.Int32.Parse(String s)
+   at OpenGrade.FormGPS.FileOpenAgdDesign() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SaveOpen.Designer.cs:line 819 - 8/18/2020 7:21:50 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 7:29:04 PM
+
+Loading Design fileSystem.FormatException: Input string was not in a correct format.
+   at System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   at System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+   at System.Int32.Parse(String s)
+   at OpenGrade.FormGPS.FileOpenAgdDesign() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SaveOpen.Designer.cs:line 819 - 8/18/2020 7:29:17 PM
+
+Loading Design fileSystem.FormatException: Input string was not in a correct format.
+   at System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   at System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+   at System.Int32.Parse(String s)
+   at OpenGrade.FormGPS.FileOpenAgdDesign() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SaveOpen.Designer.cs:line 819 - 8/18/2020 7:30:07 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 8:47:03 PM
+
+Loading Design fileSystem.FormatException: Input string was not in a correct format.
+   at System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   at System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+   at System.Int32.Parse(String s)
+   at OpenGrade.FormGPS.FileOpenAgdDesign() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SaveOpen.Designer.cs:line 819 - 8/18/2020 8:47:24 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 8:53:36 PM
+
+Loading Design fileSystem.FormatException: Input string was not in a correct format.
+   at System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   at System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+   at System.Int32.Parse(String s)
+   at OpenGrade.FormGPS.FileOpenAgdDesign() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SaveOpen.Designer.cs:line 819 - 8/18/2020 8:53:47 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 8:55:08 PM
+
+Loading Design fileSystem.FormatException: Input string was not in a correct format.
+   at System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   at System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+   at System.Int32.Parse(String s)
+   at OpenGrade.FormGPS.FileOpenAgdDesign() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SaveOpen.Designer.cs:line 819 - 8/18/2020 8:55:20 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 8:58:55 PM
+
+Loading Design fileSystem.FormatException: Input string was not in a correct format.
+   at System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   at System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+   at System.Int32.Parse(String s)
+   at OpenGrade.FormGPS.FileOpenAgdDesign() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SaveOpen.Designer.cs:line 819 - 8/18/2020 8:59:05 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 9:07:04 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 9:21:35 PM
+
+Loading Design fileSystem.FormatException: Input string was not in a correct format.
+   at System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   at System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+   at System.Int32.Parse(String s)
+   at OpenGrade.FormGPS.FileOpenAgdDesign() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SaveOpen.Designer.cs:line 819 - 8/18/2020 9:21:59 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 9:28:21 PM
+
+Loading Design fileSystem.FormatException: Input string was not in a correct format.
+   at System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   at System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+   at System.Int32.Parse(String s)
+   at OpenGrade.FormGPS.FileOpenAgdDesign() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SaveOpen.Designer.cs:line 819 - 8/18/2020 9:28:37 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 9:51:41 PM
+
+Loading Design fileSystem.FormatException: Input string was not in a correct format.
+   at System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   at System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+   at System.Int32.Parse(String s)
+   at OpenGrade.FormGPS.FileOpenAgdDesign() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SaveOpen.Designer.cs:line 819 - 8/18/2020 9:52:00 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 10:10:38 PM
+
+Loading Design fileSystem.FormatException: Input string was not in a correct format.
+   at System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   at System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+   at System.Int32.Parse(String s)
+   at OpenGrade.FormGPS.FileOpenAgdDesign() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SaveOpen.Designer.cs:line 819 - 8/18/2020 10:12:00 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 10:26:18 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 10:26:56 PM
+
+Loading Design fileSystem.FormatException: Input string was not in a correct format.
+   at System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   at System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+   at System.Int32.Parse(String s)
+   at OpenGrade.FormGPS.FileOpenAgdDesign() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SaveOpen.Designer.cs:line 819 - 8/18/2020 10:27:11 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 10:29:30 PM
+
+Loading Design fileSystem.FormatException: Input string was not in a correct format.
+   at System.Number.ParseDouble(String value, NumberStyles options, NumberFormatInfo numfmt)
+   at System.Double.Parse(String s, IFormatProvider provider)
+   at OpenGrade.FormGPS.FileOpenAgdDesign() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SaveOpen.Designer.cs:line 830 - 8/18/2020 10:29:44 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 10:30:33 PM
+
+Loading Design fileSystem.FormatException: Input string was not in a correct format.
+   at System.Number.ParseDouble(String value, NumberStyles options, NumberFormatInfo numfmt)
+   at System.Double.Parse(String s, IFormatProvider provider)
+   at OpenGrade.FormGPS.FileOpenAgdDesign() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SaveOpen.Designer.cs:line 830 - 8/18/2020 10:30:42 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 10:34:07 PM
+
+Loading Design fileSystem.FormatException: Input string was not in a correct format.
+   at System.Number.ParseDouble(String value, NumberStyles options, NumberFormatInfo numfmt)
+   at System.Double.Parse(String s, IFormatProvider provider)
+   at OpenGrade.FormGPS.FileOpenAgdDesign() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SaveOpen.Designer.cs:line 830 - 8/18/2020 10:34:17 PM
+
+Loading Design fileSystem.FormatException: Input string was not in a correct format.
+   at System.Number.StringToNumber(String str, NumberStyles options, NumberBuffer& number, NumberFormatInfo info, Boolean parseDecimal)
+   at System.Number.ParseInt32(String s, NumberStyles style, NumberFormatInfo info)
+   at System.Int32.Parse(String s)
+   at OpenGrade.FormGPS.FileOpenAgdDesign() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SaveOpen.Designer.cs:line 819 - 8/18/2020 10:37:41 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 11:04:05 PM
+
+Loading Design fileSystem.IndexOutOfRangeException: Index was outside the bounds of the array.
+   at OpenGrade.FormGPS.FileOpenAgdDesign() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SaveOpen.Designer.cs:line 830 - 8/18/2020 11:04:15 PM
+
+Loading Design fileSystem.FormatException: Input string was not in a correct format.
+   at System.Number.ParseDouble(String value, NumberStyles options, NumberFormatInfo numfmt)
+   at System.Double.Parse(String s, IFormatProvider provider)
+   at OpenGrade.FormGPS.FileOpenAgdDesign() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SaveOpen.Designer.cs:line 830 - 8/18/2020 11:07:19 PM
+
+Loading Design fileSystem.FormatException: Input string was not in a correct format.
+   at System.Number.ParseDouble(String value, NumberStyles options, NumberFormatInfo numfmt)
+   at System.Double.Parse(String s, IFormatProvider provider)
+   at OpenGrade.FormGPS.FileOpenAgdDesign() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SaveOpen.Designer.cs:line 830 - 8/18/2020 11:07:51 PM
+
+Loading Design fileSystem.FormatException: Input string was not in a correct format.
+   at System.Number.ParseDouble(String value, NumberStyles options, NumberFormatInfo numfmt)
+   at System.Double.Parse(String s, IFormatProvider provider)
+   at OpenGrade.FormGPS.FileOpenAgdDesign() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SaveOpen.Designer.cs:line 830 - 8/18/2020 11:08:40 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 11:09:21 PM
+
+Loading Design fileSystem.FormatException: Input string was not in a correct format.
+   at System.Number.ParseDouble(String value, NumberStyles options, NumberFormatInfo numfmt)
+   at System.Double.Parse(String s, IFormatProvider provider)
+   at OpenGrade.FormGPS.FileOpenAgdDesign() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SaveOpen.Designer.cs:line 830 - 8/18/2020 11:09:52 PM
+
+Open GPS Port System.IO.IOException: The port 'COM GPS...' does not exist.
+   at System.IO.Ports.InternalResources.WinIOError(Int32 errorCode, String str)
+   at System.IO.Ports.SerialStream..ctor(String portName, Int32 baudRate, Parity parity, Int32 dataBits, StopBits stopBits, Int32 readTimeout, Int32 writeTimeout, Handshake handshake, Boolean dtrEnable, Boolean rtsEnable, Boolean discardNull, Byte parityReplace)
+   at System.IO.Ports.SerialPort.Open()
+   at OpenGrade.FormGPS.SerialPortOpenGPS() in C:\Users\Imhof\Documents\GitHub\OpenGrade3D\SourceCode\GPS\Forms\SerialComm.Designer.cs:line 368 - 8/18/2020 11:28:12 PM
+
