@@ -804,7 +804,9 @@ namespace OpenGrade
                 {
                     double lat = designList[t].latitude;
                     double lon = designList[t].longitude;
-                    mf.pn.ConvertAgd2Utm(lat, lon);
+                    mf.pn.ConvertAgd2Utm(lat * 0.01745329251994329576923690766743, lon * 0.01745329251994329576923690766743);
+
+                    
 
                     CContourPt point = new CContourPt(mf.pn.eastingAgd,
                                     0,
