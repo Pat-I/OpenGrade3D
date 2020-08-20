@@ -792,6 +792,39 @@ namespace OpenGrade
             }
         }
 
+        //add the utm to the agd data and save to the ptList , by Pat
+        public void designList2ptList()
+        {
+            if (ptList != null) ptList.Clear();
+
+            if (designList != null)
+            {
+                int ptCount = designList.Count;
+                for (int t = 0; t < ptCount; t++)
+                {
+                    double lat = designList[t].latitude;
+                    double lon = designList[t].longitude;
+                    mf.pn.ConvertAgd2Utm(lat, lon);
+
+                    CContourPt point = new CContourPt(mf.pn.eastingAgd,
+                                    0,
+                                    mf.pn.northingAgd,
+                                    designList[t].altitude,
+                                    designList[t].latitude,
+                                    designList[t].longitude,
+                                    designList[t].cutAltitude,
+                                    -1,
+                                    -1);
+
+                    ptList.Add(point);
+
+                }
+                mf.FileSaveContour();
+                mapList.Clear();
+                mf.CalculateMinMaxEastNort();
+            }
+        }
+
         //Reset the contour to zip
         public void ResetContour()
         {

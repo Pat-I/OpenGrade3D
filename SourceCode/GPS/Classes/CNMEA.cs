@@ -65,7 +65,7 @@ namespace OpenGrade
         private string nextNMEASentence = "";
 
         //UTM coordinates
-        public double northing, easting;
+        public double northing, easting, northingAgd, eastingAgd;
         public double actualEasting, actualNorthing;
         public double zone;
 
@@ -369,5 +369,25 @@ namespace OpenGrade
             easting = xy[0] - utmEast;
             northing = xy[1] - utmNorth;
         }
+
+        // to convert agd lat long to utm by Pat
+        public void ConvertAgd2Utm(double lat, double lon)
+        {
+            double[] xy = MapLatLonToXY(lat, lon, (-183.0 + (zone * 6.0)) * 0.01745329251994329576923690766743);
+
+            xy[0] = (xy[0] * UTMScaleFactor) + 500000.0;
+            xy[1] *= UTMScaleFactor;
+            if (xy[1] < 0.0)
+                xy[1] += 10000000.0;
+
+            //keep a copy of actual easting and northings
+            //actualEasting = xy[0];
+            //actualNorthing = xy[1];
+
+            //if a field is open, the real one is subtracted from the integer
+            eastingAgd = xy[0] - utmEast;
+            northingAgd = xy[1] - utmNorth;
+        }
+
     }
 }

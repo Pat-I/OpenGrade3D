@@ -885,7 +885,9 @@ namespace OpenGrade
                 }
             }      //cancelled out of open file
 
+            
             FileSaveDesignList(); // for testing
+            ct.designList2ptList();
         }//end of open file
 
         #endregion

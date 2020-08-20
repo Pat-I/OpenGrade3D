@@ -615,7 +615,7 @@ namespace OpenGrade
         public double eastingMin, eastingMax, northingMin, northingMax;
         
         // determine ptList min and max easting and northing -by Pat
-        private void CalculateMinMaxEastNort()
+        public void CalculateMinMaxEastNort()
         {
             eastingMin = 9999999;
             eastingMax = -9999999;
