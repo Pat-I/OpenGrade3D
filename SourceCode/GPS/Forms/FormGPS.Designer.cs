@@ -1793,8 +1793,9 @@
             this.btnAutoSteer.Name = "btnAutoSteer";
             this.btnAutoSteer.Size = new System.Drawing.Size(90, 90);
             this.btnAutoSteer.TabIndex = 128;
-            this.btnAutoSteer.Text = "x";
-            this.btnAutoSteer.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.btnAutoSteer.Text = "import agd file";
+            this.btnAutoSteer.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnAutoSteer.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
             this.btnAutoSteer.UseVisualStyleBackColor = false;
             this.btnAutoSteer.Click += new System.EventHandler(this.btnAutoSteer_Click);
             // 

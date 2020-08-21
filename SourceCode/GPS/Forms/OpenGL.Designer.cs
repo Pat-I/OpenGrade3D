@@ -217,8 +217,8 @@ namespace OpenGrade
                         //if (guidanceLineHeadingDelta < 0) lblDelta.ForeColor = Color.Red;
                         //else lblDelta.ForeColor = Color.Green;
 
-                        if (guidanceLineDistanceOff == 32020 | guidanceLineDistanceOff == 32000) btnAutoSteer.Text = "-";
-                        else btnAutoSteer.Text = "Y";
+                        //if (guidanceLineDistanceOff == 32020 | guidanceLineDistanceOff == 32000) btnAutoSteer.Text = "-";
+                        //else btnAutoSteer.Text = "Y";
                     }
 
                     else
@@ -250,8 +250,8 @@ namespace OpenGrade
 
                             //if (guidanceLineHeadingDelta < 0) lblDelta.ForeColor = Color.Red;
                             //else lblDelta.ForeColor = Color.Green;
-                            if (guidanceLineDistanceOff == 32020 | guidanceLineDistanceOff == 32000) btnAutoSteer.Text = "-";
-                            else btnAutoSteer.Text = "Y";
+                            //if (guidanceLineDistanceOff == 32020 | guidanceLineDistanceOff == 32000) btnAutoSteer.Text = "-";
+                            //else btnAutoSteer.Text = "Y";
                         }
                     }
 
@@ -259,13 +259,13 @@ namespace OpenGrade
                     if (!ABLine.isABLineSet & !ABLine.isABLineBeingSet & !ct.isContourBtnOn)
                     {
                         txtDistanceOffABLine.Visible = false;
-                        btnAutoSteer.Text = "-";
+                        //btnAutoSteer.Text = "-";
                     }
                 }
                 else
                 {
                     txtDistanceOffABLine.Visible = false;
-                    btnAutoSteer.Text = "-";
+                    //btnAutoSteer.Text = "-";
                 }
 
                 gl.Flush();//finish openGL commands

@@ -502,14 +502,37 @@ namespace OpenGrade
 
                 if (recBoundary)
                 {
+                    double halfToolWidth = (Properties.Vehicle.Default.setVehicle_toolWidth) / 2;
+                               
                     if (isBtnStartPause)
                     {
-                        double surveyDistance = ((nearestSurveyEasting - mf.pn.easting) * (nearestSurveyEasting - mf.pn.easting) +
-                        (nearestSurveyNorthing - mf.pn.northing) * (nearestSurveyNorthing - mf.pn.northing));
+                        // translate the survey pt to the side of the tool
+                        
+                        double sideEasting;
+                        double sideNorthing;
+
+                        if (isBoundarySideRight)
+                        {
+                            sideEasting = mf.pn.easting + Math.Sin(mf.fixHeading - glm.PIBy2) * -halfToolWidth;
+                            sideNorthing = mf.pn.northing + Math.Cos(mf.fixHeading - glm.PIBy2) * -halfToolWidth;
+                        }
+                        else
+                        {
+                            sideEasting = mf.pn.easting + Math.Sin(mf.fixHeading - glm.PIBy2) * halfToolWidth;
+                            sideNorthing = mf.pn.northing + Math.Cos(mf.fixHeading - glm.PIBy2) * halfToolWidth;
+                        }                       
+
+                        double surveyDistance = ((nearestSurveyEasting - sideEasting) * (nearestSurveyEasting - sideEasting) +
+                        (nearestSurveyNorthing - sideNorthing) * (nearestSurveyNorthing - sideNorthing));
 
                         if (surveyDistance > 9)
+
+
+                            // have to add something to correct the lat/long that still is at the antenna position
+
+
                         {
-                            SurveyPt point = new SurveyPt(mf.pn.easting, mf.pn.northing, mf.pn.latitude, mf.pn.longitude, mf.pn.altitude, 2);
+                            SurveyPt point = new SurveyPt(sideEasting, sideNorthing, mf.pn.latitude, mf.pn.longitude, mf.pn.altitude, 2);
                             surveyList.Add(point);
 
                             nearestSurveyEasting = mf.pn.easting;
@@ -596,7 +619,7 @@ namespace OpenGrade
                 //Draw a contour line
 
                
-                int ptCount2 = surveyList.Count;
+                
                 gl.LineWidth(2);
                 gl.Color(0.98f, 0.2f, 0.0f);
                 gl.Begin(OpenGL.GL_LINE_STRIP);
@@ -612,7 +635,7 @@ namespace OpenGrade
             }
             else
             {
-
+                //now paint the map, by Pat
 
                 int ptCount = mapList.Count;
 
@@ -638,21 +661,13 @@ namespace OpenGrade
                 if (maxFill == 9999) maxFill = 0;
 
                 midAltitude = ((maxAltitude + minAltitude) / 2);
-
-
-
-
-                //dot test by Pat
-                
-
+                            
                     if (ptCount > 0)
                     {
-
-
                         for (int h = 0; h < ptCount; h++)
                         {
 
-                        // red, green, blue
+                        // paint the cut fill value
                             if (isContourBtnOn)
                             {
                                 if (mapList[h].cutDeltaMap != 9999)
@@ -666,12 +681,11 @@ namespace OpenGrade
                                     if (mapList[h].cutDeltaMap > 0)
                                     gl.Color(0.75f, .75 * (1 - (mapList[h].cutDeltaMap / maxCut)), .75 * (1 - (mapList[h].cutDeltaMap / maxCut)));
 
-
-
                                 }
                                 else gl.Color(0.0f, 0.0f, 0.0f);
                             }
                             else
+                            // paint the desired altutude
                             {
                                 if (mapList[h].cutAltitudeMap != -1)
                                 {
@@ -698,18 +712,8 @@ namespace OpenGrade
                             gl.Vertex(mapList[h].eastingMap + (mapList[h].drawPtWidthMap / 2), mapList[h].northingMap + (mapList[h].drawPtWidthMap / 2), 0);
                             gl.Vertex(mapList[h].eastingMap + (mapList[h].drawPtWidthMap / 2), mapList[h].northingMap - (mapList[h].drawPtWidthMap / 2), 0);
                             gl.End();
-
-
-
-
-
-
                         }
-
-
-                    }
-                
-
+                    }               
             }
             //else
             //{
@@ -791,7 +795,7 @@ namespace OpenGrade
                 }
             }
         }
-
+        #region Convert design pt to ptList
         //add the utm to the agd data and save to the ptList , by Pat
         public void designList2ptList()
         {
@@ -826,6 +830,7 @@ namespace OpenGrade
                 mf.CalculateMinMaxEastNort();
             }
         }
+        #endregion
 
         //Reset the contour to zip
         public void ResetContour()

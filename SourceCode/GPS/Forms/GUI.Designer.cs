@@ -148,13 +148,13 @@ namespace OpenGrade
             {
                 if (ABLine.isABLineSet | ct.isContourBtnOn)
                 {
-                    isAutoSteerBtnOn = true;
+                    //isAutoSteerBtnOn = true;
                     btnAutoSteer.Image = Properties.Resources.AutoSteerOn;
                 }
                 else
                 {
-                    var form = new FormTimedMessage(2000, (gStr.gsNoGuidanceLines), (gStr.gsTurnOnContourOrABLine));
-                    form.Show();
+                    //var form = new FormTimedMessage(2000, (gStr.gsNoGuidanceLines), (gStr.gsTurnOnContourOrABLine));
+                    //form.Show();
                 }
             }
         }
