@@ -520,19 +520,22 @@ namespace OpenGrade
                         {
                             sideEasting = mf.pn.easting + Math.Sin(mf.fixHeading - glm.PIBy2) * halfToolWidth;
                             sideNorthing = mf.pn.northing + Math.Cos(mf.fixHeading - glm.PIBy2) * halfToolWidth;
-                        }                       
+                        }
 
+                        //check dist from last point 
+                    
                         double surveyDistance = ((nearestSurveyEasting - sideEasting) * (nearestSurveyEasting - sideEasting) +
                         (nearestSurveyNorthing - sideNorthing) * (nearestSurveyNorthing - sideNorthing));
 
                         if (surveyDistance > 9)
-
-
-                            // have to add something to correct the lat/long that still is at the antenna position
-
-
                         {
-                            SurveyPt point = new SurveyPt(sideEasting, sideNorthing, mf.pn.latitude, mf.pn.longitude, mf.pn.altitude, 2);
+                            // convert the utm from the side of the blade to lat long
+                            double actualEasting = sideEasting + mf.pn.utmEast;
+                            double actualNorthing = sideNorthing + mf.pn.utmNorth;
+
+                            mf.UTMToLatLon(actualEasting, actualNorthing);
+
+                            SurveyPt point = new SurveyPt(sideEasting, sideNorthing, mf.utmLat, mf.utmLon, mf.pn.altitude, 2);
                             surveyList.Add(point);
 
                             nearestSurveyEasting = mf.pn.easting;
@@ -661,6 +664,10 @@ namespace OpenGrade
                 if (maxFill == 9999) maxFill = 0;
 
                 midAltitude = ((maxAltitude + minAltitude) / 2);
+
+                // to not mess up with colors when min and max altutudes are to close
+                if ((maxAltitude - midAltitude) < 0.05) maxAltitude = midAltitude + 0.05;
+                if ((midAltitude - minAltitude) < 0.05) minAltitude = midAltitude - 0.05;
                             
                     if (ptCount > 0)
                     {
