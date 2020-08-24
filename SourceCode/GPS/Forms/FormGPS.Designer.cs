@@ -775,7 +775,7 @@
             this.stripSelectMode.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.stripSelectMode.Margin = new System.Windows.Forms.Padding(0);
             this.stripSelectMode.Name = "stripSelectMode";
-            this.stripSelectMode.Size = new System.Drawing.Size(436, 41);
+            this.stripSelectMode.Size = new System.Drawing.Size(405, 41);
             this.stripSelectMode.Spring = true;
             this.stripSelectMode.Text = "Grade Mode";
             this.stripSelectMode.Click += new System.EventHandler(this.stripSelectMode_Click);

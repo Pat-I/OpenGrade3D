@@ -399,13 +399,19 @@ namespace OpenGrade
 
             gl.LoadIdentity();                  // Reset The View
 
+            // Fill the eleViewList
+            
+
+
             //if adding new points recalc mins maxes
-            if (manualBtnState == btnStates.Rec) CalculateMinMaxZoom();
+            //if (manualBtnState == btnStates.Rec) CalculateMinMaxZoom();
 
             //autogain the window
             if ((maxFieldY - minFieldY) != 0)
                 altitudeWindowGain = (Math.Abs(cameraDistanceZ / (maxFieldY - minFieldY))) * 0.80;
-            else altitudeWindowGain = 10;
+            else altitudeWindowGain = 900;
+
+            if (altitudeWindowGain > 900) altitudeWindowGain = 900;
 
             //translate to that spot in the world 
             gl.Translate(0, 0, -cameraDistanceZ);
@@ -442,115 +448,234 @@ namespace OpenGrade
                     if (dist < minDist) { minDist = dist; closestPoint = t; }
                 }
 
-                //draw the ground profile
-                gl.Color(0.32f, 0.32f, 0.32f);
-                gl.Begin(OpenGL.GL_TRIANGLE_STRIP);
-                for (int i = 0; i < ptCnt; i++)
-                {
-                    gl.Vertex(i,
-                      (((ct.mapList[i].altitudeMap - centerY) * altitudeWindowGain) + centerY), 0);
-                    gl.Vertex(i, -10000, 0);
-                }
-                gl.End();
 
-                //cut line drawn in full
-                int cutPts = ct.mapList.Count;
-                if (cutPts > 0)
+                if (!ct.surveyMode && ct.eleViewList.Count > 0)
                 {
-                    gl.Color(0.974f, 0.0f, 0.12f);
-                    gl.Begin(OpenGL.GL_LINE_STRIP);
-                    for (int i = 0; i < ptCnt; i++)
+                    //fill in the latest distance and fix
+                    double fixDist = ((ct.eleViewList[101].easting - pn.easting) * (ct.eleViewList[101].easting - pn.easting) + (ct.eleViewList[101].northing - pn.northing) * (ct.eleViewList[101].northing - pn.northing));
+                    if (fixDist > 0.04)
                     {
-                        if (ct.mapList[i].cutAltitudeMap > 0)
-                            gl.Vertex(i, (((ct.mapList[i].cutAltitudeMap - centerY) * altitudeWindowGain) + centerY), 0);
+
+                        for (int i = 0; i < 101; i++)
+                        {
+
+
+                            ct.eleViewList[i].lastPassAltitude = ct.eleViewList[i + 1].lastPassAltitude;
+                            ct.eleViewList[i].easting = ct.eleViewList[i + 1].easting;
+                            ct.eleViewList[i].northing = ct.eleViewList[i + 1].northing;
+                            ct.eleViewList[i].altitude = ct.eleViewList[i + 1].altitude;
+                            ct.eleViewList[i].cutAltitude = ct.eleViewList[i + 1].cutAltitude;
+                            
+                        }
+
+                        //for (int i = 101; i < 0; i--) ct.eleViewList[i] = ct.eleViewList[i - 1];
+
+                        ct.eleViewList[101].lastPassAltitude = pn.altitude;
+                        ct.eleViewList[101].easting = pn.easting;
+                        ct.eleViewList[101].northing = pn.northing;
+
+                        if (minDist < 100)
+                        {
+                            ct.eleViewList[101].altitude = ct.mapList[closestPoint].altitudeMap;
+                            ct.eleViewList[101].cutAltitude = ct.mapList[closestPoint].cutAltitudeMap;
+                        }
+                        else
+                        {
+                            ct.eleViewList[101].altitude = -1;
+                            ct.eleViewList[101].cutAltitude = -1;
+                        }
+
+                        // make the look ahead view
+
+                        for (int j = 1; j < 20; j++)
+                        {
+
+                            double AheadEasting = pn.easting + Math.Cos(fixHeading + glm.PIBy2) * -4 *j;
+                            double AheadNorthing = pn.northing + Math.Sin(fixHeading - glm.PIBy2) * -4 *j;
+
+
+                            double mindist = 1000000;
+                            int ClosestLookAheadPt = 999999;
+                            int lookPtCt = ct.mapList.Count;
+
+                            if (lookPtCt > 0)
+                            {
+                                for (int m = 0; m < lookPtCt; m++)
+                                {
+                                    double distA = (AheadEasting - ct.mapList[m].eastingMap) * (AheadEasting - ct.mapList[m].eastingMap) + 
+                                        (AheadNorthing - ct.mapList[m].northingMap) * (AheadNorthing - ct.mapList[m].northingMap);
+
+                                    if (distA < mindist)
+                                    {
+                                        mindist = distA;
+                                        ClosestLookAheadPt = m;
+                                    }
+                                }
+                            }
+
+
+
+
+
+
+
+                            for (int k = 0; k < 10; k++)
+                            {
+                                ct.eleViewList[101 + j * 10 - k].easting = AheadEasting;
+                                ct.eleViewList[101 + j * 10 - k].northing = AheadNorthing;
+
+                                if (ClosestLookAheadPt != 999999 && mindist < 100)
+                                {
+                                    //ct.eleViewList[101 + j * 10 - k].lastPassAltitude = pn.altitude;
+                                    ct.eleViewList[101 + j * 10 - k].altitude = ct.mapList[ClosestLookAheadPt].altitudeMap;
+                                    ct.eleViewList[101 + j * 10 - k].cutAltitude = ct.mapList[ClosestLookAheadPt].cutAltitudeMap;
+
+
+                                }
+                                else
+                                {
+                                    //ct.eleViewList[101 + j * 10 - k].lastPassAltitude = pn.altitude;
+                                    ct.eleViewList[101 + j * 10 - k].altitude = -1;
+                                    ct.eleViewList[101 + j * 10 - k].cutAltitude = -1;
+
+                                }
+
+                            }
+                        }
+
+
+
+
+
+
+
+
+                        CalculateMinMaxZoom();
+                    }
+
+
+
+                }
+
+
+
+
+                // Change to eleViewList
+                //draw the ground profile
+
+                int elePtCount = ct.eleViewList.Count;
+                if (elePtCount > 0)
+                {
+
+
+                    gl.Color(0.32f, 0.32f, 0.32f);
+                    gl.Begin(OpenGL.GL_TRIANGLE_STRIP);
+                    for (int i = 0; i < elePtCount; i++)
+                    {
+                        gl.Vertex(i,
+                          (((ct.eleViewList[i].altitude - centerY) * altitudeWindowGain) + centerY), 0);
+                        gl.Vertex(i, -10000, 0);
                     }
                     gl.End();
-                }
 
-                //crosshairs same spot as mouse - long
-                gl.LineWidth(2);
-                gl.Enable(OpenGL.GL_LINE_STIPPLE);
-                gl.LineStipple(1, 0x0300);
+                    //cut line drawn in full
+                    //int cutPts = ct.mapList.Count;
+                    //if (cutPts > 0)
+                    //{
+                        gl.Color(0.974f, 0.0f, 0.12f);
+                        gl.Begin(OpenGL.GL_LINE_STRIP);
+                        for (int i = 0; i < elePtCount; i++)
+                        {
+                            if (ct.eleViewList[i].cutAltitude > 0)
+                                gl.Vertex(i, (((ct.eleViewList[i].cutAltitude - centerY) * altitudeWindowGain) + centerY), 0);
+                        }
+                        gl.End();
+                    //}
 
-                gl.Begin(OpenGL.GL_LINES);
-                gl.Color(0.90f, 0.90f, 0.70f);
-                gl.Vertex(screen2FieldPt.easting, 3000, 0);
-                gl.Vertex(screen2FieldPt.easting, -3000, 0);
-                gl.Vertex(-10, (((screen2FieldPt.northing - centerY) * altitudeWindowGain) + centerY), 0);
-                gl.Vertex(1000, (((screen2FieldPt.northing - centerY) * altitudeWindowGain) + centerY), 0);
-                gl.End();
-                gl.Disable(OpenGL.GL_LINE_STIPPLE);
+                    //crosshairs same spot as mouse - long
+                    gl.LineWidth(2);
+                    gl.Enable(OpenGL.GL_LINE_STIPPLE);
+                    gl.LineStipple(1, 0x0300);
 
-                //draw last pass if rec on
-                //if (cboxRecLastOnOff.Checked & ct.ptList[closestPoint].cutAltitude > 0)
+                    gl.Begin(OpenGL.GL_LINES);
+                    gl.Color(0.90f, 0.90f, 0.70f);
+                    gl.Vertex(screen2FieldPt.easting, 3000, 0);
+                    gl.Vertex(screen2FieldPt.easting, -3000, 0);
+                    gl.Vertex(-10, (((screen2FieldPt.northing - centerY) * altitudeWindowGain) + centerY), 0);
+                    gl.Vertex(1000, (((screen2FieldPt.northing - centerY) * altitudeWindowGain) + centerY), 0);
+                    gl.End();
+                    gl.Disable(OpenGL.GL_LINE_STIPPLE);
+
+                    //draw last pass if rec on
+                    //if (cboxRecLastOnOff.Checked & ct.ptList[closestPoint].cutAltitude > 0)
                     //ct.ptList[closestPoint].lastPassAltitude = pn.altitude;
 
-                //draw if on
-                if (cboxLastPass.Checked)
-                {
-                    gl.LineWidth(2);
-                    gl.Begin(OpenGL.GL_LINE_STRIP);
+                    //draw if on
+                    //if (cboxLastPass.Checked)
+                    //{
+                        gl.LineWidth(2);
+                        gl.Begin(OpenGL.GL_LINE_STRIP);
 
-                    gl.Color(0.40f, 0.970f, 0.400f);
-                    for (int i = 0; i < ptCnt; i++)
-                    {
-                        if (ct.mapList[i].cutAltitudeMap > 0 & ct.mapList[i].lastPassAltitudeMap > 0)
-                            gl.Vertex(i, (((ct.mapList[i].lastPassAltitudeMap - centerY) * altitudeWindowGain) + centerY), 0);
-                    }
-                    gl.End();
+                        gl.Color(0.40f, 0.970f, 0.400f);
+                        for (int i = 0; i < elePtCount; i++)
+                        {
+                            if (ct.eleViewList[i].lastPassAltitude > 0)
+                                gl.Vertex(i, (((ct.eleViewList[i].lastPassAltitude - centerY) * altitudeWindowGain) + centerY), 0);
+                        }
+                        gl.End();
+                    //}
+
+
                 }
-
-
-                
 
                 if (minDist < (vehicle.gradeDistFromLine * vehicle.gradeDistFromLine)) // original is 15, meter form the line scare, for 5 meter put 25
                 {
-                    //draw the actual elevation lines and blade
-                    gl.LineWidth(8);
-                    gl.Begin(OpenGL.GL_LINES);
-                    gl.Color(0.95f, 0.90f, 0.0f);
-                    gl.Vertex(closestPoint, (((pn.altitude - centerY) * altitudeWindowGain) + centerY), 0);
-                    gl.Vertex(closestPoint, 10000, 0);
-                    gl.End();
+                        //draw the actual elevation lines and blade
+                        gl.LineWidth(8);
+                        gl.Begin(OpenGL.GL_LINES);
+                        gl.Color(0.95f, 0.90f, 0.0f);
+                        gl.Vertex(101, (((pn.altitude - centerY) * altitudeWindowGain) + centerY), 0);
+                        gl.Vertex(101, 10000, 0);
+                        gl.End();
 
-                    //the skinny actual elevation lines
-                    gl.LineWidth(1);
-                    gl.Begin(OpenGL.GL_LINES);
-                    gl.Color(0.57f, 0.80f, 0.00f);
-                    gl.Vertex(-5000, (((pn.altitude - centerY) * altitudeWindowGain) + centerY), 0);
-                    gl.Vertex(5000, (((pn.altitude - centerY) * altitudeWindowGain) + centerY), 0);
-                    gl.Vertex(closestPoint, -10000, 0);
-                    gl.Vertex(closestPoint, 10000, 0);
-                    gl.End();
+                        //the skinny actual elevation lines
+                        gl.LineWidth(1);
+                        gl.Begin(OpenGL.GL_LINES);
+                        gl.Color(0.57f, 0.80f, 0.00f);
+                        gl.Vertex(-5000, (((pn.altitude - centerY) * altitudeWindowGain) + centerY), 0);
+                        gl.Vertex(5000, (((pn.altitude - centerY) * altitudeWindowGain) + centerY), 0);
+                        gl.Vertex(101, -10000, 0);
+                        gl.Vertex(101, 10000, 0);
+                        gl.End();
 
-                    //record last pass
+                        //record last pass
 
-                    ////draw last pass
-                    //if (cboxLastPass.Checked)
-                    //{
-                    //    ct.ptList[closestPoint].lastPassAltitude = pn.altitude;
-                    //    gl.LineWidth(2);
-                    //    gl.Begin(OpenGL.GL_LINE_STRIP);
+                        ////draw last pass
+                        //if (cboxLastPass.Checked)
+                        //{
+                        //    ct.ptList[closestPoint].lastPassAltitude = pn.altitude;
+                        //    gl.LineWidth(2);
+                        //    gl.Begin(OpenGL.GL_LINE_STRIP);
 
-                    //    //the dashed accent of ground profile
-                    //    gl.Color(0.40f, 0.970f, 0.400f);
-                    //    for (int i = 0; i < ptCnt; i++)
-                    //    {
-                    //        if (ct.ptList[i].lastPassAltitude > 0)
-                    //            gl.Vertex(i, (((ct.ptList[i].lastPassAltitude - centerY) * altitudeWindowGain) + centerY), 0);
-                    //    }
-                    //    gl.End();
-                    //}
+                        //    //the dashed accent of ground profile
+                        //    gl.Color(0.40f, 0.970f, 0.400f);
+                        //    for (int i = 0; i < ptCnt; i++)
+                        //    {
+                        //        if (ct.ptList[i].lastPassAltitude > 0)
+                        //            gl.Vertex(i, (((ct.ptList[i].lastPassAltitude - centerY) * altitudeWindowGain) + centerY), 0);
+                        //    }
+                        //    gl.End();
+                        //}
 
-                    //little point at cutting edge of blade
-                    gl.Color(0.0f, 0.0f, 0.0f);
-                    gl.PointSize(8);
-                    gl.Begin(OpenGL.GL_POINTS);
-                    gl.Vertex(closestPoint, (((pn.altitude - centerY) * altitudeWindowGain) + centerY), 0);
-                    gl.End();
+                        //little point at cutting edge of blade
+                        gl.Color(0.0f, 0.0f, 0.0f);
+                        gl.PointSize(8);
+                        gl.Begin(OpenGL.GL_POINTS);
+                        gl.Vertex(101, (((pn.altitude - centerY) * altitudeWindowGain) + centerY), 0);
+                        gl.End();
 
 
-
+                    
 
                     //calculate blade to guideline delta
                     //double temp = (double)closestPoint / (double)count2;
@@ -790,25 +915,34 @@ namespace OpenGrade
         //determine mins maxs of contour and altitude
         private void CalculateMinMaxZoom()
         {
-            minFieldX = 9999999; minFieldY = 9999999;
-            maxFieldX = -9999999; maxFieldY = -9999999;
+            minFieldX = 0; minFieldY = 9999999;
+            maxFieldX = 300; maxFieldY = -9999999;
 
             //every time the section turns off and on is a new patch
-            int cnt = ct.mapList.Count;
+            int cnt = ct.eleViewList.Count;
 
             if (cnt > 0)
             {
                 for (int i = 0; i < cnt; i++)
                 {
-                    double x = i;
-                    double y = ct.mapList[i].altitudeMap;
+                    //double x = i;
+                    double y = ct.eleViewList[i].altitude;
 
                     //also tally the max/min of Cut x and z
-                    if (minFieldX > x) minFieldX = x;
-                    if (maxFieldX < x) maxFieldX = x;
-                    if (minFieldY > y) minFieldY = y;
+                    //if (minFieldX > x) minFieldX = x;
+                    //if (maxFieldX < x) maxFieldX = x;
+                    if (y > 0)
+                    {
+                        if (minFieldY > y) minFieldY = y;
+                    }
+                    
+                    
                     if (maxFieldY < y) maxFieldY = y;
-                }                
+                    
+                    
+                }  
+                
+                
             }
 
             if (maxFieldX == -9999999 | minFieldX == 9999999 | maxFieldY == -9999999 | minFieldY == 9999999)

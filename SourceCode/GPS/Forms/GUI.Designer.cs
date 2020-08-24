@@ -90,11 +90,13 @@ namespace OpenGrade
             {
                 openGLControl.Height = this.Height - 150;
                 openGLControlBack.Visible = false;
+                ct.isOpenGLControlBackVisible = false;
             }
             else
             {
                 openGLControl.Height = 300;
                 openGLControlBack.Visible = true;
+                ct.isOpenGLControlBackVisible = true;
             }
         }
 
@@ -311,7 +313,7 @@ namespace OpenGrade
                     manualBtnState = btnStates.Off;
                     btnManualOffOn.Image = Properties.Resources.ManualOff;
                     btnManualOffOn.Text = null;
-                    CalculateContourPointDistances();
+                    //CalculateContourPointDistances();
                     //FileSaveContour();
                     //btnDoneDraw.Enabled = false;
                     //btnDeleteLastPoint.Enabled = false;

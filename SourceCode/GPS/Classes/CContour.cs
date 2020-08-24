@@ -35,6 +35,37 @@ namespace OpenGrade
         }
     }
 
+    // Pt list for the side elevation view
+    // pt 0 to 99 for the past points, pt 100 (eleViewListCount = 101) for the prestent, pt 101 to 299 for the look ahead, 20 cm apart, by Pat
+
+    public class ViewPt
+    {
+        public double altitude { get; set; }
+        public double easting { get; set; }
+        public double northing { get; set; }
+        //public double heading { get; set; }
+        public double cutAltitude { get; set; }
+        public double lastPassAltitude { get; set; }
+        //public double distance { get; set; }
+
+        //constructor
+        public ViewPt(double _easting = 0, double _northing = 0,
+                            double _altitude = 0,
+                            double _cutAltitude = -1, double _lastPassAltitude = -1) // , double _heading = 0, double _distance = -1
+        {
+            easting = _easting;
+            northing = _northing;
+            //heading = _heading;
+            altitude = _altitude;
+            
+
+            //optional parameters
+            cutAltitude = _cutAltitude;
+            lastPassAltitude = _lastPassAltitude;
+            //distance = _distance;
+        }
+    }
+
     //Survey list by Pat
     public class SurveyPt
     {
@@ -142,6 +173,10 @@ namespace OpenGrade
         public bool recSurveyPt;
         public bool isBtnStartPause;
         public bool isBoundarySideRight;
+        public bool isOpenGLControlBackVisible = true;
+
+        //
+        public int eleViewListCount = 300;
 
         public double slope = 0.002;
         public double zeroAltitude = 0;
@@ -156,6 +191,8 @@ namespace OpenGrade
         public List<SurveyPt> surveyList = new List<SurveyPt>();
 
         public List<designPt> designList = new List<designPt>();
+
+        public List<ViewPt> eleViewList = new List<ViewPt>();
 
         //used to determine if section was off and now is on or vice versa
         public bool wasSectionOn;
@@ -720,7 +757,37 @@ namespace OpenGrade
                             gl.Vertex(mapList[h].eastingMap + (mapList[h].drawPtWidthMap / 2), mapList[h].northingMap - (mapList[h].drawPtWidthMap / 2), 0);
                             gl.End();
                         }
-                    }               
+                    }
+
+                // Paint the elevation view line
+                if (isOpenGLControlBackVisible)
+                {
+
+
+                    if (eleViewList.Count > 10)
+                    {
+
+
+
+                        gl.LineWidth(2);
+                        gl.Color(0.98f, 0.2f, 0.0f);
+                        gl.Begin(OpenGL.GL_LINE_STRIP);
+
+
+                        for (int h = 0; h < 300; h++)
+                        {
+                            if (eleViewList[h].easting != 0 && eleViewList[h].northing != 0)
+                                gl.Vertex(eleViewList[h].easting, eleViewList[h].northing, 0);
+
+                        }
+                        gl.End();
+                    }
+                }
+
+
+
+
+
             }
             //else
             //{
@@ -843,6 +910,19 @@ namespace OpenGrade
         public void ResetContour()
         {
             if (ptList != null) ptList.Clear();
+        }
+
+        //by Pat
+        public void Build_eleViewList()
+        {
+            if (eleViewList != null) eleViewList.Clear();
+
+            for (int t = 0; t < eleViewListCount; t++)
+            {
+                ViewPt point = new ViewPt(0, 0, -1, -1, -1);
+                eleViewList.Add(point);
+            }
+
         }
     }//class
 }//namespace

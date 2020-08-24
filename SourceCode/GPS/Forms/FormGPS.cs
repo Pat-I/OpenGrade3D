@@ -962,6 +962,9 @@ namespace OpenGrade
             
             cboxLaserModeOnOff.Checked = false;
 
+            // by Pat
+            ct.Build_eleViewList();
+
             //update the menu
             fieldToolStripMenuItem.Text = gStr.gsCloseField;
         }
@@ -1018,6 +1021,9 @@ namespace OpenGrade
 
             //reset all Port Module values
             mc.ResetAllModuleCommValues();
+
+            //by Pat
+            ct.eleViewList.Clear();
         }
 
         //bring up field dialog for new/open/resume
