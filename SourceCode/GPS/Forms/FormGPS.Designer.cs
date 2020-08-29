@@ -50,6 +50,7 @@
             this.saveVehicleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.fieldToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importAgdFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.resetALLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -141,12 +142,8 @@
             this.btnZeroAltitude = new System.Windows.Forms.Button();
             this.cboxLastPass = new System.Windows.Forms.CheckBox();
             this.cboxLaserModeOnOff = new System.Windows.Forms.CheckBox();
-            this.lblDrawSlope = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.lblCutFillRatio = new System.Windows.Forms.Label();
-            this.lblFill = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
-            this.lblCut = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
             this.lblAltitude = new System.Windows.Forms.Label();
             this.panelSimControls = new System.Windows.Forms.Panel();
@@ -178,6 +175,7 @@
             this.lblFixUpdateHz = new System.Windows.Forms.Label();
             this.btnStartPause = new System.Windows.Forms.Button();
             this.btnBoundarySide = new System.Windows.Forms.Button();
+            this.numBladeOffset = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControl)).BeginInit();
             this.contextMenuStripOpenGL.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControlBack)).BeginInit();
@@ -192,6 +190,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tbarSteerAngle)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbarStepDistance)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudElevation)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numBladeOffset)).BeginInit();
             this.SuspendLayout();
             // 
             // openGLControl
@@ -305,7 +304,8 @@
             this.loadVehicleToolStripMenuItem,
             this.saveVehicleToolStripMenuItem,
             this.toolStripSeparator8,
-            this.fieldToolStripMenuItem});
+            this.fieldToolStripMenuItem,
+            this.importAgdFileToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Padding = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(69, 38);
@@ -314,50 +314,57 @@
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(255, 6);
+            this.toolStripSeparator9.Size = new System.Drawing.Size(285, 6);
             // 
             // toolStripSeparator11
             // 
             this.toolStripSeparator11.Name = "toolStripSeparator11";
-            this.toolStripSeparator11.Size = new System.Drawing.Size(255, 6);
+            this.toolStripSeparator11.Size = new System.Drawing.Size(285, 6);
             // 
             // setWorkingDirectoryToolStripMenuItem
             // 
             this.setWorkingDirectoryToolStripMenuItem.Name = "setWorkingDirectoryToolStripMenuItem";
-            this.setWorkingDirectoryToolStripMenuItem.Size = new System.Drawing.Size(258, 40);
+            this.setWorkingDirectoryToolStripMenuItem.Size = new System.Drawing.Size(288, 40);
             this.setWorkingDirectoryToolStripMenuItem.Text = "Directories";
             this.setWorkingDirectoryToolStripMenuItem.Click += new System.EventHandler(this.setWorkingDirectoryToolStripMenuItem_Click);
             // 
             // toolStripSeparator10
             // 
             this.toolStripSeparator10.Name = "toolStripSeparator10";
-            this.toolStripSeparator10.Size = new System.Drawing.Size(255, 6);
+            this.toolStripSeparator10.Size = new System.Drawing.Size(285, 6);
             // 
             // loadVehicleToolStripMenuItem
             // 
             this.loadVehicleToolStripMenuItem.Name = "loadVehicleToolStripMenuItem";
-            this.loadVehicleToolStripMenuItem.Size = new System.Drawing.Size(258, 40);
+            this.loadVehicleToolStripMenuItem.Size = new System.Drawing.Size(288, 40);
             this.loadVehicleToolStripMenuItem.Text = "Load Vehicle";
             this.loadVehicleToolStripMenuItem.Click += new System.EventHandler(this.loadVehicleToolStripMenuItem_Click);
             // 
             // saveVehicleToolStripMenuItem
             // 
             this.saveVehicleToolStripMenuItem.Name = "saveVehicleToolStripMenuItem";
-            this.saveVehicleToolStripMenuItem.Size = new System.Drawing.Size(258, 40);
+            this.saveVehicleToolStripMenuItem.Size = new System.Drawing.Size(288, 40);
             this.saveVehicleToolStripMenuItem.Text = "Save Vehicle";
             this.saveVehicleToolStripMenuItem.Click += new System.EventHandler(this.saveVehicleToolStripMenuItem_Click);
             // 
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(255, 6);
+            this.toolStripSeparator8.Size = new System.Drawing.Size(285, 6);
             // 
             // fieldToolStripMenuItem
             // 
             this.fieldToolStripMenuItem.Name = "fieldToolStripMenuItem";
-            this.fieldToolStripMenuItem.Size = new System.Drawing.Size(258, 40);
+            this.fieldToolStripMenuItem.Size = new System.Drawing.Size(288, 40);
             this.fieldToolStripMenuItem.Text = "Start Field";
             this.fieldToolStripMenuItem.Click += new System.EventHandler(this.fieldToolStripMenuItem_Click);
+            // 
+            // importAgdFileToolStripMenuItem
+            // 
+            this.importAgdFileToolStripMenuItem.Name = "importAgdFileToolStripMenuItem";
+            this.importAgdFileToolStripMenuItem.Size = new System.Drawing.Size(288, 40);
+            this.importAgdFileToolStripMenuItem.Text = "Import agd file";
+            this.importAgdFileToolStripMenuItem.Click += new System.EventHandler(this.importAgsFile_click);
             // 
             // settingsToolStripMenuItem
             // 
@@ -775,7 +782,7 @@
             this.stripSelectMode.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.stripSelectMode.Margin = new System.Windows.Forms.Padding(0);
             this.stripSelectMode.Name = "stripSelectMode";
-            this.stripSelectMode.Size = new System.Drawing.Size(405, 41);
+            this.stripSelectMode.Size = new System.Drawing.Size(436, 41);
             this.stripSelectMode.Spring = true;
             this.stripSelectMode.Text = "Grade Mode";
             this.stripSelectMode.Click += new System.EventHandler(this.stripSelectMode_Click);
@@ -1366,20 +1373,6 @@
             this.cboxLaserModeOnOff.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.cboxLaserModeOnOff.UseVisualStyleBackColor = false;
             // 
-            // lblDrawSlope
-            // 
-            this.lblDrawSlope.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblDrawSlope.AutoSize = true;
-            this.lblDrawSlope.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.lblDrawSlope.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDrawSlope.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lblDrawSlope.Location = new System.Drawing.Point(1046, 610);
-            this.lblDrawSlope.Name = "lblDrawSlope";
-            this.lblDrawSlope.Size = new System.Drawing.Size(23, 29);
-            this.lblDrawSlope.TabIndex = 216;
-            this.lblDrawSlope.Text = "-";
-            this.lblDrawSlope.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // label2
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -1392,61 +1385,17 @@
             this.label2.TabIndex = 217;
             this.label2.Text = "Slope:";
             // 
-            // lblCutFillRatio
-            // 
-            this.lblCutFillRatio.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblCutFillRatio.AutoSize = true;
-            this.lblCutFillRatio.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.lblCutFillRatio.Cursor = System.Windows.Forms.Cursors.Default;
-            this.lblCutFillRatio.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCutFillRatio.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lblCutFillRatio.Location = new System.Drawing.Point(1121, 610);
-            this.lblCutFillRatio.Name = "lblCutFillRatio";
-            this.lblCutFillRatio.Size = new System.Drawing.Size(23, 29);
-            this.lblCutFillRatio.TabIndex = 212;
-            this.lblCutFillRatio.Text = "-";
-            this.lblCutFillRatio.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblFill
-            // 
-            this.lblFill.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblFill.AutoSize = true;
-            this.lblFill.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.lblFill.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFill.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lblFill.Location = new System.Drawing.Point(1009, 581);
-            this.lblFill.Name = "lblFill";
-            this.lblFill.Size = new System.Drawing.Size(23, 29);
-            this.lblFill.TabIndex = 201;
-            this.lblFill.Text = "-";
-            this.lblFill.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // label27
             // 
             this.label27.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label27.AutoSize = true;
             this.label27.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.label27.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label27.Location = new System.Drawing.Point(969, 581);
+            this.label27.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label27.Location = new System.Drawing.Point(969, 341);
             this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(49, 29);
+            this.label27.Size = new System.Drawing.Size(147, 13);
             this.label27.TabIndex = 202;
-            this.label27.Text = "Fill:";
-            // 
-            // lblCut
-            // 
-            this.lblCut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblCut.AutoSize = true;
-            this.lblCut.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.lblCut.Cursor = System.Windows.Forms.Cursors.Default;
-            this.lblCut.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCut.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lblCut.Location = new System.Drawing.Point(1014, 552);
-            this.lblCut.Name = "lblCut";
-            this.lblCut.Size = new System.Drawing.Size(23, 29);
-            this.lblCut.TabIndex = 199;
-            this.lblCut.Text = "-";
-            this.lblCut.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label27.Text = "in cm, positive is blade higher";
             // 
             // label25
             // 
@@ -1454,11 +1403,11 @@
             this.label25.AutoSize = true;
             this.label25.BackColor = System.Drawing.SystemColors.ControlLight;
             this.label25.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label25.Location = new System.Drawing.Point(967, 552);
+            this.label25.Location = new System.Drawing.Point(967, 312);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(56, 29);
+            this.label25.Size = new System.Drawing.Size(152, 29);
             this.label25.TabIndex = 200;
-            this.label25.Text = "Cut:";
+            this.label25.Text = "Blade Offset:";
             // 
             // lblAltitude
             // 
@@ -1797,6 +1746,7 @@
             this.btnAutoSteer.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnAutoSteer.TextImageRelation = System.Windows.Forms.TextImageRelation.TextAboveImage;
             this.btnAutoSteer.UseVisualStyleBackColor = false;
+            this.btnAutoSteer.Visible = false;
             this.btnAutoSteer.Click += new System.EventHandler(this.btnAutoSteer_Click);
             // 
             // btnContour
@@ -1921,12 +1871,34 @@
             this.btnBoundarySide.Visible = false;
             this.btnBoundarySide.Click += new System.EventHandler(this.btnBoundarySide_Click);
             // 
+            // numBladeOffset
+            // 
+            this.numBladeOffset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.numBladeOffset.Font = new System.Drawing.Font("Tahoma", 30F);
+            this.numBladeOffset.Location = new System.Drawing.Point(1126, 312);
+            this.numBladeOffset.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.numBladeOffset.Minimum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            -2147483648});
+            this.numBladeOffset.Name = "numBladeOffset";
+            this.numBladeOffset.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.numBladeOffset.Size = new System.Drawing.Size(91, 56);
+            this.numBladeOffset.TabIndex = 230;
+            this.numBladeOffset.ValueChanged += new System.EventHandler(this.numBladeOffset_ValueChanged);
+            // 
             // FormGPS
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(1306, 684);
+            this.Controls.Add(this.numBladeOffset);
             this.Controls.Add(this.btnBoundarySide);
             this.Controls.Add(this.btnStartPause);
             this.Controls.Add(this.lblFixUpdateHz);
@@ -1936,11 +1908,8 @@
             this.Controls.Add(this.pbarCutBelow);
             this.Controls.Add(this.btnGoogleEarth);
             this.Controls.Add(this.btnAutoSteer);
-            this.Controls.Add(this.lblCutFillRatio);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.lblDrawSlope);
             this.Controls.Add(this.btnContour);
-            this.Controls.Add(this.lblCut);
             this.Controls.Add(this.label25);
             this.Controls.Add(this.btnZoomIn);
             this.Controls.Add(this.btnTiltDown);
@@ -1953,7 +1922,6 @@
             this.Controls.Add(this.panelSimControls);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.lblPureSteerAngle);
-            this.Controls.Add(this.lblFill);
             this.Controls.Add(this.btnManualOffOn);
             this.Controls.Add(this.label27);
             this.Controls.Add(this.lblSpeedUnits);
@@ -1990,6 +1958,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tbarSteerAngle)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbarStepDistance)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudElevation)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numBladeOffset)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2117,15 +2086,11 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
         private System.Windows.Forms.NumericUpDown nudElevation;
         private System.Windows.Forms.ToolStripStatusLabel stripTopoLocation;
-        private System.Windows.Forms.Label lblFill;
         private System.Windows.Forms.Label label27;
-        private System.Windows.Forms.Label lblCut;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.ToolStripStatusLabel stripMinMax;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label lblCutFillRatio;
-        private System.Windows.Forms.Label lblDrawSlope;
         private System.Windows.Forms.Label lblCutDelta;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label4;
@@ -2141,6 +2106,8 @@
         private System.Windows.Forms.Label lblFixUpdateHz;
         private System.Windows.Forms.Button btnStartPause;
         private System.Windows.Forms.Button btnBoundarySide;
+        private System.Windows.Forms.ToolStripMenuItem importAgdFileToolStripMenuItem;
+        private System.Windows.Forms.NumericUpDown numBladeOffset;
     }
 }
 

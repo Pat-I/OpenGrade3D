@@ -18,6 +18,7 @@ namespace OpenGrade
         public double minSlope;
         public double antennaHeight;
         public double maxCuttingDepth;
+        public double bladeOffset;
 
         //width of cutting tool
         public double toolWidth;
@@ -63,6 +64,7 @@ namespace OpenGrade
             viewDistUnderGnd = Properties.Vehicle.Default.setVehicle_ViewDistUnderGnd;
             viewDistAboveGnd = Properties.Vehicle.Default.setVehicle_ViewDistAboveGnd;
             gradeDistFromLine = Properties.Vehicle.Default.setVehicle_GradeDistFromLine;
+            bladeOffset = Properties.Vehicle.Default.setVehicle_bladeOffset;
         }
 
         public void DrawVehicle()

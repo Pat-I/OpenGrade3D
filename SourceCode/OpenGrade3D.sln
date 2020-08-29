@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenGrade", "GPS\OpenGrade.csproj", "{73933709-370E-43B3-8563-CC0F48FF587B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenGrade3D", "GPS\OpenGrade3D.csproj", "{73933709-370E-43B3-8563-CC0F48FF587B}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup OpenGrade", "Setup OpenGrade\Setup OpenGrade.vdproj", "{7C10EF08-9291-47C7-9327-194534A2E242}"
 EndProject

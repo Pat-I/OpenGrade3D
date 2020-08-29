@@ -42,7 +42,7 @@ namespace OpenGrade
 
                 using (StreamWriter writer = new StreamWriter(saveDialog.FileName))
                 {
-                    writer.WriteLine("Version," + Application.ProductVersion.ToString(CultureInfo.InvariantCulture));
+                    writer.WriteLine("Version," + " OpenGrade3D v1.0");
                     writer.WriteLine("Wheelbase," + Properties.Vehicle.Default.setVehicle_wheelbase.ToString(CultureInfo.InvariantCulture));
                     writer.WriteLine("AntennaHeight," + Properties.Vehicle.Default.setVehicle_antennaHeight.ToString(CultureInfo.InvariantCulture));
                     writer.WriteLine("ToolWidth," + Properties.Vehicle.Default.setVehicle_toolWidth.ToString(CultureInfo.InvariantCulture));
@@ -90,8 +90,9 @@ namespace OpenGrade
 
                     writer.WriteLine("ViewDistUnderGnd," + Properties.Vehicle.Default.setVehicle_ViewDistUnderGnd.ToString(CultureInfo.InvariantCulture));
                     writer.WriteLine("ViewDistAboveGnd," + Properties.Vehicle.Default.setVehicle_ViewDistAboveGnd.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("GradeDistFromLine," + Properties.Vehicle.Default.setVehicle_GradeDistFromLine.ToString(CultureInfo.InvariantCulture));
+                    writer.WriteLine("Map Resolution," + Properties.Vehicle.Default.setVehicle_GradeDistFromLine.ToString(CultureInfo.InvariantCulture));
                     writer.WriteLine("MaxCuttingDepth," + Properties.Vehicle.Default.setVehicle_MaxCuttingDepth.ToString(CultureInfo.InvariantCulture));
+                    writer.WriteLine("Blade Offset," + Properties.Vehicle.Default.setVehicle_bladeOffset.ToString(CultureInfo.InvariantCulture));
 
                     writer.WriteLine("Empty," + "10");
                     writer.WriteLine("Empty," + "10");
@@ -149,22 +150,22 @@ namespace OpenGrade
                         string[] words;
                         line = reader.ReadLine(); words = line.Split(',');
 
-                        //if (words[0] != "Version")
+                        if (words[0] != "Version")
 
-                        //{
-                        //    var form = new FormTimedMessage(5000, "Vehicle File is Wrong Version", "Must be Version 2.16 or higher");
-                        //    form.Show();
-                        //    return;
-                        //}
+                        {
+                            var form = new FormTimedMessage(5000, "Vehicle File is Wrong Version", "Must be Version 2.16 or higher");
+                            form.Show();
+                            return;
+                        }
 
-                        //double test = double.Parse(words[1], CultureInfo.InvariantCulture);
+                        
 
-                        //if (test < 2.16)
-                        //{
-                        //    var form = new FormTimedMessage(5000, "Vehicle File is Wrong Version", "Must be Version 2.16 or higher");
-                        //    form.Show();
-                        //    return;
-                        //}
+                        if (words[1] != " OpenGrade3D v1.0")
+                        {
+                            var form = new FormTimedMessage(5000, "Vehicle File is Wrong Version", "Must be OpenGrade3D v1.0");
+                            form.Show();
+                            return;
+                        }
 
                         line = reader.ReadLine(); words = line.Split(',');
                         Properties.Vehicle.Default.setVehicle_wheelbase = double.Parse(words[1], CultureInfo.InvariantCulture);
@@ -257,7 +258,8 @@ namespace OpenGrade
                         Properties.Vehicle.Default.setVehicle_GradeDistFromLine = double.Parse(words[1], CultureInfo.InvariantCulture);
                         line = reader.ReadLine(); words = line.Split(',');
                         Properties.Vehicle.Default.setVehicle_MaxCuttingDepth = double.Parse(words[1], CultureInfo.InvariantCulture);
-
+                        line = reader.ReadLine(); words = line.Split(',');
+                        Properties.Vehicle.Default.setVehicle_bladeOffset = double.Parse(words[1], CultureInfo.InvariantCulture);
 
                         line = reader.ReadLine();
                         line = reader.ReadLine();
@@ -519,10 +521,81 @@ namespace OpenGrade
                     }
 
                     //calc mins maxes
-                    CalculateMinMaxZoom();
-                    CalculateTotalCutFillLabels();
-                    ct.mapList.Clear();
-                    CalculateMinMaxEastNort();
+                    CalculateMinMaxZoom();                 
+                    //ct.mapList.Clear(); Not here only when opening an agd file.
+                    //CalculateMinMaxEastNort(); Not here only when opening an agd file.
+                }
+            }
+
+            // Map points ----------------------------------------------------------------------------
+
+            fileAndDirectory = fieldsDirectory + currentFieldDirectory + "\\MapPt.txt";
+            if (!File.Exists(fileAndDirectory))
+            {
+                var form = new FormTimedMessage(4000, "Missing Mapping File", "But Field is Loaded");
+                form.Show();
+                //return;
+            }
+
+            /*
+                May-14-17  -->  7:42:47 PM
+                Points in Patch followed by easting, heading, northing, altitude
+                $ContourDir
+                cdert_May14
+                $Offsets
+                533631,5927279,12
+                19
+                2.866,2.575,-4.07,0             
+             */
+            else
+            {
+                using (StreamReader reader = new StreamReader(fileAndDirectory))
+                {
+                    try
+                    {
+                        //read the lines and skip them
+                        line = reader.ReadLine();
+                        line = reader.ReadLine();
+                        line = reader.ReadLine();
+                        line = reader.ReadLine();
+                        line = reader.ReadLine();
+                        line = reader.ReadLine();
+
+                        while (!reader.EndOfStream)
+                        {
+                            //read how many vertices in the following patch
+                            line = reader.ReadLine();
+                            int verts = int.Parse(line);
+                            //CContourPt vecFix = new vec4(0, 0, 0, 0);
+
+                            for (int v = 0; v < verts; v++)
+                            {
+                                line = reader.ReadLine();
+                                string[] words = line.Split(',');
+
+                                mapListPt point = new mapListPt(
+                                    double.Parse(words[0], CultureInfo.InvariantCulture),
+                                    double.Parse(words[1], CultureInfo.InvariantCulture),
+                                    double.Parse(words[2], CultureInfo.InvariantCulture),
+                                    double.Parse(words[3], CultureInfo.InvariantCulture),
+                                    double.Parse(words[4], CultureInfo.InvariantCulture),
+                                    double.Parse(words[5], CultureInfo.InvariantCulture),
+                                    double.Parse(words[6], CultureInfo.InvariantCulture),
+                                    double.Parse(words[7], CultureInfo.InvariantCulture));
+
+                                ct.mapList.Add(point);
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        WriteErrorLog("Loading Contour file" + e.ToString());
+
+                        var form = new FormTimedMessage(4000, "MapPt File is Corrupt", "But Field is Loaded");
+                        form.Show();
+                    }
+
+                    
                 }
             }
 
@@ -1056,7 +1129,7 @@ namespace OpenGrade
             {
                 //Write out the date
                 writer.WriteLine(DateTime.Now.ToString("yyyy-MMMM-dd hh:mm:ss tt", CultureInfo.InvariantCulture));
-                writer.WriteLine("easting, northing, pts distance, Elevation Existing(m), Elevation Proposed(m), CutFill(m), last pass altitude ");
+                writer.WriteLine("easting, northing, pts distance, Elevation Existing(m), Elevation Proposed(m), CutFill(m), last pass altitude, saved blade altitude ");
 
                 //which field directory
                 writer.WriteLine("$MapPtDir");
@@ -1087,7 +1160,8 @@ namespace OpenGrade
                             
                             Math.Round(ct.mapList[i].cutAltitudeMap, 3).ToString(CultureInfo.InvariantCulture) + "," +
                             Math.Round(ct.mapList[i].cutDeltaMap, 3).ToString(CultureInfo.InvariantCulture) + "," +
-                            Math.Round(ct.mapList[i].lastPassAltitudeMap, 3).ToString(CultureInfo.InvariantCulture));
+                            Math.Round(ct.mapList[i].lastPassAltitudeMap, 3).ToString(CultureInfo.InvariantCulture) + "," + 
+                            Math.Round(ct.mapList[i].lastPassRealAltitudeMap, 3).ToString(CultureInfo.InvariantCulture));
                             
                     }
                 }

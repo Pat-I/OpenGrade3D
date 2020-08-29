@@ -35,7 +35,7 @@ namespace OpenGrade
         }
     }
 
-    // Pt list for the side elevation view
+    // ViewPt is a Pt list for the side elevation view
     // pt 0 to 99 for the past points, pt 100 (eleViewListCount = 101) for the prestent, pt 101 to 299 for the look ahead, 20 cm apart, by Pat
 
     public class ViewPt
@@ -63,6 +63,22 @@ namespace OpenGrade
             cutAltitude = _cutAltitude;
             lastPassAltitude = _lastPassAltitude;
             //distance = _distance;
+        }
+    }
+
+    // A list to view the survey pt used for cut/fill calulation
+    public class UsedPt
+    {
+        public double easting { get; set; }
+        public double northing { get; set; }
+        public double used { get; set; }
+
+        //constructor
+        public UsedPt(double _easting = 0, double _northing = 0, double _used = 0)
+        {
+            easting = _easting;
+            northing = _northing;
+            used = _used;
         }
     }
 
@@ -102,8 +118,10 @@ namespace OpenGrade
         public double cutAltitudeMap { get; set; }
         public double cutDeltaMap { get; set; }
         public double lastPassAltitudeMap { get; set; }
+        public double lastPassRealAltitudeMap { get; set; }
 
-        
+
+
         //public double longitude { get; set; }
         //public double distance { get; set; }
 
@@ -112,7 +130,8 @@ namespace OpenGrade
                             double _altitudeMap,
                             double _cutAltitudeMap = -1, 
                             double _cutDeltaMap = 9999,
-                            double _lastPassAltitudeMap = -1)
+                            double _lastPassAltitudeMap = -1,
+                            double _lastPassRealAltitudeMap = -1)
         {
             eastingMap = _eastingMap;
             northingMap = _northingMap;
@@ -121,6 +140,7 @@ namespace OpenGrade
             cutAltitudeMap = _cutAltitudeMap;
             cutDeltaMap = _cutDeltaMap;
             lastPassAltitudeMap = _lastPassAltitudeMap;
+            lastPassRealAltitudeMap = _lastPassRealAltitudeMap;
             
         }
     }
@@ -193,6 +213,8 @@ namespace OpenGrade
         public List<designPt> designList = new List<designPt>();
 
         public List<ViewPt> eleViewList = new List<ViewPt>();
+
+        public List<UsedPt> usedPtList = new List<UsedPt>();
 
         //used to determine if section was off and now is on or vice versa
         public bool wasSectionOn;
@@ -677,6 +699,8 @@ namespace OpenGrade
             {
                 //now paint the map, by Pat
 
+                // Search for the max min painting values
+
                 int ptCount = mapList.Count;
 
                 double maxAltitude = -9999, minAltitude = 9999, maxCut = -9999, maxFill = 9999, midAltitude;
@@ -705,7 +729,10 @@ namespace OpenGrade
                 // to not mess up with colors when min and max altutudes are to close
                 if ((maxAltitude - midAltitude) < 0.05) maxAltitude = midAltitude + 0.05;
                 if ((midAltitude - minAltitude) < 0.05) minAltitude = midAltitude - 0.05;
-                            
+
+
+                  // begin painting
+                  
                     if (ptCount > 0)
                     {
                         for (int h = 0; h < ptCount; h++)
@@ -784,6 +811,27 @@ namespace OpenGrade
                     }
                 }
 
+                // Paint the dots for the contour pts used for cut fill calculation
+
+                int usedPtcnt = usedPtList.Count;
+
+                if (usedPtcnt > 0)
+                {
+                    gl.PointSize(4.0f);
+                    gl.Begin(OpenGL.GL_POINTS);
+
+                    if (usedPtcnt > 1)
+                    {
+                        gl.Color(1.0f, 0.5f, 0.0f);
+                        for (int h = 1; h < usedPtcnt; h++) gl.Vertex(usedPtList[h].easting, usedPtList[h].northing, 0);
+                        
+
+                    }
+                    gl.Color(1.0f, 0.0f, 0.0f);
+                    gl.Vertex(usedPtList[0].easting, usedPtList[0].northing, 0);
+
+                    gl.End();
+                }
 
 
 

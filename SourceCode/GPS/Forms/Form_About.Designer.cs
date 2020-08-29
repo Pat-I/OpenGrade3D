@@ -73,9 +73,9 @@
             this.label5.Font = new System.Drawing.Font("Tahoma", 11.25F);
             this.label5.Location = new System.Drawing.Point(14, 102);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(142, 18);
+            this.label5.Size = new System.Drawing.Size(23, 18);
             this.label5.TabIndex = 17;
-            this.label5.Text = "yesgogit@gmail.com";
+            this.label5.Text = "...";
             // 
             // label4
             // 
@@ -83,9 +83,9 @@
             this.label4.Font = new System.Drawing.Font("Tahoma", 11.25F);
             this.label4.Location = new System.Drawing.Point(14, 76);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(94, 18);
+            this.label4.Size = new System.Drawing.Size(233, 18);
             this.label4.TabIndex = 18;
-            this.label4.Text = "Brian Tischler";
+            this.label4.Text = "From OpenGrade by Brian Tischler";
             // 
             // label3
             // 
@@ -103,9 +103,9 @@
             this.label2.Font = new System.Drawing.Font("Tahoma", 11.25F);
             this.label2.Location = new System.Drawing.Point(167, 33);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(101, 18);
+            this.label2.Size = new System.Drawing.Size(108, 18);
             this.label2.TabIndex = 14;
-            this.label2.Text = "v1.3 Jan 2018";
+            this.label2.Text = "v1.0 Sept 2020";
             // 
             // label1
             // 
@@ -113,19 +113,19 @@
             this.label1.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Underline);
             this.label1.Location = new System.Drawing.Point(12, 24);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(133, 29);
+            this.label1.Size = new System.Drawing.Size(162, 29);
             this.label1.TabIndex = 13;
-            this.label1.Text = "OpenGrade";
+            this.label1.Text = "OpenGrade3D";
             // 
             // linkLabelGit
             // 
             this.linkLabelGit.AutoSize = true;
             this.linkLabelGit.Location = new System.Drawing.Point(14, 165);
             this.linkLabelGit.Name = "linkLabelGit";
-            this.linkLabelGit.Size = new System.Drawing.Size(227, 13);
+            this.linkLabelGit.Size = new System.Drawing.Size(95, 13);
             this.linkLabelGit.TabIndex = 11;
             this.linkLabelGit.TabStop = true;
-            this.linkLabelGit.Text = "https://github.com/farmerbriantee/OpenGrade";
+            this.linkLabelGit.Text = "https://github.com";
             this.linkLabelGit.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelGit_LinkClicked);
             // 
             // linkLabelCombineForum
@@ -133,10 +133,10 @@
             this.linkLabelCombineForum.AutoSize = true;
             this.linkLabelCombineForum.Location = new System.Drawing.Point(14, 372);
             this.linkLabelCombineForum.Name = "linkLabelCombineForum";
-            this.linkLabelCombineForum.Size = new System.Drawing.Size(397, 13);
+            this.linkLabelCombineForum.Size = new System.Drawing.Size(169, 13);
             this.linkLabelCombineForum.TabIndex = 12;
             this.linkLabelCombineForum.TabStop = true;
-            this.linkLabelCombineForum.Text = "http://www.thecombineforum.com/forums/31-technology/316233-open-grade.html";
+            this.linkLabelCombineForum.Text = "http://agopengps.discourse.group";
             this.linkLabelCombineForum.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelCombineForum_LinkClicked);
             // 
             // button1

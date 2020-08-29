@@ -730,6 +730,8 @@ namespace OpenGrade
             LoadGUI();
         }
 
+        
+
         //form is closing so tidy up and save settings
         private void FormGPS_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -953,11 +955,8 @@ namespace OpenGrade
             ct.isContourBtnOn = false;
             ct.isContourOn = false;
             ct.ptList.Clear();
-            lblCut.Text = "*";
-            lblFill.Text = "*";
-            lblCutFillRatio.Text = "*";
-            lblDrawSlope.Text = "*";
-
+            ct.mapList.Clear();
+            
             cboxLastPass.Checked = false;
             
             cboxLaserModeOnOff.Checked = false;
@@ -995,10 +994,7 @@ namespace OpenGrade
             ct.isContourBtnOn = false;
             ct.isContourOn = false;
             ct.ptList.Clear();
-            lblCut.Text = "*";
-            lblFill.Text = "*";
-            lblCutFillRatio.Text = "*";
-            lblDrawSlope.Text = "*";
+            
 
             cboxLastPass.Checked = false;
             cboxLaserModeOnOff.Checked = false;
@@ -1114,6 +1110,7 @@ namespace OpenGrade
             FileSaveField();
             FileSaveContour();
             FileSaveFlagsKML();
+            FileSaveMapPt();
 
             JobClose();
             Text = "OpenGrade";
@@ -1153,6 +1150,11 @@ namespace OpenGrade
             }
         }
 
+        private void numBladeOffset_ValueChanged(object sender, EventArgs e)
+        {
+            Vehicle.Default.setVehicle_bladeOffset = (double)numBladeOffset.Value;
+            vehicle.bladeOffset = (double)numBladeOffset.Value;
+        }
         //message box pops up with info then goes away
         public void TimedMessageBox(int timeout, string s1, string s2)
         {

@@ -214,7 +214,9 @@ namespace OpenGrade
 
                 //altitude
                 double.TryParse(words[9], NumberStyles.Float, CultureInfo.InvariantCulture, out altitude);
-                altitude -= mf.vehicle.antennaHeight;
+                //altitude -= mf.vehicle.antennaHeight;
+                altitude -= (mf.vehicle.antennaHeight - mf.vehicle.bladeOffset);
+                //altitude = altitude - mf.vehicle.antennaHeight + mf.vehicle.bladeOffset;
 
                 //age of differential
                 double.TryParse(words[12], NumberStyles.Float, CultureInfo.InvariantCulture, out ageDiff);

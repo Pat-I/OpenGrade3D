@@ -139,7 +139,7 @@ namespace OpenGrade
         //auto steer off and on
         private void btnAutoSteer_Click(object sender, EventArgs e)
         {
-            FileOpenAgdDesign();
+            
             if (isAutoSteerBtnOn)
             {
                 isAutoSteerBtnOn = false;
@@ -160,6 +160,28 @@ namespace OpenGrade
                 }
             }
         }
+
+        private void importAgsFile_click(object sender, EventArgs e)
+        {
+            if (isJobStarted)
+            {
+                if (ct.ptList.Count < 1)
+                FileOpenAgdDesign();
+                else
+                {
+                    var form = new FormTimedMessage(3000, "Contour.txt already exist", "Delete the Contour.txt or create a new Field");
+                    form.Show();
+                }
+            }
+            else
+            {
+                var form = new FormTimedMessage(3000, "No field open", "Open a field First");
+                form.Show();
+            }
+        }
+
+
+
         //ABLine
         private void btnABLine_Click(object sender, EventArgs e)
         {
@@ -237,10 +259,7 @@ namespace OpenGrade
                     btnManualOffOn.Image = null;
                     btnManualOffOn.Text = "BenchMark";
                     userDistance = 0;
-                    lblCut.Text = "*";
-                    lblFill.Text = "*";
-                    lblCutFillRatio.Text = "*";
-                    lblDrawSlope.Text = "*";
+                    
 
                     cboxLastPass.Checked = false;
                     //cboxRecLastOnOff.Checked = false;
@@ -259,11 +278,7 @@ namespace OpenGrade
                     manualBtnState = btnStates.RecBnd;
                     btnManualOffOn.Image = null;
                     btnManualOffOn.Text = "Recording Boundary";
-                    userDistance = 0;
-                    lblCut.Text = "*";
-                    lblFill.Text = "*";
-                    lblCutFillRatio.Text = "*";
-                    lblDrawSlope.Text = "*";
+                    userDistance = 0;                  
                     btnStartPause.Visible = true;
                     btnBoundarySide.Visible = true;
                     ct.isBtnStartPause = false;
@@ -287,11 +302,7 @@ namespace OpenGrade
                     manualBtnState = btnStates.Rec;
                     btnManualOffOn.Image = Properties.Resources.ManualOn;
                     btnManualOffOn.Text = null;
-                    userDistance = 0;
-                    lblCut.Text = "*";
-                    lblFill.Text = "*";
-                    lblCutFillRatio.Text = "*";
-                    lblDrawSlope.Text = "*";
+                    userDistance = 0;                  
                     btnBoundarySide.Visible = false;
                     ct.isBtnStartPause = false;
                     btnStartPause.Text = "START";
@@ -475,61 +486,7 @@ namespace OpenGrade
         }
 
 
-
-
-
-        private void CalculateTotalCutFillLabels()
-        {
-            lblDrawSlope.Text = "-";
-
-            double cut = 0; double fill = 0; double delta;
-            int cnt = ct.ptList.Count;
-
-            if (cnt > 0)
-            {
-
-                for (int i = 0; i < cnt; i++)
-                {
-                    if (ct.ptList[i].cutAltitude == -1) continue;
-
-                    delta = ct.ptList[i].cutAltitude - ct.ptList[i].altitude;
-                    delta *= (ct.ptList[i].distance * vehicle.toolWidth);
-
-                    if (delta > 0)
-                    {
-                        fill += delta;
-                        delta = 0;
-                    }
-                    else
-                    {
-                        delta *= -1;
-                        cut += delta;
-                        delta = 0;
-                    }
-                }
-                if (isMetric)
-                {
-                    lblCut.Text = cut.ToString("N2");
-                    lblFill.Text = fill.ToString("N2");
-                }
-                else
-                {
-                    lblCut.Text = (1.308 * cut).ToString("N2");
-                    lblFill.Text = (1.308 * fill).ToString("N2");
-                }
-
-                delta = (cut - fill);
-                lblCutFillRatio.Text = delta.ToString("N2");
-            }
-            else
-            {
-                lblCut.Text = "-";
-                lblFill.Text = "-";
-                lblCutFillRatio.Text = "-";
-            }
-        }
-
-
+        
         //progress bar "buttons" for gain
         private void pbarCutAbove_Click(object sender, EventArgs e)
         {
@@ -925,7 +882,7 @@ namespace OpenGrade
         private void toolstripVehicleConfig_Click(object sender, EventArgs e)
         {
             SettingsPageOpen(0);
-            CalculateTotalCutFillLabels();
+            
         }
         private void toolstripUSBPortsConfig_Click(object sender, EventArgs e)
         {

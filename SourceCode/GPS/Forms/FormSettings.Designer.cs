@@ -339,7 +339,7 @@
             0});
             this.nudGradeDistFromLine.Name = "nudGradeDistFromLine";
             this.nudGradeDistFromLine.Value = new decimal(new int[] {
-            50,
+            2,
             0,
             0,
             0});

@@ -790,13 +790,13 @@
     <value>51, 65</value>
   </data>
   <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
-    <value>253, 33</value>
+    <value>190, 33</value>
   </data>
   <data name="label14.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
   <data name="label14.Text" xml:space="preserve">
-    <value>Grade Dist from line</value>
+    <value>Map resolution</value>
   </data>
   <data name="&gt;&gt;label14.Name" xml:space="preserve">
     <value>label14</value>
