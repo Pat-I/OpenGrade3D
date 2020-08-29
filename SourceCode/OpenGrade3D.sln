@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenGrade3D", "GPS\OpenGrade3D.csproj", "{73933709-370E-43B3-8563-CC0F48FF587B}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup OpenGrade", "Setup OpenGrade\Setup OpenGrade.vdproj", "{7C10EF08-9291-47C7-9327-194534A2E242}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{35B74353-68ED-4643-BA10-F7646F29FD44}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,13 +22,10 @@ Global
 		{73933709-370E-43B3-8563-CC0F48FF587B}.Release|Any CPU.ActiveCfg = Debug|x86
 		{73933709-370E-43B3-8563-CC0F48FF587B}.Release|x86.ActiveCfg = Release|x86
 		{73933709-370E-43B3-8563-CC0F48FF587B}.Release|x86.Build.0 = Release|x86
-		{7C10EF08-9291-47C7-9327-194534A2E242}.Debug|Any CPU.ActiveCfg = Debug
-		{7C10EF08-9291-47C7-9327-194534A2E242}.Debug|Any CPU.Build.0 = Debug
-		{7C10EF08-9291-47C7-9327-194534A2E242}.Debug|x86.ActiveCfg = Debug
-		{7C10EF08-9291-47C7-9327-194534A2E242}.Release|Any CPU.ActiveCfg = Debug
-		{7C10EF08-9291-47C7-9327-194534A2E242}.Release|Any CPU.Build.0 = Debug
-		{7C10EF08-9291-47C7-9327-194534A2E242}.Release|x86.ActiveCfg = Release
-		{7C10EF08-9291-47C7-9327-194534A2E242}.Release|x86.Build.0 = Release
+		{35B74353-68ED-4643-BA10-F7646F29FD44}.Debug|Any CPU.ActiveCfg = Debug
+		{35B74353-68ED-4643-BA10-F7646F29FD44}.Debug|x86.ActiveCfg = Debug
+		{35B74353-68ED-4643-BA10-F7646F29FD44}.Release|Any CPU.ActiveCfg = Release
+		{35B74353-68ED-4643-BA10-F7646F29FD44}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
