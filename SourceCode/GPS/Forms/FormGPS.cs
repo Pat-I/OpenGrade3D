@@ -1152,9 +1152,10 @@ namespace OpenGrade
 
         private void numBladeOffset_ValueChanged(object sender, EventArgs e)
         {
-            Vehicle.Default.setVehicle_bladeOffset = (double)numBladeOffset.Value;
-            vehicle.bladeOffset = (double)numBladeOffset.Value;
+            Vehicle.Default.setVehicle_bladeOffset = (double)numBladeOffset.Value /100;
+            vehicle.bladeOffset = (double)numBladeOffset.Value /100;
         }
+
         //message box pops up with info then goes away
         public void TimedMessageBox(int timeout, string s1, string s2)
         {

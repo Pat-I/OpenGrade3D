@@ -81,6 +81,9 @@ namespace OpenGrade
             //btnDeleteLastPoint.Enabled = false;
             //btnStartDraw.Enabled = true;
             lblBarGraphMax.Text = barGraphMax.ToString();
+
+            // send value to bladeoffset
+            numBladeOffset.Value = (decimal)Properties.Vehicle.Default.setVehicle_bladeOffset *100;
         }
 
         //hide the left panel

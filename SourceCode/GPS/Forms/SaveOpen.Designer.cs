@@ -290,6 +290,8 @@ namespace OpenGrade
                         vehicle.viewDistAboveGnd = Properties.Vehicle.Default.setVehicle_ViewDistAboveGnd;
                         vehicle.gradeDistFromLine = Properties.Vehicle.Default.setVehicle_GradeDistFromLine;
                         vehicle.maxCuttingDepth = Properties.Vehicle.Default.setVehicle_MaxCuttingDepth;
+                        vehicle.bladeOffset = Properties.Vehicle.Default.setVehicle_bladeOffset;
+                        numBladeOffset.Value = (decimal)Properties.Vehicle.Default.setVehicle_bladeOffset *100;
 
                         //Valve settings
 
