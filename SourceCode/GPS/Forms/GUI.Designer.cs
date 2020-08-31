@@ -117,6 +117,8 @@ namespace OpenGrade
                     ct.surveyMode = false;
                     stripSelectMode.Text = "Grade Mode";
                     btnManualOffOn.Visible = false;
+                    btnCutFillElev.Visible = true;
+                    btnPropExist.Visible = true;
                 }
             }
             else
@@ -124,6 +126,8 @@ namespace OpenGrade
                 ct.surveyMode = true;
                 stripSelectMode.Text = "Survey Mode";
                 btnManualOffOn.Visible = true;
+                btnCutFillElev.Visible = false;
+                btnPropExist.Visible = false;
             }
         }
 
@@ -369,6 +373,63 @@ namespace OpenGrade
             }
         }
 
+        private void btnCutFillElev_Click(object sender, EventArgs e)
+        {
+            if(ct.isElevation)
+            {
+                ct.isElevation = false;
+                btnCutFillElev.Text = "Cut/Fill";
+                if (ct.isActualCut) btnPropExist.Text = "actual Cut";
+                else if (ct.isActualFill) btnPropExist.Text = "act Cut/Fill";
+                else btnPropExist.Text = "Proposed";
+            }
+            else
+            {
+                ct.isElevation = true;
+                btnCutFillElev.Text = "Elevation";
+                if (ct.isExistingElevation) btnPropExist.Text = "Existing";
+                else btnPropExist.Text = "Proposed";
+            }
+        }
+
+        private void btnPropExist_Click(object sender, EventArgs e)
+        {
+            if(ct.isElevation)
+            {
+                if(ct.isExistingElevation)
+                {
+                    ct.isExistingElevation = false;
+                    btnPropExist.Text = "Proposed";
+                }
+                else
+                {
+                    ct.isExistingElevation = true;
+                    btnPropExist.Text = "Existing";
+                }
+            }
+            else
+            {
+                if (!ct.isActualCut)
+                {
+                    if (ct.isActualFill)
+                    {
+                        ct.isActualFill = false;
+                        btnPropExist.Text = "Proposed";
+                    }
+                    else
+                    {
+                        ct.isActualCut = true;
+                        btnPropExist.Text = "actual Cut";
+                    }
+                }
+                else
+                {
+                    ct.isActualCut = false;
+                    ct.isActualFill = true;
+                    btnPropExist.Text = "act Cut/Fill";
+                }
+            }
+        }
 
         //The main flag marker button 
         private void btnFlag_Click(object sender, EventArgs e)
@@ -1053,7 +1114,7 @@ namespace OpenGrade
             if (fiveSecondCounter++ > 100) { fiveSecondCounter = 0; }
 
             //GPS Update rate
-            lblFixUpdateHz.Text = NMEAHz + " Hz " + FixQuality;
+            lblFixUpdateHz.Text = NMEAHz + " Hz " + FixQuality + " " + (int)(frameTime) + "ms";
 
             //every half of a second update all status
             if (statusUpdateCounter > 4)

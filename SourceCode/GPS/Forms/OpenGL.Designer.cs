@@ -593,7 +593,7 @@ namespace OpenGrade
                 {
                     //fill in the latest distance and fix
                     double fixDist = ((ct.eleViewList[101].easting - pn.easting) * (ct.eleViewList[101].easting - pn.easting) + (ct.eleViewList[101].northing - pn.northing) * (ct.eleViewList[101].northing - pn.northing));
-                    if (fixDist > 0.04)
+                    if (fixDist > 0.25)
                     {
 
                         //copy each point one count back: 0 take 1, 1 take 2 etc.
@@ -629,12 +629,13 @@ namespace OpenGrade
                         }
 
                         // make the look ahead view
+                        // 200 points to fill, 102 to 298? 4 * 49 = 196
 
-                        for (int j = 1; j < 20; j++)
+                        for (int j = 1; j < 50; j++)
                         {
 
-                            double AheadEasting = pn.easting + Math.Cos(fixHeading + glm.PIBy2) * -4 *j;
-                            double AheadNorthing = pn.northing + Math.Sin(fixHeading - glm.PIBy2) * -4 *j;
+                            double AheadEasting = pn.easting + Math.Cos(fixHeading + glm.PIBy2) * -2*j;
+                            double AheadNorthing = pn.northing + Math.Sin(fixHeading - glm.PIBy2) * -2*j;
 
 
                             double mindist = 1000000;
@@ -662,24 +663,24 @@ namespace OpenGrade
 
 
 
-                            for (int k = 0; k < 10; k++)
+                            for (int k = 0; k < 4; k++)
                             {
-                                ct.eleViewList[101 + j * 10 - k].easting = AheadEasting;
-                                ct.eleViewList[101 + j * 10 - k].northing = AheadNorthing;
+                                ct.eleViewList[101 + j * 4 - k].easting = AheadEasting;
+                                ct.eleViewList[101 + j * 4 - k].northing = AheadNorthing;
 
                                 if (ClosestLookAheadPt != 999999 && mindist < 100)
                                 {
                                     //ct.eleViewList[101 + j * 10 - k].lastPassAltitude = pn.altitude;
-                                    ct.eleViewList[101 + j * 10 - k].altitude = ct.ptList[ClosestLookAheadPt].altitude;
-                                    ct.eleViewList[101 + j * 10 - k].cutAltitude = ct.ptList[ClosestLookAheadPt].cutAltitude;
+                                    ct.eleViewList[101 + j * 4 - k].altitude = ct.ptList[ClosestLookAheadPt].altitude;
+                                    ct.eleViewList[101 + j * 4 - k].cutAltitude = ct.ptList[ClosestLookAheadPt].cutAltitude;
 
 
                                 }
                                 else
                                 {
                                     //ct.eleViewList[101 + j * 10 - k].lastPassAltitude = pn.altitude;
-                                    ct.eleViewList[101 + j * 10 - k].altitude = -1;
-                                    ct.eleViewList[101 + j * 10 - k].cutAltitude = -1;
+                                    ct.eleViewList[101 + j * 4 - k].altitude = -1;
+                                    ct.eleViewList[101 + j * 4 - k].cutAltitude = -1;
 
                                 }
 

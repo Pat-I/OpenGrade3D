@@ -176,6 +176,8 @@
             this.btnStartPause = new System.Windows.Forms.Button();
             this.btnBoundarySide = new System.Windows.Forms.Button();
             this.numBladeOffset = new System.Windows.Forms.NumericUpDown();
+            this.btnCutFillElev = new System.Windows.Forms.Button();
+            this.btnPropExist = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControl)).BeginInit();
             this.contextMenuStripOpenGL.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControlBack)).BeginInit();
@@ -1765,6 +1767,7 @@
             this.btnContour.Text = "Altitude";
             this.btnContour.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.btnContour.UseVisualStyleBackColor = false;
+            this.btnContour.Visible = false;
             this.btnContour.Click += new System.EventHandler(this.btnContour_Click);
             // 
             // btnZoomIn
@@ -1842,11 +1845,12 @@
             this.lblFixUpdateHz.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblFixUpdateHz.AutoSize = true;
             this.lblFixUpdateHz.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.lblFixUpdateHz.Location = new System.Drawing.Point(655, 9);
+            this.lblFixUpdateHz.Location = new System.Drawing.Point(598, 9);
             this.lblFixUpdateHz.Name = "lblFixUpdateHz";
-            this.lblFixUpdateHz.Size = new System.Drawing.Size(60, 19);
+            this.lblFixUpdateHz.Size = new System.Drawing.Size(159, 19);
             this.lblFixUpdateHz.TabIndex = 227;
-            this.lblFixUpdateHz.Text = "label13";
+            this.lblFixUpdateHz.Text = "gps hz, fix, frame ms";
+            this.lblFixUpdateHz.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // btnStartPause
             // 
@@ -1892,12 +1896,36 @@
             this.numBladeOffset.TabIndex = 230;
             this.numBladeOffset.ValueChanged += new System.EventHandler(this.numBladeOffset_ValueChanged);
             // 
+            // btnCutFillElev
+            // 
+            this.btnCutFillElev.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCutFillElev.Location = new System.Drawing.Point(857, 139);
+            this.btnCutFillElev.Name = "btnCutFillElev";
+            this.btnCutFillElev.Size = new System.Drawing.Size(84, 62);
+            this.btnCutFillElev.TabIndex = 231;
+            this.btnCutFillElev.Text = "Cut/Fill";
+            this.btnCutFillElev.UseVisualStyleBackColor = true;
+            this.btnCutFillElev.Click += new System.EventHandler(this.btnCutFillElev_Click);
+            // 
+            // btnPropExist
+            // 
+            this.btnPropExist.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPropExist.Location = new System.Drawing.Point(857, 220);
+            this.btnPropExist.Name = "btnPropExist";
+            this.btnPropExist.Size = new System.Drawing.Size(84, 65);
+            this.btnPropExist.TabIndex = 232;
+            this.btnPropExist.Text = "Proposed";
+            this.btnPropExist.UseVisualStyleBackColor = true;
+            this.btnPropExist.Click += new System.EventHandler(this.btnPropExist_Click);
+            // 
             // FormGPS
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(1306, 684);
+            this.Controls.Add(this.btnPropExist);
+            this.Controls.Add(this.btnCutFillElev);
             this.Controls.Add(this.numBladeOffset);
             this.Controls.Add(this.btnBoundarySide);
             this.Controls.Add(this.btnStartPause);
@@ -2108,6 +2136,8 @@
         private System.Windows.Forms.Button btnBoundarySide;
         private System.Windows.Forms.ToolStripMenuItem importAgdFileToolStripMenuItem;
         private System.Windows.Forms.NumericUpDown numBladeOffset;
+        private System.Windows.Forms.Button btnCutFillElev;
+        private System.Windows.Forms.Button btnPropExist;
     }
 }
 
