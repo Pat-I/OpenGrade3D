@@ -14,6 +14,26 @@ namespace OpenGrade
         //list of the list of patch data individual triangles for field sections
         public List<List<vec2>> patchSaveList = new List<List<vec2>>();
 
+        /*
+         * The agd file is read near line 868 --public void FileOpenAgdDesign()
+         * codes in .agd -> code in opengrade
+         * MB -> 0
+         * 2PER -> 2
+         * 3GRD ->
+         * 2SUBZONE1 -> 21
+         * 2SUBZONE2 -> 22
+         * to
+         *2SUBZONE9 -> 29
+         * 
+         * 
+         * 
+         * 
+         * 
+         * 
+         * 
+         * 
+         */
+
         //function that save vehicle and section settings
         public void FileSaveVehicle()
         {
@@ -902,28 +922,28 @@ namespace OpenGrade
                                 string[] words = line.Split(',');
 
 
-                                //if (words[5] == "2PER" | words[5] == " 2PER")
-                                //{
+                                if (words[5] == "2PER" | words[5] == " 2PER")
+                                {
                                     designPt point = new designPt(
                                     double.Parse(words[0], CultureInfo.InvariantCulture),
                                     double.Parse(words[1], CultureInfo.InvariantCulture),
                                     double.Parse(words[2], CultureInfo.InvariantCulture),
-                                    double.Parse(words[3], CultureInfo.InvariantCulture),
-                                    double.Parse(words[4], CultureInfo.InvariantCulture),
-                                    3, 0, 0
+                                    -1,
+                                    -1,
+                                    2, 0, 0
                                     );
 
                                     ct.designList.Add(point);
 
 
-                                /*
+                                
                                 //read the Offsets 
-                                line = reader.ReadLine();
-                                string[] offs = line.Split(',');
-                                pn.utmEast = int.Parse(offs[0]);
-                                pn.utmNorth = int.Parse(offs[1]);
-                                pn.zone = int.Parse(offs[2]);
-                                //}
+                                //line = reader.ReadLine();
+                                //string[] offs = line.Split(',');
+                                //pn.utmEast = int.Parse(offs[0]);
+                                //pn.utmNorth = int.Parse(offs[1]);
+                                //pn.zone = int.Parse(offs[2]);
+                                }
                                 
                                  if (words[5] == "3GRD" | words[5] == " 3GRD")
                                  {
@@ -939,7 +959,7 @@ namespace OpenGrade
                                      ct.designList.Add(point);
 
                                  }
-                                */
+                                
 
                             }
                         }
@@ -971,7 +991,7 @@ namespace OpenGrade
 
         #endregion
 
-        //save the contour points which include elevation values
+        //save the design (the converted agd pts) list for testing only
         public void FileSaveDesignList()
         {
             //1  - points in patch
@@ -998,7 +1018,7 @@ namespace OpenGrade
             {
                 //Write out the date
                 writer.WriteLine(DateTime.Now.ToString("yyyy-MMMM-dd hh:mm:ss tt", CultureInfo.InvariantCulture));
-                writer.WriteLine("Latitude (deg), Longitude (deg), Elevation Existing(m), Elevation Proposed(m), CutFill(m), Code");
+                writer.WriteLine("Latitude (deg), Longitude (deg), Elevation Existing(m), Elevation Proposed(m), CutFill(m), Code, easting");
 
                 //which field directory
                 writer.WriteLine("$DesignListDir");
@@ -1065,7 +1085,7 @@ namespace OpenGrade
             {
                 //Write out the date
                 writer.WriteLine(DateTime.Now.ToString("yyyy-MMMM-dd hh:mm:ss tt", CultureInfo.InvariantCulture));
-                writer.WriteLine("Points in Patch followed by easting, heading, northing, altitude");
+                writer.WriteLine("easting, heading, northing, altitude, latitude, longitude, cutAltitude, lastPassAltitude, distance");
 
                 //which field directory
                 writer.WriteLine("$ContourDir");
@@ -1104,7 +1124,7 @@ namespace OpenGrade
             isSavingFile = false;
         }
 
-        //save the contour points which include elevation values
+        //save the contour (mapping) points which include elevation values
         public void FileSaveMapPt()
         {
             //1  - points in patch
@@ -1286,7 +1306,7 @@ namespace OpenGrade
                     int count4 = ct.surveyList.Count;
 
                     //for every new chunk of patch in the whole section
-
+                    writer.WriteLine("easting, northing, latitude, longitude, altitude, code");
                     //writer.WriteLine(count4.ToString(CultureInfo.InvariantCulture));
 
                     for (int i = 0; i < count4; i++)

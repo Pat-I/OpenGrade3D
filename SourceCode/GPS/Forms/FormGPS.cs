@@ -954,8 +954,7 @@ namespace OpenGrade
 
             ct.isContourBtnOn = false;
             ct.isContourOn = false;
-            ct.ptList.Clear();
-            ct.mapList.Clear();
+            
             
             cboxLastPass.Checked = false;
             
@@ -1020,6 +1019,7 @@ namespace OpenGrade
 
             //by Pat
             ct.eleViewList.Clear();
+            ct.mapList.Clear();
         }
 
         //bring up field dialog for new/open/resume

@@ -135,9 +135,9 @@ namespace OpenGrade
 
         public void ResetSim()
         {
-            latitude = 53.436026;
+            latitude = 40.8390;//53.436026;
             //longitude = -111.160047;
-            longitude = -111.260047;
+            longitude = -97.1270;//-111.260047;
         }
 
         private void BuildGGA()
@@ -145,7 +145,7 @@ namespace OpenGrade
             sbGGA.Clear();
             sbGGA.Append("$GPGGA,");
             sbGGA.Append(DateTime.Now.ToString("HHmmss.00,", CultureInfo.InvariantCulture));
-            sbGGA.Append(latNMEA.ToString(CultureInfo.InvariantCulture)).Append(',').Append(NS).Append(',');
+            sbGGA.Append(latNMEA.ToString(CultureInfo.InvariantCulture)).Append(',').Append(NS).Append(',').Append(0);
             sbGGA.Append(Math.Abs(longNMEA).ToString(CultureInfo.InvariantCulture)).Append(',').Append(EW).Append(',');
             sbGGA.Append(fixQuality.ToString(CultureInfo.InvariantCulture)).Append(',').Append(sats.ToString(CultureInfo.InvariantCulture)).Append(',').Append(HDOP.ToString(CultureInfo.InvariantCulture)).Append(',').Append(altitude.ToString(CultureInfo.InvariantCulture));
             sbGGA.Append(",M,46.9,M,,,*");

@@ -16,6 +16,8 @@ namespace OpenGrade
         public double cutDelta;
         private double minDist;
         private double minDistMap;
+
+        //public bool stopTheProgram;
         
 
         private double minDistMapDist = 400; // how far from a survey point it will draw the map 400 is 20 meters
@@ -897,6 +899,8 @@ namespace OpenGrade
         // determine ptList min and max easting and northing -by Pat
         public void CalculateMinMaxEastNort()
         {
+            //stopTheProgram = true;
+
             eastingMin = 9999999;
             eastingMax = -9999999;
             northingMin = 9999999;
@@ -1039,7 +1043,7 @@ namespace OpenGrade
                                 avgAltitude = ((ct.ptList[closestPointMapNE].altitude / Math.Sqrt(minDistNE)) + (ct.ptList[closestPointMapNW].altitude / Math.Sqrt(minDistNW)) +
                                 (ct.ptList[closestPointMapSE].altitude / Math.Sqrt(minDistSE)) + (ct.ptList[closestPointMapSW].altitude / Math.Sqrt(minDistSW))) / sumofCloseDist;
 
-                                if (ct.ptList[closestPointMapNE].cutAltitude == -1 | ct.ptList[closestPointMapNW].cutAltitude == -1 | ct.ptList[closestPointMapSE].cutAltitude == -1 | ct.ptList[closestPointMapSW].cutAltitude == -1)
+                                if (ct.ptList[closestPointMapNE].cutAltitude < 1 | ct.ptList[closestPointMapNW].cutAltitude < 1 | ct.ptList[closestPointMapSE].cutAltitude < 1 | ct.ptList[closestPointMapSW].cutAltitude < 1)
                                 {
                                     avgCutAltitude = ct.ptList[closestPointMap].cutAltitude;
                                 }
@@ -1055,7 +1059,7 @@ namespace OpenGrade
 
                            
 
-                            if (avgCutAltitude == -1) cutFillMap = 9999;
+                            if (avgCutAltitude < 1) cutFillMap = 9999;
                             else cutFillMap = avgCutAltitude - avgAltitude;
 
                             mapListPt point = new mapListPt(h, i, drawPtWidth, avgAltitude, avgCutAltitude,
@@ -1066,6 +1070,8 @@ namespace OpenGrade
                 }
             }
             FileSaveMapPt(); // For keeping the visual mapping
+
+            //stopTheProgram = false;
         }
 
         #endregion
@@ -1130,14 +1136,15 @@ namespace OpenGrade
         }
 
         
-        double slopeDraw = 0.0;
+       
 
        
         
-
+        /*
         private void CalculateContourPointDistances()
         {
             int cnt = ct.ptList.Count;
+
             if (cnt > 0)
             {
                 ct.ptList[0].distance = 0;
@@ -1147,6 +1154,7 @@ namespace OpenGrade
                 }
             }
         }
+        */
 
         //Draw section OpenGL window, not visible
         private void openGLControlBack_OpenGLInitialized(object sender, EventArgs e)

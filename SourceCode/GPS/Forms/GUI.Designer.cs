@@ -1105,162 +1105,168 @@ namespace OpenGrade
         //Timer triggers at 20 msec, 50 hz, and is THE clock of the whole program//
         private void tmrWatchdog_tick(object sender, EventArgs e)
         {
-            //go see if data ready for draw and position updates
-            //tmrWatchdog.Enabled = false;
-            ScanForNMEA();
-            //tmrWatchdog.Enabled = true;
-            statusUpdateCounter++;
+            //if (!stopTheProgram)
+            //{
 
-            if (fiveSecondCounter++ > 100) { fiveSecondCounter = 0; }
 
-            //GPS Update rate
-            lblFixUpdateHz.Text = NMEAHz + " Hz " + FixQuality + " " + (int)(frameTime) + "ms";
+                //go see if data ready for draw and position updates
+                //tmrWatchdog.Enabled = false;
+                ScanForNMEA();
+                //tmrWatchdog.Enabled = true;
+                statusUpdateCounter++;
 
-            //every half of a second update all status
-            if (statusUpdateCounter > 4)
-            {
-                //reset the counter
-                statusUpdateCounter = 0;
+                if (fiveSecondCounter++ > 100) { fiveSecondCounter = 0; }
 
-                //counter used for saving field in background
-                saveCounter++;
+                //GPS Update rate
+                lblFixUpdateHz.Text = NMEAHz + " Hz " + FixQuality + " " + (int)(frameTime) + "ms";
 
-                if (tabControl1.SelectedIndex == 0 && tabControl1.Visible)
+                //every half of a second update all status
+                if (statusUpdateCounter > 4)
                 {
+                    //reset the counter
+                    statusUpdateCounter = 0;
 
-                    //both
-                    lblLatitude.Text = Latitude;
-                    lblLongitude.Text = Longitude;
-                    lblFixQuality.Text = FixQuality;
-                    lblSats.Text = SatsTracked;
+                    //counter used for saving field in background
+                    saveCounter++;
 
-                    lblRoll.Text = RollInDegrees;
-                    lblGyroHeading.Text = GyroInDegrees;
-                    lblGPSHeading.Text = GPSHeading;
-
-                    //up in the menu a few pieces of info
-                    if (isJobStarted)
+                    if (tabControl1.SelectedIndex == 0 && tabControl1.Visible)
                     {
-                        lblEasting.Text = "E: " + Math.Round(pn.easting, 1).ToString();
-                        lblNorthing.Text = "N: " + Math.Round(pn.northing, 1).ToString();
-                    }
-                    else
-                    {
-                        lblEasting.Text = "E: " + ((int)pn.actualEasting).ToString();
-                        lblNorthing.Text = "N: " + ((int)pn.actualNorthing).ToString();
-                    }
 
-                    lblZone.Text = pn.zone.ToString();
-                    tboxSentence.Text = recvSentenceSettings;
-                }
+                        //both
+                        lblLatitude.Text = Latitude;
+                        lblLongitude.Text = Longitude;
+                        lblFixQuality.Text = FixQuality;
+                        lblSats.Text = SatsTracked;
 
-                //the main formgps window
-                if (isMetric)  //metric or imperial
-                {
-                    //Hectares on the master section soft control and sections
-                    lblSpeed.Text = SpeedKPH;
+                        lblRoll.Text = RollInDegrees;
+                        lblGyroHeading.Text = GyroInDegrees;
+                        lblGPSHeading.Text = GPSHeading;
 
-                    //status strip values
-                    stripDistance.Text = Convert.ToString((UInt16)(userDistance)) + " m";
-                    lblAltitude.Text = Altitude;
-                    btnZeroAltitude.Text = (pn.altitude - ct.zeroAltitude).ToString("N2");
-                }
-                else  //Imperial Measurements
-                {
-                    //acres on the master section soft control and sections
-                    lblSpeed.Text = SpeedMPH;
-
-                    //status strip values
-                    stripDistance.Text = Convert.ToString((UInt16)(userDistance * 3.28084)) + " ft";
-                    lblAltitude.Text = AltitudeFeet;
-                    btnZeroAltitude.Text = ((pn.altitude - ct.zeroAltitude)*glm.m2ft).ToString("N2");
-                }
-
-                //not Metric/Standard units sensitive
-                lblHeading.Text = Heading;
-                btnABLine.Text = PassNumber;
-                lblPureSteerAngle.Text = PureSteerAngle;
-
-                
-
-                if (cutDelta == 9999)
-                {
-                    lblCutDelta.Text = "--";
-                    lblCutDelta.BackColor = Color.Lavender;
-                    pbarCutAbove.Value = 0;
-                    pbarCutBelow.Value = 0;
-
-                    //Output to serial for blade control 
-                    mc.relayRateData[mc.cutValve] = (byte)(100);
-                    RateRelayDataOutToPort();
-
-                    //
-                }
-                else
-                {   if (cutDelta < -9.9) //par Pat
-
-                    {
-                        mc.relayRateData[mc.cutValve] = (byte)(1);
-                        RateRelayDataOutToPort();
-                    }
-                    else
-                    {
-                        if (cutDelta > 9.9)
+                        //up in the menu a few pieces of info
+                        if (isJobStarted)
                         {
-                            mc.relayRateData[mc.cutValve] = (byte)(199);
+                            lblEasting.Text = "E: " + Math.Round(pn.easting, 1).ToString();
+                            lblNorthing.Text = "N: " + Math.Round(pn.northing, 1).ToString();
+                        }
+                        else
+                        {
+                            lblEasting.Text = "E: " + ((int)pn.actualEasting).ToString();
+                            lblNorthing.Text = "N: " + ((int)pn.actualNorthing).ToString();
+                        }
+
+                        lblZone.Text = pn.zone.ToString();
+                        tboxSentence.Text = recvSentenceSettings;
+                    }
+
+                    //the main formgps window
+                    if (isMetric)  //metric or imperial
+                    {
+                        //Hectares on the master section soft control and sections
+                        lblSpeed.Text = SpeedKPH;
+
+                        //status strip values
+                        stripDistance.Text = Convert.ToString((UInt16)(userDistance)) + " m";
+                        lblAltitude.Text = Altitude;
+                        btnZeroAltitude.Text = (pn.altitude - ct.zeroAltitude).ToString("N2");
+                    }
+                    else  //Imperial Measurements
+                    {
+                        //acres on the master section soft control and sections
+                        lblSpeed.Text = SpeedMPH;
+
+                        //status strip values
+                        stripDistance.Text = Convert.ToString((UInt16)(userDistance * 3.28084)) + " ft";
+                        lblAltitude.Text = AltitudeFeet;
+                        btnZeroAltitude.Text = ((pn.altitude - ct.zeroAltitude) * glm.m2ft).ToString("N2");
+                    }
+
+                    //not Metric/Standard units sensitive
+                    lblHeading.Text = Heading;
+                    btnABLine.Text = PassNumber;
+                    lblPureSteerAngle.Text = PureSteerAngle;
+
+
+
+                    if (cutDelta == 9999)
+                    {
+                        lblCutDelta.Text = "--";
+                        lblCutDelta.BackColor = Color.Lavender;
+                        pbarCutAbove.Value = 0;
+                        pbarCutBelow.Value = 0;
+
+                        //Output to serial for blade control 
+                        mc.relayRateData[mc.cutValve] = (byte)(100);
+                        RateRelayDataOutToPort();
+
+                        //
+                    }
+                    else
+                    {
+                        if (cutDelta < -9.9) //par Pat
+
+                        {
+                            mc.relayRateData[mc.cutValve] = (byte)(1);
                             RateRelayDataOutToPort();
                         }
                         else
                         {
-                            mc.relayRateData[mc.cutValve] = (byte)((cutDelta * 10) + 100);
-                            RateRelayDataOutToPort();
+                            if (cutDelta > 9.9)
+                            {
+                                mc.relayRateData[mc.cutValve] = (byte)(199);
+                                RateRelayDataOutToPort();
+                            }
+                            else
+                            {
+                                mc.relayRateData[mc.cutValve] = (byte)((cutDelta * 10) + 100);
+                                RateRelayDataOutToPort();
+                            }
+                        }
+
+
+
+
+                        if (isMetric)  //metric or imperial
+                        {
+                            lblCutDelta.Text = cutDelta.ToString("N1");
+
+                        }
+                        else
+                        {
+                            lblCutDelta.Text = (0.3937 * cutDelta).ToString("N2");
+                        }
+
+                        lblCutDelta.BackColor = SystemColors.ControlText;
+
+                        if (cutDelta < 0)
+                        {
+                            int val = (int)(cutDelta / barGraphMax * -100);
+                            pbarCutAbove.Value = 0;
+                            pbarCutBelow.Value = val;
+                            lblCutDelta.BackColor = Color.Tomato;
+                        }
+                        else
+                        {
+                            int val = (int)(cutDelta / barGraphMax * 100);
+                            pbarCutAbove.Value = val;
+                            pbarCutBelow.Value = 0;
+                            lblCutDelta.BackColor = Color.Lime;
+
                         }
                     }
 
-
-
-
-                    if (isMetric)  //metric or imperial
+                    //update the online indicator
+                    if (recvCounter > 50)
                     {
-                        lblCutDelta.Text = cutDelta.ToString("N1");
-                        
+                        stripOnlineGPS.Value = 1;
+                        lblEasting.Text = "-";
+                        lblNorthing.Text = gStr.gsNoGPS;
+                        lblZone.Text = "-";
+                        tboxSentence.Text = gStr.gsNoSentenceData;
                     }
-                    else
-                    {
-                        lblCutDelta.Text = (0.3937*cutDelta).ToString("N2");
-                    }
-
-                    lblCutDelta.BackColor = SystemColors.ControlText;
-
-                    if (cutDelta < 0)
-                    {
-                        int val = (int)(cutDelta / barGraphMax * -100);
-                        pbarCutAbove.Value = 0;
-                        pbarCutBelow.Value = val;
-                        lblCutDelta.BackColor = Color.Tomato;
-                    }
-                    else
-                    {
-                        int val = (int)(cutDelta / barGraphMax * 100);
-                        pbarCutAbove.Value = val;
-                        pbarCutBelow.Value = 0;
-                        lblCutDelta.BackColor = Color.Lime;
-
-                    }
+                    else stripOnlineGPS.Value = 100;
                 }
-
-                //update the online indicator
-                if (recvCounter > 50)
-                {
-                    stripOnlineGPS.Value = 1;
-                    lblEasting.Text = "-";
-                    lblNorthing.Text = gStr.gsNoGPS;
-                    lblZone.Text = "-";
-                    tboxSentence.Text = gStr.gsNoSentenceData;
-                }
-                else stripOnlineGPS.Value = 100;
-            }
-            //wait till timer fires again.     
+                //wait till timer fires again.  
+            //}
         }
 
        
