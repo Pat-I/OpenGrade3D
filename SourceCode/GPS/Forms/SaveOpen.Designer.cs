@@ -15,11 +15,11 @@ namespace OpenGrade
         public List<List<vec2>> patchSaveList = new List<List<vec2>>();
 
         /*
-         * The agd file is read near line 868 --public void FileOpenAgdDesign()
+         * The agd file is read near line 942 --public void FileOpenAgdDesign()
          * codes in .agd -> code in opengrade
          * MB -> 0
          * 2PER -> 2
-         * 3GRD ->
+         * 3GRD -> 3
          * 2SUBZONE1 -> 21
          * 2SUBZONE2 -> 22
          * to
@@ -621,6 +621,78 @@ namespace OpenGrade
                 }
             }
 
+            // Boundary points ----------------------------------------------------------------------------
+
+            fileAndDirectory = fieldsDirectory + currentFieldDirectory + "\\BoundaryList.txt";
+            if (!File.Exists(fileAndDirectory))
+            {
+                var form = new FormTimedMessage(4000, "Missing Boundary Pts File", "But Field is Loaded");
+                form.Show();
+                //return;
+            }
+
+            /*
+                May-14-17  -->  7:42:47 PM
+                Points in Patch followed by easting, heading, northing, altitude
+                $ContourDir
+                cdert_May14
+                $Offsets
+                533631,5927279,12
+                19
+                2.866,2.575,-4.07,0             
+             */
+            else
+            {
+                using (StreamReader reader = new StreamReader(fileAndDirectory))
+                {
+                    try
+                    {
+                        //read the lines and skip them
+                        line = reader.ReadLine();
+                        line = reader.ReadLine();
+                        line = reader.ReadLine();
+                        line = reader.ReadLine();
+                        line = reader.ReadLine();
+                        line = reader.ReadLine();
+
+                        while (!reader.EndOfStream)
+                        {
+                            //read how many vertices in the following patch
+                            line = reader.ReadLine();
+                            int verts = int.Parse(line);
+                            //CContourPt vecFix = new vec4(0, 0, 0, 0);
+
+                            for (int v = 0; v < verts; v++)
+                            {
+                                line = reader.ReadLine();
+                                string[] words = line.Split(',');
+
+                                BoundaryPt point = new BoundaryPt(
+                                    double.Parse(words[0], CultureInfo.InvariantCulture),
+                                    double.Parse(words[1], CultureInfo.InvariantCulture),
+                                    double.Parse(words[2], CultureInfo.InvariantCulture),
+                                    double.Parse(words[3], CultureInfo.InvariantCulture),
+                                    double.Parse(words[4], CultureInfo.InvariantCulture),
+                                    double.Parse(words[5], CultureInfo.InvariantCulture),
+                                    double.Parse(words[6], CultureInfo.InvariantCulture),
+                                    double.Parse(words[7], CultureInfo.InvariantCulture));
+
+                                ct.boundaryList.Add(point);
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        WriteErrorLog("Loading Contour file" + e.ToString());
+
+                        var form = new FormTimedMessage(4000, "MapPt File is Corrupt", "But Field is Loaded");
+                        form.Show();
+                    }
+
+
+                }
+            }
+
 
             // Flags -------------------------------------------------------------------------------------------------
 
@@ -921,6 +993,19 @@ namespace OpenGrade
                                 line = reader.ReadLine();
                                 string[] words = line.Split(',');
 
+                                if (words[5] == "MB" | words[5] == " MB")
+                                {
+                                    designPt point = new designPt(
+                                    double.Parse(words[0], CultureInfo.InvariantCulture),
+                                    double.Parse(words[1], CultureInfo.InvariantCulture),
+                                    double.Parse(words[2], CultureInfo.InvariantCulture),
+                                    -1,
+                                    -1,
+                                    0, 0, 0
+                                    );
+
+                                    ct.designList.Add(point);
+                                }
 
                                 if (words[5] == "2PER" | words[5] == " 2PER")
                                 {
@@ -934,19 +1019,136 @@ namespace OpenGrade
                                     );
 
                                     ct.designList.Add(point);
-
-
-                                
-                                //read the Offsets 
-                                //line = reader.ReadLine();
-                                //string[] offs = line.Split(',');
-                                //pn.utmEast = int.Parse(offs[0]);
-                                //pn.utmNorth = int.Parse(offs[1]);
-                                //pn.zone = int.Parse(offs[2]);
                                 }
-                                
-                                 if (words[5] == "3GRD" | words[5] == " 3GRD")
-                                 {
+
+                                if (words[5] == "2SUBZONE1" | words[5] == "2SUBZONE1")
+                                {
+                                    designPt point = new designPt(
+                                    double.Parse(words[0], CultureInfo.InvariantCulture),
+                                    double.Parse(words[1], CultureInfo.InvariantCulture),
+                                    double.Parse(words[2], CultureInfo.InvariantCulture),
+                                    -1,
+                                    -1,
+                                    21, 0, 0
+                                    );
+
+                                    ct.designList.Add(point);
+                                }
+
+                                if (words[5] == "2SUBZONE2" | words[5] == "2SUBZONE2")
+                                {
+                                    designPt point = new designPt(
+                                    double.Parse(words[0], CultureInfo.InvariantCulture),
+                                    double.Parse(words[1], CultureInfo.InvariantCulture),
+                                    double.Parse(words[2], CultureInfo.InvariantCulture),
+                                    -1,
+                                    -1,
+                                    22, 0, 0
+                                    );
+
+                                    ct.designList.Add(point);
+                                }
+
+                                if (words[5] == "2SUBZONE3" | words[5] == "2SUBZONE3")
+                                {
+                                    designPt point = new designPt(
+                                    double.Parse(words[0], CultureInfo.InvariantCulture),
+                                    double.Parse(words[1], CultureInfo.InvariantCulture),
+                                    double.Parse(words[2], CultureInfo.InvariantCulture),
+                                    -1,
+                                    -1,
+                                    23, 0, 0
+                                    );
+
+                                    ct.designList.Add(point);
+                                }
+
+                                if (words[5] == "2SUBZONE4" | words[5] == "2SUBZONE4")
+                                {
+                                    designPt point = new designPt(
+                                    double.Parse(words[0], CultureInfo.InvariantCulture),
+                                    double.Parse(words[1], CultureInfo.InvariantCulture),
+                                    double.Parse(words[2], CultureInfo.InvariantCulture),
+                                    -1,
+                                    -1,
+                                    24, 0, 0
+                                    );
+
+                                    ct.designList.Add(point);
+                                }
+
+                                if (words[5] == "2SUBZONE5" | words[5] == "2SUBZONE5")
+                                {
+                                    designPt point = new designPt(
+                                    double.Parse(words[0], CultureInfo.InvariantCulture),
+                                    double.Parse(words[1], CultureInfo.InvariantCulture),
+                                    double.Parse(words[2], CultureInfo.InvariantCulture),
+                                    -1,
+                                    -1,
+                                    25, 0, 0
+                                    );
+
+                                    ct.designList.Add(point);
+                                }
+
+                                if (words[5] == "2SUBZONE6" | words[5] == "2SUBZONE6")
+                                {
+                                    designPt point = new designPt(
+                                    double.Parse(words[0], CultureInfo.InvariantCulture),
+                                    double.Parse(words[1], CultureInfo.InvariantCulture),
+                                    double.Parse(words[2], CultureInfo.InvariantCulture),
+                                    -1,
+                                    -1,
+                                    26, 0, 0
+                                    );
+
+                                    ct.designList.Add(point);
+                                }
+
+                                if (words[5] == "2SUBZONE7" | words[5] == "2SUBZONE7")
+                                {
+                                    designPt point = new designPt(
+                                    double.Parse(words[0], CultureInfo.InvariantCulture),
+                                    double.Parse(words[1], CultureInfo.InvariantCulture),
+                                    double.Parse(words[2], CultureInfo.InvariantCulture),
+                                    -1,
+                                    -1,
+                                    27, 0, 0
+                                    );
+
+                                    ct.designList.Add(point);
+                                }
+
+                                if (words[5] == "2SUBZONE8" | words[5] == "2SUBZONE8")
+                                {
+                                    designPt point = new designPt(
+                                    double.Parse(words[0], CultureInfo.InvariantCulture),
+                                    double.Parse(words[1], CultureInfo.InvariantCulture),
+                                    double.Parse(words[2], CultureInfo.InvariantCulture),
+                                    -1,
+                                    -1,
+                                    28, 0, 0
+                                    );
+
+                                    ct.designList.Add(point);
+                                }
+
+                                if (words[5] == "2SUBZONE9" | words[5] == "2SUBZONE9")
+                                {
+                                    designPt point = new designPt(
+                                    double.Parse(words[0], CultureInfo.InvariantCulture),
+                                    double.Parse(words[1], CultureInfo.InvariantCulture),
+                                    double.Parse(words[2], CultureInfo.InvariantCulture),
+                                    -1,
+                                    -1,
+                                    29, 0, 0
+                                    );
+
+                                    ct.designList.Add(point);
+                                }
+
+                                if (words[5] == "3GRD" | words[5] == " 3GRD")
+                                {
                                      designPt point = new designPt(
                                      double.Parse(words[0], CultureInfo.InvariantCulture),
                                      double.Parse(words[1], CultureInfo.InvariantCulture),
@@ -958,7 +1160,7 @@ namespace OpenGrade
 
                                      ct.designList.Add(point);
 
-                                 }
+                                }
                                 
 
                             }
@@ -1122,6 +1324,71 @@ namespace OpenGrade
             }
             //set saving flag off
             isSavingFile = false;
+        }
+
+        //save the boundary points which include elevation values
+        public void FileSaveBoundaryList()
+        {
+            //1  - points in patch
+            //64.697,0.168,-21.654,0 - east, heading, north, altitude
+            //Saturday, February 11, 2017  -->  7:26:52 AM
+            //12  - points in patch
+            //64.697,0.168,-21.654,0 - east, heading, north, altitude
+            //$ContourDir
+            //Bob_Feb11
+            //$Offsets
+            //533172,5927719,12
+
+            //get the directory and make sure it exists, create if not
+            string dirField = fieldsDirectory + currentFieldDirectory + "\\";
+
+            string directoryName = Path.GetDirectoryName(dirField);
+            if ((directoryName.Length > 0) && (!Directory.Exists(directoryName)))
+            { Directory.CreateDirectory(directoryName); }
+
+            string myFileName = "BoundaryList.txt";
+
+            //write out the file
+            using (StreamWriter writer = new StreamWriter(dirField + myFileName))
+            {
+                //Write out the date
+                writer.WriteLine(DateTime.Now.ToString("yyyy-MMMM-dd hh:mm:ss tt", CultureInfo.InvariantCulture));
+                writer.WriteLine("easting, heading, northing, altitude, latitude, longitude, cutAltitude, code");
+
+                //which field directory
+                writer.WriteLine("$BoundaryDir");
+                writer.WriteLine(currentFieldDirectory);
+
+                //write out the easting and northing Offsets
+                writer.WriteLine("$Offsets");
+                writer.WriteLine(pn.utmEast.ToString(CultureInfo.InvariantCulture) +
+                    "," + pn.utmNorth.ToString(CultureInfo.InvariantCulture) + "," + pn.zone.ToString(CultureInfo.InvariantCulture));
+
+
+                //make sure there is something to save
+                if (ct.boundaryList.Count() > 0)
+                {
+                    int count2 = ct.boundaryList.Count;
+
+                    //for every new chunk of patch in the whole section
+
+                    writer.WriteLine(count2.ToString(CultureInfo.InvariantCulture));
+
+                    for (int i = 0; i < count2; i++)
+                    {
+                        writer.WriteLine(Math.Round((ct.boundaryList[i].easting), 3).ToString(CultureInfo.InvariantCulture) + "," +
+                            Math.Round(ct.boundaryList[i].heading, 3).ToString(CultureInfo.InvariantCulture) + "," +
+                            Math.Round(ct.boundaryList[i].northing, 3).ToString(CultureInfo.InvariantCulture) + "," +
+                            Math.Round(ct.boundaryList[i].altitude, 3).ToString(CultureInfo.InvariantCulture) + "," +
+                            Math.Round(ct.boundaryList[i].latitude, 9).ToString(CultureInfo.InvariantCulture) + "," +
+                            Math.Round(ct.boundaryList[i].longitude, 9).ToString(CultureInfo.InvariantCulture) + "," +
+                            Math.Round(ct.boundaryList[i].cutAltitude, 3).ToString(CultureInfo.InvariantCulture) + "," +
+                            Math.Round(ct.boundaryList[i].code, 0).ToString(CultureInfo.InvariantCulture));
+                    }
+                }
+            }
+            //set saving flag off
+            //isSavingFile = false;
         }
 
         //save the contour (mapping) points which include elevation values

@@ -35,6 +35,35 @@ namespace OpenGrade
         }
     }
 
+    // A list for the boundary pts in the visual Map
+    public class BoundaryPt
+    {
+        public double easting { get; set; }
+        public double northing { get; set; }
+        public double heading { get; set; }
+        public double altitude { get; set; }
+        public double cutAltitude { get; set; }
+        public double latitude { get; set; }
+        public double longitude { get; set; }
+        public double code { get; set; }
+
+        //constructor
+        public BoundaryPt(double _easting, double _heading, double _northing,
+                            double _altitude, double _lat, double _long,
+                            double _cutAltitude = -1, double _code = 0)
+        {
+            easting = _easting;
+            northing = _northing;
+            heading = _heading;
+            altitude = _altitude;
+            latitude = _lat;
+            longitude = _long;
+
+            //optional parameters
+            cutAltitude = _cutAltitude;
+            code = _code;
+        }
+    }
     // ViewPt is a Pt list for the side elevation view
     // pt 0 to 100 for the past points, pt 101 (eleViewListCount = 102) for the prestent, pt 102 to 299 for the look ahead, 50 cm apart, by Pat
 
@@ -221,6 +250,8 @@ namespace OpenGrade
         public List<ViewPt> eleViewList = new List<ViewPt>();
 
         public List<UsedPt> usedPtList = new List<UsedPt>();
+
+        public List<BoundaryPt> boundaryList = new List<BoundaryPt>();
 
         //used to determine if section was off and now is on or vice versa
         public bool wasSectionOn;
@@ -862,7 +893,50 @@ namespace OpenGrade
                     gl.End();
                 }
 
+                //Paint the boundary and subzones
 
+                int boundaryPtCnt = boundaryList.Count;
+
+                if (boundaryPtCnt > 0)
+                {
+                    if (boundaryList[0].code == 0)
+                    {
+                        gl.PointSize(6.0f);
+                        gl.Begin(OpenGL.GL_POINTS);
+                        gl.Color(0.0f, 0.0f, 1.0f);
+                        gl.Vertex(boundaryList[0].easting, boundaryList[0].northing, 0);
+                        gl.End();
+                    }
+
+                    double lastCode = 2;
+
+                    gl.LineWidth(2);
+                    gl.Color(0.73f, 0.27f, 0.69f);
+                    gl.Begin(OpenGL.GL_LINE_STRIP);
+
+                    for (int t = (boundaryPtCnt - 1); t > 0; t--)
+                    {
+                        
+
+                        if (boundaryList[t].code == lastCode)
+                        {
+                            gl.Vertex(boundaryList[t].easting, boundaryList[t].northing, 0);
+                        }
+                        else 
+                        {
+                            gl.End();
+                            gl.LineWidth(1);
+                            gl.Color(0.0f, 0.0f, 0.0f);
+                            gl.Begin(OpenGL.GL_LINE_STRIP);
+                            gl.Vertex(boundaryList[t].easting, boundaryList[t].northing, 0);
+                        }
+                        
+
+                        lastCode = boundaryList[t].code;
+
+                    }
+                    gl.End();
+                }
 
 
             }
@@ -947,10 +1021,12 @@ namespace OpenGrade
             }
         }
         #region Convert design pt to ptList
-        //add the utm to the agd data and save to the ptList , by Pat
+        //add the utm to the agd data and save to the ptList for code 3 pts, to boundaryList For the others , by Pat
         public void designList2ptList()
         {
             if (ptList != null) ptList.Clear();
+
+            if (boundaryList != null) boundaryList.Clear();
 
             if (designList != null)
             {
@@ -961,9 +1037,12 @@ namespace OpenGrade
                     double lon = designList[t].longitude;
                     mf.pn.ConvertAgd2Utm(lat * 0.01745329251994329576923690766743, lon * 0.01745329251994329576923690766743);
 
-                    
 
-                    CContourPt point = new CContourPt(mf.pn.eastingAgd,
+                    if (designList[t].code == 3)
+                    {
+
+                    
+                        CContourPt point = new CContourPt(mf.pn.eastingAgd,
                                     0,
                                     mf.pn.northingAgd,
                                     designList[t].altitude,
@@ -973,10 +1052,24 @@ namespace OpenGrade
                                     -1,
                                     -1);
 
-                    ptList.Add(point);
+                        ptList.Add(point);
+                    }
+                    else
+                    {
+                        BoundaryPt point = new BoundaryPt(mf.pn.eastingAgd,
+                            0,
+                            mf.pn.northingAgd,
+                            designList[t].altitude,
+                            designList[t].latitude,
+                            designList[t].longitude,
+                            designList[t].cutAltitude,
+                            designList[t].code);
 
+                        boundaryList.Add(point);
+                    }
                 }
                 mf.FileSaveContour();
+                mf.FileSaveBoundaryList();
                 mapList.Clear();
                 mf.CalculateMinMaxEastNort();
             }

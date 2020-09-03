@@ -1020,6 +1020,7 @@ namespace OpenGrade
             //by Pat
             ct.eleViewList.Clear();
             ct.mapList.Clear();
+            ct.boundaryList.Clear();
         }
 
         //bring up field dialog for new/open/resume
