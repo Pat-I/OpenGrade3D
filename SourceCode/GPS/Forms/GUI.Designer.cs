@@ -1106,7 +1106,7 @@ namespace OpenGrade
 
         #endregion properties 
 
-        //Timer triggers at 20 msec, 50 hz, and is THE clock of the whole program//
+        //Timer triggers at 50 msec, 20 hz, and is THE clock of the whole program//
         private void tmrWatchdog_tick(object sender, EventArgs e)
         {
             //if (!stopTheProgram)
@@ -1124,8 +1124,8 @@ namespace OpenGrade
                 //GPS Update rate
                 lblFixUpdateHz.Text = NMEAHz + " Hz " + FixQuality + " " + (int)(frameTime) + "ms";
 
-                //every half of a second update all status
-                if (statusUpdateCounter > 4)
+                //3 for every .200 of a second update all status ,now 5hz
+                if (statusUpdateCounter > 3)
                 {
                     //reset the counter
                     statusUpdateCounter = 0;
@@ -1162,6 +1162,7 @@ namespace OpenGrade
                         tboxSentence.Text = recvSentenceSettings;
                     }
 
+
                     //the main formgps window
                     if (isMetric)  //metric or imperial
                     {
@@ -1189,7 +1190,14 @@ namespace OpenGrade
                     btnABLine.Text = PassNumber;
                     lblPureSteerAngle.Text = PureSteerAngle;
 
+                    //check for the fix quality
+                    if (pn.fixQuality != 4 && lastFixQuality == 4)
+                    {
+                        var form = new FormTimedMessage(1000, "Lost RTK fix", "RTK fix is lost!");
+                        form.Show();
+                    }
 
+                    lastFixQuality = pn.fixQuality;
 
                     if (cutDelta == 9999)
                     {

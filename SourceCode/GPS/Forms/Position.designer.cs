@@ -25,6 +25,9 @@ namespace OpenGrade
         public int fixUpdateHz = 5;
         public double fixUpdateTime = 0.2;
 
+        //for window lost rtk
+        public int lastFixQuality;
+
         //Current fix positions
         public double fixZ = 0.0;
 
