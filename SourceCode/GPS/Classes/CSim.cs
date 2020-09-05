@@ -19,15 +19,15 @@ namespace OpenGrade
         private readonly StringBuilder sbSendText = new StringBuilder();
 
         //GPS related properties
-        private readonly int fixQuality = 3, sats = 7;
+        private readonly int fixQuality = 8, sats = 7;
         private readonly double HDOP = 0.9;
         public double altitude = 100.0;
-        private readonly char EW = 'W';
-        private readonly char NS = 'N';
+        private char EW = 'W';
+        private char NS = 'N';
 
-        public double latitude = 53.436026;
+        public double latitude = Properties.Settings.Default.setSim_lastLat;
         //public double longitude = -111.160047;
-        public double longitude = -111.260047;
+        public double longitude = Properties.Settings.Default.setSim_lastLong;        
         private double latDeg, latMinu, longDeg, longMinu, latNMEA, longNMEA;
         public double speed = 0.3, headingTrue, stepDistance = 0.25, steerAngle;
         public double steerAngleScrollBar = 0;
@@ -135,24 +135,82 @@ namespace OpenGrade
 
         public void ResetSim()
         {
-            latitude = 40.8390;//53.436026;
+            latitude = Properties.Settings.Default.setSim_lastLat;//53.436026;
             //longitude = -111.160047;
-            longitude = -97.1270;//-111.260047;
+            longitude = Properties.Settings.Default.setSim_lastLong;//-111.260047;
         }
 
         private void BuildGGA()
         {
-            sbGGA.Clear();
-            sbGGA.Append("$GPGGA,");
-            sbGGA.Append(DateTime.Now.ToString("HHmmss.00,", CultureInfo.InvariantCulture));
-            sbGGA.Append(latNMEA.ToString(CultureInfo.InvariantCulture)).Append(',').Append(NS).Append(',').Append(0);
-            sbGGA.Append(Math.Abs(longNMEA).ToString(CultureInfo.InvariantCulture)).Append(',').Append(EW).Append(',');
-            sbGGA.Append(fixQuality.ToString(CultureInfo.InvariantCulture)).Append(',').Append(sats.ToString(CultureInfo.InvariantCulture)).Append(',').Append(HDOP.ToString(CultureInfo.InvariantCulture)).Append(',').Append(altitude.ToString(CultureInfo.InvariantCulture));
-            sbGGA.Append(",M,46.9,M,,,*");
+            if (longitude < 0) EW = 'W';
+            else EW = 'E';
 
-            CalculateChecksum(sbGGA.ToString());
-            sbGGA.Append(sumStr);
-            sbGGA.Append("\r\n");
+            if (latitude < 0) NS = 'S';
+            else NS = 'N';
+
+            if (longitude <= -100 | longitude >= 100)
+            {
+                if(latitude <= -10 | latitude >= 10)
+                {
+                    sbGGA.Clear();
+                    sbGGA.Append("$GPGGA,");
+                    sbGGA.Append(DateTime.Now.ToString("HHmmss.00,", CultureInfo.InvariantCulture));
+                    sbGGA.Append(Math.Abs(latNMEA).ToString(CultureInfo.InvariantCulture)).Append(',').Append(NS).Append(',');
+                    sbGGA.Append(Math.Abs(longNMEA).ToString(CultureInfo.InvariantCulture)).Append(',').Append(EW).Append(',');
+                    sbGGA.Append(fixQuality.ToString(CultureInfo.InvariantCulture)).Append(',').Append(sats.ToString(CultureInfo.InvariantCulture)).Append(',').Append(HDOP.ToString(CultureInfo.InvariantCulture)).Append(',').Append(altitude.ToString(CultureInfo.InvariantCulture));
+                    sbGGA.Append(",M,46.9,M,,,*");
+
+                    CalculateChecksum(sbGGA.ToString());
+                    sbGGA.Append(sumStr);
+                    sbGGA.Append("\r\n");
+                }
+                else
+                {
+                    sbGGA.Clear();
+                    sbGGA.Append("$GPGGA,");
+                    sbGGA.Append(DateTime.Now.ToString("HHmmss.00,", CultureInfo.InvariantCulture)).Append('0');
+                    sbGGA.Append(Math.Abs(latNMEA).ToString(CultureInfo.InvariantCulture)).Append(',').Append(NS).Append(',');
+                    sbGGA.Append(Math.Abs(longNMEA).ToString(CultureInfo.InvariantCulture)).Append(',').Append(EW).Append(',');
+                    sbGGA.Append(fixQuality.ToString(CultureInfo.InvariantCulture)).Append(',').Append(sats.ToString(CultureInfo.InvariantCulture)).Append(',').Append(HDOP.ToString(CultureInfo.InvariantCulture)).Append(',').Append(altitude.ToString(CultureInfo.InvariantCulture));
+                    sbGGA.Append(",M,46.9,M,,,*");
+
+                    CalculateChecksum(sbGGA.ToString());
+                    sbGGA.Append(sumStr);
+                    sbGGA.Append("\r\n");
+                }               
+            }
+            else
+            {
+                if (latitude <= -10 | latitude >= 10)
+                {
+                    sbGGA.Clear();
+                    sbGGA.Append("$GPGGA,");
+                    sbGGA.Append(DateTime.Now.ToString("HHmmss.00,", CultureInfo.InvariantCulture));
+                    sbGGA.Append(Math.Abs(latNMEA).ToString(CultureInfo.InvariantCulture)).Append(',').Append(NS).Append(',').Append(0);
+                    sbGGA.Append(Math.Abs(longNMEA).ToString(CultureInfo.InvariantCulture)).Append(',').Append(EW).Append(',');
+                    sbGGA.Append(fixQuality.ToString(CultureInfo.InvariantCulture)).Append(',').Append(sats.ToString(CultureInfo.InvariantCulture)).Append(',').Append(HDOP.ToString(CultureInfo.InvariantCulture)).Append(',').Append(altitude.ToString(CultureInfo.InvariantCulture));
+                    sbGGA.Append(",M,46.9,M,,,*");
+
+                    CalculateChecksum(sbGGA.ToString());
+                    sbGGA.Append(sumStr);
+                    sbGGA.Append("\r\n");
+                }
+                else
+                {
+                    sbGGA.Clear();
+                    sbGGA.Append("$GPGGA,");
+                    sbGGA.Append(DateTime.Now.ToString("HHmmss.00,", CultureInfo.InvariantCulture)).Append('0');
+                    sbGGA.Append(Math.Abs(latNMEA).ToString(CultureInfo.InvariantCulture)).Append(',').Append(NS).Append(',').Append(0);
+                    sbGGA.Append(Math.Abs(longNMEA).ToString(CultureInfo.InvariantCulture)).Append(',').Append(EW).Append(',');
+                    sbGGA.Append(fixQuality.ToString(CultureInfo.InvariantCulture)).Append(',').Append(sats.ToString(CultureInfo.InvariantCulture)).Append(',').Append(HDOP.ToString(CultureInfo.InvariantCulture)).Append(',').Append(altitude.ToString(CultureInfo.InvariantCulture));
+                    sbGGA.Append(",M,46.9,M,,,*");
+
+                    CalculateChecksum(sbGGA.ToString());
+                    sbGGA.Append(sumStr);
+                    sbGGA.Append("\r\n");
+                }                
+            }
+            
 
             /*
         $GPGGA,123519,4807.038,N,01131.000,E,1,08,0.9,545.4,M,46.9,M ,  ,*47

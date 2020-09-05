@@ -797,6 +797,28 @@ namespace OpenGrade
             Settings.Default.Save();
         }
 
+        private void btnFixQuality_click(object sender, EventArgs e)
+        {
+            if(ct.FloatIsOK)
+            {
+                ct.FloatIsOK = false;
+                btnFixQuality.Text = "RTK fix only";
+            }
+            else
+            {
+                ct.FloatIsOK = true;
+                btnFixQuality.Text = "RTK or float";
+            }
+        }
+
+        private void btnSimGoTo_click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.setSim_lastLat = (double)nudLatitude.Value;
+            Properties.Settings.Default.setSim_lastLong = (double)nudLongitude.Value;
+            Properties.Settings.Default.Save();
+            sim.ResetSim();
+        }
+
         //called everytime window is resized, clean up button positions
         private void FormGPS_Resize(object sender, EventArgs e)
         {

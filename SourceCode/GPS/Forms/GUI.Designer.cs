@@ -119,6 +119,7 @@ namespace OpenGrade
                     btnManualOffOn.Visible = false;
                     btnCutFillElev.Visible = true;
                     btnPropExist.Visible = true;
+                    btnFixQuality.Visible = false;
                 }
             }
             else
@@ -128,6 +129,7 @@ namespace OpenGrade
                 btnManualOffOn.Visible = true;
                 btnCutFillElev.Visible = false;
                 btnPropExist.Visible = false;
+                btnFixQuality.Visible = true;
             }
         }
 
@@ -734,12 +736,14 @@ namespace OpenGrade
                 panelSimControls.Visible = true;
                 nudElevation.Visible = true;
                 timerSim.Enabled = true;
+                //ct.isSimulatorOn = true;
             }
             else
             {
                 panelSimControls.Visible = false;
                 nudElevation.Visible = false;
                 timerSim.Enabled = false;
+                //ct.isSimulatorOn = false;
             }
 
             Settings.Default.setMenu_isSimulatorOn = simulatorOnToolStripMenuItem.Checked;

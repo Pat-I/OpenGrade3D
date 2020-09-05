@@ -1573,46 +1573,20 @@ namespace OpenGrade
                     int count4 = ct.surveyList.Count;
 
                     //for every new chunk of patch in the whole section
-                    writer.WriteLine("easting, northing, latitude, longitude, altitude, code");
+                    writer.WriteLine("easting, northing, latitude, longitude, altitude, code, fixQuality");
                     //writer.WriteLine(count4.ToString(CultureInfo.InvariantCulture));
 
                     for (int i = 0; i < count4; i++)
                     {
-                        if (ct.surveyList[i].code == 0)
-                        {
+                       
                             writer.WriteLine(Math.Round((ct.surveyList[i].easting), 3).ToString(CultureInfo.InvariantCulture) + ", " +
                             Math.Round((ct.surveyList[i].northing), 3).ToString(CultureInfo.InvariantCulture) + ", " +
                             Math.Round((ct.surveyList[i].latitude), 9).ToString(CultureInfo.InvariantCulture) + ", " +
                             Math.Round(ct.surveyList[i].longitude, 9).ToString(CultureInfo.InvariantCulture) + ", " +
                             Math.Round(ct.surveyList[i].altitude, 3).ToString(CultureInfo.InvariantCulture) + ", " +
-                            Math.Round(ct.surveyList[i].code, 0).ToString(CultureInfo.InvariantCulture) + "mb_4g");
-
-                        }
-
-                        if (ct.surveyList[i].code == 2)
-                        {
-                            writer.WriteLine(Math.Round((ct.surveyList[i].easting), 3).ToString(CultureInfo.InvariantCulture) + ", " +
-                            Math.Round((ct.surveyList[i].northing), 3).ToString(CultureInfo.InvariantCulture) + ", " +
-                            Math.Round((ct.surveyList[i].latitude), 9).ToString(CultureInfo.InvariantCulture) + ", " +
-                            Math.Round(ct.surveyList[i].longitude, 9).ToString(CultureInfo.InvariantCulture) + ", " +
-                            Math.Round(ct.surveyList[i].altitude, 3).ToString(CultureInfo.InvariantCulture) + ", " +
-                            Math.Round(ct.surveyList[i].code, 0).ToString(CultureInfo.InvariantCulture) + "PER");
-
-                        }
-
-                        if (ct.surveyList[i].code == 3)
-                        {
-                            writer.WriteLine(Math.Round((ct.surveyList[i].easting), 3).ToString(CultureInfo.InvariantCulture) + ", " +
-                            Math.Round((ct.surveyList[i].northing), 3).ToString(CultureInfo.InvariantCulture) + ", " +
-                            Math.Round((ct.surveyList[i].latitude), 9).ToString(CultureInfo.InvariantCulture) + ", " +
-                            Math.Round(ct.surveyList[i].longitude, 9).ToString(CultureInfo.InvariantCulture) + ", " +
-                            Math.Round(ct.surveyList[i].altitude, 3).ToString(CultureInfo.InvariantCulture) + ", " +
-                            Math.Round(ct.surveyList[i].code, 0).ToString(CultureInfo.InvariantCulture) + "GRD");
-
-                        }
-
-
-
+                            Math.Round(ct.surveyList[i].code, 0).ToString(CultureInfo.InvariantCulture) + ", " + 
+                            (ct.surveyList[i].fixQuality).ToString(CultureInfo.InvariantCulture));
+                       
                     }
                 }
             }

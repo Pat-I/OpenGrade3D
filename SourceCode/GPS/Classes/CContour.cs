@@ -120,10 +120,11 @@ namespace OpenGrade
         public double longitude { get; set; }
         public double altitude { get; set; }
         public double code { get; set; }
+        public int fixQuality { get; set; }
 
 
         //constructor
-        public SurveyPt(double _easting, double _northing, double _lat, double _long, double _altitude = -1, double _code = -1)
+        public SurveyPt(double _easting, double _northing, double _lat, double _long, double _altitude = -1, double _code = -1, int _fixQuality = 0)
         {
 
             easting = _easting;
@@ -133,6 +134,7 @@ namespace OpenGrade
             altitude = _altitude;
 
             code = _code;
+            fixQuality = _fixQuality;
             
         }
     }
@@ -223,6 +225,9 @@ namespace OpenGrade
         public bool isBtnStartPause;
         public bool isBoundarySideRight;
         public bool isOpenGLControlBackVisible = true;
+        public bool FloatIsOK;
+        public bool isOKtoSurvey;
+        //public bool isSimulatorOn;
 
         //for the diferent maps views
         public bool isElevation;
@@ -580,100 +585,110 @@ namespace OpenGrade
                     clearSurveyList = false;
                 }
 
-                if (markBM)
-                { 
-                   
-                    SurveyPt point = new SurveyPt(mf.pn.easting, mf.pn.northing, mf.pn.latitude, mf.pn.longitude, mf.pn.altitude, 0);
-                    surveyList.Add(point);
+                // Check the fix Quality before saving the point
+                
+                if (mf.pn.fixQuality == 5 && FloatIsOK) isOKtoSurvey = true;
+                else if (mf.pn.fixQuality == 4 | mf.pn.fixQuality == 8) isOKtoSurvey = true;                
+                else isOKtoSurvey = false;
 
-                    nearestSurveyEasting = mf.pn.easting;
-                    nearestSurveyNorthing = mf.pn.northing;
-
-                    markBM = false;
-                    recBoundary = true;
-
-                }
-
-                // Start recording contour
-
-                if (recBoundary)
+                if (isOKtoSurvey)
                 {
-                    double halfToolWidth = (Properties.Vehicle.Default.setVehicle_toolWidth) / 2;
-                               
-                    if (isBtnStartPause)
+
+                    if (markBM)
                     {
-                        // translate the survey pt to the side of the tool
-                        
-                        double sideEasting;
-                        double sideNorthing;
 
-                        if (isBoundarySideRight)
+                        SurveyPt point = new SurveyPt(mf.pn.easting, mf.pn.northing, mf.pn.latitude, mf.pn.longitude, mf.pn.altitude, 0, mf.pn.fixQuality);
+                        surveyList.Add(point);
+
+                        nearestSurveyEasting = mf.pn.easting;
+                        nearestSurveyNorthing = mf.pn.northing;
+
+                        markBM = false;
+                        recBoundary = true;
+
+                    }
+
+                    // Start recording contour
+
+                    if (recBoundary)
+                    {
+                        double halfToolWidth = (Properties.Vehicle.Default.setVehicle_toolWidth) / 2;
+
+                        if (isBtnStartPause)
                         {
-                            sideEasting = mf.pn.easting + Math.Sin(mf.fixHeading - glm.PIBy2) * -halfToolWidth;
-                            sideNorthing = mf.pn.northing + Math.Cos(mf.fixHeading - glm.PIBy2) * -halfToolWidth;
-                        }
-                        else
-                        {
-                            sideEasting = mf.pn.easting + Math.Sin(mf.fixHeading - glm.PIBy2) * halfToolWidth;
-                            sideNorthing = mf.pn.northing + Math.Cos(mf.fixHeading - glm.PIBy2) * halfToolWidth;
-                        }
+                            // translate the survey pt to the side of the tool
 
-                        //check dist from last point 
-                    
-                        double surveyDistance = ((nearestSurveyEasting - sideEasting) * (nearestSurveyEasting - sideEasting) +
-                        (nearestSurveyNorthing - sideNorthing) * (nearestSurveyNorthing - sideNorthing));
+                            double sideEasting;
+                            double sideNorthing;
 
-                        if (surveyDistance > 9)
-                        {
-                            // convert the utm from the side of the blade to lat long
-                            double actualEasting = sideEasting + mf.pn.utmEast;
-                            double actualNorthing = sideNorthing + mf.pn.utmNorth;
+                            if (isBoundarySideRight)
+                            {
+                                sideEasting = mf.pn.easting + Math.Sin(mf.fixHeading - glm.PIBy2) * -halfToolWidth;
+                                sideNorthing = mf.pn.northing + Math.Cos(mf.fixHeading - glm.PIBy2) * -halfToolWidth;
+                            }
+                            else
+                            {
+                                sideEasting = mf.pn.easting + Math.Sin(mf.fixHeading - glm.PIBy2) * halfToolWidth;
+                                sideNorthing = mf.pn.northing + Math.Cos(mf.fixHeading - glm.PIBy2) * halfToolWidth;
+                            }
 
-                            mf.UTMToLatLon(actualEasting, actualNorthing);
+                            //check dist from last point 
 
-                            SurveyPt point = new SurveyPt(sideEasting, sideNorthing, mf.utmLat, mf.utmLon, mf.pn.altitude, 2);
-                            surveyList.Add(point);
+                            double surveyDistance = ((nearestSurveyEasting - sideEasting) * (nearestSurveyEasting - sideEasting) +
+                            (nearestSurveyNorthing - sideNorthing) * (nearestSurveyNorthing - sideNorthing));
 
-                            nearestSurveyEasting = mf.pn.easting;
-                            nearestSurveyNorthing = mf.pn.northing;
+                            if (surveyDistance > 9)
+                            {
+                                // convert the utm from the side of the blade to lat long
+                                double actualEasting = sideEasting + mf.pn.utmEast;
+                                double actualNorthing = sideNorthing + mf.pn.utmNorth;
+
+                                mf.UTMToLatLon(actualEasting, actualNorthing);
+
+                                SurveyPt point = new SurveyPt(sideEasting, sideNorthing, mf.utmLat, mf.utmLon, mf.pn.altitude, 2, mf.pn.fixQuality);
+                                surveyList.Add(point);
+
+                                nearestSurveyEasting = mf.pn.easting;
+                                nearestSurveyNorthing = mf.pn.northing;
+
+                            }
 
                         }
 
                     }
-                    
-                }
 
-                if (recSurveyPt)
-                {
-                    if (isBtnStartPause)
+                    if (recSurveyPt)
                     {
-                        // check for the nearest point in the surveyList
-
-                        int surveyCount = surveyList.Count;
-                        double minSurveyDistance = 1000000;
-
-                        for (int i = 0; i < surveyCount; i++ )
+                        if (isBtnStartPause)
                         {
-                            double surveyDistance = ((surveyList[i].easting - mf.pn.easting) * (surveyList[i].easting - mf.pn.easting) +
-                                (surveyList[i].northing - mf.pn.northing) * (surveyList[i].northing - mf.pn.northing));
+                            // check for the nearest point in the surveyList
 
-                            if (surveyDistance < minSurveyDistance) minSurveyDistance = surveyDistance;
+                            int surveyCount = surveyList.Count;
+                            double minSurveyDistance = 1000000;
+
+                            for (int i = 0; i < surveyCount; i++)
+                            {
+                                double surveyDistance = ((surveyList[i].easting - mf.pn.easting) * (surveyList[i].easting - mf.pn.easting) +
+                                    (surveyList[i].northing - mf.pn.northing) * (surveyList[i].northing - mf.pn.northing));
+
+                                if (surveyDistance < minSurveyDistance) minSurveyDistance = surveyDistance;
+                            }
+
+                            // if there is no point 3 metre around add a point
+                            if (minSurveyDistance > 9)
+                            {
+                                SurveyPt point = new SurveyPt(mf.pn.easting, mf.pn.northing, mf.pn.latitude, mf.pn.longitude, mf.pn.altitude, 3, mf.pn.fixQuality);
+                                surveyList.Add(point);
+
+                                nearestSurveyEasting = mf.pn.easting;
+                                nearestSurveyNorthing = mf.pn.northing;
+
+                            }
+
                         }
-                         
-                        // if there is no point 3 metre around add a point
-                        if (minSurveyDistance > 9)
-                        {
-                            SurveyPt point = new SurveyPt(mf.pn.easting, mf.pn.northing, mf.pn.latitude, mf.pn.longitude, mf.pn.altitude, 3);
-                            surveyList.Add(point);
 
-                            nearestSurveyEasting = mf.pn.easting;
-                            nearestSurveyNorthing = mf.pn.northing;
-
-                        }
 
                     }
-                    
-                    
                 }
 
             }

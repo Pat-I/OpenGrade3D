@@ -178,6 +178,12 @@
             this.numBladeOffset = new System.Windows.Forms.NumericUpDown();
             this.btnCutFillElev = new System.Windows.Forms.Button();
             this.btnPropExist = new System.Windows.Forms.Button();
+            this.btnFixQuality = new System.Windows.Forms.Button();
+            this.btnSimGoTo = new System.Windows.Forms.Button();
+            this.nudLatitude = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.nudLongitude = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControl)).BeginInit();
             this.contextMenuStripOpenGL.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControlBack)).BeginInit();
@@ -193,6 +199,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.tbarStepDistance)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudElevation)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numBladeOffset)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudLatitude)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudLongitude)).BeginInit();
             this.SuspendLayout();
             // 
             // openGLControl
@@ -1426,6 +1434,11 @@
             // panelSimControls
             // 
             this.panelSimControls.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.panelSimControls.Controls.Add(this.nudLongitude);
+            this.panelSimControls.Controls.Add(this.label13);
+            this.panelSimControls.Controls.Add(this.label6);
+            this.panelSimControls.Controls.Add(this.nudLatitude);
+            this.panelSimControls.Controls.Add(this.btnSimGoTo);
             this.panelSimControls.Controls.Add(this.label3);
             this.panelSimControls.Controls.Add(this.btnResetSteerAngle);
             this.panelSimControls.Controls.Add(this.btnResetSim);
@@ -1435,9 +1448,9 @@
             this.panelSimControls.Controls.Add(this.tbarSteerAngle);
             this.panelSimControls.Controls.Add(this.tbarStepDistance);
             this.panelSimControls.Controls.Add(this.nudElevation);
-            this.panelSimControls.Location = new System.Drawing.Point(3, 594);
+            this.panelSimControls.Location = new System.Drawing.Point(3, 550);
             this.panelSimControls.Name = "panelSimControls";
-            this.panelSimControls.Size = new System.Drawing.Size(544, 46);
+            this.panelSimControls.Size = new System.Drawing.Size(544, 90);
             this.panelSimControls.TabIndex = 172;
             this.panelSimControls.Visible = false;
             // 
@@ -1542,7 +1555,6 @@
             // 
             // nudElevation
             // 
-            this.nudElevation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.nudElevation.DecimalPlaces = 3;
             this.nudElevation.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nudElevation.Increment = new decimal(new int[] {
@@ -1550,7 +1562,7 @@
             0,
             0,
             196608});
-            this.nudElevation.Location = new System.Drawing.Point(421, 6);
+            this.nudElevation.Location = new System.Drawing.Point(421, 4);
             this.nudElevation.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -1918,12 +1930,88 @@
             this.btnPropExist.UseVisualStyleBackColor = true;
             this.btnPropExist.Click += new System.EventHandler(this.btnPropExist_Click);
             // 
+            // btnFixQuality
+            // 
+            this.btnFixQuality.Location = new System.Drawing.Point(611, 63);
+            this.btnFixQuality.Name = "btnFixQuality";
+            this.btnFixQuality.Size = new System.Drawing.Size(108, 58);
+            this.btnFixQuality.TabIndex = 233;
+            this.btnFixQuality.Text = "RTK fix only";
+            this.btnFixQuality.UseVisualStyleBackColor = true;
+            this.btnFixQuality.Visible = false;
+            this.btnFixQuality.Click += new System.EventHandler(this.btnFixQuality_click);
+            // 
+            // btnSimGoTo
+            // 
+            this.btnSimGoTo.Location = new System.Drawing.Point(421, 47);
+            this.btnSimGoTo.Name = "btnSimGoTo";
+            this.btnSimGoTo.Size = new System.Drawing.Size(79, 40);
+            this.btnSimGoTo.TabIndex = 186;
+            this.btnSimGoTo.Text = "Go To";
+            this.btnSimGoTo.UseVisualStyleBackColor = true;
+            this.btnSimGoTo.Click += new System.EventHandler(this.btnSimGoTo_click);
+            // 
+            // nudLatitude
+            // 
+            this.nudLatitude.DecimalPlaces = 7;
+            this.nudLatitude.Location = new System.Drawing.Point(39, 58);
+            this.nudLatitude.Maximum = new decimal(new int[] {
+            90,
+            0,
+            0,
+            0});
+            this.nudLatitude.Minimum = new decimal(new int[] {
+            90,
+            0,
+            0,
+            -2147483648});
+            this.nudLatitude.Name = "nudLatitude";
+            this.nudLatitude.Size = new System.Drawing.Size(120, 27);
+            this.nudLatitude.TabIndex = 187;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(10, 60);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(30, 19);
+            this.label6.TabIndex = 188;
+            this.label6.Text = "Lat";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(165, 60);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(44, 19);
+            this.label13.TabIndex = 189;
+            this.label13.Text = "Long";
+            // 
+            // nudLongitude
+            // 
+            this.nudLongitude.DecimalPlaces = 7;
+            this.nudLongitude.Location = new System.Drawing.Point(214, 58);
+            this.nudLongitude.Maximum = new decimal(new int[] {
+            180,
+            0,
+            0,
+            0});
+            this.nudLongitude.Minimum = new decimal(new int[] {
+            180,
+            0,
+            0,
+            -2147483648});
+            this.nudLongitude.Name = "nudLongitude";
+            this.nudLongitude.Size = new System.Drawing.Size(120, 27);
+            this.nudLongitude.TabIndex = 190;
+            // 
             // FormGPS
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(1306, 684);
+            this.Controls.Add(this.btnFixQuality);
             this.Controls.Add(this.btnPropExist);
             this.Controls.Add(this.btnCutFillElev);
             this.Controls.Add(this.numBladeOffset);
@@ -1987,6 +2075,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.tbarStepDistance)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudElevation)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numBladeOffset)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudLatitude)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudLongitude)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2138,6 +2228,12 @@
         private System.Windows.Forms.NumericUpDown numBladeOffset;
         private System.Windows.Forms.Button btnCutFillElev;
         private System.Windows.Forms.Button btnPropExist;
+        private System.Windows.Forms.Button btnFixQuality;
+        private System.Windows.Forms.NumericUpDown nudLongitude;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.NumericUpDown nudLatitude;
+        private System.Windows.Forms.Button btnSimGoTo;
     }
 }
 
