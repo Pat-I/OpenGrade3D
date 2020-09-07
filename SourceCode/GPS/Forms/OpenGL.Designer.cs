@@ -17,7 +17,7 @@ namespace OpenGrade
         private double minDist;
         private double minDistMap;
 
-        //public bool stopTheProgram;
+        public bool stopTheProgram;
         
 
         private double minDistMapDist = 400; // how far from a survey point it will draw the map 400 is 20 meters
@@ -319,7 +319,7 @@ namespace OpenGrade
                 frameTime = (double)swFrame.ElapsedTicks / (double)System.Diagnostics.Stopwatch.Frequency * 1000;
 
                 //if a couple minute has elapsed save the field in case of crash and to be able to resume            
-                if (saveCounter > 180)       //2 counts per second X 60 seconds = 120 counts per minute. , now 5 count per sec so 300 per minute
+                if (saveCounter > 600)       //10 counts per second X 60 seconds = 600 counts per minute.
                 {
                     if (isJobStarted && stripOnlineGPS.Value != 1)
                     {
@@ -899,7 +899,7 @@ namespace OpenGrade
         // determine ptList min and max easting and northing -by Pat
         public void CalculateMinMaxEastNort()
         {
-            //stopTheProgram = true;
+            stopTheProgram = true;
 
             eastingMin = 9999999;
             eastingMax = -9999999;
@@ -1071,7 +1071,7 @@ namespace OpenGrade
             }
             FileSaveMapPt(); // For keeping the visual mapping
 
-            //stopTheProgram = false;
+            stopTheProgram = false;
         }
 
         #endregion
