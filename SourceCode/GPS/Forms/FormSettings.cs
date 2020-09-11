@@ -15,6 +15,11 @@ namespace OpenGrade
         private byte PwmGainUp, PwmGainDown, PwmMaxUp, PwmMaxDown, PwmMinUp, PwmMinDown, IntegralMultiplier, Deadband;
         private readonly double metImp2m, m2MetImp, metFt2m, m2metFt;
 
+        private double eastingOffset, northingOffset, altitudeOffset, oldEastingOffset, oldNorthingOffset, oldAltitudeOffset, noAvgDist, levelDistFactor;
+        private bool avgPt;
+
+        public readonly CNMEA pn = null; // by Pat
+
         //constructor
         public FormSettings(Form callingForm, int page)
         {
@@ -128,6 +133,40 @@ namespace OpenGrade
             nudGradeDistFromLine.Value = (decimal)(gradeDistFromLine * m2metFt);
             nudGradeDistFromLine.ValueChanged += nudGradeDistFromLine_ValueChanged;
 
+            // Levelling settings----------------------------------------------------------
+
+            eastingOffset = mf.pn.eastingOffset;
+            northingOffset = mf.pn.northingOffset;
+            altitudeOffset = mf.pn.altitudeOffset;
+            oldEastingOffset = mf.pn.eastingOffset;
+            oldNorthingOffset = mf.pn.northingOffset;
+            oldAltitudeOffset = mf.pn.altitudeOffset;
+            noAvgDist = Properties.Settings.Default.Set_noAvgDist;
+            levelDistFactor = Properties.Settings.Default.Set_levelDistFactor;
+            avgPt = Properties.Settings.Default.Set_isAvgPt;
+
+            if (avgPt) butAvgDesignPt.Text = "YES";
+            else butAvgDesignPt.Text = "NO";
+
+            nudCorrEasting.ValueChanged -= nudCorrEasting_ValueChanged;
+            nudCorrEasting.Value = (decimal)eastingOffset;
+            nudCorrEasting.ValueChanged += nudCorrEasting_ValueChanged;
+
+            nudCorrNorthing.ValueChanged -= nudCorrNorthing_ValueChanged;
+            nudCorrNorthing.Value = (decimal)northingOffset;
+            nudCorrNorthing.ValueChanged += nudCorrNorthing_ValueChanged;
+
+            nudCorrAltitude.ValueChanged -= nudCorrAltitude_ValueChanged;
+            nudCorrAltitude.Value = (decimal)altitudeOffset;
+            nudCorrAltitude.ValueChanged += nudCorrAltitude_ValueChanged;
+
+            nudNoAvgDist.ValueChanged -= nudNoAvgDist_ValueChanged;
+            nudNoAvgDist.Value = (decimal)noAvgDist;
+            nudNoAvgDist.ValueChanged += nudNoAvgDist_ValueChanged;
+
+            nudLevelDistFactor.ValueChanged -= nudLevelDistFactor_ValueChanged;
+            nudLevelDistFactor.Value = (decimal)levelDistFactor;
+            nudLevelDistFactor.ValueChanged += nudLevelDistFactor_ValueChanged;
 
         }
 
@@ -185,6 +224,23 @@ namespace OpenGrade
             mf.vehicle.integralMultiplier = IntegralMultiplier;
             Properties.Vehicle.Default.setVehicle_integralMultiplier = IntegralMultiplier;
 
+            //Levelling settings-------------------------------------------------------
+
+            mf.pn.eastingOffset = eastingOffset;
+
+            mf.pn.northingOffset = northingOffset;
+
+            mf.pn.altitudeOffset = altitudeOffset;
+
+            mf.averagePts = avgPt;
+            Properties.Settings.Default.Set_isAvgPt = avgPt;
+
+            mf.noAvgDist = noAvgDist;
+            Properties.Settings.Default.Set_noAvgDist = noAvgDist;
+
+            mf.levelDistFactor = levelDistFactor;
+            Properties.Settings.Default.Set_levelDistFactor = levelDistFactor;
+
           
             mf.mc.relayRateSettings[mf.mc.rsPwmGainUp] = Properties.Vehicle.Default.setVehicle_pwmGainUp;
             mf.mc.relayRateSettings[mf.mc.rsPwmGainDown] = Properties.Vehicle.Default.setVehicle_pwmGainDown;
@@ -222,7 +278,12 @@ namespace OpenGrade
             mf.mc.relayRateSettings[mf.mc.rsDeadband] = Properties.Vehicle.Default.setVehicle_deadband;
             mf.RateRelaySettingsOutToPort();
 
+            //reset the position correction values
+            mf.pn.eastingOffset = oldEastingOffset;
 
+            mf.pn.northingOffset = oldNorthingOffset;
+
+            mf.pn.altitudeOffset = oldAltitudeOffset;
 
         }
 
@@ -330,6 +391,74 @@ namespace OpenGrade
 
 
         #endregion Display
+
+        private void nudCorrEasting_ValueChanged(object sender, EventArgs e)
+        {
+            eastingOffset = (double)nudCorrEasting.Value;
+        }
+
+        private void nudCorrNorthing_ValueChanged(object sender, EventArgs e)
+        {
+            northingOffset = (double)nudCorrNorthing.Value;
+        }
+
+        private void nudCorrAltitude_ValueChanged(object sender, EventArgs e)
+        {
+            altitudeOffset = (double)nudCorrAltitude.Value;
+        }
+
+        private void nudNoAvgDist_ValueChanged(object sender, EventArgs e)
+        {
+            noAvgDist = (double)nudNoAvgDist.Value;
+        }
+
+        private void nudLevelDistFactor_ValueChanged(object sender, EventArgs e)
+        {
+            levelDistFactor = (double)nudLevelDistFactor.Value;
+        }
+
+        private void btnAvgDesignPt_Click(object sender, EventArgs e)
+        {
+            if (avgPt)
+            {
+                avgPt = false;
+                butAvgDesignPt.Text = "NO";
+            }
+            else
+            {
+                avgPt = true;
+                butAvgDesignPt.Text = "YES";
+            }
+        }
+
+        private void btnPosCorrection_Click(object sender, EventArgs e)
+        {
+            int ptcount = mf.ct.boundaryList.Count;
+            if (ptcount > 0)
+            {
+                if (mf.ct.boundaryList[0].code == 0)
+                {
+                    eastingOffset = (mf.pn.easting  + mf.pn.eastingOffset) - mf.ct.boundaryList[0].easting;
+                    northingOffset = (mf.pn.northing + mf.pn.northingOffset) - mf.ct.boundaryList[0].northing;
+                    altitudeOffset = mf.ct.boundaryList[0].altitude - (mf.pn.altitude - mf.pn.altitudeOffset);
+
+                    mf.pn.eastingOffset = eastingOffset;
+                    mf.pn.northingOffset = northingOffset;
+                    mf.pn.altitudeOffset = altitudeOffset;
+
+                    nudCorrEasting.Value = (decimal)eastingOffset;
+                    nudCorrNorthing.Value = (decimal)northingOffset;
+                    nudCorrAltitude.Value = (decimal)altitudeOffset;
+                }
+            }
+        }
+
+        private void btnSendCorr_Click(object sender, EventArgs e)
+        {
+            mf.pn.eastingOffset = eastingOffset;
+            mf.pn.northingOffset = northingOffset;
+            mf.pn.altitudeOffset = altitudeOffset;
+        }
 
     }
 }

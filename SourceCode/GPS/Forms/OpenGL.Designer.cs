@@ -18,7 +18,10 @@ namespace OpenGrade
         private double minDistMap;
 
         public bool stopTheProgram;
-        
+
+        public bool averagePts = Properties.Settings.Default.Set_isAvgPt; // average four near design pts or not
+        public double noAvgDist = Properties.Settings.Default.Set_noAvgDist; // distance from a point that will not be averaged
+        public double levelDistFactor = Properties.Settings.Default.Set_levelDistFactor; //A factor to set the influance of a design pt according his dist from the blade
 
         private double minDistMapDist = 400; // how far from a survey point it will draw the map 400 is 20 meters
         private double drawPtWidth = 1; // the size of the map pixel in meter
@@ -321,6 +324,8 @@ namespace OpenGrade
                 //if a couple minute has elapsed save the field in case of crash and to be able to resume            
                 if (saveCounter > 600)       //10 counts per second X 60 seconds = 600 counts per minute.
                 {
+                    // no auto save for now
+                    /*
                     if (isJobStarted && stripOnlineGPS.Value != 1)
                     {
                         //auto save the field patches, contours accumulated so far
@@ -332,6 +337,7 @@ namespace OpenGrade
                         //NMEA log file
                         if (isLogNMEA) FileSaveNMEA();
                     }
+                    */
                     saveCounter = 0;
                 }
 
@@ -538,7 +544,7 @@ namespace OpenGrade
                 ct.usedPtList.Add(point);
 
 
-                if (minDist < ((vehicle.toolWidth/3)* (vehicle.toolWidth / 3)) | minDistSE == 900 | minDistSW == 900 | minDistNE == 900 | minDistNW == 900)
+                if (minDist < (noAvgDist * noAvgDist) | minDistSE == 900 | minDistSW == 900 | minDistNE == 900 | minDistNW == 900 | !averagePts)
                 {
                     // if the closest point is under the center of the blade or there is not a point in each direction
                     avgAltitude = ct.ptList[closestPoint].altitude;

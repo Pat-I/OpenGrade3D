@@ -48,6 +48,22 @@ namespace OpenGrade
             grnSections = Settings.Default.setF_SectionColorG;
             bluSections = Settings.Default.setF_SectionColorB;
 
+            redCut = Settings.Default.setF_CutColorR;
+            grnCut = Settings.Default.setF_CutColorG;
+            bluCut = Settings.Default.setF_CutColorB;
+
+            redCenter = Settings.Default.setF_CenterColorR;
+            grnCenter = Settings.Default.setF_CenterColorG;
+            bluCenter = Settings.Default.setF_CenterColorB;
+
+            redFill = Settings.Default.setF_FillColorR;
+            grnFill = Settings.Default.setF_FillColorG;
+            bluFill = Settings.Default.setF_FillColorB;
+
+            btnColorFill.BackColor = System.Drawing.Color.FromArgb(redFill, grnFill, bluFill);
+            btnColorCenter.BackColor = System.Drawing.Color.FromArgb(redCenter, grnCenter, bluCenter);
+            btnColorCut.BackColor = System.Drawing.Color.FromArgb(redCut, grnCut, bluCut);
+
             //set up grid and lightbar
             isGridOn = Settings.Default.setMenu_isGridOn;
             gridToolStripMenuItem.Checked = isGridOn;
@@ -380,6 +396,7 @@ namespace OpenGrade
             if(ct.isElevation)
             {
                 ct.isElevation = false;
+                ct.drawTheMap = true;
                 btnCutFillElev.Text = "Cut/Fill";
                 if (ct.isActualCut) btnPropExist.Text = "actual Cut";
                 else if (ct.isActualFill) btnPropExist.Text = "act Cut/Fill";
@@ -388,6 +405,7 @@ namespace OpenGrade
             else
             {
                 ct.isElevation = true;
+                ct.drawTheMap = true;
                 btnCutFillElev.Text = "Elevation";
                 if (ct.isExistingElevation) btnPropExist.Text = "Existing";
                 else btnPropExist.Text = "Proposed";
@@ -402,11 +420,13 @@ namespace OpenGrade
                 {
                     ct.isExistingElevation = false;
                     btnPropExist.Text = "Proposed";
+                    ct.drawTheMap = true;
                 }
                 else
                 {
                     ct.isExistingElevation = true;
                     btnPropExist.Text = "Existing";
+                    ct.drawTheMap = true;
                 }
             }
             else
@@ -417,11 +437,13 @@ namespace OpenGrade
                     {
                         ct.isActualFill = false;
                         btnPropExist.Text = "Proposed";
+                        ct.drawTheMap = true;
                     }
                     else
                     {
                         ct.isActualCut = true;
                         btnPropExist.Text = "actual Cut";
+                        ct.drawTheMap = true;
                     }
                 }
                 else
@@ -429,6 +451,7 @@ namespace OpenGrade
                     ct.isActualCut = false;
                     ct.isActualFill = true;
                     btnPropExist.Text = "act Cut/Fill";
+                    ct.drawTheMap = true;
                 }
             }
         }
@@ -776,6 +799,123 @@ namespace OpenGrade
             Settings.Default.setF_SectionColorB = bluSections;
             Settings.Default.Save();
         }
+        //setting Fill color off Options Menu
+        private void btnColorFill_Click(object sender, EventArgs e)
+        {
+            //color picker for sections
+            ColorDialog colorDlg = new ColorDialog
+            {
+                FullOpen = true,
+                AnyColor = true,
+                SolidColorOnly = false,
+                Color = Color.FromArgb(255, redFill, grnFill, bluFill)
+            };
+
+            if (colorDlg.ShowDialog() != DialogResult.OK) return;
+
+            redFill = colorDlg.Color.R;
+            if (redFill > 253) redFill = 253;
+            grnFill = colorDlg.Color.G;
+            if (grnFill > 253) grnFill = 253;
+            bluFill = colorDlg.Color.B;
+            if (bluFill > 253) bluFill = 253;
+
+            Settings.Default.setF_FillColorR = redFill;
+            Settings.Default.setF_FillColorG = grnFill;
+            Settings.Default.setF_FillColorB = bluFill;
+            Settings.Default.Save();
+
+            btnColorFill.BackColor = System.Drawing.Color.FromArgb(redFill, grnFill, bluFill);
+        }
+        //setting  center color off Options Menu
+        private void btnColorCenter_Click(object sender, EventArgs e)
+        {
+            //color picker for sections
+            ColorDialog colorDlg = new ColorDialog
+            {
+                FullOpen = true,
+                AnyColor = true,
+                SolidColorOnly = false,
+                Color = Color.FromArgb(255, redCenter, grnCenter, bluCenter)
+            };
+
+            if (colorDlg.ShowDialog() != DialogResult.OK) return;
+
+            redCenter = colorDlg.Color.R;
+            if (redCenter > 253) redCenter = 253;
+            grnCenter = colorDlg.Color.G;
+            if (grnCenter > 253) grnCenter = 253;
+            bluCenter = colorDlg.Color.B;
+            if (bluCenter > 253) bluCenter = 253;
+
+            Settings.Default.setF_CenterColorR = redCenter;
+            Settings.Default.setF_CenterColorG = grnCenter;
+            Settings.Default.setF_CenterColorB = bluCenter;
+            Settings.Default.Save();
+
+            btnColorCenter.BackColor = System.Drawing.Color.FromArgb(redCenter, grnCenter, bluCenter);
+        }
+        //setting cut color off Options Menu
+        private void btnColorCut_Click(object sender, EventArgs e)
+        {
+            //color picker for sections
+            ColorDialog colorDlg = new ColorDialog
+            {
+                FullOpen = true,
+                AnyColor = true,
+                SolidColorOnly = false,
+                Color = Color.FromArgb(255, redCut, grnCut, bluCut)
+            };
+
+            if (colorDlg.ShowDialog() != DialogResult.OK) return;
+
+            redCut = colorDlg.Color.R;
+            if (redCut > 253) redCut = 253;
+            grnCut = colorDlg.Color.G;
+            if (grnCut > 253) grnCut = 253;
+            bluCut = colorDlg.Color.B;
+            if (bluCut > 253) bluCut = 253;
+
+            Settings.Default.setF_CutColorR = redCut;
+            Settings.Default.setF_CutColorG = grnCut;
+            Settings.Default.setF_CutColorB = bluCut;
+            Settings.Default.Save();
+            
+            btnColorCut.BackColor = System.Drawing.Color.FromArgb(redCut, grnCut, bluCut);
+        }
+
+        private void btnResetMapColor_Click(object sender, EventArgs e)
+        {
+            redFill = 0;
+            grnFill = 191;
+            bluFill = 0;
+
+            redCenter = 191;
+            grnCenter = 191;
+            bluCenter = 191;
+
+            redCut = 191;
+            grnCut = 0;
+            bluCut = 0;
+
+            Settings.Default.setF_FillColorR = redFill;
+            Settings.Default.setF_FillColorG = grnFill;
+            Settings.Default.setF_FillColorB = bluFill;
+
+            Settings.Default.setF_CenterColorR = redCenter;
+            Settings.Default.setF_CenterColorG = grnCenter;
+            Settings.Default.setF_CenterColorB = bluCenter;
+
+            Settings.Default.setF_CutColorR = redCut;
+            Settings.Default.setF_CutColorG = grnCut;
+            Settings.Default.setF_CutColorB = bluCut;
+            Settings.Default.Save();
+
+            btnColorCenter.BackColor = System.Drawing.Color.FromArgb(redCenter, grnCenter, bluCenter);
+            btnColorFill.BackColor = System.Drawing.Color.FromArgb(redFill, grnFill, bluFill);
+            btnColorCut.BackColor = System.Drawing.Color.FromArgb(redCut, grnCut, bluCut);
+        }
+
         private void fieldToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             //color picker for fields

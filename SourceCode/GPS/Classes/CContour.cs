@@ -227,6 +227,7 @@ namespace OpenGrade
         public bool isOpenGLControlBackVisible = true;
         public bool FloatIsOK;
         public bool isOKtoSurvey;
+        public bool drawTheMap = true;
         //public bool isSimulatorOn;
 
         //for the diferent maps views
@@ -237,6 +238,8 @@ namespace OpenGrade
 
         //
         public int eleViewListCount = 300;
+
+        private double maxAltitude = -9999, minAltitude = 9999, maxCut = -9999, maxFill = 9999, midAltitude;
 
         public double slope = 0.002;
         public double zeroAltitude = 0;
@@ -587,8 +590,9 @@ namespace OpenGrade
 
                 // Check the fix Quality before saving the point
                 
-                if (mf.pn.fixQuality == 5 && FloatIsOK) isOKtoSurvey = true;
-                else if (mf.pn.fixQuality == 4 | mf.pn.fixQuality == 8) isOKtoSurvey = true;                
+                
+                if (mf.pn.fixQuality == 4 | mf.pn.fixQuality == 8) isOKtoSurvey = true;
+                else if (mf.pn.fixQuality == 5 && FloatIsOK) isOKtoSurvey = true;
                 else isOKtoSurvey = false;
 
                 if (isOKtoSurvey)
@@ -750,116 +754,196 @@ namespace OpenGrade
             else
             {
                 //now paint the map, by Pat
-
-                // Search for the max min painting values
-
                 int ptCount = mapList.Count;
+                if (maxAltitude == -9999 | minAltitude == 9999 | maxCut == -9999 | maxFill == 9999) drawTheMap = true;
 
-                double maxAltitude = -9999, minAltitude = 9999, maxCut = -9999, maxFill = 9999, midAltitude;
-                for (int h = 0; h < ptCount; h++)
+                if (ptCount > 0)
                 {
-                    if (mapList[h].cutAltitudeMap != -1)
+
+                
+                    if (drawTheMap)
                     {
-                        if (mapList[h].cutAltitudeMap < minAltitude) minAltitude = mapList[h].cutAltitudeMap;
-                    }
-
-                    if (mapList[h].cutAltitudeMap > maxAltitude) maxAltitude = mapList[h].cutAltitudeMap;
-                    
-                    if (mapList[h].cutDeltaMap < maxFill) maxFill = mapList[h].cutDeltaMap;
-
-                    if (mapList[h].cutDeltaMap != 9999)
-                    {
-                        if (mapList[h].cutDeltaMap > maxCut) maxCut = mapList[h].cutDeltaMap;
-                    }
-                }
-
-                if (maxCut == -9999) maxCut = 0;
-                if (maxFill == 9999) maxFill = 0;
-
-                midAltitude = ((maxAltitude + minAltitude) / 2);
-
-                // to not mess up with colors when min and max altutudes are to close
-                if ((maxAltitude - midAltitude) < 0.05) maxAltitude = midAltitude + 0.05;
-                if ((midAltitude - minAltitude) < 0.05) minAltitude = midAltitude - 0.05;
+                        // Search for the max min painting values
 
 
-                  // begin painting
-                  
-                    if (ptCount > 0)
-                    {
+                        maxAltitude = -9999; minAltitude = 9999; maxCut = 0; maxFill = 0;
                         for (int h = 0; h < ptCount; h++)
                         {
-
-                        // paint the cut fill value
-                            if (!isElevation)
+                            if (mapList[h].cutAltitudeMap != -1)
                             {
-                                if (mapList[h].cutDeltaMap != 9999)
+                                if (mapList[h].cutAltitudeMap < minAltitude) minAltitude = mapList[h].cutAltitudeMap;
+                            }
+
+                            if (mapList[h].cutAltitudeMap > maxAltitude) maxAltitude = mapList[h].cutAltitudeMap;
+
+                            if (mapList[h].cutDeltaMap < maxCut) maxCut = mapList[h].cutDeltaMap;
+
+                            if (mapList[h].cutDeltaMap != 9999)
+                            {
+                                if (mapList[h].cutDeltaMap > maxFill) maxFill = mapList[h].cutDeltaMap;
+                            }
+                        }
+
+                        //if (maxCut == 9999) maxCut = 0;
+                        //if (maxFill == -9999) maxFill = 0;
+
+                        midAltitude = ((maxAltitude + minAltitude) / 2);
+
+                        // to not mess up with colors when min and max altutudes are to close
+                        if ((maxAltitude - minAltitude) < 0.1)
+                        {
+                            maxAltitude = midAltitude + 0.05;
+                            minAltitude = midAltitude - 0.05;
+                        }
+                        
+
+                    }
+                    // begin painting
+
+                 
+                
+                    for (int h = 0; h < ptCount; h++)
+                    {
+                        double red =0, green =0, blue = 0;
+                        // paint the cut fill value
+                        if (!isElevation)
+                        {
+                            if (mapList[h].cutDeltaMap != 9999)
+                            {
+                                if (mapList[h].cutDeltaMap == 0)
                                 {
-                                    if (mapList[h].cutDeltaMap == 0)
-                                    gl.Color(0.75f, 0.75f, 0.75f);
+                                    red = mf.redCenter;
+                                    green = mf.redCenter;
+                                    blue = mf.bluCenter;
+                                }                                    
 
-                                    if (mapList[h].cutDeltaMap < 0)
-                                    gl.Color(.75 * (1 - (mapList[h].cutDeltaMap / maxFill)), 0.75f, .75 * (1 - (mapList[h].cutDeltaMap / maxFill)));
-
-                                    if (mapList[h].cutDeltaMap > 0)
-                                    gl.Color(0.75f, .75 * (1 - (mapList[h].cutDeltaMap / maxCut)), .75 * (1 - (mapList[h].cutDeltaMap / maxCut)));
-
+                                if (mapList[h].cutDeltaMap > 0)
+                                {
+                                    red = (1 - (mapList[h].cutDeltaMap / maxFill)) * mf.redCenter + (mapList[h].cutDeltaMap / maxFill) * mf.redFill;
+                                    green = (1 - (mapList[h].cutDeltaMap / maxFill)) * mf.grnCenter + (mapList[h].cutDeltaMap / maxFill) * mf.grnFill;
+                                    blue = (1 - (mapList[h].cutDeltaMap / maxFill)) * mf.bluCenter + (mapList[h].cutDeltaMap / maxFill) * mf.bluFill;
                                 }
-                                else gl.Color(0.0f, 0.0f, 0.0f);
+
+                                if (mapList[h].cutDeltaMap < 0)
+                                {
+                                    red = (1 - (mapList[h].cutDeltaMap / maxCut)) * mf.redCenter + (mapList[h].cutDeltaMap / maxCut) * mf.redCut;
+                                    green = (1 - (mapList[h].cutDeltaMap / maxCut)) * mf.grnCenter + (mapList[h].cutDeltaMap / maxCut) * mf.grnCut;
+                                    blue = (1 - (mapList[h].cutDeltaMap / maxCut)) * mf.bluCenter + (mapList[h].cutDeltaMap / maxCut) * mf.bluCut;
+                                }
+
                             }
                             else
-                            // paint the desired altutude
                             {
-                                if (isExistingElevation)
+                                red = 0;
+                                green = 0;
+                                blue = 0;
+                            }
+                            
+                        }
+                        else
+                        // paint the desired altutude
+                        {
+                            if (isExistingElevation)
+                            {
+                                if (mapList[h].altitudeMap > 0)
                                 {
-                                    if (mapList[h].cutAltitudeMap != -1)
+                                    if (mapList[h].altitudeMap == midAltitude)
                                     {
-                                        if (mapList[h].cutAltitudeMap == midAltitude)
-                                        gl.Color(0.75f, 0.75f, 0.75f);
-
-                                        if (mapList[h].cutAltitudeMap < midAltitude)
-                                        gl.Color(.75 * (1 - ((mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude))),
-                                            0.75f,
-                                            .75 * (1 - ((mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude))));
-
-                                        if (mapList[h].cutAltitudeMap > midAltitude)
-                                        gl.Color(0.75f,
-                                            .75 * (1 - ((mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude))),
-                                            .75 * (1 - ((mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude))));
+                                        red = mf.redCenter;
+                                        green = mf.redCenter;
+                                        blue = mf.bluCenter;
                                     }
-                                    else gl.Color(0.0f, 0.0f, 0.0f);
+
+                                    if (mapList[h].altitudeMap < midAltitude)
+                                    {
+                                        red = (1 - (mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude)) * mf.redCenter + (mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude) * mf.redFill;
+                                        green = (1 - (mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude)) * mf.grnCenter + (mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude) * mf.grnFill;
+                                        blue = (1 - (mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude)) * mf.bluCenter + (mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude) * mf.bluFill;
+                                    }
+
+                                    if (mapList[h].altitudeMap > midAltitude)
+                                    {
+                                        red = (1 - (mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude)) * mf.redCenter + (mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude) * mf.redCut;
+                                        green = (1 - (mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude)) * mf.grnCenter + (mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude) * mf.grnCut;
+                                        blue = (1 - (mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude)) * mf.bluCenter + (mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude) * mf.bluCut;
+                                    }
+
                                 }
                                 else
                                 {
-                                    if (mapList[h].altitudeMap > 0)
-                                    {
-                                        if (mapList[h].altitudeMap == midAltitude)
-                                        gl.Color(0.75f, 0.75f, 0.75f);
-
-                                        if (mapList[h].cutAltitudeMap < midAltitude)
-                                        gl.Color(.75 * (1 - ((mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude))),
-                                            0.75f,
-                                            .75 * (1 - ((mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude))));
-
-                                        if (mapList[h].altitudeMap > midAltitude)
-                                        gl.Color(0.75f,
-                                            .75 * (1 - ((mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude))),
-                                            .75 * (1 - ((mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude))));
-                                    }
-                                    else gl.Color(0.0f, 0.0f, 0.0f);
+                                    red = 0;
+                                    green = 0;
+                                    blue = 0;
                                 }
-                               
+                            }
+                            else
+                            {
+                                
+
+                                if (mapList[h].cutAltitudeMap != -1)
+                                {
+                                    if (mapList[h].cutAltitudeMap == midAltitude)
+                                    {
+                                        red = mf.redCenter;
+                                        green = mf.redCenter;
+                                        blue = mf.bluCenter;
+                                    }
+
+                                    if (mapList[h].cutAltitudeMap < midAltitude)
+                                    {
+                                        red = (1 - (mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude)) * mf.redCenter + (mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude) * mf.redFill;
+                                        green = (1 - (mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude)) * mf.grnCenter + (mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude) * mf.grnFill;
+                                        blue = (1 - (mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude)) * mf.bluCenter + (mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude) * mf.bluFill;
+                                    }
+
+                                    if (mapList[h].cutAltitudeMap > midAltitude)
+                                    {
+                                        red = (1 - (mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude)) * mf.redCenter + (mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude) * mf.redCut;
+                                        green = (1 - (mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude)) * mf.grnCenter + (mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude) * mf.grnCut;
+                                        blue = (1 - (mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude)) * mf.bluCenter + (mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude) * mf.bluCut;
+                                    }
+                                }
+                                else
+                                {
+                                    red = 0;
+                                    green = 0;
+                                    blue = 0;
+                                }
                             }
 
-
-                            gl.Begin(OpenGL.GL_QUADS);
-                            gl.Vertex(mapList[h].eastingMap - (mapList[h].drawPtWidthMap / 2), mapList[h].northingMap - (mapList[h].drawPtWidthMap / 2), 0);
-                            gl.Vertex(mapList[h].eastingMap - (mapList[h].drawPtWidthMap / 2), mapList[h].northingMap + (mapList[h].drawPtWidthMap / 2), 0);
-                            gl.Vertex(mapList[h].eastingMap + (mapList[h].drawPtWidthMap / 2), mapList[h].northingMap + (mapList[h].drawPtWidthMap / 2), 0);
-                            gl.Vertex(mapList[h].eastingMap + (mapList[h].drawPtWidthMap / 2), mapList[h].northingMap - (mapList[h].drawPtWidthMap / 2), 0);
-                            gl.End();
                         }
+                        gl.Color((byte)red, (byte)green, (byte)blue);
+
+                        /*/test
+                        if (mapList[h].cutDeltaMap != 9999)
+                        {
+                            if (mapList[h].cutDeltaMap == 0)
+                                gl.Color(0.75f, 0.75f, 0.75f);
+
+                            if (mapList[h].cutDeltaMap < 0)
+                                gl.Color(.35f, 0.75f, .35f);
+
+                            if (mapList[h].cutDeltaMap > 0)
+                                gl.Color(0.75f, .35f, .35f);
+
+                        }
+                        else gl.Color(0.0f, 0.0f, 0.0f);
+                        *///end test
+
+                        double drawPtWidth = (mapList[h].drawPtWidthMap / 2);
+                        double easting = mapList[h].eastingMap;
+                        double northing = mapList[h].northingMap;
+
+                        gl.Begin(OpenGL.GL_QUADS);
+                        gl.Vertex(easting - drawPtWidth, northing - drawPtWidth, 0);
+                        gl.Vertex(easting - drawPtWidth, northing + drawPtWidth, 0);
+                        gl.Vertex(easting + drawPtWidth, northing + drawPtWidth, 0);
+                        gl.Vertex(easting + drawPtWidth, northing - drawPtWidth, 0);
+                        gl.End();
                     }
+                }
+                drawTheMap = false;
+                
 
                 // Paint the elevation view line
                 if (isOpenGLControlBackVisible)

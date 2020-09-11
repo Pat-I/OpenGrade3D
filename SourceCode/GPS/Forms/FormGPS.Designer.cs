@@ -147,6 +147,11 @@
             this.label25 = new System.Windows.Forms.Label();
             this.lblAltitude = new System.Windows.Forms.Label();
             this.panelSimControls = new System.Windows.Forms.Panel();
+            this.nudLongitude = new System.Windows.Forms.NumericUpDown();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.nudLatitude = new System.Windows.Forms.NumericUpDown();
+            this.btnSimGoTo = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.btnResetSteerAngle = new System.Windows.Forms.Button();
             this.btnResetSim = new System.Windows.Forms.Button();
@@ -179,11 +184,10 @@
             this.btnCutFillElev = new System.Windows.Forms.Button();
             this.btnPropExist = new System.Windows.Forms.Button();
             this.btnFixQuality = new System.Windows.Forms.Button();
-            this.btnSimGoTo = new System.Windows.Forms.Button();
-            this.nudLatitude = new System.Windows.Forms.NumericUpDown();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.nudLongitude = new System.Windows.Forms.NumericUpDown();
+            this.btnColorCut = new System.Windows.Forms.Button();
+            this.btnColorCenter = new System.Windows.Forms.Button();
+            this.btnColorFill = new System.Windows.Forms.Button();
+            this.rstMapColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControl)).BeginInit();
             this.contextMenuStripOpenGL.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControlBack)).BeginInit();
@@ -195,12 +199,12 @@
             this.configPage1.SuspendLayout();
             this.controlPage2.SuspendLayout();
             this.panelSimControls.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudLongitude)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudLatitude)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbarSteerAngle)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbarStepDistance)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudElevation)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numBladeOffset)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudLatitude)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudLongitude)).BeginInit();
             this.SuspendLayout();
             // 
             // openGLControl
@@ -419,7 +423,8 @@
             // 
             this.colorsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.sectionToolStripMenuItem,
-            this.fieldToolStripMenuItem1});
+            this.fieldToolStripMenuItem1,
+            this.rstMapColorToolStripMenuItem});
             this.colorsToolStripMenuItem.Name = "colorsToolStripMenuItem";
             this.colorsToolStripMenuItem.Size = new System.Drawing.Size(263, 40);
             this.colorsToolStripMenuItem.Text = "Colors";
@@ -427,14 +432,14 @@
             // sectionToolStripMenuItem
             // 
             this.sectionToolStripMenuItem.Name = "sectionToolStripMenuItem";
-            this.sectionToolStripMenuItem.Size = new System.Drawing.Size(187, 40);
+            this.sectionToolStripMenuItem.Size = new System.Drawing.Size(274, 40);
             this.sectionToolStripMenuItem.Text = "Section";
             this.sectionToolStripMenuItem.Click += new System.EventHandler(this.sectionToolStripMenuItem_Click);
             // 
             // fieldToolStripMenuItem1
             // 
             this.fieldToolStripMenuItem1.Name = "fieldToolStripMenuItem1";
-            this.fieldToolStripMenuItem1.Size = new System.Drawing.Size(187, 40);
+            this.fieldToolStripMenuItem1.Size = new System.Drawing.Size(274, 40);
             this.fieldToolStripMenuItem1.Text = "Field";
             this.fieldToolStripMenuItem1.Click += new System.EventHandler(this.fieldToolStripMenuItem1_Click);
             // 
@@ -1454,6 +1459,70 @@
             this.panelSimControls.TabIndex = 172;
             this.panelSimControls.Visible = false;
             // 
+            // nudLongitude
+            // 
+            this.nudLongitude.DecimalPlaces = 7;
+            this.nudLongitude.Location = new System.Drawing.Point(214, 58);
+            this.nudLongitude.Maximum = new decimal(new int[] {
+            180,
+            0,
+            0,
+            0});
+            this.nudLongitude.Minimum = new decimal(new int[] {
+            180,
+            0,
+            0,
+            -2147483648});
+            this.nudLongitude.Name = "nudLongitude";
+            this.nudLongitude.Size = new System.Drawing.Size(120, 27);
+            this.nudLongitude.TabIndex = 190;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(165, 60);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(44, 19);
+            this.label13.TabIndex = 189;
+            this.label13.Text = "Long";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(10, 60);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(30, 19);
+            this.label6.TabIndex = 188;
+            this.label6.Text = "Lat";
+            // 
+            // nudLatitude
+            // 
+            this.nudLatitude.DecimalPlaces = 7;
+            this.nudLatitude.Location = new System.Drawing.Point(39, 58);
+            this.nudLatitude.Maximum = new decimal(new int[] {
+            90,
+            0,
+            0,
+            0});
+            this.nudLatitude.Minimum = new decimal(new int[] {
+            90,
+            0,
+            0,
+            -2147483648});
+            this.nudLatitude.Name = "nudLatitude";
+            this.nudLatitude.Size = new System.Drawing.Size(120, 27);
+            this.nudLatitude.TabIndex = 187;
+            // 
+            // btnSimGoTo
+            // 
+            this.btnSimGoTo.Location = new System.Drawing.Point(421, 47);
+            this.btnSimGoTo.Name = "btnSimGoTo";
+            this.btnSimGoTo.Size = new System.Drawing.Size(79, 40);
+            this.btnSimGoTo.TabIndex = 186;
+            this.btnSimGoTo.Text = "Go To";
+            this.btnSimGoTo.UseVisualStyleBackColor = true;
+            this.btnSimGoTo.Click += new System.EventHandler(this.btnSimGoTo_click);
+            // 
             // label3
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -1941,69 +2010,45 @@
             this.btnFixQuality.Visible = false;
             this.btnFixQuality.Click += new System.EventHandler(this.btnFixQuality_click);
             // 
-            // btnSimGoTo
+            // btnColorCut
             // 
-            this.btnSimGoTo.Location = new System.Drawing.Point(421, 47);
-            this.btnSimGoTo.Name = "btnSimGoTo";
-            this.btnSimGoTo.Size = new System.Drawing.Size(79, 40);
-            this.btnSimGoTo.TabIndex = 186;
-            this.btnSimGoTo.Text = "Go To";
-            this.btnSimGoTo.UseVisualStyleBackColor = true;
-            this.btnSimGoTo.Click += new System.EventHandler(this.btnSimGoTo_click);
+            this.btnColorCut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnColorCut.BackColor = System.Drawing.Color.Red;
+            this.btnColorCut.Location = new System.Drawing.Point(972, 371);
+            this.btnColorCut.Name = "btnColorCut";
+            this.btnColorCut.Size = new System.Drawing.Size(32, 43);
+            this.btnColorCut.TabIndex = 234;
+            this.btnColorCut.UseVisualStyleBackColor = false;
+            this.btnColorCut.Click += new System.EventHandler(this.btnColorCut_Click);
             // 
-            // nudLatitude
+            // btnColorCenter
             // 
-            this.nudLatitude.DecimalPlaces = 7;
-            this.nudLatitude.Location = new System.Drawing.Point(39, 58);
-            this.nudLatitude.Maximum = new decimal(new int[] {
-            90,
-            0,
-            0,
-            0});
-            this.nudLatitude.Minimum = new decimal(new int[] {
-            90,
-            0,
-            0,
-            -2147483648});
-            this.nudLatitude.Name = "nudLatitude";
-            this.nudLatitude.Size = new System.Drawing.Size(120, 27);
-            this.nudLatitude.TabIndex = 187;
+            this.btnColorCenter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnColorCenter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnColorCenter.Location = new System.Drawing.Point(972, 420);
+            this.btnColorCenter.Name = "btnColorCenter";
+            this.btnColorCenter.Size = new System.Drawing.Size(32, 43);
+            this.btnColorCenter.TabIndex = 235;
+            this.btnColorCenter.UseVisualStyleBackColor = false;
+            this.btnColorCenter.Click += new System.EventHandler(this.btnColorCenter_Click);
             // 
-            // label6
+            // btnColorFill
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(10, 60);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(30, 19);
-            this.label6.TabIndex = 188;
-            this.label6.Text = "Lat";
+            this.btnColorFill.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnColorFill.BackColor = System.Drawing.Color.Lime;
+            this.btnColorFill.Location = new System.Drawing.Point(972, 469);
+            this.btnColorFill.Name = "btnColorFill";
+            this.btnColorFill.Size = new System.Drawing.Size(32, 43);
+            this.btnColorFill.TabIndex = 236;
+            this.btnColorFill.UseVisualStyleBackColor = false;
+            this.btnColorFill.Click += new System.EventHandler(this.btnColorFill_Click);
             // 
-            // label13
+            // rstMapColorToolStripMenuItem
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(165, 60);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(44, 19);
-            this.label13.TabIndex = 189;
-            this.label13.Text = "Long";
-            // 
-            // nudLongitude
-            // 
-            this.nudLongitude.DecimalPlaces = 7;
-            this.nudLongitude.Location = new System.Drawing.Point(214, 58);
-            this.nudLongitude.Maximum = new decimal(new int[] {
-            180,
-            0,
-            0,
-            0});
-            this.nudLongitude.Minimum = new decimal(new int[] {
-            180,
-            0,
-            0,
-            -2147483648});
-            this.nudLongitude.Name = "nudLongitude";
-            this.nudLongitude.Size = new System.Drawing.Size(120, 27);
-            this.nudLongitude.TabIndex = 190;
+            this.rstMapColorToolStripMenuItem.Name = "rstMapColorToolStripMenuItem";
+            this.rstMapColorToolStripMenuItem.Size = new System.Drawing.Size(274, 40);
+            this.rstMapColorToolStripMenuItem.Text = "Rst Map Color";
+            this.rstMapColorToolStripMenuItem.Click += new System.EventHandler(this.btnResetMapColor_Click);
             // 
             // FormGPS
             // 
@@ -2011,6 +2056,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(1306, 684);
+            this.Controls.Add(this.btnColorFill);
+            this.Controls.Add(this.btnColorCenter);
+            this.Controls.Add(this.btnColorCut);
             this.Controls.Add(this.btnFixQuality);
             this.Controls.Add(this.btnPropExist);
             this.Controls.Add(this.btnCutFillElev);
@@ -2052,7 +2100,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(520, 600);
             this.Name = "FormGPS";
-            this.Text = "OpenGrade - Cuz Retail Sucks";
+            this.Text = "OpenGrade3D - Cuz Retail Sucks";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormGPS_FormClosing);
             this.Load += new System.EventHandler(this.FormGPS_Load);
             this.Resize += new System.EventHandler(this.FormGPS_Resize);
@@ -2071,12 +2119,12 @@
             this.controlPage2.ResumeLayout(false);
             this.panelSimControls.ResumeLayout(false);
             this.panelSimControls.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudLongitude)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudLatitude)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbarSteerAngle)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbarStepDistance)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudElevation)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numBladeOffset)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudLatitude)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudLongitude)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2234,6 +2282,10 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.NumericUpDown nudLatitude;
         private System.Windows.Forms.Button btnSimGoTo;
+        private System.Windows.Forms.Button btnColorCut;
+        private System.Windows.Forms.Button btnColorCenter;
+        private System.Windows.Forms.Button btnColorFill;
+        private System.Windows.Forms.ToolStripMenuItem rstMapColorToolStripMenuItem;
     }
 }
 

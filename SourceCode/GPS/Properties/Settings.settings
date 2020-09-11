@@ -149,5 +149,41 @@
     <Setting Name="setF_minFixStep" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0.5</Value>
     </Setting>
+    <Setting Name="Set_isAvgPt" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Set_noAvgDist" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1.5</Value>
+    </Setting>
+    <Setting Name="Set_levelDistFactor" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
+    <Setting Name="setF_FillColorR" Type="System.Byte" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="setF_FillColorG" Type="System.Byte" Scope="User">
+      <Value Profile="(Default)">191</Value>
+    </Setting>
+    <Setting Name="setF_FillColorB" Type="System.Byte" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="setF_CenterColorR" Type="System.Byte" Scope="User">
+      <Value Profile="(Default)">191</Value>
+    </Setting>
+    <Setting Name="setF_CenterColorG" Type="System.Byte" Scope="User">
+      <Value Profile="(Default)">191</Value>
+    </Setting>
+    <Setting Name="setF_CenterColorB" Type="System.Byte" Scope="User">
+      <Value Profile="(Default)">191</Value>
+    </Setting>
+    <Setting Name="setF_CutColorR" Type="System.Byte" Scope="User">
+      <Value Profile="(Default)">191</Value>
+    </Setting>
+    <Setting Name="setF_CutColorG" Type="System.Byte" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="setF_CutColorB" Type="System.Byte" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

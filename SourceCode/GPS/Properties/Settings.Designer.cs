@@ -12,7 +12,7 @@ namespace OpenGrade.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.5.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.7.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -608,6 +608,150 @@ namespace OpenGrade.Properties {
             }
             set {
                 this["setF_minFixStep"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Set_isAvgPt {
+            get {
+                return ((bool)(this["Set_isAvgPt"]));
+            }
+            set {
+                this["Set_isAvgPt"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.5")]
+        public double Set_noAvgDist {
+            get {
+                return ((double)(this["Set_noAvgDist"]));
+            }
+            set {
+                this["Set_noAvgDist"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public double Set_levelDistFactor {
+            get {
+                return ((double)(this["Set_levelDistFactor"]));
+            }
+            set {
+                this["Set_levelDistFactor"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public byte setF_FillColorR {
+            get {
+                return ((byte)(this["setF_FillColorR"]));
+            }
+            set {
+                this["setF_FillColorR"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("191")]
+        public byte setF_FillColorG {
+            get {
+                return ((byte)(this["setF_FillColorG"]));
+            }
+            set {
+                this["setF_FillColorG"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public byte setF_FillColorB {
+            get {
+                return ((byte)(this["setF_FillColorB"]));
+            }
+            set {
+                this["setF_FillColorB"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("191")]
+        public byte setF_CenterColorR {
+            get {
+                return ((byte)(this["setF_CenterColorR"]));
+            }
+            set {
+                this["setF_CenterColorR"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("191")]
+        public byte setF_CenterColorG {
+            get {
+                return ((byte)(this["setF_CenterColorG"]));
+            }
+            set {
+                this["setF_CenterColorG"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("191")]
+        public byte setF_CenterColorB {
+            get {
+                return ((byte)(this["setF_CenterColorB"]));
+            }
+            set {
+                this["setF_CenterColorB"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("191")]
+        public byte setF_CutColorR {
+            get {
+                return ((byte)(this["setF_CutColorR"]));
+            }
+            set {
+                this["setF_CutColorR"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public byte setF_CutColorG {
+            get {
+                return ((byte)(this["setF_CutColorG"]));
+            }
+            set {
+                this["setF_CutColorG"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public byte setF_CutColorB {
+            get {
+                return ((byte)(this["setF_CutColorB"]));
+            }
+            set {
+                this["setF_CutColorB"] = value;
             }
         }
     }

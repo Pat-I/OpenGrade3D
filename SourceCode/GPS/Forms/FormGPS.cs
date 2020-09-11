@@ -38,6 +38,16 @@ namespace OpenGrade
 
         public byte redField, grnField, bluField;
 
+        //colors for mapping
+        //Fill and low altitude  default green
+        public byte redFill, grnFill, bluFill;
+
+        // center color
+        public byte redCenter, grnCenter, bluCenter;
+
+        // Cut and high altitude default red
+        public byte redCut, grnCut, bluCut;
+
         //polygon mode for section drawing
         private bool isDrawPolygons;
 
@@ -64,7 +74,7 @@ namespace OpenGrade
         public btnStates manualBtnState = btnStates.Off;
 
         //if we are saving a file
-        public bool isSavingFile = false, isLogNMEA = false;
+        public bool isSavingFile = false, isLogNMEA = false, isOKtoOpenMap = false;
 
         //Zoom variables
         public double gridZoom;
@@ -1043,6 +1053,10 @@ namespace OpenGrade
             ct.eleViewList.Clear();
             ct.mapList.Clear();
             ct.boundaryList.Clear();
+            ct.usedPtList.Clear();
+            pn.eastingOffset = 0;
+            pn.northingOffset = 0;
+            pn.altitudeOffset = 0;
         }
 
         //bring up field dialog for new/open/resume
@@ -1070,7 +1084,8 @@ namespace OpenGrade
                     }
                 }
 
-                Text = "OpenGrade - " + currentFieldDirectory;
+                if (isJobStarted) Text = "OpenGrade3D - " + currentFieldDirectory;
+                else Text = "OpenGrade3D";
             }
 
             //close the current job and ask how to or if to save
@@ -1136,7 +1151,7 @@ namespace OpenGrade
             FileSaveMapPt();
 
             JobClose();
-            Text = "OpenGrade";
+            Text = "OpenGrade3D";
         }
 
         //function called by menu items to delete a selected flag
