@@ -16,6 +16,7 @@ namespace OpenGrade
         public double cutDelta;
         private double minDist;
         private double minDistMap;
+        private double mappingDist;
 
         public bool stopTheProgram;
 
@@ -601,11 +602,12 @@ namespace OpenGrade
                 {
                     //fill in the latest distance and fix
                     double fixDist = ((ct.eleViewList[101].easting - pn.easting) * (ct.eleViewList[101].easting - pn.easting) + (ct.eleViewList[101].northing - pn.northing) * (ct.eleViewList[101].northing - pn.northing));
+                    // if the dist is more than 0.5m
                     if (fixDist > 0.25)
                     {
 
                         //copy each point one count back: 0 take 1, 1 take 2 etc.
-                        
+
                         for (int i = 0; i < 101; i++)
                         {
 
@@ -613,17 +615,19 @@ namespace OpenGrade
                             ct.eleViewList[i].lastPassAltitude = ct.eleViewList[i + 1].lastPassAltitude;
                             ct.eleViewList[i].easting = ct.eleViewList[i + 1].easting;
                             ct.eleViewList[i].northing = ct.eleViewList[i + 1].northing;
+                            ct.eleViewList[i].heading = ct.eleViewList[i + 1].heading;
                             ct.eleViewList[i].altitude = ct.eleViewList[i + 1].altitude;
                             ct.eleViewList[i].cutAltitude = ct.eleViewList[i + 1].cutAltitude;
-                            
+
                         }
-                        
+
                         //for (int i = 0; i < 101; i++) ct.eleViewList[i] = ct.eleViewList[i + 1]; this is not working
 
                         // fill the current point (101)
                         ct.eleViewList[101].lastPassAltitude = pn.altitude;
                         ct.eleViewList[101].easting = pn.easting;
                         ct.eleViewList[101].northing = pn.northing;
+                        ct.eleViewList[101].heading = fixHeading;
 
                         if (minDist < 900)
                         {
@@ -642,8 +646,8 @@ namespace OpenGrade
                         for (int j = 1; j < 50; j++)
                         {
 
-                            double AheadEasting = pn.easting + Math.Cos(fixHeading + glm.PIBy2) * -2*j;
-                            double AheadNorthing = pn.northing + Math.Sin(fixHeading - glm.PIBy2) * -2*j;
+                            double AheadEasting = pn.easting + Math.Cos(fixHeading + glm.PIBy2) * -2 * j;
+                            double AheadNorthing = pn.northing + Math.Sin(fixHeading - glm.PIBy2) * -2 * j;
 
 
                             double mindist = 1000000;
@@ -654,7 +658,7 @@ namespace OpenGrade
                             {
                                 for (int m = 0; m < lookPtCt; m++)
                                 {
-                                    double distA = (AheadEasting - ct.ptList[m].easting) * (AheadEasting - ct.ptList[m].easting) + 
+                                    double distA = (AheadEasting - ct.ptList[m].easting) * (AheadEasting - ct.ptList[m].easting) +
                                         (AheadNorthing - ct.ptList[m].northing) * (AheadNorthing - ct.ptList[m].northing);
 
                                     if (distA < mindist)
@@ -695,6 +699,81 @@ namespace OpenGrade
                             }
                         }
 
+                        // the last pass stuff for the map
+                        //find the map resolution
+                        if (mappingDist < 1) mappingDist = 10;
+
+                        // check the dist from curent pt to paint
+                        int ptsBehind = 101 - (int)Math.Round(mappingDist * 1.5 + .9);
+
+                        double paintEasting = ct.eleViewList[ptsBehind].easting;
+                        double paintNorting = ct.eleViewList[ptsBehind].northing;
+                        double paintHeading = ct.eleViewList[ptsBehind].heading;
+                        double paintAltitude = ct.eleViewList[ptsBehind].altitude;
+                        double paintCutAlt = ct.eleViewList[ptsBehind].cutAltitude;
+                        double paintLastPass = ct.eleViewList[ptsBehind].lastPassAltitude;
+
+                        if (paintAltitude > 0 && paintCutAlt > 0 && paintLastPass > 0)
+                        {
+                            // calculate the number of pts from to make calculation
+                            double paintToolDist = (vehicle.toolWidth - mappingDist) / 2;
+
+                            if (paintToolDist <= 0) paintToolDist = 0;
+
+                            //search for all near pts
+                            int ptct = ct.mapList.Count;
+                            if (ptct > 5)
+                            {
+                                mappingDist = ct.mapList[5].drawPtWidthMap;
+                                //double paintDist = (mappingDist * .75) * (mappingDist * .75);
+                                for (int i = 0; i < ptct; i++)
+                                {
+                                    //double dist = (paintEasting - ct.mapList[i].eastingMap) * (paintEasting - ct.mapList[i].eastingMap) +
+                                    //(paintNorting - ct.mapList[i].northingMap) * (paintNorting - ct.mapList[i].northingMap);
+                                    double distEasting = Math.Abs(paintEasting - ct.mapList[i].eastingMap);
+                                    double distNorthing = Math.Abs(paintNorting - ct.mapList[i].northingMap);
+                                    if(distEasting < mappingDist*.7 && distNorthing < mappingDist * .7)
+                                    //if (dist < paintDist)
+                                    {
+                                        // fill the lastpass value
+                                        if (paintLastPass < ct.mapList[i].lastPassAltitudeMap | ct.mapList[i].lastPassAltitudeMap < 1)
+                                        {
+                                            if (paintLastPass < ct.mapList[i].cutAltitudeMap) ct.mapList[i].lastPassAltitudeMap = ct.mapList[i].cutAltitudeMap;
+                                            else ct.mapList[i].lastPassAltitudeMap = paintLastPass;
+                                        }
+                                        // fill the last real pass
+                                        if (ct.mapList[i].cutDeltaMap <= 0)
+                                        {
+                                            if (paintLastPass <= ct.mapList[i].cutAltitudeMap) ct.mapList[i].lastPassRealAltitudeMap = ct.mapList[i].cutAltitudeMap;
+                                            else
+                                            {
+                                                if (ct.mapList[i].lastPassRealAltitudeMap > paintLastPass | ct.mapList[i].lastPassRealAltitudeMap < 0)
+                                                ct.mapList[i].lastPassRealAltitudeMap = paintLastPass;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (ct.mapList[i].lastPassRealAltitudeMap > paintLastPass | ct.mapList[i].lastPassRealAltitudeMap < 0)
+                                            {
+
+                                                if (paintLastPass >= ct.mapList[i].altitudeMap) ct.mapList[i].lastPassRealAltitudeMap = ct.mapList[i].altitudeMap;
+                                                else if (paintLastPass <= ct.mapList[i].cutAltitudeMap) ct.mapList[i].lastPassRealAltitudeMap = ct.mapList[i].cutAltitudeMap;
+                                                else ct.mapList[i].lastPassRealAltitudeMap = paintLastPass;
+                                            }                                             
+                                        }
+                                    }
+                                }
+
+
+                                if (paintToolDist > 0)
+                                {
+                                    for (double h = paintToolDist; h > 0; h -= mappingDist)
+                                    {
+
+                                    }
+                                }
+                            }
+                        }
 
 
 
@@ -946,6 +1025,24 @@ namespace OpenGrade
 
             if (ptCnt > 0)
             {
+                //int closestPointMap;
+                //int closestPointMapSE;
+                //int closestPointMapSW;
+                //int closestPointMapNE;
+                //int closestPointMapNW;
+
+                int ptCount = ct.ptList.Count - 1;
+                
+                //double minDistSE;
+                //double minDistSW;
+                //double minDistNE;
+                //double minDistNW;
+
+                //double cutFillMap;
+                //double avgAltitude;
+                //double avgCutAltitude;
+                //double sumofCloseDist;
+
                 for (double h = (double)eastingMin; h < (double)eastingMax; h += drawPtWidth)
                 {
                     for (double i = (double)northingMin; i < (double)northingMax; i += drawPtWidth)
@@ -958,7 +1055,7 @@ namespace OpenGrade
                         int closestPointMapNE = -1;
                         int closestPointMapNW = -1;
 
-                        int ptCount = ct.ptList.Count - 1;
+                        
                         minDistMap = 1000;
                         double minDistSE = 1000;
                         double minDistSW = 1000;
@@ -1034,9 +1131,9 @@ namespace OpenGrade
 
                         if (minDistMap < minDistMapDist)
                         {
-                            double cutFillMap;
-                            double avgAltitude;
-                            double avgCutAltitude;
+                            double cutFillMap = 0;
+                            double avgAltitude = 0;
+                            double avgCutAltitude = 0;
                             double sumofCloseDist = 1 / Math.Sqrt(minDistSE) + 1 / Math.Sqrt(minDistSW) + 1 / Math.Sqrt(minDistNW) + 1 / Math.Sqrt(minDistNE);
 
                             if (minDistMap <= drawPtWidth | minDistSE == 1000 | minDistSW == 1000 | minDistNE == 1000 | minDistNW == 1000)

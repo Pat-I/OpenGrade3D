@@ -58,6 +58,7 @@
             this.colorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fieldToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.rstMapColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripUnitsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.metricToolStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.imperialToolStrip = new System.Windows.Forms.ToolStripMenuItem();
@@ -142,7 +143,7 @@
             this.btnZeroAltitude = new System.Windows.Forms.Button();
             this.cboxLastPass = new System.Windows.Forms.CheckBox();
             this.cboxLaserModeOnOff = new System.Windows.Forms.CheckBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lblCut = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
             this.lblAltitude = new System.Windows.Forms.Label();
@@ -187,7 +188,11 @@
             this.btnColorCut = new System.Windows.Forms.Button();
             this.btnColorCenter = new System.Windows.Forms.Button();
             this.btnColorFill = new System.Windows.Forms.Button();
-            this.rstMapColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.lblFill = new System.Windows.Forms.Label();
+            this.lblFillValue = new System.Windows.Forms.Label();
+            this.lblCutValue = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControl)).BeginInit();
             this.contextMenuStripOpenGL.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControlBack)).BeginInit();
@@ -442,6 +447,13 @@
             this.fieldToolStripMenuItem1.Size = new System.Drawing.Size(274, 40);
             this.fieldToolStripMenuItem1.Text = "Field";
             this.fieldToolStripMenuItem1.Click += new System.EventHandler(this.fieldToolStripMenuItem1_Click);
+            // 
+            // rstMapColorToolStripMenuItem
+            // 
+            this.rstMapColorToolStripMenuItem.Name = "rstMapColorToolStripMenuItem";
+            this.rstMapColorToolStripMenuItem.Size = new System.Drawing.Size(274, 40);
+            this.rstMapColorToolStripMenuItem.Text = "Rst Map Color";
+            this.rstMapColorToolStripMenuItem.Click += new System.EventHandler(this.btnResetMapColor_Click);
             // 
             // toolStripUnitsMenu
             // 
@@ -1033,6 +1045,8 @@
             // DataPage
             // 
             this.DataPage.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.DataPage.Controls.Add(this.label15);
+            this.DataPage.Controls.Add(this.label14);
             this.DataPage.Controls.Add(this.lblSats);
             this.DataPage.Controls.Add(this.lblFixQuality);
             this.DataPage.Controls.Add(this.lblGPSHeading);
@@ -1388,17 +1402,17 @@
             this.cboxLaserModeOnOff.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.cboxLaserModeOnOff.UseVisualStyleBackColor = false;
             // 
-            // label2
+            // lblCut
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.label2.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(967, 610);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(78, 29);
-            this.label2.TabIndex = 217;
-            this.label2.Text = "Slope:";
+            this.lblCut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblCut.AutoSize = true;
+            this.lblCut.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.lblCut.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCut.Location = new System.Drawing.Point(1009, 375);
+            this.lblCut.Name = "lblCut";
+            this.lblCut.Size = new System.Drawing.Size(55, 29);
+            this.lblCut.TabIndex = 217;
+            this.lblCut.Text = "C/Al";
             // 
             // label27
             // 
@@ -1685,9 +1699,9 @@
             this.label4.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(1097, 610);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(34, 29);
+            this.label4.Size = new System.Drawing.Size(39, 29);
             this.label4.TabIndex = 218;
-            this.label4.Text = "d:";
+            this.label4.Text = "__";
             // 
             // pbarCutBelow
             // 
@@ -2043,12 +2057,61 @@
             this.btnColorFill.UseVisualStyleBackColor = false;
             this.btnColorFill.Click += new System.EventHandler(this.btnColorFill_Click);
             // 
-            // rstMapColorToolStripMenuItem
+            // label14
             // 
-            this.rstMapColorToolStripMenuItem.Name = "rstMapColorToolStripMenuItem";
-            this.rstMapColorToolStripMenuItem.Size = new System.Drawing.Size(274, 40);
-            this.rstMapColorToolStripMenuItem.Text = "Rst Map Color";
-            this.rstMapColorToolStripMenuItem.Click += new System.EventHandler(this.btnResetMapColor_Click);
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.Location = new System.Drawing.Point(146, 140);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(39, 23);
+            this.label14.TabIndex = 186;
+            this.label14.Text = "Zn:";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.Location = new System.Drawing.Point(146, 163);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(44, 23);
+            this.label15.TabIndex = 187;
+            this.label15.Text = "Sat:";
+            // 
+            // lblFill
+            // 
+            this.lblFill.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblFill.AutoSize = true;
+            this.lblFill.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.lblFill.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFill.Location = new System.Drawing.Point(1009, 483);
+            this.lblFill.Name = "lblFill";
+            this.lblFill.Size = new System.Drawing.Size(54, 29);
+            this.lblFill.TabIndex = 237;
+            this.lblFill.Text = "F/Al";
+            // 
+            // lblFillValue
+            // 
+            this.lblFillValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblFillValue.AutoSize = true;
+            this.lblFillValue.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.lblFillValue.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFillValue.Location = new System.Drawing.Point(1078, 483);
+            this.lblFillValue.Name = "lblFillValue";
+            this.lblFillValue.Size = new System.Drawing.Size(69, 29);
+            this.lblFillValue.TabIndex = 238;
+            this.lblFillValue.Text = "value";
+            // 
+            // lblCutValue
+            // 
+            this.lblCutValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblCutValue.AutoSize = true;
+            this.lblCutValue.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.lblCutValue.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCutValue.Location = new System.Drawing.Point(1078, 375);
+            this.lblCutValue.Name = "lblCutValue";
+            this.lblCutValue.Size = new System.Drawing.Size(69, 29);
+            this.lblCutValue.TabIndex = 239;
+            this.lblCutValue.Text = "value";
             // 
             // FormGPS
             // 
@@ -2056,6 +2119,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(1306, 684);
+            this.Controls.Add(this.lblCutValue);
+            this.Controls.Add(this.lblFillValue);
+            this.Controls.Add(this.lblFill);
             this.Controls.Add(this.btnColorFill);
             this.Controls.Add(this.btnColorCenter);
             this.Controls.Add(this.btnColorCut);
@@ -2079,7 +2145,7 @@
             this.Controls.Add(this.btnTiltDown);
             this.Controls.Add(this.btnZoomOut);
             this.Controls.Add(this.btnTiltUp);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.lblCut);
             this.Controls.Add(this.lblAltitude);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.lblHeading);
@@ -2258,7 +2324,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label lblCutDelta;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblCut;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox cboxLastPass;
         private System.Windows.Forms.Button btnZeroAltitude;
@@ -2286,6 +2352,11 @@
         private System.Windows.Forms.Button btnColorCenter;
         private System.Windows.Forms.Button btnColorFill;
         private System.Windows.Forms.ToolStripMenuItem rstMapColorToolStripMenuItem;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label lblFill;
+        private System.Windows.Forms.Label lblFillValue;
+        private System.Windows.Forms.Label lblCutValue;
     }
 }
 

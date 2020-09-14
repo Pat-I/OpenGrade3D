@@ -99,7 +99,7 @@ namespace OpenGrade
             lblBarGraphMax.Text = barGraphMax.ToString();
 
             // send value to bladeoffset
-            numBladeOffset.Value = (decimal)Properties.Vehicle.Default.setVehicle_bladeOffset *100;
+            numBladeOffset.Value = (decimal)Properties.Vehicle.Default.setVehicle_bladeOffset * 100;
         }
 
         //hide the left panel
@@ -158,6 +158,42 @@ namespace OpenGrade
                 if (result == DialogResult.OK) { }
             }
         }
+
+        public void fillCutFillLbl()
+        {
+            if (ct.isElevation)
+            {
+                lblCut.Text = "Max";
+                lblFill.Text = "Min";
+                if (isMetric)
+                {
+                    lblCutValue.Text = Convert.ToString(Math.Round(ct.maxAltitude, 2));
+                    lblFillValue.Text = Convert.ToString(Math.Round(ct.minAltitude, 2));
+                }
+                else
+                {
+                    lblCutValue.Text = Convert.ToString(Math.Round(ct.maxAltitude * 3.28084, 2));
+                    lblFillValue.Text = Convert.ToString(Math.Round(ct.minAltitude * 3.28084, 2));
+                }
+            }
+            else
+            {
+                lblCut.Text = "CUT";
+                lblFill.Text = "FILL";
+                if (isMetric)
+                {
+                    lblCutValue.Text = Convert.ToString(Math.Round(ct.maxCut * 100, 0)) + " cm";
+                    lblFillValue.Text = Convert.ToString(Math.Round(ct.maxFill * 100, 0)) + " cm";
+                }
+                else
+                {
+                    lblCutValue.Text = Convert.ToString(Math.Round(ct.maxCut * 39.37, 1)) + " in";
+                    lblFillValue.Text = Convert.ToString(Math.Round(ct.maxFill * 39.37, 1)) + " in";
+                }
+            }
+
+        }
+
 
         // Buttons //-----------------------------------------------------------------------
 
@@ -531,6 +567,7 @@ namespace OpenGrade
                 imperialToolStrip.Checked = true;
             }
             CalculateMinMaxZoom();
+            fillCutFillLbl();
         }
         private void btnGPSData_Click(object sender, EventArgs e)
         {
@@ -734,6 +771,7 @@ namespace OpenGrade
             Settings.Default.Save();
             lblSpeedUnits.Text = "kmh";
             CalculateMinMaxZoom();
+            fillCutFillLbl();
         }
         private void skyToolStripMenu_Click(object sender, EventArgs e)
         {
@@ -751,6 +789,7 @@ namespace OpenGrade
             Settings.Default.Save();
             lblSpeedUnits.Text = "mph";
             CalculateMinMaxZoom();
+            fillCutFillLbl();
         }
         private void simulatorOnToolStripMenuItem_Click(object sender, EventArgs e)
         {
