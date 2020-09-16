@@ -22,3 +22,4 @@ C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\Application\OpenGrade3D.exe
 C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\Application\OpenGrade3D.pdb
 C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGrade3D.exe
 C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGrade3D.pdb
+C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGrade3D.csprojAssemblyReference.cache

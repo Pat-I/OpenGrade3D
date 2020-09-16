@@ -15,7 +15,7 @@ namespace OpenGrade
         public List<List<vec2>> patchSaveList = new List<List<vec2>>();
 
         /*
-         * The agd file is read near line 942 --public void FileOpenAgdDesign()
+         * The agd file is read near line 988 --public void FileOpenAgdDesign()
          * codes in .agd -> code in opengrade
          * MB -> 0
          * 2PER -> 2
@@ -422,14 +422,14 @@ namespace OpenGrade
             //and open a new job
             this.JobNew();
 
-            //Saturday, February 11, 2017  -->  7:26:52 AM
-            //$FieldDir
-            //Bob_Feb11
-            //$Offsets
-            //533172,5927719,12 - offset easting, northing, zone
-            //$Sections
-            //10 - points in this patch
-            //10.1728031317344,0.723157039771303 -easting, northing
+            /*
+            2020 - September - 02 09:35:40 PM
+            OpenGrade3D v1.0.1
+            $FieldDir
+            test optisurface 10m bnd Sep02
+            $Offsets
+            657908,4522604,14
+            */
 
             //start to read the file
             string line;
@@ -439,6 +439,18 @@ namespace OpenGrade
                 {
                     //Date time line
                     line = reader.ReadLine();
+
+                    //Check the version
+                    string[] words;
+                    line = reader.ReadLine(); words = line.Split(',');
+
+                    if (words[0] != "OpenGrade3D v1.0.1")
+                    {
+                        var form = new FormTimedMessage(5000, "Field is Wrong Version", "Must be OpenGrade3D v1.0.1");
+                        form.Show();
+                        JobClose();
+                        return;
+                    }
 
                     //dir header $FieldDir
                     line = reader.ReadLine();
@@ -480,18 +492,20 @@ namespace OpenGrade
             {
                 var form = new FormTimedMessage(4000, "Missing Contour File", "But Field is Loaded");
                 form.Show();
-                //return;
+                return;
             }
 
             /*
-                May-14-17  -->  7:42:47 PM
-                Points in Patch followed by easting, heading, northing, altitude
-                $ContourDir
-                cdert_May14
+                2020-September-09 04:42:11 PM
+                easting, heading, northing, altitude, latitude, longitude, cutAltitude, lastPassAltitude, distance
+                OpenGrade3D v1.0.1
+                test optisurface 2m Sep07
                 $Offsets
-                533631,5927279,12
-                19
-                2.866,2.575,-4.07,0             
+                657744,4522397,14
+                $Position correction
+                0.000,0.000,0.000
+                35852
+                -66.439,0,-132.687,418.856,40.83626581,-97.1298216,418.784,-1,-1             
              */
             else
             {
@@ -502,10 +516,28 @@ namespace OpenGrade
                         //read the lines and skip them
                         line = reader.ReadLine();
                         line = reader.ReadLine();
+
+                        //check the version
+                        string[] words;
+                        line = reader.ReadLine(); words = line.Split(',');
+                       
+                        if (words[0] != "OpenGrade3D v1.0.1")
+                        {
+                            var form = new FormTimedMessage(5000, "Contour.txt File is Wrong Version", "Must be OpenGrade3D v1.0.1");
+                            form.Show();
+                            return;
+                        }
+                        //read the lines and skip them
                         line = reader.ReadLine();
                         line = reader.ReadLine();
                         line = reader.ReadLine();
                         line = reader.ReadLine();
+
+                        //read the position corrections
+                        line = reader.ReadLine(); words = line.Split(',');
+                        pn.eastingOffset = double.Parse(words[0], CultureInfo.InvariantCulture);
+                        pn.northingOffset = double.Parse(words[1], CultureInfo.InvariantCulture);
+                        pn.altitudeOffset = double.Parse(words[2], CultureInfo.InvariantCulture);
 
                         while (!reader.EndOfStream)
                         {
@@ -516,8 +548,7 @@ namespace OpenGrade
 
                             for (int v = 0; v < verts; v++)
                             {
-                                line = reader.ReadLine();
-                                string[] words = line.Split(',');
+                                line = reader.ReadLine(); words = line.Split(',');
 
                                 CContourPt point = new CContourPt(
                                     double.Parse(words[0], CultureInfo.InvariantCulture),
@@ -543,153 +574,159 @@ namespace OpenGrade
                     }
 
                     //calc mins maxes
-                    CalculateMinMaxZoom();                 
+                    //CalculateMinMaxZoom();                 
                     //ct.mapList.Clear(); Not here only when opening an agd file.
                     //CalculateMinMaxEastNort(); Not here only when opening an agd file.
+                    isOKtoOpenMap = true;
                 }
             }
 
             // Map points ----------------------------------------------------------------------------
 
-            fileAndDirectory = fieldsDirectory + currentFieldDirectory + "\\MapPt.txt";
-            if (!File.Exists(fileAndDirectory))
+            if (isOKtoOpenMap)
             {
-                var form = new FormTimedMessage(4000, "Missing Mapping File", "But Field is Loaded");
-                form.Show();
-                //return;
-            }
+                isOKtoOpenMap = false;
 
-            /*
-                May-14-17  -->  7:42:47 PM
-                Points in Patch followed by easting, heading, northing, altitude
-                $ContourDir
-                cdert_May14
-                $Offsets
-                533631,5927279,12
-                19
-                2.866,2.575,-4.07,0             
-             */
-            else
-            {
-                using (StreamReader reader = new StreamReader(fileAndDirectory))
+                fileAndDirectory = fieldsDirectory + currentFieldDirectory + "\\MapPt.txt";
+                if (!File.Exists(fileAndDirectory))
                 {
-                    try
-                    {
-                        //read the lines and skip them
-                        line = reader.ReadLine();
-                        line = reader.ReadLine();
-                        line = reader.ReadLine();
-                        line = reader.ReadLine();
-                        line = reader.ReadLine();
-                        line = reader.ReadLine();
-
-                        while (!reader.EndOfStream)
-                        {
-                            //read how many vertices in the following patch
-                            line = reader.ReadLine();
-                            int verts = int.Parse(line);
-                            //CContourPt vecFix = new vec4(0, 0, 0, 0);
-
-                            for (int v = 0; v < verts; v++)
-                            {
-                                line = reader.ReadLine();
-                                string[] words = line.Split(',');
-
-                                mapListPt point = new mapListPt(
-                                    double.Parse(words[0], CultureInfo.InvariantCulture),
-                                    double.Parse(words[1], CultureInfo.InvariantCulture),
-                                    double.Parse(words[2], CultureInfo.InvariantCulture),
-                                    double.Parse(words[3], CultureInfo.InvariantCulture),
-                                    double.Parse(words[4], CultureInfo.InvariantCulture),
-                                    double.Parse(words[5], CultureInfo.InvariantCulture),
-                                    double.Parse(words[6], CultureInfo.InvariantCulture),
-                                    double.Parse(words[7], CultureInfo.InvariantCulture));
-
-                                ct.mapList.Add(point);
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        WriteErrorLog("Loading Contour file" + e.ToString());
-
-                        var form = new FormTimedMessage(4000, "MapPt File is Corrupt", "But Field is Loaded");
-                        form.Show();
-                    }
-
-                    
+                    var form = new FormTimedMessage(4000, "Missing Mapping File", "But Field is Loaded");
+                    form.Show();
+                    //return;
                 }
-            }
 
-            // Boundary points ----------------------------------------------------------------------------
-
-            fileAndDirectory = fieldsDirectory + currentFieldDirectory + "\\BoundaryList.txt";
-            if (!File.Exists(fileAndDirectory))
-            {
-                var form = new FormTimedMessage(4000, "Missing Boundary Pts File", "But Field is Loaded");
-                form.Show();
-                //return;
-            }
-
-            /*
-                May-14-17  -->  7:42:47 PM
-                Points in Patch followed by easting, heading, northing, altitude
-                $ContourDir
-                cdert_May14
-                $Offsets
-                533631,5927279,12
-                19
-                2.866,2.575,-4.07,0             
-             */
-            else
-            {
-                using (StreamReader reader = new StreamReader(fileAndDirectory))
+                /*
+                    May-14-17  -->  7:42:47 PM
+                    Points in Patch followed by easting, heading, northing, altitude
+                    $ContourDir
+                    cdert_May14
+                    $Offsets
+                    533631,5927279,12
+                    19
+                    2.866,2.575,-4.07,0             
+                 */
+                else
                 {
-                    try
+                    using (StreamReader reader = new StreamReader(fileAndDirectory))
                     {
-                        //read the lines and skip them
-                        line = reader.ReadLine();
-                        line = reader.ReadLine();
-                        line = reader.ReadLine();
-                        line = reader.ReadLine();
-                        line = reader.ReadLine();
-                        line = reader.ReadLine();
-
-                        while (!reader.EndOfStream)
+                        try
                         {
-                            //read how many vertices in the following patch
+                            //read the lines and skip them
                             line = reader.ReadLine();
-                            int verts = int.Parse(line);
-                            //CContourPt vecFix = new vec4(0, 0, 0, 0);
+                            line = reader.ReadLine();
+                            line = reader.ReadLine();
+                            line = reader.ReadLine();
+                            line = reader.ReadLine();
+                            line = reader.ReadLine();
 
-                            for (int v = 0; v < verts; v++)
+                            while (!reader.EndOfStream)
                             {
+                                //read how many vertices in the following patch
                                 line = reader.ReadLine();
-                                string[] words = line.Split(',');
+                                int verts = int.Parse(line);
+                                //CContourPt vecFix = new vec4(0, 0, 0, 0);
 
-                                BoundaryPt point = new BoundaryPt(
-                                    double.Parse(words[0], CultureInfo.InvariantCulture),
-                                    double.Parse(words[1], CultureInfo.InvariantCulture),
-                                    double.Parse(words[2], CultureInfo.InvariantCulture),
-                                    double.Parse(words[3], CultureInfo.InvariantCulture),
-                                    double.Parse(words[4], CultureInfo.InvariantCulture),
-                                    double.Parse(words[5], CultureInfo.InvariantCulture),
-                                    double.Parse(words[6], CultureInfo.InvariantCulture),
-                                    double.Parse(words[7], CultureInfo.InvariantCulture));
+                                for (int v = 0; v < verts; v++)
+                                {
+                                    line = reader.ReadLine();
+                                    string[] words = line.Split(',');
 
-                                ct.boundaryList.Add(point);
+                                    mapListPt point = new mapListPt(
+                                        double.Parse(words[0], CultureInfo.InvariantCulture),
+                                        double.Parse(words[1], CultureInfo.InvariantCulture),
+                                        double.Parse(words[2], CultureInfo.InvariantCulture),
+                                        double.Parse(words[3], CultureInfo.InvariantCulture),
+                                        double.Parse(words[4], CultureInfo.InvariantCulture),
+                                        double.Parse(words[5], CultureInfo.InvariantCulture),
+                                        double.Parse(words[6], CultureInfo.InvariantCulture),
+                                        double.Parse(words[7], CultureInfo.InvariantCulture));
+
+                                    ct.mapList.Add(point);
+                                }
                             }
                         }
+                        catch (Exception e)
+                        {
+                            WriteErrorLog("Loading Contour file" + e.ToString());
+
+                            var form = new FormTimedMessage(4000, "MapPt File is Corrupt", "But Field is Loaded");
+                            form.Show();
+                        }
+
+
                     }
-                    catch (Exception e)
+                }
+
+                // Boundary points ----------------------------------------------------------------------------
+
+                fileAndDirectory = fieldsDirectory + currentFieldDirectory + "\\BoundaryList.txt";
+                if (!File.Exists(fileAndDirectory))
+                {
+                    var form = new FormTimedMessage(4000, "Missing Boundary Pts File", "But Field is Loaded");
+                    form.Show();
+                    //return;
+                }
+
+                /*
+                    May-14-17  -->  7:42:47 PM
+                    Points in Patch followed by easting, heading, northing, altitude
+                    $ContourDir
+                    cdert_May14
+                    $Offsets
+                    533631,5927279,12
+                    19
+                    2.866,2.575,-4.07,0             
+                 */
+                else
+                {
+                    using (StreamReader reader = new StreamReader(fileAndDirectory))
                     {
-                        WriteErrorLog("Loading Contour file" + e.ToString());
+                        try
+                        {
+                            //read the lines and skip them
+                            line = reader.ReadLine();
+                            line = reader.ReadLine();
+                            line = reader.ReadLine();
+                            line = reader.ReadLine();
+                            line = reader.ReadLine();
+                            line = reader.ReadLine();
 
-                        var form = new FormTimedMessage(4000, "MapPt File is Corrupt", "But Field is Loaded");
-                        form.Show();
+                            while (!reader.EndOfStream)
+                            {
+                                //read how many vertices in the following patch
+                                line = reader.ReadLine();
+                                int verts = int.Parse(line);
+                                //CContourPt vecFix = new vec4(0, 0, 0, 0);
+
+                                for (int v = 0; v < verts; v++)
+                                {
+                                    line = reader.ReadLine();
+                                    string[] words = line.Split(',');
+
+                                    BoundaryPt point = new BoundaryPt(
+                                        double.Parse(words[0], CultureInfo.InvariantCulture),
+                                        double.Parse(words[1], CultureInfo.InvariantCulture),
+                                        double.Parse(words[2], CultureInfo.InvariantCulture),
+                                        double.Parse(words[3], CultureInfo.InvariantCulture),
+                                        double.Parse(words[4], CultureInfo.InvariantCulture),
+                                        double.Parse(words[5], CultureInfo.InvariantCulture),
+                                        double.Parse(words[6], CultureInfo.InvariantCulture),
+                                        double.Parse(words[7], CultureInfo.InvariantCulture));
+
+                                    ct.boundaryList.Add(point);
+                                }
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            WriteErrorLog("Loading Contour file" + e.ToString());
+
+                            var form = new FormTimedMessage(4000, "MapPt File is Corrupt", "But Field is Loaded");
+                            form.Show();
+                        }
+
+
                     }
-
-
                 }
             }
 
@@ -832,14 +869,14 @@ namespace OpenGrade
         //creates the field file when starting new field
         public void FileCreateField()
         {
-            //Saturday, February 11, 2017  -->  7:26:52 AM
-            //$FieldDir
-            //Bob_Feb11
-            //$Offsets
-            //533172,5927719,12 - offset easting, northing, zone
-            //$Sections
-            //10 - points in this patch
-            //10.1728031317344,0.723157039771303 -easting, northing
+            /*
+            2020 - September - 02 09:35:40 PM
+            OpenGrade3D v1.0.1
+            $FieldDir
+            test optisurface 10m bnd Sep02
+            $Offsets
+            657908,4522604,14
+            */
 
             if (!isJobStarted)
             {
@@ -862,7 +899,8 @@ namespace OpenGrade
             {
                 //Write out the date
                 writer.WriteLine(DateTime.Now.ToString("yyyy-MMMM-dd hh:mm:ss tt", CultureInfo.InvariantCulture));
-
+                //Write the version
+                writer.WriteLine("OpenGrade3D v1.0.1");                
                 writer.WriteLine("$FieldDir");
                 writer.WriteLine(currentFieldDirectory.ToString(CultureInfo.InvariantCulture));
 
@@ -901,16 +939,20 @@ namespace OpenGrade
             }
         }
 
-        //Create contour file
+        //Create contour file, not used?
         public void FileCreateContour()
         {
-            //Saturday, February 11, 2017  -->  7:26:52 AM
-            //12  - points in patch
-            //64.697,0.168,-21.654,0 - east, heading, north, altitude
-            //$ContourDir
-            //Bob_Feb11
-            //$Offsets
-            //533172,5927719,12
+            /*
+                2020-September-09 04:42:11 PM
+                easting, heading, northing, altitude, latitude, longitude, cutAltitude, lastPassAltitude, distance
+                $ContourDir
+                test optisurface 2m Sep07
+                $Offsets
+                657744,4522397,14
+                35852
+                -66.439,0,-132.687,418.856,40.83626581,-97.1298216,418.784,-1,-1
+             */
+
 
             //get the directory and make sure it exists, create if not
             string dirField = fieldsDirectory + currentFieldDirectory + "\\";
@@ -993,7 +1035,7 @@ namespace OpenGrade
                                 line = reader.ReadLine();
                                 string[] words = line.Split(',');
 
-                                if (words[5] == "MB" | words[5] == " MB")
+                                if (words[5] == "MB" | words[5] == " MB" | words[5] == "0MB" | words[5] == " 0MB")
                                 {
                                     designPt point = new designPt(
                                     double.Parse(words[0], CultureInfo.InvariantCulture),
@@ -1149,16 +1191,21 @@ namespace OpenGrade
 
                                 if (words[5] == "3GRD" | words[5] == " 3GRD")
                                 {
-                                     designPt point = new designPt(
-                                     double.Parse(words[0], CultureInfo.InvariantCulture),
-                                     double.Parse(words[1], CultureInfo.InvariantCulture),
-                                     double.Parse(words[2], CultureInfo.InvariantCulture),
-                                     double.Parse(words[3], CultureInfo.InvariantCulture),
-                                     double.Parse(words[4], CultureInfo.InvariantCulture),
-                                     3, 0, 0
-                                     );
+                                    //if (!String.IsNullOrEmpty(words[2]) && !String.IsNullOrEmpty(words[3]) && !String.IsNullOrEmpty(words[4]))
+                                    //{
 
-                                     ct.designList.Add(point);
+
+                                        designPt point = new designPt(
+                                        double.Parse(words[0], CultureInfo.InvariantCulture),
+                                        double.Parse(words[1], CultureInfo.InvariantCulture),
+                                        double.Parse(words[2], CultureInfo.InvariantCulture),
+                                        double.Parse(words[3], CultureInfo.InvariantCulture),
+                                        double.Parse(words[4], CultureInfo.InvariantCulture),
+                                        3, 0, 0
+                                        );
+
+                                        ct.designList.Add(point);
+                                    //}
 
                                 }
                                 
@@ -1180,6 +1227,7 @@ namespace OpenGrade
                     //ct.mapList.Clear();
                     //CalculateMinMaxEastNort();
                 }
+
 
                 FileSaveDesignList(); // for testing
                 ct.designList2ptList();
@@ -1263,15 +1311,19 @@ namespace OpenGrade
         //save the contour points which include elevation values
         public void FileSaveContour()
         {
-            //1  - points in patch
-            //64.697,0.168,-21.654,0 - east, heading, north, altitude
-            //Saturday, February 11, 2017  -->  7:26:52 AM
-            //12  - points in patch
-            //64.697,0.168,-21.654,0 - east, heading, north, altitude
-            //$ContourDir
-            //Bob_Feb11
-            //$Offsets
-            //533172,5927719,12
+            /*
+                2020-September-09 04:42:11 PM
+                easting, heading, northing, altitude, latitude, longitude, cutAltitude, lastPassAltitude, distance
+                OpenGrade3D v1.0.1
+                test optisurface 2m Sep07
+                $Offsets
+                657744,4522397,14
+                $Position correction
+                0.000,0.000,0.000
+                35852
+                -66.439,0,-132.687,418.856,40.83626581,-97.1298216,418.784,-1,-1
+              
+             */
 
             //get the directory and make sure it exists, create if not
             string dirField = fieldsDirectory + currentFieldDirectory + "\\";
@@ -1290,7 +1342,7 @@ namespace OpenGrade
                 writer.WriteLine("easting, heading, northing, altitude, latitude, longitude, cutAltitude, lastPassAltitude, distance");
 
                 //which field directory
-                writer.WriteLine("$ContourDir");
+                writer.WriteLine("OpenGrade3D v1.0.1");
                 writer.WriteLine(currentFieldDirectory);
 
                 //write out the easting and northing Offsets
@@ -1298,6 +1350,10 @@ namespace OpenGrade
                 writer.WriteLine(pn.utmEast.ToString(CultureInfo.InvariantCulture) +
                     "," + pn.utmNorth.ToString(CultureInfo.InvariantCulture) + "," + pn.zone.ToString(CultureInfo.InvariantCulture));
 
+                //write the position correction offset
+                writer.WriteLine("$Position correction");
+                writer.WriteLine(Math.Round(pn.eastingOffset, 3).ToString(CultureInfo.InvariantCulture) +
+                    "," + Math.Round(pn.northingOffset, 3).ToString(CultureInfo.InvariantCulture) + "," + Math.Round(pn.altitudeOffset, 3).ToString(CultureInfo.InvariantCulture));
 
                 //make sure there is something to save
                 if (ct.ptList.Count() > 0)

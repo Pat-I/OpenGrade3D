@@ -69,6 +69,9 @@ namespace OpenGrade
         public double actualEasting, actualNorthing;
         public double zone;
 
+        //Position Offset corrections, by Pat
+        public double northingOffset, eastingOffset, altitudeOffset;
+
         //other GIS Info
         public double altitude, speed;
         public double headingTrue, hdop, ageDiff;
@@ -215,7 +218,7 @@ namespace OpenGrade
                 //altitude
                 double.TryParse(words[9], NumberStyles.Float, CultureInfo.InvariantCulture, out altitude);
                 //altitude -= mf.vehicle.antennaHeight;
-                altitude -= (mf.vehicle.antennaHeight + mf.vehicle.bladeOffset);
+                altitude -= (mf.vehicle.antennaHeight + mf.vehicle.bladeOffset - altitudeOffset);
                 //altitude = altitude - mf.vehicle.antennaHeight + mf.vehicle.bladeOffset;
 
                 //age of differential
@@ -368,8 +371,9 @@ namespace OpenGrade
             actualNorthing = xy[1];
 
             //if a field is open, the real one is subtracted from the integer
-            easting = xy[0] - utmEast;
-            northing = xy[1] - utmNorth;
+            // add the offset (blade position corection) by Pat
+            easting = xy[0] - utmEast - eastingOffset;
+            northing = xy[1] - utmNorth - northingOffset;
         }
 
         // to convert agd lat long to utm by Pat

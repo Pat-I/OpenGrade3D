@@ -129,7 +129,7 @@
         "DisplayName" = "8:Debug"
         "IsDebugOnly" = "11:TRUE"
         "IsReleaseOnly" = "11:FALSE"
-        "OutputFilename" = "8:Debug\\OpenGrade3DSetup.msi"
+        "OutputFilename" = "8:..\\..\\Installer\\OpenGrade3DSetup.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -146,6 +146,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -170,6 +178,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
     }
@@ -205,7 +221,7 @@
             "SourcePath" = "8:C:\\GPS\\OpenGrade Developement\\OpenGrade-blade_3D\\ArduinoCode\\ValveControlUnified\\ValveControl\\ValveControl.ino"
             "TargetName" = "8:ValveControl.ino"
             "Tag" = "8:"
-            "Folder" = "8:_D68C78A7A58B40E0BF5D8349F97BD1E1"
+            "Folder" = "8:_34985E843B7147B38E23DE98DEF30280"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -245,7 +261,7 @@
             "SourcePath" = "8:C:\\GPS\\OpenGrade Developement\\OpenGrade-blade_3D\\ArduinoCode\\ValveControlShematic.png"
             "TargetName" = "8:ValveControlShematic.png"
             "Tag" = "8:"
-            "Folder" = "8:_D68C78A7A58B40E0BF5D8349F97BD1E1"
+            "Folder" = "8:_34985E843B7147B38E23DE98DEF30280"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -463,7 +479,7 @@
         {
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_4B8D5088107D4FB9AB4ED3F67445236B"
             {
-            "DefaultLocation" = "8:[ProgramFilesFolder][Manufacturer]\\[ProductName]"
+            "DefaultLocation" = "8:[ProgramFilesFolder][Manufacturer]"
             "Name" = "8:#1925"
             "AlwaysCreate" = "11:FALSE"
             "Condition" = "8:"
@@ -471,17 +487,6 @@
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_D68C78A7A58B40E0BF5D8349F97BD1E1"
-                    {
-                    "Name" = "8:ValveControl"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_8EFD55FDC2CC4C8396C0F94798B6C1E9"
-                        "Folders"
-                        {
-                        }
-                    }
                     "{9EF0B969-E518-4E46-987F-47570745A589}:_ECB990D29E2F4383A4A7EED58F274114"
                     {
                     "Name" = "8:Dependencies"
@@ -504,6 +509,28 @@
             "Property" = "8:DesktopFolder"
                 "Folders"
                 {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_7535FC4725174DC5B737926E7C1E4EC4"
+                    {
+                    "Name" = "8:OpenGrade3Darduino"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_86A95A4024AA4E1BBC52B2ED1CCBD98A"
+                        "Folders"
+                        {
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_34985E843B7147B38E23DE98DEF30280"
+                            {
+                            "Name" = "8:ValveControl"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_8EFD55FDC2CC4C8396C0F94798B6C1E9"
+                                "Folders"
+                                {
+                                }
+                            }
+                        }
+                    }
                 }
             }
             "{1525181F-901A-416C-8A58-119130FE478E}:_CA70E0BE0A1F48DA873146F474A693D1"
@@ -544,15 +571,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:OpenGrade3D"
-        "ProductCode" = "8:{4735BCD3-CFBD-47B8-A705-821EC635B489}"
-        "PackageCode" = "8:{30204C06-9B0A-48A9-8601-C825661D4FF6}"
+        "ProductCode" = "8:{5BAF06E3-0C88-49FA-BF40-7D5E0B5463D8}"
+        "PackageCode" = "8:{11BA4EC6-21FE-4E69-9A7A-44E0199CD65F}"
         "UpgradeCode" = "8:{62563CD4-0EB3-449B-91F4-8A2AED0583A6}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
+        "ProductVersion" = "8:1.0.2"
         "Manufacturer" = "8:OpenGrade3D"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

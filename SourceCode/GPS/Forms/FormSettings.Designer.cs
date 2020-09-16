@@ -72,6 +72,25 @@
             this.nudPwmMinDown = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.tabDesingPt = new System.Windows.Forms.TabPage();
+            this.btnSendCorr = new System.Windows.Forms.Button();
+            this.label34 = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
+            this.label32 = new System.Windows.Forms.Label();
+            this.butPosCorrection = new System.Windows.Forms.Button();
+            this.label31 = new System.Windows.Forms.Label();
+            this.label30 = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
+            this.nudCorrAltitude = new System.Windows.Forms.NumericUpDown();
+            this.nudCorrNorthing = new System.Windows.Forms.NumericUpDown();
+            this.label27 = new System.Windows.Forms.Label();
+            this.nudCorrEasting = new System.Windows.Forms.NumericUpDown();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.nudLevelDistFactor = new System.Windows.Forms.NumericUpDown();
+            this.nudNoAvgDist = new System.Windows.Forms.NumericUpDown();
+            this.butAvgDesignPt = new System.Windows.Forms.Button();
             this.label17 = new System.Windows.Forms.Label();
             this.lblInchesCm = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -95,6 +114,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudPwmMaxDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPwmGainDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPwmMinDown)).BeginInit();
+            this.tabDesingPt.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCorrAltitude)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCorrNorthing)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCorrEasting)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudLevelDistFactor)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudNoAvgDist)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -103,6 +128,7 @@
             this.tabControl1.Controls.Add(this.tabVehicle);
             this.tabControl1.Controls.Add(this.tabDisplay);
             this.tabControl1.Controls.Add(this.tabValve);
+            this.tabControl1.Controls.Add(this.tabDesingPt);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
@@ -548,6 +574,205 @@
             resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
             // 
+            // tabDesingPt
+            // 
+            this.tabDesingPt.Controls.Add(this.btnSendCorr);
+            this.tabDesingPt.Controls.Add(this.label34);
+            this.tabDesingPt.Controls.Add(this.label33);
+            this.tabDesingPt.Controls.Add(this.label32);
+            this.tabDesingPt.Controls.Add(this.butPosCorrection);
+            this.tabDesingPt.Controls.Add(this.label31);
+            this.tabDesingPt.Controls.Add(this.label30);
+            this.tabDesingPt.Controls.Add(this.label29);
+            this.tabDesingPt.Controls.Add(this.nudCorrAltitude);
+            this.tabDesingPt.Controls.Add(this.nudCorrNorthing);
+            this.tabDesingPt.Controls.Add(this.label27);
+            this.tabDesingPt.Controls.Add(this.nudCorrEasting);
+            this.tabDesingPt.Controls.Add(this.label23);
+            this.tabDesingPt.Controls.Add(this.label21);
+            this.tabDesingPt.Controls.Add(this.label19);
+            this.tabDesingPt.Controls.Add(this.nudLevelDistFactor);
+            this.tabDesingPt.Controls.Add(this.nudNoAvgDist);
+            this.tabDesingPt.Controls.Add(this.butAvgDesignPt);
+            resources.ApplyResources(this.tabDesingPt, "tabDesingPt");
+            this.tabDesingPt.Name = "tabDesingPt";
+            this.tabDesingPt.UseVisualStyleBackColor = true;
+            // 
+            // btnSendCorr
+            // 
+            resources.ApplyResources(this.btnSendCorr, "btnSendCorr");
+            this.btnSendCorr.Name = "btnSendCorr";
+            this.btnSendCorr.UseVisualStyleBackColor = true;
+            this.btnSendCorr.Click += new System.EventHandler(this.btnSendCorr_Click);
+            // 
+            // label34
+            // 
+            resources.ApplyResources(this.label34, "label34");
+            this.label34.Name = "label34";
+            // 
+            // label33
+            // 
+            resources.ApplyResources(this.label33, "label33");
+            this.label33.Name = "label33";
+            // 
+            // label32
+            // 
+            resources.ApplyResources(this.label32, "label32");
+            this.label32.Name = "label32";
+            // 
+            // butPosCorrection
+            // 
+            resources.ApplyResources(this.butPosCorrection, "butPosCorrection");
+            this.butPosCorrection.Name = "butPosCorrection";
+            this.butPosCorrection.UseVisualStyleBackColor = true;
+            this.butPosCorrection.Click += new System.EventHandler(this.btnPosCorrection_Click);
+            // 
+            // label31
+            // 
+            resources.ApplyResources(this.label31, "label31");
+            this.label31.Name = "label31";
+            // 
+            // label30
+            // 
+            resources.ApplyResources(this.label30, "label30");
+            this.label30.Name = "label30";
+            // 
+            // label29
+            // 
+            resources.ApplyResources(this.label29, "label29");
+            this.label29.Name = "label29";
+            // 
+            // nudCorrAltitude
+            // 
+            this.nudCorrAltitude.DecimalPlaces = 2;
+            resources.ApplyResources(this.nudCorrAltitude, "nudCorrAltitude");
+            this.nudCorrAltitude.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.nudCorrAltitude.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.nudCorrAltitude.Minimum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            -2147483648});
+            this.nudCorrAltitude.Name = "nudCorrAltitude";
+            this.nudCorrAltitude.ValueChanged += new System.EventHandler(this.nudCorrAltitude_ValueChanged);
+            // 
+            // nudCorrNorthing
+            // 
+            this.nudCorrNorthing.DecimalPlaces = 2;
+            resources.ApplyResources(this.nudCorrNorthing, "nudCorrNorthing");
+            this.nudCorrNorthing.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.nudCorrNorthing.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.nudCorrNorthing.Minimum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            -2147483648});
+            this.nudCorrNorthing.Name = "nudCorrNorthing";
+            this.nudCorrNorthing.ValueChanged += new System.EventHandler(this.nudCorrNorthing_ValueChanged);
+            // 
+            // label27
+            // 
+            resources.ApplyResources(this.label27, "label27");
+            this.label27.Name = "label27";
+            // 
+            // nudCorrEasting
+            // 
+            this.nudCorrEasting.DecimalPlaces = 2;
+            resources.ApplyResources(this.nudCorrEasting, "nudCorrEasting");
+            this.nudCorrEasting.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.nudCorrEasting.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.nudCorrEasting.Minimum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            -2147483648});
+            this.nudCorrEasting.Name = "nudCorrEasting";
+            this.nudCorrEasting.ValueChanged += new System.EventHandler(this.nudCorrEasting_ValueChanged);
+            // 
+            // label23
+            // 
+            resources.ApplyResources(this.label23, "label23");
+            this.label23.Name = "label23";
+            // 
+            // label21
+            // 
+            resources.ApplyResources(this.label21, "label21");
+            this.label21.Name = "label21";
+            // 
+            // label19
+            // 
+            resources.ApplyResources(this.label19, "label19");
+            this.label19.Name = "label19";
+            // 
+            // nudLevelDistFactor
+            // 
+            resources.ApplyResources(this.nudLevelDistFactor, "nudLevelDistFactor");
+            this.nudLevelDistFactor.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nudLevelDistFactor.Name = "nudLevelDistFactor";
+            this.nudLevelDistFactor.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.nudLevelDistFactor.ValueChanged += new System.EventHandler(this.nudLevelDistFactor_ValueChanged);
+            // 
+            // nudNoAvgDist
+            // 
+            this.nudNoAvgDist.DecimalPlaces = 1;
+            this.nudNoAvgDist.Increment = new decimal(new int[] {
+            3,
+            0,
+            0,
+            65536});
+            resources.ApplyResources(this.nudNoAvgDist, "nudNoAvgDist");
+            this.nudNoAvgDist.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.nudNoAvgDist.Name = "nudNoAvgDist";
+            this.nudNoAvgDist.Value = new decimal(new int[] {
+            16,
+            0,
+            0,
+            65536});
+            this.nudNoAvgDist.ValueChanged += new System.EventHandler(this.nudNoAvgDist_ValueChanged);
+            // 
+            // butAvgDesignPt
+            // 
+            resources.ApplyResources(this.butAvgDesignPt, "butAvgDesignPt");
+            this.butAvgDesignPt.Name = "butAvgDesignPt";
+            this.butAvgDesignPt.UseVisualStyleBackColor = true;
+            this.butAvgDesignPt.Click += new System.EventHandler(this.btnAvgDesignPt_Click);
+            // 
             // label17
             // 
             resources.ApplyResources(this.label17, "label17");
@@ -613,6 +838,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudPwmMaxDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPwmGainDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPwmMinDown)).EndInit();
+            this.tabDesingPt.ResumeLayout(false);
+            this.tabDesingPt.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCorrAltitude)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCorrNorthing)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudCorrEasting)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudLevelDistFactor)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudNoAvgDist)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -667,5 +899,24 @@
         private System.Windows.Forms.NumericUpDown nudGradeDistFromLine;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.NumericUpDown nudMaxCuttingDepth;
+        private System.Windows.Forms.TabPage tabDesingPt;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.Label label33;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.Button butPosCorrection;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.NumericUpDown nudCorrAltitude;
+        private System.Windows.Forms.NumericUpDown nudCorrNorthing;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.NumericUpDown nudCorrEasting;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.NumericUpDown nudLevelDistFactor;
+        private System.Windows.Forms.NumericUpDown nudNoAvgDist;
+        private System.Windows.Forms.Button butAvgDesignPt;
+        private System.Windows.Forms.Button btnSendCorr;
     }
 }
