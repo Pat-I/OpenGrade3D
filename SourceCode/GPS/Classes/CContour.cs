@@ -1036,11 +1036,16 @@ namespace OpenGrade
 
                     if (usedPtcnt > 1)
                     {
-                        gl.Color(1.0f, 0.5f, 0.0f);
-                        for (int h = 1; h < usedPtcnt; h++) gl.Vertex(usedPtList[h].easting, usedPtList[h].northing, 0);
                         
+                        for (int h = 1; h < usedPtcnt; h++)
+                        {
+                            if (usedPtList[h].used == 1) gl.Color(1.0f, 0.5f, 0.0f);
+                            else gl.Color(0.0f, 0.0f, 1.0f);
+                            gl.Vertex(usedPtList[h].easting, usedPtList[h].northing, 0);
 
+                        }                        
                     }
+                    //PAINT the closeset pt
                     gl.Color(1.0f, 0.0f, 0.0f);
                     gl.Vertex(usedPtList[0].easting, usedPtList[0].northing, 0);
 
