@@ -157,7 +157,7 @@ namespace OpenGrade.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool setMenu_isLightbarOn {
             get {
                 return ((bool)(this["setMenu_isLightbarOn"]));
@@ -625,7 +625,7 @@ namespace OpenGrade.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.5")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.1")]
         public double Set_noAvgDist {
             get {
                 return ((double)(this["Set_noAvgDist"]));

@@ -1435,7 +1435,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;btnSendCorr.Parent" xml:space="preserve">
-    <value>tabPage1</value>
+    <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;btnSendCorr.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -1468,7 +1468,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label34.Parent" xml:space="preserve">
-    <value>tabPage1</value>
+    <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;label34.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -1501,7 +1501,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label33.Parent" xml:space="preserve">
-    <value>tabPage1</value>
+    <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;label33.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -1534,7 +1534,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label32.Parent" xml:space="preserve">
-    <value>tabPage1</value>
+    <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;label32.ZOrder" xml:space="preserve">
     <value>3</value>
@@ -1558,7 +1558,7 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;butPosCorrection.Parent" xml:space="preserve">
-    <value>tabPage1</value>
+    <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;butPosCorrection.ZOrder" xml:space="preserve">
     <value>4</value>
@@ -1573,16 +1573,16 @@
     <value>NoControl</value>
   </data>
   <data name="label31.Location" type="System.Drawing.Point, System.Drawing">
-    <value>152, 251</value>
+    <value>121, 251</value>
   </data>
   <data name="label31.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 19</value>
+    <value>95, 19</value>
   </data>
   <data name="label31.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
   </data>
   <data name="label31.Text" xml:space="preserve">
-    <value>Altitude</value>
+    <value>Altitude (m)</value>
   </data>
   <data name="&gt;&gt;label31.Name" xml:space="preserve">
     <value>label31</value>
@@ -1591,7 +1591,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label31.Parent" xml:space="preserve">
-    <value>tabPage1</value>
+    <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;label31.ZOrder" xml:space="preserve">
     <value>5</value>
@@ -1606,16 +1606,16 @@
     <value>NoControl</value>
   </data>
   <data name="label30.Location" type="System.Drawing.Point, System.Drawing">
-    <value>145, 168</value>
+    <value>114, 168</value>
   </data>
   <data name="label30.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 19</value>
+    <value>102, 19</value>
   </data>
   <data name="label30.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
   </data>
   <data name="label30.Text" xml:space="preserve">
-    <value>Northing</value>
+    <value>Northing (m)</value>
   </data>
   <data name="&gt;&gt;label30.Name" xml:space="preserve">
     <value>label30</value>
@@ -1624,7 +1624,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label30.Parent" xml:space="preserve">
-    <value>tabPage1</value>
+    <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;label30.ZOrder" xml:space="preserve">
     <value>6</value>
@@ -1639,16 +1639,16 @@
     <value>NoControl</value>
   </data>
   <data name="label29.Location" type="System.Drawing.Point, System.Drawing">
-    <value>156, 73</value>
+    <value>125, 73</value>
   </data>
   <data name="label29.Size" type="System.Drawing.Size, System.Drawing">
-    <value>60, 19</value>
+    <value>91, 19</value>
   </data>
   <data name="label29.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
   <data name="label29.Text" xml:space="preserve">
-    <value>Easting</value>
+    <value>Easting (m)</value>
   </data>
   <data name="&gt;&gt;label29.Name" xml:space="preserve">
     <value>label29</value>
@@ -1657,7 +1657,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label29.Parent" xml:space="preserve">
-    <value>tabPage1</value>
+    <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;label29.ZOrder" xml:space="preserve">
     <value>7</value>
@@ -1684,7 +1684,7 @@
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;nudCorrAltitude.Parent" xml:space="preserve">
-    <value>tabPage1</value>
+    <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;nudCorrAltitude.ZOrder" xml:space="preserve">
     <value>8</value>
@@ -1711,7 +1711,7 @@
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;nudCorrNorthing.Parent" xml:space="preserve">
-    <value>tabPage1</value>
+    <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;nudCorrNorthing.ZOrder" xml:space="preserve">
     <value>9</value>
@@ -1738,7 +1738,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label27.Parent" xml:space="preserve">
-    <value>tabPage1</value>
+    <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;label27.ZOrder" xml:space="preserve">
     <value>10</value>
@@ -1765,7 +1765,7 @@
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;nudCorrEasting.Parent" xml:space="preserve">
-    <value>tabPage1</value>
+    <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;nudCorrEasting.ZOrder" xml:space="preserve">
     <value>11</value>
@@ -1798,7 +1798,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label23.Parent" xml:space="preserve">
-    <value>tabPage1</value>
+    <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;label23.ZOrder" xml:space="preserve">
     <value>12</value>
@@ -1831,7 +1831,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label21.Parent" xml:space="preserve">
-    <value>tabPage1</value>
+    <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;label21.ZOrder" xml:space="preserve">
     <value>13</value>
@@ -1861,7 +1861,7 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label19.Parent" xml:space="preserve">
-    <value>tabPage1</value>
+    <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;label19.ZOrder" xml:space="preserve">
     <value>14</value>
@@ -1885,7 +1885,7 @@
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;nudLevelDistFactor.Parent" xml:space="preserve">
-    <value>tabPage1</value>
+    <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;nudLevelDistFactor.ZOrder" xml:space="preserve">
     <value>15</value>
@@ -1909,7 +1909,7 @@
     <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;nudNoAvgDist.Parent" xml:space="preserve">
-    <value>tabPage1</value>
+    <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;nudNoAvgDist.ZOrder" xml:space="preserve">
     <value>16</value>
@@ -1933,36 +1933,36 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;butAvgDesignPt.Parent" xml:space="preserve">
-    <value>tabPage1</value>
+    <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;butAvgDesignPt.ZOrder" xml:space="preserve">
     <value>17</value>
   </data>
-  <data name="tabPage1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="tabDesingPt.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 45</value>
   </data>
-  <data name="tabPage1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="tabDesingPt.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
   </data>
-  <data name="tabPage1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="tabDesingPt.Size" type="System.Drawing.Size, System.Drawing">
     <value>732, 502</value>
   </data>
-  <data name="tabPage1.TabIndex" type="System.Int32, mscorlib">
+  <data name="tabDesingPt.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="tabPage1.Text" xml:space="preserve">
-    <value>tabPage1</value>
+  <data name="tabDesingPt.Text" xml:space="preserve">
+    <value>Design Pt</value>
   </data>
-  <data name="&gt;&gt;tabPage1.Name" xml:space="preserve">
-    <value>tabPage1</value>
+  <data name="&gt;&gt;tabDesingPt.Name" xml:space="preserve">
+    <value>tabDesingPt</value>
   </data>
-  <data name="&gt;&gt;tabPage1.Type" xml:space="preserve">
+  <data name="&gt;&gt;tabDesingPt.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tabPage1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;tabDesingPt.Parent" xml:space="preserve">
     <value>tabControl1</value>
   </data>
-  <data name="&gt;&gt;tabPage1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;tabDesingPt.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="tabControl1.Font" type="System.Drawing.Font, System.Drawing">

@@ -72,7 +72,7 @@
             this.nudPwmMinDown = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabDesingPt = new System.Windows.Forms.TabPage();
             this.btnSendCorr = new System.Windows.Forms.Button();
             this.label34 = new System.Windows.Forms.Label();
             this.label33 = new System.Windows.Forms.Label();
@@ -114,7 +114,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudPwmMaxDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPwmGainDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPwmMinDown)).BeginInit();
-            this.tabPage1.SuspendLayout();
+            this.tabDesingPt.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudCorrAltitude)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCorrNorthing)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCorrEasting)).BeginInit();
@@ -128,7 +128,7 @@
             this.tabControl1.Controls.Add(this.tabVehicle);
             this.tabControl1.Controls.Add(this.tabDisplay);
             this.tabControl1.Controls.Add(this.tabValve);
-            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabDesingPt);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
@@ -574,29 +574,29 @@
             resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
             // 
-            // tabPage1
+            // tabDesingPt
             // 
-            this.tabPage1.Controls.Add(this.btnSendCorr);
-            this.tabPage1.Controls.Add(this.label34);
-            this.tabPage1.Controls.Add(this.label33);
-            this.tabPage1.Controls.Add(this.label32);
-            this.tabPage1.Controls.Add(this.butPosCorrection);
-            this.tabPage1.Controls.Add(this.label31);
-            this.tabPage1.Controls.Add(this.label30);
-            this.tabPage1.Controls.Add(this.label29);
-            this.tabPage1.Controls.Add(this.nudCorrAltitude);
-            this.tabPage1.Controls.Add(this.nudCorrNorthing);
-            this.tabPage1.Controls.Add(this.label27);
-            this.tabPage1.Controls.Add(this.nudCorrEasting);
-            this.tabPage1.Controls.Add(this.label23);
-            this.tabPage1.Controls.Add(this.label21);
-            this.tabPage1.Controls.Add(this.label19);
-            this.tabPage1.Controls.Add(this.nudLevelDistFactor);
-            this.tabPage1.Controls.Add(this.nudNoAvgDist);
-            this.tabPage1.Controls.Add(this.butAvgDesignPt);
-            resources.ApplyResources(this.tabPage1, "tabPage1");
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabDesingPt.Controls.Add(this.btnSendCorr);
+            this.tabDesingPt.Controls.Add(this.label34);
+            this.tabDesingPt.Controls.Add(this.label33);
+            this.tabDesingPt.Controls.Add(this.label32);
+            this.tabDesingPt.Controls.Add(this.butPosCorrection);
+            this.tabDesingPt.Controls.Add(this.label31);
+            this.tabDesingPt.Controls.Add(this.label30);
+            this.tabDesingPt.Controls.Add(this.label29);
+            this.tabDesingPt.Controls.Add(this.nudCorrAltitude);
+            this.tabDesingPt.Controls.Add(this.nudCorrNorthing);
+            this.tabDesingPt.Controls.Add(this.label27);
+            this.tabDesingPt.Controls.Add(this.nudCorrEasting);
+            this.tabDesingPt.Controls.Add(this.label23);
+            this.tabDesingPt.Controls.Add(this.label21);
+            this.tabDesingPt.Controls.Add(this.label19);
+            this.tabDesingPt.Controls.Add(this.nudLevelDistFactor);
+            this.tabDesingPt.Controls.Add(this.nudNoAvgDist);
+            this.tabDesingPt.Controls.Add(this.butAvgDesignPt);
+            resources.ApplyResources(this.tabDesingPt, "tabDesingPt");
+            this.tabDesingPt.Name = "tabDesingPt";
+            this.tabDesingPt.UseVisualStyleBackColor = true;
             // 
             // btnSendCorr
             // 
@@ -838,8 +838,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudPwmMaxDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPwmGainDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPwmMinDown)).EndInit();
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
+            this.tabDesingPt.ResumeLayout(false);
+            this.tabDesingPt.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudCorrAltitude)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCorrNorthing)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCorrEasting)).EndInit();
@@ -899,7 +899,7 @@
         private System.Windows.Forms.NumericUpDown nudGradeDistFromLine;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.NumericUpDown nudMaxCuttingDepth;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabDesingPt;
         private System.Windows.Forms.Label label34;
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.Label label32;

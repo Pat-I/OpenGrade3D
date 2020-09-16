@@ -216,6 +216,7 @@ namespace OpenGrade
                     }
                 }
 
+                /*
                 //LightBar if AB Line is set and turned on or contour
                 if (isLightbarOn)
                 {
@@ -296,6 +297,7 @@ namespace OpenGrade
                     txtDistanceOffABLine.Visible = false;
                     //btnAutoSteer.Text = "-";
                 }
+                */
 
                 gl.Flush();//finish openGL commands
                 gl.PopMatrix();//  Pop the modelview.
@@ -329,7 +331,7 @@ namespace OpenGrade
                         }
                     }
                 }
-
+                
 
                 //digital input Master control (WorkSwitch)
                 if (isJobStarted && mc.isWorkSwitchEnabled)
@@ -1585,7 +1587,7 @@ namespace OpenGrade
 
         #endregion
 
-        double maxFieldX, maxFieldY, minFieldX, minFieldY, centerX, centerY, cameraDistanceZ;
+        double maxFieldX, maxFieldY, minFieldX, minFieldY, centerX, centerY, cameraDistanceZ, oldMinFieldY, oldMaxFieldY;
 
         //determine mins maxs of contour and altitude
         private void CalculateMinMaxZoom()
@@ -1600,7 +1602,7 @@ namespace OpenGrade
             {
                 for (int i = 0; i < cnt; i++)
                 {
-                    //double x = i;
+                    double x = ct.eleViewList[i].cutAltitude;
                     double y = ct.eleViewList[i].altitude;
 
                     //also tally the max/min of Cut x and z
@@ -1610,22 +1612,29 @@ namespace OpenGrade
                     {
                         if (minFieldY > y) minFieldY = y;
                     }
-                    
+                    if (x > 0)
+                    {
+                        if (minFieldY > x) minFieldY = x;
+                    }
                     
                     if (maxFieldY < y) maxFieldY = y;
-                    
-                    
+                    if (maxFieldY < x) maxFieldY = x;
+
                 }  
                 
                 
             }
+            // stabilise window when small alt changes
+            double maxFieldYdiff = Math.Abs(maxFieldY - oldMaxFieldY);
+            double minFieldYdiff = Math.Abs(minFieldY - oldMinFieldY);
 
-            if (maxFieldX == -9999999 | minFieldX == 9999999 | maxFieldY == -9999999 | minFieldY == 9999999)
+
+            if (maxFieldY == -9999999 | minFieldY == 9999999)
             {
                 maxFieldX = 0; minFieldX = 0; maxFieldY = 0; minFieldY = 0;
                 cameraDistanceZ = 10;
             }
-            else
+            else if (maxFieldYdiff > .05 | minFieldYdiff > .05)
             {
                 //Max horizontal
                 cameraDistanceZ = Math.Abs(minFieldX - maxFieldX);

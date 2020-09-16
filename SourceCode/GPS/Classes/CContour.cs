@@ -1025,8 +1025,24 @@ namespace OpenGrade
                     }
                 }
 
-                // Paint the dots for the contour pts used for cut fill calculation
+                // Paint the design pts
+                if (mf.isLightbarOn)
+                {
+                    int count = ptList.Count;
 
+                    if(count > 0)
+                    {
+                        gl.PointSize(3.0f);
+                        gl.Begin(OpenGL.GL_POINTS);
+                        gl.Color(1.0f, 0.5f, 0.0f);
+
+                        for (int j = 0; j < count; j++) gl.Vertex(ptList[j].easting, ptList[j].northing, 0);
+
+                        gl.End();
+                    }
+                }
+
+                // Paint the dots for the contour pts used for cut fill calculation
                 int usedPtcnt = usedPtList.Count;
 
                 if (usedPtcnt > 0)

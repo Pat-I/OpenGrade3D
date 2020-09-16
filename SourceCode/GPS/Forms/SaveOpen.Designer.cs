@@ -15,7 +15,7 @@ namespace OpenGrade
         public List<List<vec2>> patchSaveList = new List<List<vec2>>();
 
         /*
-         * The agd file is read near line 942 --public void FileOpenAgdDesign()
+         * The agd file is read near line 988 --public void FileOpenAgdDesign()
          * codes in .agd -> code in opengrade
          * MB -> 0
          * 2PER -> 2
@@ -1035,7 +1035,7 @@ namespace OpenGrade
                                 line = reader.ReadLine();
                                 string[] words = line.Split(',');
 
-                                if (words[5] == "MB" | words[5] == " MB")
+                                if (words[5] == "MB" | words[5] == " MB" | words[5] == "0MB" | words[5] == " 0MB")
                                 {
                                     designPt point = new designPt(
                                     double.Parse(words[0], CultureInfo.InvariantCulture),
@@ -1191,16 +1191,21 @@ namespace OpenGrade
 
                                 if (words[5] == "3GRD" | words[5] == " 3GRD")
                                 {
-                                     designPt point = new designPt(
-                                     double.Parse(words[0], CultureInfo.InvariantCulture),
-                                     double.Parse(words[1], CultureInfo.InvariantCulture),
-                                     double.Parse(words[2], CultureInfo.InvariantCulture),
-                                     double.Parse(words[3], CultureInfo.InvariantCulture),
-                                     double.Parse(words[4], CultureInfo.InvariantCulture),
-                                     3, 0, 0
-                                     );
+                                    //if (!String.IsNullOrEmpty(words[2]) && !String.IsNullOrEmpty(words[3]) && !String.IsNullOrEmpty(words[4]))
+                                    //{
 
-                                     ct.designList.Add(point);
+
+                                        designPt point = new designPt(
+                                        double.Parse(words[0], CultureInfo.InvariantCulture),
+                                        double.Parse(words[1], CultureInfo.InvariantCulture),
+                                        double.Parse(words[2], CultureInfo.InvariantCulture),
+                                        double.Parse(words[3], CultureInfo.InvariantCulture),
+                                        double.Parse(words[4], CultureInfo.InvariantCulture),
+                                        3, 0, 0
+                                        );
+
+                                        ct.designList.Add(point);
+                                    //}
 
                                 }
                                 

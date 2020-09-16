@@ -36,7 +36,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="setMenu_isLightbarOn" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="setF_CurrentDir" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -153,7 +153,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="Set_noAvgDist" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">1.5</Value>
+      <Value Profile="(Default)">0.1</Value>
     </Setting>
     <Setting Name="Set_levelDistFactor" Type="System.Double" Scope="User">
       <Value Profile="(Default)">100</Value>
