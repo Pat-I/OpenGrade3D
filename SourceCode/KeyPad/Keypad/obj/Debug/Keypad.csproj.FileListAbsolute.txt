@@ -1,0 +1,11 @@
+C:\Users\jko070\Documents\GitHub\OpenGrade3D\SourceCode\GPS\References\Keypad.dll
+C:\Users\jko070\Documents\GitHub\OpenGrade3D\SourceCode\GPS\References\Keypad.pdb
+C:\Users\jko070\Documents\GitHub\OpenGrade3D\SourceCode\KeyPad\Keypad\obj\Debug\Keypad.csprojAssemblyReference.cache
+C:\Users\jko070\Documents\GitHub\OpenGrade3D\SourceCode\KeyPad\Keypad\obj\Debug\Keypad.GenericKeypad.resources
+C:\Users\jko070\Documents\GitHub\OpenGrade3D\SourceCode\KeyPad\Keypad\obj\Debug\Keypad.Keyboard.resources
+C:\Users\jko070\Documents\GitHub\OpenGrade3D\SourceCode\KeyPad\Keypad\obj\Debug\Keypad.Properties.Resources.resources
+C:\Users\jko070\Documents\GitHub\OpenGrade3D\SourceCode\KeyPad\Keypad\obj\Debug\Keypad.NumKeypad.resources
+C:\Users\jko070\Documents\GitHub\OpenGrade3D\SourceCode\KeyPad\Keypad\obj\Debug\Keypad.csproj.GenerateResource.cache
+C:\Users\jko070\Documents\GitHub\OpenGrade3D\SourceCode\KeyPad\Keypad\obj\Debug\Keypad.csproj.CoreCompileInputs.cache
+C:\Users\jko070\Documents\GitHub\OpenGrade3D\SourceCode\KeyPad\Keypad\obj\Debug\Keypad.dll
+C:\Users\jko070\Documents\GitHub\OpenGrade3D\SourceCode\KeyPad\Keypad\obj\Debug\Keypad.pdb
