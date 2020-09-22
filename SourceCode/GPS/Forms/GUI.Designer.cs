@@ -1139,6 +1139,10 @@ namespace OpenGrade
         {
             SettingsUDP();
         }
+        private void toolstripNtripConfig_Click(object sender, EventArgs e)
+        {
+            SettingsNTRIP();
+        }
         private void toolstripResetTrip_Click_1(object sender, EventArgs e)
         {
             userDistance = 0;
@@ -1285,6 +1289,73 @@ namespace OpenGrade
 
         #endregion properties 
 
+        private void DoNTRIPSecondRoutine()
+        {
+            //count up the ntrip clock only if everything is alive
+            if (startCounter > 50 && recvCounter < 20 && isNTRIP_RequiredOn)
+            {
+                IncrementNTRIPWatchDog();
+            }
+
+            if (Properties.Settings.Default.setNTRIP_isOn)
+            {
+                    isNTRIP_RequiredOn = true;
+                    stripDistance.Text = gStr.gsWaiting;
+            }
+
+            //Have we connection
+            if (isNTRIP_RequiredOn && !isNTRIP_Connected && !isNTRIP_Connecting)
+            {
+                if (!isNTRIP_Starting && ntripCounter > 20)
+                {
+                    StartNTRIP();
+                }
+            }
+
+            if (isNTRIP_Connecting)
+            {
+                if (ntripCounter > 50)
+                {
+                    TimedMessageBox(2000, gStr.gsSocketConnectionProblem, gStr.gsNotConnectingToCaster);
+                    ReconnectRequest();
+                }
+                if (clientSocket != null && clientSocket.Connected)
+                {
+                    //TimedMessageBox(2000, "NTRIP Not Connected", " At the StartNTRIP() ");
+                    //ReconnectRequest();
+                    //return;
+                    SendAuthorization();
+                }
+
+            }
+
+            if (isNTRIP_RequiredOn)
+            {
+                //update byte counter and up counter
+                //if (ntripCounter > 59) NTRIPStartStopStrip.Text = (ntripCounter / 60) + " Mins";
+                //else if (ntripCounter < 60 && ntripCounter > 22) NTRIPStartStopStrip.Text = ntripCounter + " Secs";
+                //else NTRIPStartStopStrip.Text = "In " + (Math.Abs(ntripCounter - 22)) + " secs";
+
+                //pbarNtripMenu.Value = unchecked((byte)(tripBytes * 0.02));
+                //NTRIPBytesMenu.Text = ((tripBytes) * 0.001).ToString("###,###,###") + " kb";
+
+                //watchdog for Ntrip
+                if (isNTRIP_Connecting) lblWatch.Text = gStr.gsAuthourizing;
+                else
+                {
+                    if (NTRIP_Watchdog > 10) lblWatch.Text = gStr.gsWaiting;
+                    else lblWatch.Text = gStr.gsListening;
+                }
+
+                if (sendGGAInterval > 0 && isNTRIP_Sending)
+                {
+                    lblWatch.Text = "Send GGA";
+                    isNTRIP_Sending = false;
+                }
+            }
+        }
+
+
         //Timer triggers at 50 msec, 20 hz, and is THE clock of the whole program//
         private void tmrWatchdog_tick(object sender, EventArgs e)
         {
@@ -1298,7 +1369,12 @@ namespace OpenGrade
                 //tmrWatchdog.Enabled = true;
                 statusUpdateCounter++;
 
-                if (fiveSecondCounter++ > 100) { fiveSecondCounter = 0; }
+                if (fiveSecondCounter++ > 20)
+                { 
+                    //do all the NTRIP routines
+                    DoNTRIPSecondRoutine(); 
+                    fiveSecondCounter = 0; 
+                }
 
                 //GPS Update rate
                 lblFixUpdateHz.Text = NMEAHz + " Hz " + FixQuality + " " + (int)(frameTime) + "ms";
@@ -1368,6 +1444,8 @@ namespace OpenGrade
                     lblHeading.Text = Heading;
                     btnABLine.Text = PassNumber;
                     lblPureSteerAngle.Text = PureSteerAngle;
+
+                    
 
                     //check for the fix quality
                     if (pn.fixQuality != 4 && lastFixQuality == 4)

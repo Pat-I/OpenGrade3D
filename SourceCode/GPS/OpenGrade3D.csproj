@@ -66,6 +66,8 @@
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="ProgBar, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Application\ProgBar.dll</HintPath>
@@ -91,11 +93,15 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider" />
     <Reference Include="WebEye.Controls.WinForms.WebCameraControl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Application\WebEye.Controls.WinForms.WebCameraControl.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\CSim.cs" />
@@ -108,6 +114,10 @@
     <Compile Include="Classes\CVehicle.cs" />
     <Compile Include="Classes\CWaypoint.cs" />
     <Compile Include="Classes\CWorldGrid.cs" />
+    <Compile Include="FormSource.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSource.Designer.cs" />
     <Compile Include="Forms\FormFieldDir.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -126,6 +136,20 @@
     <Compile Include="Forms\FormJob.Designer.cs">
       <DependentUpon>FormJob.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FormKeyboard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormKeyboard.Designer.cs" />
+    <Compile Include="Forms\FormNtrip.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormNtrip.Designer.cs">
+      <DependentUpon>FormNtrip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormNumeric.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormNumeric.Designer.cs" />
     <Compile Include="Forms\FormSaveOrNot.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -154,6 +178,7 @@
       <SubType>Form</SubType>
       <DependentUpon>FormGPS.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\NTRIPComm.Designer.cs" />
     <Compile Include="Forms\Position.designer.cs">
       <SubType>Form</SubType>
       <DependentUpon>FormGPS.cs</DependentUpon>
@@ -231,6 +256,7 @@
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="FormSource.resx" />
     <EmbeddedResource Include="Forms\FormFieldDir.resx">
       <DependentUpon>FormFieldDir.cs</DependentUpon>
     </EmbeddedResource>
@@ -253,6 +279,11 @@
     <EmbeddedResource Include="Forms\FormJob.resx">
       <DependentUpon>FormJob.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormKeyboard.resx" />
+    <EmbeddedResource Include="Forms\FormNtrip.resx">
+      <DependentUpon>FormNtrip.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormNumeric.resx" />
     <EmbeddedResource Include="Forms\FormSaveOrNot.resx">
       <DependentUpon>FormSaveOrNot.cs</DependentUpon>
     </EmbeddedResource>
@@ -463,6 +494,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KeyPad\Keypad\Keypad.csproj">
+      <Project>{f1053bac-22c7-4e6f-a3ea-cc1e1fba9cb0}</Project>
+      <Name>Keypad</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
