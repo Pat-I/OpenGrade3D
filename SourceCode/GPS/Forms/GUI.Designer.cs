@@ -799,6 +799,7 @@ namespace OpenGrade
                 nudElevation.Visible = true;
                 timerSim.Enabled = true;
                 //ct.isSimulatorOn = true;
+                SerialPortCloseGPS();
             }
             else
             {
@@ -809,6 +810,21 @@ namespace OpenGrade
             }
 
             Settings.Default.setMenu_isSimulatorOn = simulatorOnToolStripMenuItem.Checked;
+            Settings.Default.Save();
+        }
+
+        public void closeSimulator()
+        {
+            simulatorOnToolStripMenuItem.Checked = false;
+            
+            
+                panelSimControls.Visible = false;
+                nudElevation.Visible = false;
+                timerSim.Enabled = false;
+                //ct.isSimulatorOn = false;
+            
+
+            Settings.Default.setMenu_isSimulatorOn = false;
             Settings.Default.Save();
         }
 
@@ -1297,11 +1313,12 @@ namespace OpenGrade
                 IncrementNTRIPWatchDog();
             }
 
-            if (Properties.Settings.Default.setNTRIP_isOn)
+            if (Properties.Settings.Default.setNTRIP_isOn && sp.IsOpen)
             {
                     isNTRIP_RequiredOn = true;
                     stripDistance.Text = gStr.gsWaiting;
             }
+            
 
             //Have we connection
             if (isNTRIP_RequiredOn && !isNTRIP_Connected && !isNTRIP_Connecting)

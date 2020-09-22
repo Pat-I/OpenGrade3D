@@ -52,3 +52,7 @@ C:\Users\jko070\Documents\GitHub\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGr
 C:\Users\jko070\Documents\GitHub\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGrade3D.csproj.CopyComplete
 C:\Users\jko070\Documents\GitHub\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGrade3D.exe
 C:\Users\jko070\Documents\GitHub\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGrade3D.pdb
+C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGrade.FormSource.resources
+C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGrade.Forms.FormKeyboard.resources
+C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGrade.FormNtrip.resources
+C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGrade.Forms.FormNumeric.resources

@@ -200,6 +200,8 @@ namespace OpenGrade
                 btnCloseSerial.Enabled = false;
                 btnOpenSerial.Enabled = true;
             }
+
+            mf.closeSimulator();
         }
 
         private void btnCloseSerial_Click(object sender, EventArgs e)

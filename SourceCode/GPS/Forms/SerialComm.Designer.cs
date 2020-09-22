@@ -392,6 +392,7 @@ namespace OpenGrade
 
         public void SerialPortCloseGPS()
         {
+            ShutDownNTRIP();
             //if (sp.IsOpen)
             {
                 sp.DataReceived -= sp_DataReceived;
