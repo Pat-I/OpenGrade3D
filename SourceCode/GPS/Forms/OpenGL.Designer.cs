@@ -1628,6 +1628,8 @@ namespace OpenGrade
             double maxFieldYdiff = Math.Abs(maxFieldY - oldMaxFieldY);
             double minFieldYdiff = Math.Abs(minFieldY - oldMinFieldY);
 
+            oldMaxFieldY = maxFieldY;
+            oldMinFieldY = minFieldY;
 
             if (maxFieldY == -9999999 | minFieldY == 9999999)
             {

@@ -1370,6 +1370,7 @@ namespace OpenGrade
                     isNTRIP_Sending = false;
                 }
             }
+            else lblWatch.Text = "Ntrip OFF";
         }
 
 
@@ -1387,9 +1388,10 @@ namespace OpenGrade
                 statusUpdateCounter++;
 
                 if (fiveSecondCounter++ > 20)
-                { 
+                {
                     //do all the NTRIP routines
-                    DoNTRIPSecondRoutine(); 
+                    if (sp.IsOpen) DoNTRIPSecondRoutine(); // Only when gps port is open
+                    else lblWatch.Text = "Ntrip off";
                     fiveSecondCounter = 0; 
                 }
 

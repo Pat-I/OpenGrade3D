@@ -39,6 +39,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_40773F8F0709DD7C3B2280CB409523C8"
+        "OwnerKey" = "8:_BA8F68A4EA40410E8F8924D39F6D43B6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_73487559D0DD417F963EFF6CF4F3589D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -89,6 +95,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_BA8F68A4EA40410E8F8924D39F6D43B6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_40773F8F0709DD7C3B2280CB409523C8"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -290,6 +302,37 @@
                     }
                 }
             "SourcePath" = "8:SharpGL.WinForms.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_4B8D5088107D4FB9AB4ED3F67445236B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_40773F8F0709DD7C3B2280CB409523C8"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Keypad, Version=4.3.10.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_40773F8F0709DD7C3B2280CB409523C8"
+                    {
+                    "Name" = "8:Keypad.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Keypad.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_4B8D5088107D4FB9AB4ED3F67445236B"
@@ -571,15 +614,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:OpenGrade3D"
-        "ProductCode" = "8:{5BAF06E3-0C88-49FA-BF40-7D5E0B5463D8}"
-        "PackageCode" = "8:{11BA4EC6-21FE-4E69-9A7A-44E0199CD65F}"
+        "ProductCode" = "8:{7898F45F-DC67-47A4-82D9-0D68246D2D2F}"
+        "PackageCode" = "8:{4F70699D-BFDC-4F42-8465-0BE09A99F889}"
         "UpgradeCode" = "8:{62563CD4-0EB3-449B-91F4-8A2AED0583A6}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.2"
+        "ProductVersion" = "8:1.0.3"
         "Manufacturer" = "8:OpenGrade3D"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
