@@ -135,7 +135,10 @@ namespace OpenGrade
                     btnManualOffOn.Visible = false;
                     btnCutFillElev.Visible = true;
                     btnPropExist.Visible = true;
+                    btnStartPause.Visible = false;
                     btnFixQuality.Visible = false;
+                    btnBoundarySide.Visible = false;
+
                 }
             }
             else
@@ -392,11 +395,34 @@ namespace OpenGrade
                     //btnStartDraw.Enabled = true;
                     ct.isSurveyOn = false;
                     btnStartPause.Visible = false;
-                    btnManualOffOn.Enabled = false;
+                    
 
 
                     break;
             }
+        }
+
+        public void CancelSurvey()
+        {
+            if (ct.surveyMode)
+            {
+                manualBtnState = btnStates.Off;
+                btnManualOffOn.Image = Properties.Resources.ManualOff;
+                btnManualOffOn.Text = null;
+
+                ct.isSurveyOn = false;
+                btnStartPause.Visible = true;
+                btnManualOffOn.Enabled = false;
+                //others
+                ct.recBoundary = false;
+                btnBoundarySide.Visible = true;
+                ct.isBtnStartPause = false;
+                btnStartPause.Text = "START";
+                ct.recSurveyPt = false;
+                ct.surveyList.Clear();
+                ct.markBM = false;
+            }
+
         }
 
         private void btnStartPause_Click(object sender, EventArgs e)

@@ -1100,6 +1100,7 @@ namespace OpenGrade
             pn.eastingOffset = 0;
             pn.northingOffset = 0;
             pn.altitudeOffset = 0;
+            CancelSurvey();
         }
 
         //bring up field dialog for new/open/resume

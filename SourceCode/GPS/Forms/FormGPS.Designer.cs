@@ -1890,7 +1890,7 @@
             this.btnContour.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnContour.Font = new System.Drawing.Font("Tahoma", 14.25F);
             this.btnContour.Image = ((System.Drawing.Image)(resources.GetObject("btnContour.Image")));
-            this.btnContour.Location = new System.Drawing.Point(857, 150);
+            this.btnContour.Location = new System.Drawing.Point(761, 128);
             this.btnContour.Name = "btnContour";
             this.btnContour.Size = new System.Drawing.Size(90, 90);
             this.btnContour.TabIndex = 105;

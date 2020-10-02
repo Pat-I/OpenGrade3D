@@ -111,10 +111,12 @@ namespace OpenGrade
                 //draw contour line if button on 
                 //if (ct.isContourBtnOn)
 
+                ct.DrawContourLine();
 
                 // draw the current and reference AB Lines
                 if (ABLine.isABLineSet | ABLine.isABLineBeingSet) ABLine.DrawABLines();
-                else ct.DrawContourLine();
+                
+                
 
                 //draw the flags if there are some
                 int flagCnt = flagPts.Count;

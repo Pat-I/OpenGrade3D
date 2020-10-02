@@ -1191,10 +1191,19 @@ namespace OpenGrade
 
                                 if (words[5] == "3GRD" | words[5] == " 3GRD")
                                 {
-                                    //if (!String.IsNullOrEmpty(words[2]) && !String.IsNullOrEmpty(words[3]) && !String.IsNullOrEmpty(words[4]))
-                                    //{
-
-
+                                    if (words[2] == "  " | words[3] == "  " | words[4] == "  " | 
+                                        words[2] == " " | words[2] == "" | words[2] == "0" | words[2] == " 0" | 
+                                        words[3] == " " | words[3] == "" | words[3] == "0" | words[3] == " 0" | 
+                                        words[4] == " " | words[4] == "" | words[4] == "0" | words[4] == " 0")
+                                    {
+                                       
+                                    
+                                    
+                                    
+                                       
+                                    }
+                                    else
+                                    {
                                         designPt point = new designPt(
                                         double.Parse(words[0], CultureInfo.InvariantCulture),
                                         double.Parse(words[1], CultureInfo.InvariantCulture),
@@ -1205,7 +1214,7 @@ namespace OpenGrade
                                         );
 
                                         ct.designList.Add(point);
-                                    //}
+                                    }
 
                                 }
                                 
@@ -1536,7 +1545,7 @@ namespace OpenGrade
             if ((directoryName.Length > 0) && (!Directory.Exists(directoryName)))
             { Directory.CreateDirectory(directoryName); }
 
-            string myFileName = "Survey.ags";
+            string myFileName = "Survey_" + String.Format("{0}", DateTime.Now.ToString("yyyy_MMM_dd HH_mm", CultureInfo.InvariantCulture)) + ".ags";
 
             //write out the file
             using (StreamWriter writer = new StreamWriter(dirField + myFileName))
