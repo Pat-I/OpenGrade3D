@@ -1063,7 +1063,7 @@ namespace OpenGrade
                                     ct.designList.Add(point);
                                 }
 
-                                if (words[5] == "2SUBZONE1" | words[5] == "2SUBZONE1")
+                                if (words[5] == "2SUBZONE1" | words[5] == " 2SUBZONE1")
                                 {
                                     designPt point = new designPt(
                                     double.Parse(words[0], CultureInfo.InvariantCulture),
@@ -1077,7 +1077,7 @@ namespace OpenGrade
                                     ct.designList.Add(point);
                                 }
 
-                                if (words[5] == "2SUBZONE2" | words[5] == "2SUBZONE2")
+                                if (words[5] == "2SUBZONE2" | words[5] == " 2SUBZONE2")
                                 {
                                     designPt point = new designPt(
                                     double.Parse(words[0], CultureInfo.InvariantCulture),
@@ -1091,7 +1091,7 @@ namespace OpenGrade
                                     ct.designList.Add(point);
                                 }
 
-                                if (words[5] == "2SUBZONE3" | words[5] == "2SUBZONE3")
+                                if (words[5] == "2SUBZONE3" | words[5] == " 2SUBZONE3")
                                 {
                                     designPt point = new designPt(
                                     double.Parse(words[0], CultureInfo.InvariantCulture),
@@ -1105,7 +1105,7 @@ namespace OpenGrade
                                     ct.designList.Add(point);
                                 }
 
-                                if (words[5] == "2SUBZONE4" | words[5] == "2SUBZONE4")
+                                if (words[5] == "2SUBZONE4" | words[5] == " 2SUBZONE4")
                                 {
                                     designPt point = new designPt(
                                     double.Parse(words[0], CultureInfo.InvariantCulture),
@@ -1119,7 +1119,7 @@ namespace OpenGrade
                                     ct.designList.Add(point);
                                 }
 
-                                if (words[5] == "2SUBZONE5" | words[5] == "2SUBZONE5")
+                                if (words[5] == "2SUBZONE5" | words[5] == " 2SUBZONE5")
                                 {
                                     designPt point = new designPt(
                                     double.Parse(words[0], CultureInfo.InvariantCulture),
@@ -1133,7 +1133,7 @@ namespace OpenGrade
                                     ct.designList.Add(point);
                                 }
 
-                                if (words[5] == "2SUBZONE6" | words[5] == "2SUBZONE6")
+                                if (words[5] == "2SUBZONE6" | words[5] == " 2SUBZONE6")
                                 {
                                     designPt point = new designPt(
                                     double.Parse(words[0], CultureInfo.InvariantCulture),
@@ -1147,7 +1147,7 @@ namespace OpenGrade
                                     ct.designList.Add(point);
                                 }
 
-                                if (words[5] == "2SUBZONE7" | words[5] == "2SUBZONE7")
+                                if (words[5] == "2SUBZONE7" | words[5] == " 2SUBZONE7")
                                 {
                                     designPt point = new designPt(
                                     double.Parse(words[0], CultureInfo.InvariantCulture),
@@ -1161,7 +1161,7 @@ namespace OpenGrade
                                     ct.designList.Add(point);
                                 }
 
-                                if (words[5] == "2SUBZONE8" | words[5] == "2SUBZONE8")
+                                if (words[5] == "2SUBZONE8" | words[5] == " 2SUBZONE8")
                                 {
                                     designPt point = new designPt(
                                     double.Parse(words[0], CultureInfo.InvariantCulture),
@@ -1175,7 +1175,7 @@ namespace OpenGrade
                                     ct.designList.Add(point);
                                 }
 
-                                if (words[5] == "2SUBZONE9" | words[5] == "2SUBZONE9")
+                                if (words[5] == "2SUBZONE9" | words[5] == " 2SUBZONE9")
                                 {
                                     designPt point = new designPt(
                                     double.Parse(words[0], CultureInfo.InvariantCulture),
@@ -1191,16 +1191,29 @@ namespace OpenGrade
 
                                 if (words[5] == "3GRD" | words[5] == " 3GRD")
                                 {
-                                    if (words[2] == "  " | words[3] == "  " | words[4] == "  " | 
-                                        words[2] == " " | words[2] == "" | words[2] == "0" | words[2] == " 0" | 
-                                        words[3] == " " | words[3] == "" | words[3] == "0" | words[3] == " 0" | 
-                                        words[4] == " " | words[4] == "" | words[4] == "0" | words[4] == " 0")
+                                    if (words[2] == "  " |  words[2] == " " | words[2] == "" | words[2] == "0" | words[2] == " 0")
                                     {
                                        
                                     
                                     
                                     
                                        
+                                    }
+                                    else if ( words[3] == "  " | words[4] == "  " |
+                                        words[3] == " " | words[3] == "" | words[3] == "0" | words[3] == " 0" |
+                                        words[4] == " " | words[4] == "")
+
+                                    {
+                                        designPt point = new designPt(
+                                        double.Parse(words[0], CultureInfo.InvariantCulture),
+                                        double.Parse(words[1], CultureInfo.InvariantCulture),
+                                        double.Parse(words[2], CultureInfo.InvariantCulture),
+                                        -1,
+                                        -1,
+                                        3, 0, 0
+                                        );
+
+                                        ct.designList.Add(point);
                                     }
                                     else
                                     {

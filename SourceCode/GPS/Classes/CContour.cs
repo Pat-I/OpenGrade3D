@@ -1199,9 +1199,12 @@ namespace OpenGrade
         //add the utm to the agd data and save to the ptList for code 3 pts, to boundaryList For the others , by Pat
         public void designList2ptList()
         {
-            if (ptList != null) ptList.Clear();
+            mf.stopTheProgram = true;
+            //if (ptList != null) 
+            ptList.Clear();
 
-            if (boundaryList != null) boundaryList.Clear();
+            //if (boundaryList != null) 
+            boundaryList.Clear();
 
             if (designList != null)
             {

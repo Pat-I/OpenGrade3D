@@ -1205,7 +1205,7 @@ namespace OpenGrade
                 //draw the ground profile
 
                 int elePtCount = ct.eleViewList.Count;
-                if (elePtCount > 100)
+                if (elePtCount > 101)
                 {
 
 
@@ -1286,10 +1286,27 @@ namespace OpenGrade
                     gl.LineWidth(1);
                     gl.Begin(OpenGL.GL_LINES);
                     gl.Color(0.57f, 0.80f, 0.00f);
-                    gl.Vertex(-5000, (((pn.altitude - centerY) * altitudeWindowGain) + centerY), 0);
-                    gl.Vertex(5000, (((pn.altitude - centerY) * altitudeWindowGain) + centerY), 0);
+                    gl.Vertex(-5, (((pn.altitude - centerY) * altitudeWindowGain) + centerY), 0);
+                    gl.Vertex(305, (((pn.altitude - centerY) * altitudeWindowGain) + centerY), 0);
                     gl.Vertex(101, -10000, 0);
                     gl.Vertex(101, 10000, 0);
+                    gl.End();
+
+                    //draw a skinny line 5cm above blade
+                    gl.LineWidth(1);
+                    gl.Begin(OpenGL.GL_LINES);
+                    gl.Color(0.57f, 0.80f, 0.00f);
+                    gl.Vertex(94, (((ct.eleViewList[101].cutAltitude + .05 - centerY) * altitudeWindowGain) + centerY), 0);
+                    gl.Vertex(107, (((ct.eleViewList[101].cutAltitude + .05 - centerY) * altitudeWindowGain) + centerY), 0);
+                    //draw a skinny line 10cm above blade
+                    gl.Vertex(94, (((ct.eleViewList[101].cutAltitude + .1 - centerY) * altitudeWindowGain) + centerY), 0);
+                    gl.Vertex(107, (((ct.eleViewList[101].cutAltitude + .1 - centerY) * altitudeWindowGain) + centerY), 0);
+                    //draw a skinny line 5cm under blade                   
+                    gl.Vertex(94, (((ct.eleViewList[101].cutAltitude - .05 - centerY) * altitudeWindowGain) + centerY), 0);
+                    gl.Vertex(107, (((ct.eleViewList[101].cutAltitude - .05 - centerY) * altitudeWindowGain) + centerY), 0);
+                    //draw a skinny line 10cm under blade
+                    gl.Vertex(94, (((ct.eleViewList[101].cutAltitude - .1 - centerY) * altitudeWindowGain) + centerY), 0);
+                    gl.Vertex(107, (((ct.eleViewList[101].cutAltitude - .1 - centerY) * altitudeWindowGain) + centerY), 0);
                     gl.End();
 
                     //little point at cutting edge of blade
@@ -1591,7 +1608,7 @@ namespace OpenGrade
                                 double dyN = ct.ptList[closestPointMapNE].northing - ct.ptList[closestPointMapNW].northing;
 
                                 //how far from Line is fix
-                                distanceFromNline = ((dyN * pn.easting) - (dxN * pn.northing) + (ct.ptList[closestPointMapNE].easting
+                                distanceFromNline = ((dyN * h) - (dxN * i) + (ct.ptList[closestPointMapNE].easting
                                             * ct.ptList[closestPointMapNW].northing) - (ct.ptList[closestPointMapNE].northing * ct.ptList[closestPointMapNW].easting))
                                             / Math.Sqrt((dyN * dyN) + (dxN * dxN));
 
@@ -1600,8 +1617,8 @@ namespace OpenGrade
 
 
                                 //calc point onLine closest to current blade position
-                                double UN = (((pn.easting - ct.ptList[closestPointMapNW].easting) * dxN)
-                                        + ((pn.northing - ct.ptList[closestPointMapNW].northing) * dyN))
+                                double UN = (((h - ct.ptList[closestPointMapNW].easting) * dxN)
+                                        + ((i - ct.ptList[closestPointMapNW].northing) * dyN))
                                         / ((dxN * dxN) + (dyN * dyN));
 
                                 //point on line closest to blade center
@@ -1629,7 +1646,7 @@ namespace OpenGrade
                                 double dyS = ct.ptList[closestPointMapSE].northing - ct.ptList[closestPointMapSW].northing;
 
                                 //how far from Line is fix
-                                distanceFromSline = ((dyS * pn.easting) - (dxS * pn.northing) + (ct.ptList[closestPointMapSE].easting
+                                distanceFromSline = ((dyS * h) - (dxS * i) + (ct.ptList[closestPointMapSE].easting
                                             * ct.ptList[closestPointMapSW].northing) - (ct.ptList[closestPointMapSE].northing * ct.ptList[closestPointMapSW].easting))
                                             / Math.Sqrt((dyS * dyS) + (dxS * dxS));
 
@@ -1638,8 +1655,8 @@ namespace OpenGrade
 
 
                                 //calc point onLine closest to current blade position
-                                double US = (((pn.easting - ct.ptList[closestPointMapSW].easting) * dxS)
-                                        + ((pn.northing - ct.ptList[closestPointMapSW].northing) * dyS))
+                                double US = (((h - ct.ptList[closestPointMapSW].easting) * dxS)
+                                        + ((i - ct.ptList[closestPointMapSW].northing) * dyS))
                                         / ((dxS * dxS) + (dyS * dyS));
 
                                 //point on line closest to blade center
@@ -1667,7 +1684,7 @@ namespace OpenGrade
                                 double dyW = ct.ptList[closestPointMapNW].northing - ct.ptList[closestPointMapSW].northing;
 
                                 //how far from Line is fix
-                                distanceFromWline = ((dyW * pn.easting) - (dxW * pn.northing) + (ct.ptList[closestPointMapNW].easting
+                                distanceFromWline = ((dyW * h) - (dxW * i) + (ct.ptList[closestPointMapNW].easting
                                             * ct.ptList[closestPointMapSW].northing) - (ct.ptList[closestPointMapNW].northing * ct.ptList[closestPointMapSW].easting))
                                             / Math.Sqrt((dyW * dyW) + (dxW * dxW));
 
@@ -1676,8 +1693,8 @@ namespace OpenGrade
 
 
                                 //calc point onLine closest to current blade position
-                                double UW = (((pn.easting - ct.ptList[closestPointMapSW].easting) * dxW)
-                                        + ((pn.northing - ct.ptList[closestPointMapSW].northing) * dyW))
+                                double UW = (((h - ct.ptList[closestPointMapSW].easting) * dxW)
+                                        + ((i - ct.ptList[closestPointMapSW].northing) * dyW))
                                         / ((dxW * dxW) + (dyW * dyW));
 
                                 //point on line closest to blade center
@@ -1705,7 +1722,7 @@ namespace OpenGrade
                                 double dyE = ct.ptList[closestPointMapNE].northing - ct.ptList[closestPointMapSE].northing;
 
                                 //how far from Line is fix
-                                distanceFromEline = ((dyE * pn.easting) - (dxE * pn.northing) + (ct.ptList[closestPointMapNE].easting
+                                distanceFromEline = ((dyE * h) - (dxE * i) + (ct.ptList[closestPointMapNE].easting
                                             * ct.ptList[closestPointMapSE].northing) - (ct.ptList[closestPointMapNE].northing * ct.ptList[closestPointMapSE].easting))
                                             / Math.Sqrt((dyE * dyE) + (dxE * dxE));
 
@@ -1714,8 +1731,8 @@ namespace OpenGrade
 
 
                                 //calc point onLine closest to current blade position
-                                double UE = (((pn.easting - ct.ptList[closestPointMapSE].easting) * dxE)
-                                        + ((pn.northing - ct.ptList[closestPointMapSE].northing) * dyE))
+                                double UE = (((h - ct.ptList[closestPointMapSE].easting) * dxE)
+                                        + ((i - ct.ptList[closestPointMapSE].northing) * dyE))
                                         / ((dxE * dxE) + (dyE * dyE));
 
                                 //point on line closest to blade center
@@ -1877,8 +1894,8 @@ namespace OpenGrade
 
 
                                         //calc point onLine closest to current blade position
-                                        double U = (((pn.easting - ct.ptList[closestPointMapSE].easting) * dx)
-                                                + ((pn.northing - ct.ptList[closestPointMapSE].northing) * dy))
+                                        double U = (((h - ct.ptList[closestPointMapSE].easting) * dx)
+                                                + ((i - ct.ptList[closestPointMapSE].northing) * dy))
                                                 / ((dx * dx) + (dy * dy));
 
                                         //point on line closest to blade center
@@ -1910,8 +1927,8 @@ namespace OpenGrade
 
 
                                         //calc point onLine closest to current blade position
-                                        double U = (((pn.easting - ct.ptList[closestPointMapSW].easting) * dx)
-                                                + ((pn.northing - ct.ptList[closestPointMapSW].northing) * dy))
+                                        double U = (((h - ct.ptList[closestPointMapSW].easting) * dx)
+                                                + ((i - ct.ptList[closestPointMapSW].northing) * dy))
                                                 / ((dx * dx) + (dy * dy));
 
                                         //point on line closest to blade center
@@ -2000,7 +2017,7 @@ namespace OpenGrade
                 maxFieldX = 0; minFieldX = 0; maxFieldY = 0; minFieldY = 0;
                 cameraDistanceZ = 10;
             }
-            else if (maxFieldYdiff > .05 | minFieldYdiff > .05)
+            else if (maxFieldYdiff > .02 | minFieldYdiff > .02)
             {
                 //Max horizontal
                 cameraDistanceZ = Math.Abs(minFieldX - maxFieldX);
@@ -2008,8 +2025,8 @@ namespace OpenGrade
                 if (cameraDistanceZ < 10) cameraDistanceZ = 10;
                 if (cameraDistanceZ > 6000) cameraDistanceZ = 6000;
 
-                maxFieldY = (maxFieldY + vehicle.viewDistAboveGnd);
-                minFieldY = (minFieldY - vehicle.viewDistUnderGnd);
+                maxFieldY = (maxFieldY + .01 + vehicle.viewDistAboveGnd);
+                minFieldY = (minFieldY - .01 - vehicle.viewDistUnderGnd);
 
 
                 centerX = (maxFieldX + minFieldX) / 2.0;
