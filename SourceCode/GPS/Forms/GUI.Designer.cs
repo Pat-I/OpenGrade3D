@@ -135,7 +135,10 @@ namespace OpenGrade
                     btnManualOffOn.Visible = false;
                     btnCutFillElev.Visible = true;
                     btnPropExist.Visible = true;
+                    btnStartPause.Visible = false;
                     btnFixQuality.Visible = false;
+                    btnBoundarySide.Visible = false;
+
                 }
             }
             else
@@ -392,11 +395,34 @@ namespace OpenGrade
                     //btnStartDraw.Enabled = true;
                     ct.isSurveyOn = false;
                     btnStartPause.Visible = false;
-                    btnManualOffOn.Enabled = false;
+                    
 
 
                     break;
             }
+        }
+
+        public void CancelSurvey()
+        {
+            if (ct.surveyMode)
+            {
+                manualBtnState = btnStates.Off;
+                btnManualOffOn.Image = Properties.Resources.ManualOff;
+                btnManualOffOn.Text = null;
+
+                ct.isSurveyOn = false;
+                btnStartPause.Visible = true;
+                btnManualOffOn.Enabled = false;
+                //others
+                ct.recBoundary = false;
+                btnBoundarySide.Visible = true;
+                ct.isBtnStartPause = false;
+                btnStartPause.Text = "START";
+                ct.recSurveyPt = false;
+                ct.surveyList.Clear();
+                ct.markBM = false;
+            }
+
         }
 
         private void btnStartPause_Click(object sender, EventArgs e)
@@ -799,6 +825,7 @@ namespace OpenGrade
                 nudElevation.Visible = true;
                 timerSim.Enabled = true;
                 //ct.isSimulatorOn = true;
+                SerialPortCloseGPS();
             }
             else
             {
@@ -809,6 +836,21 @@ namespace OpenGrade
             }
 
             Settings.Default.setMenu_isSimulatorOn = simulatorOnToolStripMenuItem.Checked;
+            Settings.Default.Save();
+        }
+
+        public void closeSimulator()
+        {
+            simulatorOnToolStripMenuItem.Checked = false;
+            
+            
+                panelSimControls.Visible = false;
+                nudElevation.Visible = false;
+                timerSim.Enabled = false;
+                //ct.isSimulatorOn = false;
+            
+
+            Settings.Default.setMenu_isSimulatorOn = false;
             Settings.Default.Save();
         }
 
@@ -1139,6 +1181,10 @@ namespace OpenGrade
         {
             SettingsUDP();
         }
+        private void toolstripNtripConfig_Click(object sender, EventArgs e)
+        {
+            SettingsNTRIP();
+        }
         private void toolstripResetTrip_Click_1(object sender, EventArgs e)
         {
             userDistance = 0;
@@ -1285,6 +1331,75 @@ namespace OpenGrade
 
         #endregion properties 
 
+        private void DoNTRIPSecondRoutine()
+        {
+            //count up the ntrip clock only if everything is alive
+            if (startCounter > 50 && recvCounter < 20 && isNTRIP_RequiredOn)
+            {
+                IncrementNTRIPWatchDog();
+            }
+
+            if (Properties.Settings.Default.setNTRIP_isOn && sp.IsOpen)
+            {
+                    isNTRIP_RequiredOn = true;
+                    stripDistance.Text = gStr.gsWaiting;
+            }
+            
+
+            //Have we connection
+            if (isNTRIP_RequiredOn && !isNTRIP_Connected && !isNTRIP_Connecting)
+            {
+                if (!isNTRIP_Starting && ntripCounter > 20)
+                {
+                    StartNTRIP();
+                }
+            }
+
+            if (isNTRIP_Connecting)
+            {
+                if (ntripCounter > 50)
+                {
+                    TimedMessageBox(2000, gStr.gsSocketConnectionProblem, gStr.gsNotConnectingToCaster);
+                    ReconnectRequest();
+                }
+                if (clientSocket != null && clientSocket.Connected)
+                {
+                    //TimedMessageBox(2000, "NTRIP Not Connected", " At the StartNTRIP() ");
+                    //ReconnectRequest();
+                    //return;
+                    SendAuthorization();
+                }
+
+            }
+
+            if (isNTRIP_RequiredOn)
+            {
+                //update byte counter and up counter
+                //if (ntripCounter > 59) NTRIPStartStopStrip.Text = (ntripCounter / 60) + " Mins";
+                //else if (ntripCounter < 60 && ntripCounter > 22) NTRIPStartStopStrip.Text = ntripCounter + " Secs";
+                //else NTRIPStartStopStrip.Text = "In " + (Math.Abs(ntripCounter - 22)) + " secs";
+
+                //pbarNtripMenu.Value = unchecked((byte)(tripBytes * 0.02));
+                //NTRIPBytesMenu.Text = ((tripBytes) * 0.001).ToString("###,###,###") + " kb";
+
+                //watchdog for Ntrip
+                if (isNTRIP_Connecting) lblWatch.Text = gStr.gsAuthourizing;
+                else
+                {
+                    if (NTRIP_Watchdog > 10) lblWatch.Text = gStr.gsWaiting;
+                    else lblWatch.Text = gStr.gsListening;
+                }
+
+                if (sendGGAInterval > 0 && isNTRIP_Sending)
+                {
+                    lblWatch.Text = "Send GGA";
+                    isNTRIP_Sending = false;
+                }
+            }
+            else lblWatch.Text = "Ntrip OFF";
+        }
+
+
         //Timer triggers at 50 msec, 20 hz, and is THE clock of the whole program//
         private void tmrWatchdog_tick(object sender, EventArgs e)
         {
@@ -1298,7 +1413,13 @@ namespace OpenGrade
                 //tmrWatchdog.Enabled = true;
                 statusUpdateCounter++;
 
-                if (fiveSecondCounter++ > 100) { fiveSecondCounter = 0; }
+                if (fiveSecondCounter++ > 20)
+                {
+                    //do all the NTRIP routines
+                    if (sp.IsOpen) DoNTRIPSecondRoutine(); // Only when gps port is open
+                    else lblWatch.Text = "Ntrip off";
+                    fiveSecondCounter = 0; 
+                }
 
                 //GPS Update rate
                 lblFixUpdateHz.Text = NMEAHz + " Hz " + FixQuality + " " + (int)(frameTime) + "ms";
@@ -1368,6 +1489,8 @@ namespace OpenGrade
                     lblHeading.Text = Heading;
                     btnABLine.Text = PassNumber;
                     lblPureSteerAngle.Text = PureSteerAngle;
+
+                    
 
                     //check for the fix quality
                     if (pn.fixQuality != 4 && lastFixQuality == 4)

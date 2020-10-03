@@ -92,6 +92,7 @@
             this.toolStripDropDownButton2 = new System.Windows.Forms.ToolStripDropDownButton();
             this.toolstripUDPConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.toolstripUSBPortsConfig = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolstripNTRIPConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.toolstripVehicleConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.toolstripAutoSteerConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.stripSelectMode = new System.Windows.Forms.ToolStripStatusLabel();
@@ -193,6 +194,7 @@
             this.lblFill = new System.Windows.Forms.Label();
             this.lblFillValue = new System.Windows.Forms.Label();
             this.lblCutValue = new System.Windows.Forms.Label();
+            this.lblWatch = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControl)).BeginInit();
             this.contextMenuStripOpenGL.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControlBack)).BeginInit();
@@ -744,6 +746,7 @@
             this.toolStripDropDownButton2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolstripUDPConfig,
             this.toolstripUSBPortsConfig,
+            this.toolstripNTRIPConfig,
             this.toolstripVehicleConfig,
             this.toolstripAutoSteerConfig});
             this.toolStripDropDownButton2.Font = new System.Drawing.Font("Tahoma", 18F);
@@ -778,6 +781,16 @@
             this.toolstripUSBPortsConfig.Size = new System.Drawing.Size(292, 86);
             this.toolstripUSBPortsConfig.Text = "Ports";
             this.toolstripUSBPortsConfig.Click += new System.EventHandler(this.toolstripUSBPortsConfig_Click);
+            // 
+            // toolstripNTRIPConfig
+            // 
+            this.toolstripNTRIPConfig.Font = new System.Drawing.Font("Tahoma", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolstripNTRIPConfig.Image = global::OpenGrade.Properties.Resources.Satellite64;
+            this.toolstripNTRIPConfig.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolstripNTRIPConfig.Name = "toolstripNTRIPConfig";
+            this.toolstripNTRIPConfig.Size = new System.Drawing.Size(292, 86);
+            this.toolstripNTRIPConfig.Text = "NTRIP";
+            this.toolstripNTRIPConfig.Click += new System.EventHandler(this.toolstripNtripConfig_Click);
             // 
             // toolstripVehicleConfig
             // 
@@ -1073,6 +1086,7 @@
             this.DataPage.Name = "DataPage";
             this.DataPage.Size = new System.Drawing.Size(248, 255);
             this.DataPage.TabIndex = 3;
+            this.DataPage.Click += new System.EventHandler(this.DataPage_Click);
             // 
             // label15
             // 
@@ -1876,7 +1890,7 @@
             this.btnContour.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnContour.Font = new System.Drawing.Font("Tahoma", 14.25F);
             this.btnContour.Image = ((System.Drawing.Image)(resources.GetObject("btnContour.Image")));
-            this.btnContour.Location = new System.Drawing.Point(857, 150);
+            this.btnContour.Location = new System.Drawing.Point(761, 128);
             this.btnContour.Name = "btnContour";
             this.btnContour.Size = new System.Drawing.Size(90, 90);
             this.btnContour.TabIndex = 105;
@@ -2114,12 +2128,25 @@
             this.lblCutValue.TabIndex = 239;
             this.lblCutValue.Text = "value";
             // 
+            // lblWatch
+            // 
+            this.lblWatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblWatch.AutoSize = true;
+            this.lblWatch.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.lblWatch.Location = new System.Drawing.Point(491, 9);
+            this.lblWatch.Name = "lblWatch";
+            this.lblWatch.Size = new System.Drawing.Size(101, 19);
+            this.lblWatch.TabIndex = 240;
+            this.lblWatch.Text = "NTRIP status";
+            this.lblWatch.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // FormGPS
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(1306, 684);
+            this.Controls.Add(this.lblWatch);
             this.Controls.Add(this.lblCutValue);
             this.Controls.Add(this.lblFillValue);
             this.Controls.Add(this.lblFill);
@@ -2358,6 +2385,8 @@
         private System.Windows.Forms.Label lblFill;
         private System.Windows.Forms.Label lblFillValue;
         private System.Windows.Forms.Label lblCutValue;
+        private System.Windows.Forms.ToolStripMenuItem toolstripNTRIPConfig;
+        private System.Windows.Forms.Label lblWatch;
     }
 }
 

@@ -152,6 +152,9 @@ namespace OpenGrade
         //private DrawingObject _dwo = new DrawingObject();
         private Point _ptFirst = new Point();
 
+        //for the NTRIP CLient counting
+        private int ntripCounter = 10;
+
         private Point _ptSecond = new Point();
         private int _iArguments = 0;
 
@@ -540,11 +543,19 @@ namespace OpenGrade
 
             sim = new CSim(this);
 
+            // Add Message Event handler for Form decoupling from client socket thread
+            updateRTCM_DataEvent = new UpdateRTCM_Data(OnAddMessage);
+
             //start the stopwatch
             swFrame.Start();
 
             //resource for gloabal language strings
             _rm = new ResourceManager("OpenGrade.gStr", Assembly.GetExecutingAssembly());
+        }
+
+        private void DataPage_Click(object sender, EventArgs e)
+        {
+
         }
 
         //keystrokes for easy and quick startup
@@ -967,6 +978,38 @@ namespace OpenGrade
             }
         }
 
+        //show the UDP ethernet settings page
+        private void SettingsNTRIP()
+        {
+            using (var form = new FormNtrip(this))
+            {
+                var result = form.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    //Clicked Save
+                }
+                else
+                {
+                    //Clicked X - No Save
+                }
+            }
+        }
+
+        public void KeypadToNUD(NumericUpDown sender)
+        {
+            NumericUpDown nud = (NumericUpDown)sender;
+            nud.BackColor = System.Drawing.Color.Red;
+            using (var form = new FormNumeric((double)nud.Minimum, (double)nud.Maximum, (double)nud.Value))
+            {
+                var result = form.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    nud.Value = (decimal)form.ReturnValue;
+                }
+            }
+            nud.BackColor = System.Drawing.Color.AliceBlue;
+        }
+
         //request a new job
         public void JobNew()
         {
@@ -1057,6 +1100,7 @@ namespace OpenGrade
             pn.eastingOffset = 0;
             pn.northingOffset = 0;
             pn.altitudeOffset = 0;
+            CancelSurvey();
         }
 
         //bring up field dialog for new/open/resume

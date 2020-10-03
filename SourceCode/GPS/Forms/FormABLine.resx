@@ -248,7 +248,7 @@
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>Repeats</value>
-  <comment>x</comment></data>
+  </data>
   <data name="&gt;&gt;label2.Name" xml:space="preserve">
     <value>label2</value>
   </data>
@@ -329,7 +329,7 @@
   </data>
   <data name="label3.Text" xml:space="preserve">
     <value>Start</value>
-  <comment>x</comment></data>
+  </data>
   <data name="&gt;&gt;label3.Name" xml:space="preserve">
     <value>label3</value>
   </data>
@@ -377,13 +377,13 @@
   </data>
   <data name="chField.Text" xml:space="preserve">
     <value>Field</value>
-  <comment>x</comment></data>
+  </data>
   <data name="chField.Width" type="System.Int32, mscorlib">
     <value>177</value>
   </data>
   <data name="chAngle.Text" xml:space="preserve">
     <value>Angle</value>
-  <comment>x</comment></data>
+  </data>
   <data name="chAngle.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
     <value>Center</value>
   </data>
@@ -455,7 +455,7 @@
   </data>
   <data name="btnPlus90.Text" xml:space="preserve">
     <value>+90 Degrees</value>
-  <comment>x</comment></data>
+  </data>
   <data name="&gt;&gt;btnPlus90.Name" xml:space="preserve">
     <value>btnPlus90</value>
   </data>
@@ -488,7 +488,7 @@
   </data>
   <data name="btnListUse.Text" xml:space="preserve">
     <value>Use</value>
-  <comment>x</comment></data>
+  </data>
   <data name="btnListUse.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>BottomCenter</value>
   </data>
@@ -524,7 +524,7 @@
   </data>
   <data name="btnListDelete.Text" xml:space="preserve">
     <value>Remove</value>
-  <comment>x</comment></data>
+  </data>
   <data name="btnListDelete.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>BottomCenter</value>
   </data>
@@ -560,7 +560,7 @@
   </data>
   <data name="btnAddToFile.Text" xml:space="preserve">
     <value>Add</value>
-  <comment>x</comment></data>
+  </data>
   <data name="btnAddToFile.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>BottomCenter</value>
   </data>
@@ -932,8 +932,8 @@
     <value>0</value>
   </data>
   <data name="btnDeleteAB.Text" xml:space="preserve">
-    <value>Restart</value>
-  <comment>x</comment></data>
+    <value>No Line</value>
+  </data>
   <data name="btnDeleteAB.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>BottomCenter</value>
   </data>
@@ -1601,9 +1601,6 @@
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==
 </value>
   </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>5, 4, 5, 4</value>
   </data>
@@ -1615,7 +1612,7 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>AB Line</value>
-  <comment>x</comment></data>
+  </data>
   <data name="&gt;&gt;timer1.Name" xml:space="preserve">
     <value>timer1</value>
   </data>
