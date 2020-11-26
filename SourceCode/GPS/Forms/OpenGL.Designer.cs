@@ -44,7 +44,7 @@ namespace OpenGrade
         private double altitudeWpt;
         private double cutAltWpt;
         //------------------------------------------------------
-        public bool stopTheProgram;
+        public bool stopTheProgram, ProgramIsStoped, CalculatingMinMaxEastNort;
 
         public bool averagePts = Properties.Settings.Default.Set_isAvgPt; // average four near design pts or not
         public double noAvgDist = Properties.Settings.Default.Set_noAvgDist; // distance from a point that will not be averaged
@@ -115,8 +115,8 @@ namespace OpenGrade
 
                 // draw the current and reference AB Lines
                 if (ABLine.isABLineSet | ABLine.isABLineBeingSet) ABLine.DrawABLines();
-                
-                
+
+
 
                 //draw the flags if there are some
                 int flagCnt = flagPts.Count;
@@ -333,7 +333,7 @@ namespace OpenGrade
                         }
                     }
                 }
-                
+
 
                 //digital input Master control (WorkSwitch)
                 if (isJobStarted && mc.isWorkSwitchEnabled)
@@ -438,7 +438,7 @@ namespace OpenGrade
             gl.LoadIdentity();                  // Reset The View
 
             // Fill the eleViewList
-            
+
 
 
             //if adding new points recalc mins maxes
@@ -500,7 +500,7 @@ namespace OpenGrade
                 int closestPointMapNW = -1;
 
                 int ptCount = ct.ptList.Count - 1;
-                
+
                 double minDistSE = 900; // if the point is further than 30 meters we forget it
                 double minDistSW = 900;
                 double minDistNE = 900;
@@ -520,7 +520,7 @@ namespace OpenGrade
                     //Search closest point South West
                     if (pn.easting >= ct.ptList[t].easting && pn.northing >= ct.ptList[t].northing)
                     {
-                       
+
                         if (distMap < minDistSW)
                         {
                             minDistSW = distMap;
@@ -531,7 +531,7 @@ namespace OpenGrade
                     //Search closest point South East
                     if (pn.easting <= ct.ptList[t].easting && pn.northing >= ct.ptList[t].northing)
                     {
-                        
+
                         if (distMap < minDistSE)
                         {
                             minDistSE = distMap;
@@ -542,7 +542,7 @@ namespace OpenGrade
                     //Search closest point North West
                     if (pn.easting >= ct.ptList[t].easting && pn.northing <= ct.ptList[t].northing)
                     {
-                       
+
                         if (distMap < minDistNW)
                         {
                             minDistNW = distMap;
@@ -553,7 +553,7 @@ namespace OpenGrade
                     //Search closest point North East
                     if (pn.easting <= ct.ptList[t].easting && pn.northing <= ct.ptList[t].northing)
                     {
-                        
+
                         if (distMap < minDistNE)
                         {
                             minDistNE = distMap;
@@ -589,7 +589,7 @@ namespace OpenGrade
                     //absolute the distance
                     distanceFromNline = Math.Abs(distanceFromNline);
 
-                    
+
                     //calc point onLine closest to current blade position
                     double UN = (((pn.easting - ct.ptList[closestPointMapNW].easting) * dxN)
                             + ((pn.northing - ct.ptList[closestPointMapNW].northing) * dyN))
@@ -609,7 +609,7 @@ namespace OpenGrade
                     }
                     else cutAltNpt = -1;
 
-                    NoLineAverageAlt += altitudeNpt;                   
+                    NoLineAverageAlt += altitudeNpt;
                     NoLineCount++;
                 }
 
@@ -647,7 +647,7 @@ namespace OpenGrade
                     }
                     else cutAltSpt = -1;
 
-                    NoLineAverageAlt += altitudeSpt;                   
+                    NoLineAverageAlt += altitudeSpt;
                     NoLineCount++;
                 }
 
@@ -685,7 +685,7 @@ namespace OpenGrade
                     }
                     else cutAltWpt = -1;
 
-                    NoLineAverageAlt += altitudeWpt;                   
+                    NoLineAverageAlt += altitudeWpt;
                     NoLineCount++;
                 }
 
@@ -735,7 +735,7 @@ namespace OpenGrade
                     if (NoLineCutCount > 0)
                         NoLineAverageCutAlt = NoLineAverageCutAlt / NoLineCutCount;
                     else NoLineAverageCutAlt = -1;
-                    
+
                     if (distanceFromNline == 1000)
                     {
                         altitudeNpt = NoLineAverageAlt;
@@ -799,7 +799,7 @@ namespace OpenGrade
                 // Calulate the closest point alitude and cutAltitude
 
                 //double cutFillMap;
-                double avgAltitude = -1; 
+                double avgAltitude = -1;
                 double avgCutAltitude = -1;
 
                 ct.usedPtList.Clear();
@@ -820,15 +820,15 @@ namespace OpenGrade
                     avgCutAltitude = ct.ptList[closestPoint].cutAltitude;
                 }
                 else if (mindistFromLine < noAvgDist)
-                    // if the blade is near a line
+                // if the blade is near a line
                 {
                     avgAltitude = altitudeLine;
                     avgCutAltitude = cutAltLine;
 
                     if (minDistNE < 900)
-                    {                   
-                    UsedPt point2 = new UsedPt(ct.ptList[closestPointMapNE].easting, ct.ptList[closestPointMapNE].northing, 1);
-                    ct.usedPtList.Add(point2);
+                    {
+                        UsedPt point2 = new UsedPt(ct.ptList[closestPointMapNE].easting, ct.ptList[closestPointMapNE].northing, 1);
+                        ct.usedPtList.Add(point2);
                     }
 
                     if (minDistSE < 900)
@@ -951,7 +951,7 @@ namespace OpenGrade
                             UsedPt point2 = new UsedPt(eastingDiaPt, northingDiaPt, 2);
                             ct.usedPtList.Add(point2);
                         }
-                      
+
                     }
 
                     // build the list to view the points in the map
@@ -1142,7 +1142,7 @@ namespace OpenGrade
                                     //(paintNorting - ct.mapList[i].northingMap) * (paintNorting - ct.mapList[i].northingMap);
                                     double distEasting = Math.Abs(paintEasting - ct.mapList[i].eastingMap);
                                     double distNorthing = Math.Abs(paintNorting - ct.mapList[i].northingMap);
-                                    if(distEasting < mappingDist*.7 && distNorthing < mappingDist * .7)
+                                    if (distEasting < mappingDist * .7 && distNorthing < mappingDist * .7)
                                     //if (dist < paintDist)
                                     {
                                         // fill the lastpass value
@@ -1158,7 +1158,7 @@ namespace OpenGrade
                                             else
                                             {
                                                 if (ct.mapList[i].lastPassRealAltitudeMap > paintLastPass | ct.mapList[i].lastPassRealAltitudeMap < 0)
-                                                ct.mapList[i].lastPassRealAltitudeMap = paintLastPass;
+                                                    ct.mapList[i].lastPassRealAltitudeMap = paintLastPass;
                                             }
                                         }
                                         else
@@ -1169,7 +1169,7 @@ namespace OpenGrade
                                                 if (paintLastPass >= ct.mapList[i].altitudeMap) ct.mapList[i].lastPassRealAltitudeMap = ct.mapList[i].altitudeMap;
                                                 else if (paintLastPass <= ct.mapList[i].cutAltitudeMap) ct.mapList[i].lastPassRealAltitudeMap = ct.mapList[i].cutAltitudeMap;
                                                 else ct.mapList[i].lastPassRealAltitudeMap = paintLastPass;
-                                            }                                             
+                                            }
                                         }
                                     }
                                 }
@@ -1223,10 +1223,10 @@ namespace OpenGrade
                     //int cutPts = ct.mapList.Count;
                     //if (cutPts > 0)
                     //{
-                    
-                        
-                    
-                    
+
+
+
+
                     gl.Color(0.974f, 0.0f, 0.12f);
                     gl.Begin(OpenGL.GL_LINE_STRIP);
                     for (int i = 0; i < elePtCount; i++)
@@ -1263,16 +1263,16 @@ namespace OpenGrade
                     //draw if on
                     //if (cboxLastPass.Checked)
                     //{
-                        gl.LineWidth(2);
-                        gl.Begin(OpenGL.GL_LINE_STRIP);
+                    gl.LineWidth(2);
+                    gl.Begin(OpenGL.GL_LINE_STRIP);
 
-                        gl.Color(0.40f, 0.970f, 0.400f);
-                        for (int i = 0; i < elePtCount; i++)
-                        {
-                            if (ct.eleViewList[i].lastPassAltitude > 0)
-                                gl.Vertex(i, (((ct.eleViewList[i].lastPassAltitude - centerY) * altitudeWindowGain) + centerY), 0);
-                        }
-                        gl.End();
+                    gl.Color(0.40f, 0.970f, 0.400f);
+                    for (int i = 0; i < elePtCount; i++)
+                    {
+                        if (ct.eleViewList[i].lastPassAltitude > 0)
+                            gl.Vertex(i, (((ct.eleViewList[i].lastPassAltitude - centerY) * altitudeWindowGain) + centerY), 0);
+                    }
+                    gl.End();
                     //}
                     //draw the actual elevation lines and blade
                     gl.LineWidth(8);
@@ -1320,31 +1320,31 @@ namespace OpenGrade
 
                 if (minDist < 900) // original is 15, meter form the line scare, for 5 meter put 25
                 {
-                       
-
-                        //record last pass
-
-                        ////draw last pass
-                        //if (cboxLastPass.Checked)
-                        //{
-                        //    ct.ptList[closestPoint].lastPassAltitude = pn.altitude;
-                        //    gl.LineWidth(2);
-                        //    gl.Begin(OpenGL.GL_LINE_STRIP);
-
-                        //    //the dashed accent of ground profile
-                        //    gl.Color(0.40f, 0.970f, 0.400f);
-                        //    for (int i = 0; i < ptCnt; i++)
-                        //    {
-                        //        if (ct.ptList[i].lastPassAltitude > 0)
-                        //            gl.Vertex(i, (((ct.ptList[i].lastPassAltitude - centerY) * altitudeWindowGain) + centerY), 0);
-                        //    }
-                        //    gl.End();
-                        //}
-
-                        
 
 
-                    
+                    //record last pass
+
+                    ////draw last pass
+                    //if (cboxLastPass.Checked)
+                    //{
+                    //    ct.ptList[closestPoint].lastPassAltitude = pn.altitude;
+                    //    gl.LineWidth(2);
+                    //    gl.Begin(OpenGL.GL_LINE_STRIP);
+
+                    //    //the dashed accent of ground profile
+                    //    gl.Color(0.40f, 0.970f, 0.400f);
+                    //    for (int i = 0; i < ptCnt; i++)
+                    //    {
+                    //        if (ct.ptList[i].lastPassAltitude > 0)
+                    //            gl.Vertex(i, (((ct.ptList[i].lastPassAltitude - centerY) * altitudeWindowGain) + centerY), 0);
+                    //    }
+                    //    gl.End();
+                    //}
+
+
+
+
+
 
                     //calculate blade to guideline delta
                     //double temp = (double)closestPoint / (double)count2;
@@ -1386,585 +1386,608 @@ namespace OpenGrade
             }
             else
             {
-                if (ct.ptList.Count > 0)
+                if (ct.eleViewList.Count > 0)
                 {
-                    if (isMetric) stripTopoLocation.Text = ((int)(screen2FieldPt.easting)).ToString() + ": " + screen2FieldPt.northing.ToString("N3") + ": " + ((screen2FieldPt.northing - ct.mapList[(int)(screen2FieldPt.easting)].altitudeMap) * 100).ToString("N1");
-                    else stripTopoLocation.Text = ((int)(screen2FieldPt.easting)).ToString() + ": " + ((screen2FieldPt.northing) / .0254 / 12).ToString("N3") + ": " + ((screen2FieldPt.northing - ct.mapList[(int)(screen2FieldPt.easting)].altitudeMap) / .0254).ToString("N1");
+                    if (isMetric) stripTopoLocation.Text = ((int)(screen2FieldPt.easting)).ToString() + ": " + screen2FieldPt.northing.ToString("N3") + ": " + ((screen2FieldPt.northing - ct.eleViewList[(int)(screen2FieldPt.easting)].altitude) * 100).ToString("N1");
+                    else stripTopoLocation.Text = ((int)(screen2FieldPt.easting)).ToString() + ": " + ((screen2FieldPt.northing) / .0254 / 12).ToString("N3") + ": " + ((screen2FieldPt.northing - ct.eleViewList[(int)(screen2FieldPt.easting)].altitude) / .0254).ToString("N1");
                 }
                 else stripTopoLocation.Text = " 0 " + ": " + " 0.000" + ": " + " 0.0";
             }
 
-            
+
         }
 
         private void openGLControlBack_MouseClick(object sender, MouseEventArgs e)
         {
             Point fixPt = new Point();
             vec2 plotPt = new vec2();
-            
+
         }
 
         #region 3D mapping
 
         public double eastingMin, eastingMax, northingMin, northingMax;
-        
+
         // determine ptList min and max easting and northing and build the maplist -by Pat
         public void CalculateMinMaxEastNort()
         {
             stopTheProgram = true;
 
-            eastingMin = 9999999;
-            eastingMax = -9999999;
-            northingMin = 9999999;
-            northingMax = -9999999;
-
-            drawPtWidth = Properties.Vehicle.Default.setVehicle_GradeDistFromLine;
-            if (drawPtWidth < 1) drawPtWidth = 1;
-
-            int cnt = ct.ptList.Count;
-
-            if (cnt > 0)
+            //if (ProgramIsStoped)
             {
-                for (int i = 0; i < cnt; i++)
+
+
+
+                eastingMin = 9999999;
+                eastingMax = -9999999;
+                northingMin = 9999999;
+                northingMax = -9999999;
+
+                drawPtWidth = Properties.Vehicle.Default.setVehicle_GradeDistFromLine;
+                if (drawPtWidth < 1) drawPtWidth = 1;
+
+                int cnt = ct.ptList.Count;
+
+                if (cnt > 0)
                 {
-                    //double x = i;
-                    double y = ct.ptList[i].easting;
-                    double z = ct.ptList[i].northing;
-
-                    //find min max coordonates
-                    if (eastingMin > y) eastingMin = y;
-                    if (eastingMax < y) eastingMax = y;
-                    if (northingMin > z) northingMin = z;
-                    if (northingMax < z) northingMax = z;
-                }
-            }
-
-            if (eastingMax == -9999999 | eastingMin == 9999999 | northingMax == -9999999 | northingMin == 9999999)
-            {
-                eastingMin = 0; eastingMax = 0; northingMax = 0; northingMin = 0;
-            }
-            else
-            {
-                eastingMin -= minDistMapDist; eastingMax += minDistMapDist; northingMax += minDistMapDist; northingMin -= minDistMapDist;
-            }
-
-            int ptCnt = ct.ptList.Count;
-
-            if (ptCnt > 0)
-            {
-                //int closestPointMap;
-                //int closestPointMapSE;
-                //int closestPointMapSW;
-                //int closestPointMapNE;
-                //int closestPointMapNW;
-
-                int ptCount = ct.ptList.Count - 1;
-                
-                //double minDistSE;
-                //double minDistSW;
-                //double minDistNE;
-                //double minDistNW;
-
-                //double cutFillMap;
-                //double avgAltitude;
-                //double avgCutAltitude;
-                //double sumofCloseDist;
-
-                for (double h = (double)eastingMin; h < (double)eastingMax; h += drawPtWidth)
-                {
-                    for (double i = (double)northingMin; i < (double)northingMax; i += drawPtWidth)
+                    for (int i = 0; i < cnt; i++)
                     {
+                        //double x = i;
+                        double y = ct.ptList[i].easting;
+                        double z = ct.ptList[i].northing;
 
-                   
-                        int closestPointMap = 0;
-                        int closestPointMapSE = -1;
-                        int closestPointMapSW = -1;
-                        int closestPointMapNE = -1;
-                        int closestPointMapNW = -1;
+                        //find min max coordonates
+                        if (eastingMin > y) eastingMin = y;
+                        if (eastingMax < y) eastingMax = y;
+                        if (northingMin > z) northingMin = z;
+                        if (northingMax < z) northingMax = z;
+                    }
+                }
 
-                        
-                        minDistMap = 1000;
-                        double minDistSE = 900;
-                        double minDistSW = 900;
-                        double minDistNE = 900;
-                        double minDistNW = 900;
+                if (eastingMax == -9999999 | eastingMin == 9999999 | northingMax == -9999999 | northingMin == 9999999)
+                {
+                    eastingMin = 0; eastingMax = 0; northingMax = 0; northingMin = 0;
+                }
+                else
+                {
+                    eastingMin -= minDistMapDist; eastingMax += minDistMapDist; northingMax += minDistMapDist; northingMin -= minDistMapDist;
+                }
 
-                        //find the closest point to current fix
-                        for (int t = 0; t < ptCount; t++)
+                int ptCnt = ct.ptList.Count;
+
+                if (ptCnt > 0)
+                {
+                    //int closestPointMap;
+                    //int closestPointMapSE;
+                    //int closestPointMapSW;
+                    //int closestPointMapNE;
+                    //int closestPointMapNW;
+
+                    int ptCount = ct.ptList.Count - 1;
+
+                    //double minDistSE;
+                    //double minDistSW;
+                    //double minDistNE;
+                    //double minDistNW;
+
+                    //double cutFillMap;
+                    //double avgAltitude;
+                    //double avgCutAltitude;
+                    //double sumofCloseDist;
+                    int eastingMinInt = (int)eastingMin;
+                    int eastingMaxInt = (int)eastingMax;
+                    int northingMinInt = (int)northingMin;
+                    int northingMaxInt = (int)northingMax;
+                    int drawPtWidthInt = (int)drawPtWidth;
+                    
+                    for (int h = eastingMinInt; h < eastingMaxInt; h += drawPtWidthInt)
+                    {
+                        for (int i = northingMinInt; i < northingMaxInt; i += drawPtWidthInt)
                         {
-                            double distMap = ((h - ct.ptList[t].easting) * (h - ct.ptList[t].easting))
-                                            + ((i - ct.ptList[t].northing) * (i - ct.ptList[t].northing));
-                            if (distMap < minDistMap)
-                            {
-                                minDistMap = distMap;
-                                closestPointMap = t;       
-                            }
 
-                            //Search closest point South West
-                            if (h >= ct.ptList[t].easting && i >= ct.ptList[t].northing)
+
+                            int closestPointMap = 0;
+                            int closestPointMapSE = -1;
+                            int closestPointMapSW = -1;
+                            int closestPointMapNE = -1;
+                            int closestPointMapNW = -1;
+
+
+                            minDistMap = 1000;
+                            double minDistSE = 900;
+                            double minDistSW = 900;
+                            double minDistNE = 900;
+                            double minDistNW = 900;
+
+                            //find the closest point to current fix
+                            for (int t = 0; t < ptCount; t++)
                             {
-                                //double distMapSW = ((h - ct.ptList[t].easting) * (h - ct.ptList[t].easting))
-                                //            + ((i - ct.ptList[t].northing) * (i - ct.ptList[t].northing));
-                                if (distMap < minDistSW)
+                                double distMap = ((h - ct.ptList[t].easting) * (h - ct.ptList[t].easting))
+                                                + ((i - ct.ptList[t].northing) * (i - ct.ptList[t].northing));
+                                if (distMap < minDistMap)
                                 {
-                                    minDistSW = distMap;
-                                    closestPointMapSW = t;
+                                    minDistMap = distMap;
+                                    closestPointMap = t;
                                 }
-                            }
 
-                            //Search closest point South East
-                            if (h <= ct.ptList[t].easting && i >= ct.ptList[t].northing)
-                            {
-                                //double distMapSE = ((h - ct.ptList[t].easting) * (h - ct.ptList[t].easting))
-                                //            + ((i - ct.ptList[t].northing) * (i - ct.ptList[t].northing));
-                                if (distMap < minDistSE)
+                                //Search closest point South West
+                                if (h >= ct.ptList[t].easting && i >= ct.ptList[t].northing)
                                 {
-                                    minDistSE = distMap;
-                                    closestPointMapSE = t;
+                                    //double distMapSW = ((h - ct.ptList[t].easting) * (h - ct.ptList[t].easting))
+                                    //            + ((i - ct.ptList[t].northing) * (i - ct.ptList[t].northing));
+                                    if (distMap < minDistSW)
+                                    {
+                                        minDistSW = distMap;
+                                        closestPointMapSW = t;
+                                    }
                                 }
-                            }
 
-                            //Search closest point North West
-                            if (h >= ct.ptList[t].easting && i <= ct.ptList[t].northing)
-                            {
-                                //double distMapNW = ((h - ct.ptList[t].easting) * (h - ct.ptList[t].easting))
-                                //            + ((i - ct.ptList[t].northing) * (i - ct.ptList[t].northing));
-                                if (distMap < minDistNW)
+                                //Search closest point South East
+                                if (h <= ct.ptList[t].easting && i >= ct.ptList[t].northing)
                                 {
-                                    minDistNW = distMap;
-                                    closestPointMapNW = t;
+                                    //double distMapSE = ((h - ct.ptList[t].easting) * (h - ct.ptList[t].easting))
+                                    //            + ((i - ct.ptList[t].northing) * (i - ct.ptList[t].northing));
+                                    if (distMap < minDistSE)
+                                    {
+                                        minDistSE = distMap;
+                                        closestPointMapSE = t;
+                                    }
                                 }
-                            }
 
-                            //Search closest point North East
-                            if (h <= ct.ptList[t].easting && i <= ct.ptList[t].northing)
-                            {
-                                //double distMapNE = ((h - ct.ptList[t].easting) * (h - ct.ptList[t].easting))
-                                //            + ((i - ct.ptList[t].northing) * (i - ct.ptList[t].northing));
-                                if (distMap < minDistNE)
+                                //Search closest point North West
+                                if (h >= ct.ptList[t].easting && i <= ct.ptList[t].northing)
                                 {
-                                    minDistNE = distMap;
-                                    closestPointMapNE = t;
+                                    //double distMapNW = ((h - ct.ptList[t].easting) * (h - ct.ptList[t].easting))
+                                    //            + ((i - ct.ptList[t].northing) * (i - ct.ptList[t].northing));
+                                    if (distMap < minDistNW)
+                                    {
+                                        minDistNW = distMap;
+                                        closestPointMapNW = t;
+                                    }
                                 }
-                            }
 
-
-                        }
-
-
-
-
-
-
-                        if (minDistMap < minDistMapDist)
-                        {
-                            
-                            double cutFillMap = 0;
-                            //double avgAltitude = 0;
-                            //double avgCutAltitude = 0;
-                            /*
-                            double sumofCloseDist = 1 / Math.Sqrt(minDistSE) + 1 / Math.Sqrt(minDistSW) + 1 / Math.Sqrt(minDistNW) + 1 / Math.Sqrt(minDistNE);
-
-                            if (minDistMap <= drawPtWidth | minDistSE == 1000 | minDistSW == 1000 | minDistNE == 1000 | minDistNW == 1000)
-                            {
-                                avgAltitude = ct.ptList[closestPointMap].altitude;
-                                avgCutAltitude = ct.ptList[closestPointMap].cutAltitude;
-                            }
-                            else
-                            {
-                                avgAltitude = ((ct.ptList[closestPointMapNE].altitude / Math.Sqrt(minDistNE)) + (ct.ptList[closestPointMapNW].altitude / Math.Sqrt(minDistNW)) +
-                                (ct.ptList[closestPointMapSE].altitude / Math.Sqrt(minDistSE)) + (ct.ptList[closestPointMapSW].altitude / Math.Sqrt(minDistSW))) / sumofCloseDist;
-
-                                if (ct.ptList[closestPointMapNE].cutAltitude < 1 | ct.ptList[closestPointMapNW].cutAltitude < 1 | ct.ptList[closestPointMapSE].cutAltitude < 1 | ct.ptList[closestPointMapSW].cutAltitude < 1)
+                                //Search closest point North East
+                                if (h <= ct.ptList[t].easting && i <= ct.ptList[t].northing)
                                 {
+                                    //double distMapNE = ((h - ct.ptList[t].easting) * (h - ct.ptList[t].easting))
+                                    //            + ((i - ct.ptList[t].northing) * (i - ct.ptList[t].northing));
+                                    if (distMap < minDistNE)
+                                    {
+                                        minDistNE = distMap;
+                                        closestPointMapNE = t;
+                                    }
+                                }
+
+
+                            }
+
+
+
+
+
+
+                            if (minDistMap < minDistMapDist)
+                            {
+
+                                double cutFillMap = 0;
+                                //double avgAltitude = 0;
+                                //double avgCutAltitude = 0;
+                                /*
+                                double sumofCloseDist = 1 / Math.Sqrt(minDistSE) + 1 / Math.Sqrt(minDistSW) + 1 / Math.Sqrt(minDistNW) + 1 / Math.Sqrt(minDistNE);
+
+                                if (minDistMap <= drawPtWidth | minDistSE == 1000 | minDistSW == 1000 | minDistNE == 1000 | minDistNW == 1000)
+                                {
+                                    avgAltitude = ct.ptList[closestPointMap].altitude;
                                     avgCutAltitude = ct.ptList[closestPointMap].cutAltitude;
                                 }
                                 else
                                 {
-                                    avgCutAltitude = ((ct.ptList[closestPointMapNE].cutAltitude / Math.Sqrt(minDistNE)) + (ct.ptList[closestPointMapNW].cutAltitude / Math.Sqrt(minDistNW)) +
-                                (ct.ptList[closestPointMapSE].cutAltitude / Math.Sqrt(minDistSE)) + (ct.ptList[closestPointMapSW].cutAltitude / Math.Sqrt(minDistSW))) / sumofCloseDist;
+                                    avgAltitude = ((ct.ptList[closestPointMapNE].altitude / Math.Sqrt(minDistNE)) + (ct.ptList[closestPointMapNW].altitude / Math.Sqrt(minDistNW)) +
+                                    (ct.ptList[closestPointMapSE].altitude / Math.Sqrt(minDistSE)) + (ct.ptList[closestPointMapSW].altitude / Math.Sqrt(minDistSW))) / sumofCloseDist;
 
-                                }
-
-
-                            }
-                            */
-                            //here calculate the closest point on each line
-
-                            distanceFromNline = 1000;
-                            distanceFromSline = 1000;
-                            distanceFromEline = 1000;
-                            distanceFromWline = 1000;
-
-                            double NoLineAverageAlt = 0;
-                            double NoLineAverageCutAlt = 0;
-                            double NoLineCount = 0;
-                            double NoLineCutCount = 0;
-
-                            //Calculate the North line
-                            if (minDistNE < 900 && minDistNW < 900)
-                            {
-                                double dxN = ct.ptList[closestPointMapNE].easting - ct.ptList[closestPointMapNW].easting;
-                                double dyN = ct.ptList[closestPointMapNE].northing - ct.ptList[closestPointMapNW].northing;
-
-                                //how far from Line is fix
-                                distanceFromNline = ((dyN * h) - (dxN * i) + (ct.ptList[closestPointMapNE].easting
-                                            * ct.ptList[closestPointMapNW].northing) - (ct.ptList[closestPointMapNE].northing * ct.ptList[closestPointMapNW].easting))
-                                            / Math.Sqrt((dyN * dyN) + (dxN * dxN));
-
-                                //absolute the distance
-                                distanceFromNline = Math.Abs(distanceFromNline);
-
-
-                                //calc point onLine closest to current blade position
-                                double UN = (((h - ct.ptList[closestPointMapNW].easting) * dxN)
-                                        + ((i - ct.ptList[closestPointMapNW].northing) * dyN))
-                                        / ((dxN * dxN) + (dyN * dyN));
-
-                                //point on line closest to blade center
-                                eastingNpt = ct.ptList[closestPointMapNW].easting + (UN * dxN);
-                                northingNpt = ct.ptList[closestPointMapNW].northing + (UN * dyN);
-
-                                //calc altitude for that point
-                                altitudeNpt = ct.ptList[closestPointMapNW].altitude + (UN * (ct.ptList[closestPointMapNE].altitude - ct.ptList[closestPointMapNW].altitude));
-                                if (ct.ptList[closestPointMapNE].cutAltitude > 0 && ct.ptList[closestPointMapNW].cutAltitude > 0)
-                                {
-                                    cutAltNpt = ct.ptList[closestPointMapNW].cutAltitude + (UN * (ct.ptList[closestPointMapNE].cutAltitude - ct.ptList[closestPointMapNW].cutAltitude));
-                                    NoLineAverageCutAlt += cutAltNpt;
-                                    NoLineCutCount++;
-                                }
-                                else cutAltNpt = -1;
-
-                                NoLineAverageAlt += altitudeNpt;
-                                NoLineCount++;
-                            }
-
-                            //Calculate the South line
-                            if (minDistSE < 900 && minDistSW < 900)
-                            {
-                                double dxS = ct.ptList[closestPointMapSE].easting - ct.ptList[closestPointMapSW].easting;
-                                double dyS = ct.ptList[closestPointMapSE].northing - ct.ptList[closestPointMapSW].northing;
-
-                                //how far from Line is fix
-                                distanceFromSline = ((dyS * h) - (dxS * i) + (ct.ptList[closestPointMapSE].easting
-                                            * ct.ptList[closestPointMapSW].northing) - (ct.ptList[closestPointMapSE].northing * ct.ptList[closestPointMapSW].easting))
-                                            / Math.Sqrt((dyS * dyS) + (dxS * dxS));
-
-                                //absolute the distance
-                                distanceFromSline = Math.Abs(distanceFromSline);
-
-
-                                //calc point onLine closest to current blade position
-                                double US = (((h - ct.ptList[closestPointMapSW].easting) * dxS)
-                                        + ((i - ct.ptList[closestPointMapSW].northing) * dyS))
-                                        / ((dxS * dxS) + (dyS * dyS));
-
-                                //point on line closest to blade center
-                                eastingSpt = ct.ptList[closestPointMapSW].easting + (US * dxS);
-                                northingSpt = ct.ptList[closestPointMapSW].northing + (US * dyS);
-
-                                //calc altitude for that point
-                                altitudeSpt = ct.ptList[closestPointMapSW].altitude + (US * (ct.ptList[closestPointMapSE].altitude - ct.ptList[closestPointMapSW].altitude));
-                                if (ct.ptList[closestPointMapSE].cutAltitude > 0 && ct.ptList[closestPointMapSW].cutAltitude > 0)
-                                {
-                                    cutAltSpt = ct.ptList[closestPointMapSW].cutAltitude + (US * (ct.ptList[closestPointMapSE].cutAltitude - ct.ptList[closestPointMapSW].cutAltitude));
-                                    NoLineAverageCutAlt += cutAltSpt;
-                                    NoLineCutCount++;
-                                }
-                                else cutAltSpt = -1;
-
-                                NoLineAverageAlt += altitudeSpt;
-                                NoLineCount++;
-                            }
-
-                            //Calculate the West line
-                            if (minDistSW < 900 && minDistNW < 900)
-                            {
-                                double dxW = ct.ptList[closestPointMapNW].easting - ct.ptList[closestPointMapSW].easting;
-                                double dyW = ct.ptList[closestPointMapNW].northing - ct.ptList[closestPointMapSW].northing;
-
-                                //how far from Line is fix
-                                distanceFromWline = ((dyW * h) - (dxW * i) + (ct.ptList[closestPointMapNW].easting
-                                            * ct.ptList[closestPointMapSW].northing) - (ct.ptList[closestPointMapNW].northing * ct.ptList[closestPointMapSW].easting))
-                                            / Math.Sqrt((dyW * dyW) + (dxW * dxW));
-
-                                //absolute the distance
-                                distanceFromWline = Math.Abs(distanceFromWline);
-
-
-                                //calc point onLine closest to current blade position
-                                double UW = (((h - ct.ptList[closestPointMapSW].easting) * dxW)
-                                        + ((i - ct.ptList[closestPointMapSW].northing) * dyW))
-                                        / ((dxW * dxW) + (dyW * dyW));
-
-                                //point on line closest to blade center
-                                eastingWpt = ct.ptList[closestPointMapSW].easting + (UW * dxW);
-                                northingWpt = ct.ptList[closestPointMapSW].northing + (UW * dyW);
-
-                                //calc altitude for that point
-                                altitudeWpt = ct.ptList[closestPointMapSW].altitude + (UW * (ct.ptList[closestPointMapNW].altitude - ct.ptList[closestPointMapSW].altitude));
-                                if (ct.ptList[closestPointMapNW].cutAltitude > 0 && ct.ptList[closestPointMapSW].cutAltitude > 0)
-                                {
-                                    cutAltWpt = ct.ptList[closestPointMapSW].cutAltitude + (UW * (ct.ptList[closestPointMapNW].cutAltitude - ct.ptList[closestPointMapSW].cutAltitude));
-                                    NoLineAverageCutAlt += cutAltWpt;
-                                    NoLineCutCount++;
-                                }
-                                else cutAltWpt = -1;
-
-                                NoLineAverageAlt += altitudeWpt;
-                                NoLineCount++;
-                            }
-
-                            //Calculate the East line
-                            if (minDistSE < 900 && minDistNE < 900)
-                            {
-                                double dxE = ct.ptList[closestPointMapNE].easting - ct.ptList[closestPointMapSE].easting;
-                                double dyE = ct.ptList[closestPointMapNE].northing - ct.ptList[closestPointMapSE].northing;
-
-                                //how far from Line is fix
-                                distanceFromEline = ((dyE * h) - (dxE * i) + (ct.ptList[closestPointMapNE].easting
-                                            * ct.ptList[closestPointMapSE].northing) - (ct.ptList[closestPointMapNE].northing * ct.ptList[closestPointMapSE].easting))
-                                            / Math.Sqrt((dyE * dyE) + (dxE * dxE));
-
-                                //absolute the distance
-                                distanceFromEline = Math.Abs(distanceFromEline);
-
-
-                                //calc point onLine closest to current blade position
-                                double UE = (((h - ct.ptList[closestPointMapSE].easting) * dxE)
-                                        + ((i - ct.ptList[closestPointMapSE].northing) * dyE))
-                                        / ((dxE * dxE) + (dyE * dyE));
-
-                                //point on line closest to blade center
-                                eastingEpt = ct.ptList[closestPointMapSE].easting + (UE * dxE);
-                                northingEpt = ct.ptList[closestPointMapSE].northing + (UE * dyE);
-
-                                //calc altitude for that point
-                                altitudeEpt = ct.ptList[closestPointMapSE].altitude + (UE * (ct.ptList[closestPointMapNE].altitude - ct.ptList[closestPointMapSE].altitude));
-                                if (ct.ptList[closestPointMapNE].cutAltitude > 0 && ct.ptList[closestPointMapSE].cutAltitude > 0)
-                                {
-                                    cutAltEpt = ct.ptList[closestPointMapSE].cutAltitude + (UE * (ct.ptList[closestPointMapNE].cutAltitude - ct.ptList[closestPointMapSE].cutAltitude));
-                                    NoLineAverageCutAlt += cutAltEpt;
-                                    NoLineCutCount++;
-                                }
-                                else
-                                    cutAltEpt = -1;
-
-                                NoLineAverageAlt += altitudeEpt;
-                                NoLineCount++;
-                            }
-
-                            // Give a value to the lines witout values
-                            if (NoLineCount > 0)
-                            {
-                                NoLineAverageAlt = NoLineAverageAlt / NoLineCount;
-                                if (NoLineCutCount > 0)
-                                    NoLineAverageCutAlt = NoLineAverageCutAlt / NoLineCutCount;
-                                else NoLineAverageCutAlt = -1;
-
-                                if (distanceFromNline == 1000)
-                                {
-                                    altitudeNpt = NoLineAverageAlt;
-                                    cutAltNpt = NoLineAverageCutAlt;
-                                }
-
-                                if (distanceFromSline == 1000)
-                                {
-                                    altitudeSpt = NoLineAverageAlt;
-                                    cutAltSpt = NoLineAverageCutAlt;
-                                }
-
-                                if (distanceFromWline == 1000)
-                                {
-                                    altitudeWpt = NoLineAverageAlt;
-                                    cutAltWpt = NoLineAverageCutAlt;
-                                }
-
-                                if (distanceFromEline == 1000)
-                                {
-                                    altitudeEpt = NoLineAverageAlt;
-                                    cutAltEpt = NoLineAverageCutAlt;
-                                }
-                            }
-
-                            // check if the blade is close from a line
-                            double mindistFromLine = distanceFromNline;
-                            double eastingLine = eastingNpt;
-                            double northingLine = northingNpt;
-                            double altitudeLine = altitudeNpt;
-                            double cutAltLine = cutAltNpt;
-
-                            if (distanceFromSline < mindistFromLine)
-                            {
-                                mindistFromLine = distanceFromSline;
-                                eastingLine = eastingSpt;
-                                northingLine = northingSpt;
-                                altitudeLine = altitudeSpt;
-                                cutAltLine = cutAltSpt;
-                            }
-
-                            if (distanceFromEline < mindistFromLine)
-                            {
-                                mindistFromLine = distanceFromEline;
-                                eastingLine = eastingEpt;
-                                northingLine = northingEpt;
-                                altitudeLine = altitudeEpt;
-                                cutAltLine = cutAltEpt;
-                            }
-
-                            if (distanceFromWline < mindistFromLine)
-                            {
-                                mindistFromLine = distanceFromWline;
-                                eastingLine = eastingWpt;
-                                northingLine = northingWpt;
-                                altitudeLine = altitudeWpt;
-                                cutAltLine = cutAltWpt;
-                            }
-
-
-                            // Calulate the closest point alitude and cutAltitude
-
-                            //double cutFillMap;
-                            double avgAltitude = -1;
-                            double avgCutAltitude = -1;
-
-                            
-
-                            // if the pt is near the closest pt or No Average is selected or there is only one survey pt
-                            int nbrofPt = 4;
-                            if (minDistNE == 900) nbrofPt--;
-                            if (minDistNW == 900) nbrofPt--;
-                            if (minDistSE == 900) nbrofPt--;
-                            if (minDistSW == 900) nbrofPt--;
-
-                            if (minDist < 1 | nbrofPt < 2)
-                            {
-                                // if the closest point is under the center of the blade
-                                avgAltitude = ct.ptList[closestPointMap].altitude;
-                                avgCutAltitude = ct.ptList[closestPointMap].cutAltitude;
-                            }
-                            else if (mindistFromLine < 1)
-                            // if the blade is near a line
-                            {
-                                avgAltitude = altitudeLine;
-                                avgCutAltitude = cutAltLine;
-
-                                
-                            }
-                            else
-                            {
-                                if (distanceFromEline < 1000 | distanceFromNline < 1000 | distanceFromSline < 1000 | distanceFromWline < 1000)
-                                {
-                                    //if there is a line on at least one side
-                                    double sumofCloseDist = 1 / distanceFromNline + 1 / distanceFromSline + 1 / distanceFromEline + 1 / distanceFromWline;
-
-                                    avgAltitude = ((altitudeNpt / distanceFromNline) + (altitudeSpt / distanceFromSline) +
-                                    (altitudeEpt / distanceFromEline) + (altitudeWpt / distanceFromWline)) / sumofCloseDist;
-
-                                    if (cutAltNpt == -1 | cutAltSpt == -1 | cutAltWpt == -1 | cutAltEpt == -1)
+                                    if (ct.ptList[closestPointMapNE].cutAltitude < 1 | ct.ptList[closestPointMapNW].cutAltitude < 1 | ct.ptList[closestPointMapSE].cutAltitude < 1 | ct.ptList[closestPointMapSW].cutAltitude < 1)
                                     {
                                         avgCutAltitude = ct.ptList[closestPointMap].cutAltitude;
                                     }
                                     else
                                     {
-                                        avgCutAltitude = (cutAltNpt / distanceFromNline + cutAltSpt / distanceFromSline +
-                                    cutAltEpt / distanceFromEline + cutAltWpt / distanceFromWline) / sumofCloseDist;
+                                        avgCutAltitude = ((ct.ptList[closestPointMapNE].cutAltitude / Math.Sqrt(minDistNE)) + (ct.ptList[closestPointMapNW].cutAltitude / Math.Sqrt(minDistNW)) +
+                                    (ct.ptList[closestPointMapSE].cutAltitude / Math.Sqrt(minDistSE)) + (ct.ptList[closestPointMapSW].cutAltitude / Math.Sqrt(minDistSW))) / sumofCloseDist;
 
                                     }
+
+
+                                }
+                                */
+
+                                //here calculate the closest point on each line
+
+                                distanceFromNline = 1000;
+                                distanceFromSline = 1000;
+                                distanceFromEline = 1000;
+                                distanceFromWline = 1000;
+
+                                double NoLineAverageAlt = 0;
+                                double NoLineAverageCutAlt = 0;
+                                double NoLineCount = 0;
+                                double NoLineCutCount = 0;
+
+                                //Calculate the North line
+                                if (minDistNE < 900 && minDistNW < 900)
+                                {
+                                    double dxN = ct.ptList[closestPointMapNE].easting - ct.ptList[closestPointMapNW].easting;
+                                    double dyN = ct.ptList[closestPointMapNE].northing - ct.ptList[closestPointMapNW].northing;
+
+                                    //how far from Line is fix
+                                    distanceFromNline = ((dyN * h) - (dxN * i) + (ct.ptList[closestPointMapNE].easting
+                                                * ct.ptList[closestPointMapNW].northing) - (ct.ptList[closestPointMapNE].northing * ct.ptList[closestPointMapNW].easting))
+                                                / Math.Sqrt((dyN * dyN) + (dxN * dxN));
+
+                                    //absolute the distance
+                                    distanceFromNline = Math.Abs(distanceFromNline);
+
+
+                                    //calc point onLine closest to current blade position
+                                    double UN = (((h - ct.ptList[closestPointMapNW].easting) * dxN)
+                                            + ((i - ct.ptList[closestPointMapNW].northing) * dyN))
+                                            / ((dxN * dxN) + (dyN * dyN));
+
+                                    //point on line closest to blade center
+                                    eastingNpt = ct.ptList[closestPointMapNW].easting + (UN * dxN);
+                                    northingNpt = ct.ptList[closestPointMapNW].northing + (UN * dyN);
+
+                                    //calc altitude for that point
+                                    altitudeNpt = ct.ptList[closestPointMapNW].altitude + (UN * (ct.ptList[closestPointMapNE].altitude - ct.ptList[closestPointMapNW].altitude));
+                                    if (ct.ptList[closestPointMapNE].cutAltitude > 0 && ct.ptList[closestPointMapNW].cutAltitude > 0)
+                                    {
+                                        cutAltNpt = ct.ptList[closestPointMapNW].cutAltitude + (UN * (ct.ptList[closestPointMapNE].cutAltitude - ct.ptList[closestPointMapNW].cutAltitude));
+                                        NoLineAverageCutAlt += cutAltNpt;
+                                        NoLineCutCount++;
+                                    }
+                                    else cutAltNpt = -1;
+
+                                    NoLineAverageAlt += altitudeNpt;
+                                    NoLineCount++;
+                                }
+
+                                //Calculate the South line
+                                if (minDistSE < 900 && minDistSW < 900)
+                                {
+                                    double dxS = ct.ptList[closestPointMapSE].easting - ct.ptList[closestPointMapSW].easting;
+                                    double dyS = ct.ptList[closestPointMapSE].northing - ct.ptList[closestPointMapSW].northing;
+
+                                    //how far from Line is fix
+                                    distanceFromSline = ((dyS * h) - (dxS * i) + (ct.ptList[closestPointMapSE].easting
+                                                * ct.ptList[closestPointMapSW].northing) - (ct.ptList[closestPointMapSE].northing * ct.ptList[closestPointMapSW].easting))
+                                                / Math.Sqrt((dyS * dyS) + (dxS * dxS));
+
+                                    //absolute the distance
+                                    distanceFromSline = Math.Abs(distanceFromSline);
+
+
+                                    //calc point onLine closest to current blade position
+                                    double US = (((h - ct.ptList[closestPointMapSW].easting) * dxS)
+                                            + ((i - ct.ptList[closestPointMapSW].northing) * dyS))
+                                            / ((dxS * dxS) + (dyS * dyS));
+
+                                    //point on line closest to blade center
+                                    eastingSpt = ct.ptList[closestPointMapSW].easting + (US * dxS);
+                                    northingSpt = ct.ptList[closestPointMapSW].northing + (US * dyS);
+
+                                    //calc altitude for that point
+                                    altitudeSpt = ct.ptList[closestPointMapSW].altitude + (US * (ct.ptList[closestPointMapSE].altitude - ct.ptList[closestPointMapSW].altitude));
+                                    if (ct.ptList[closestPointMapSE].cutAltitude > 0 && ct.ptList[closestPointMapSW].cutAltitude > 0)
+                                    {
+                                        cutAltSpt = ct.ptList[closestPointMapSW].cutAltitude + (US * (ct.ptList[closestPointMapSE].cutAltitude - ct.ptList[closestPointMapSW].cutAltitude));
+                                        NoLineAverageCutAlt += cutAltSpt;
+                                        NoLineCutCount++;
+                                    }
+                                    else cutAltSpt = -1;
+
+                                    NoLineAverageAlt += altitudeSpt;
+                                    NoLineCount++;
+                                }
+
+                                //Calculate the West line
+                                if (minDistSW < 900 && minDistNW < 900)
+                                {
+                                    double dxW = ct.ptList[closestPointMapNW].easting - ct.ptList[closestPointMapSW].easting;
+                                    double dyW = ct.ptList[closestPointMapNW].northing - ct.ptList[closestPointMapSW].northing;
+
+                                    //how far from Line is fix
+                                    distanceFromWline = ((dyW * h) - (dxW * i) + (ct.ptList[closestPointMapNW].easting
+                                                * ct.ptList[closestPointMapSW].northing) - (ct.ptList[closestPointMapNW].northing * ct.ptList[closestPointMapSW].easting))
+                                                / Math.Sqrt((dyW * dyW) + (dxW * dxW));
+
+                                    //absolute the distance
+                                    distanceFromWline = Math.Abs(distanceFromWline);
+
+
+                                    //calc point onLine closest to current blade position
+                                    double UW = (((h - ct.ptList[closestPointMapSW].easting) * dxW)
+                                            + ((i - ct.ptList[closestPointMapSW].northing) * dyW))
+                                            / ((dxW * dxW) + (dyW * dyW));
+
+                                    //point on line closest to blade center
+                                    eastingWpt = ct.ptList[closestPointMapSW].easting + (UW * dxW);
+                                    northingWpt = ct.ptList[closestPointMapSW].northing + (UW * dyW);
+
+                                    //calc altitude for that point
+                                    altitudeWpt = ct.ptList[closestPointMapSW].altitude + (UW * (ct.ptList[closestPointMapNW].altitude - ct.ptList[closestPointMapSW].altitude));
+                                    if (ct.ptList[closestPointMapNW].cutAltitude > 0 && ct.ptList[closestPointMapSW].cutAltitude > 0)
+                                    {
+                                        cutAltWpt = ct.ptList[closestPointMapSW].cutAltitude + (UW * (ct.ptList[closestPointMapNW].cutAltitude - ct.ptList[closestPointMapSW].cutAltitude));
+                                        NoLineAverageCutAlt += cutAltWpt;
+                                        NoLineCutCount++;
+                                    }
+                                    else cutAltWpt = -1;
+
+                                    NoLineAverageAlt += altitudeWpt;
+                                    NoLineCount++;
+                                }
+
+                                //Calculate the East line
+                                if (minDistSE < 900 && minDistNE < 900)
+                                {
+                                    double dxE = ct.ptList[closestPointMapNE].easting - ct.ptList[closestPointMapSE].easting;
+                                    double dyE = ct.ptList[closestPointMapNE].northing - ct.ptList[closestPointMapSE].northing;
+
+                                    //how far from Line is fix
+                                    distanceFromEline = ((dyE * h) - (dxE * i) + (ct.ptList[closestPointMapNE].easting
+                                                * ct.ptList[closestPointMapSE].northing) - (ct.ptList[closestPointMapNE].northing * ct.ptList[closestPointMapSE].easting))
+                                                / Math.Sqrt((dyE * dyE) + (dxE * dxE));
+
+                                    //absolute the distance
+                                    distanceFromEline = Math.Abs(distanceFromEline);
+
+
+                                    //calc point onLine closest to current blade position
+                                    double UE = (((h - ct.ptList[closestPointMapSE].easting) * dxE)
+                                            + ((i - ct.ptList[closestPointMapSE].northing) * dyE))
+                                            / ((dxE * dxE) + (dyE * dyE));
+
+                                    //point on line closest to blade center
+                                    eastingEpt = ct.ptList[closestPointMapSE].easting + (UE * dxE);
+                                    northingEpt = ct.ptList[closestPointMapSE].northing + (UE * dyE);
+
+                                    //calc altitude for that point
+                                    altitudeEpt = ct.ptList[closestPointMapSE].altitude + (UE * (ct.ptList[closestPointMapNE].altitude - ct.ptList[closestPointMapSE].altitude));
+                                    if (ct.ptList[closestPointMapNE].cutAltitude > 0 && ct.ptList[closestPointMapSE].cutAltitude > 0)
+                                    {
+                                        cutAltEpt = ct.ptList[closestPointMapSE].cutAltitude + (UE * (ct.ptList[closestPointMapNE].cutAltitude - ct.ptList[closestPointMapSE].cutAltitude));
+                                        NoLineAverageCutAlt += cutAltEpt;
+                                        NoLineCutCount++;
+                                    }
+                                    else
+                                        cutAltEpt = -1;
+
+                                    NoLineAverageAlt += altitudeEpt;
+                                    NoLineCount++;
+                                }
+
+                                // Give a value to the lines witout values
+                                if (NoLineCount > 0)
+                                {
+                                    NoLineAverageAlt = NoLineAverageAlt / NoLineCount;
+                                    if (NoLineCutCount > 0)
+                                        NoLineAverageCutAlt = NoLineAverageCutAlt / NoLineCutCount;
+                                    else NoLineAverageCutAlt = -1;
+
+                                    if (distanceFromNline == 1000)
+                                    {
+                                        altitudeNpt = NoLineAverageAlt;
+                                        cutAltNpt = NoLineAverageCutAlt;
+                                    }
+
+                                    if (distanceFromSline == 1000)
+                                    {
+                                        altitudeSpt = NoLineAverageAlt;
+                                        cutAltSpt = NoLineAverageCutAlt;
+                                    }
+
+                                    if (distanceFromWline == 1000)
+                                    {
+                                        altitudeWpt = NoLineAverageAlt;
+                                        cutAltWpt = NoLineAverageCutAlt;
+                                    }
+
+                                    if (distanceFromEline == 1000)
+                                    {
+                                        altitudeEpt = NoLineAverageAlt;
+                                        cutAltEpt = NoLineAverageCutAlt;
+                                    }
+                                }
+
+                                // check if the blade is close from a line
+                                double mindistFromLine = distanceFromNline;
+                                double eastingLine = eastingNpt;
+                                double northingLine = northingNpt;
+                                double altitudeLine = altitudeNpt;
+                                double cutAltLine = cutAltNpt;
+
+                                if (distanceFromSline < mindistFromLine)
+                                {
+                                    mindistFromLine = distanceFromSline;
+                                    eastingLine = eastingSpt;
+                                    northingLine = northingSpt;
+                                    altitudeLine = altitudeSpt;
+                                    cutAltLine = cutAltSpt;
+                                }
+
+                                if (distanceFromEline < mindistFromLine)
+                                {
+                                    mindistFromLine = distanceFromEline;
+                                    eastingLine = eastingEpt;
+                                    northingLine = northingEpt;
+                                    altitudeLine = altitudeEpt;
+                                    cutAltLine = cutAltEpt;
+                                }
+
+                                if (distanceFromWline < mindistFromLine)
+                                {
+                                    mindistFromLine = distanceFromWline;
+                                    eastingLine = eastingWpt;
+                                    northingLine = northingWpt;
+                                    altitudeLine = altitudeWpt;
+                                    cutAltLine = cutAltWpt;
+                                }
+
+
+                                // Calulate the closest point alitude and cutAltitude
+
+                                //double cutFillMap;
+                                double avgAltitude = -1;
+                                double avgCutAltitude = -1;
+
+
+
+                                // if the pt is near the closest pt or No Average is selected or there is only one survey pt
+                                int nbrofPt = 4;
+                                if (minDistNE == 900) nbrofPt--;
+                                if (minDistNW == 900) nbrofPt--;
+                                if (minDistSE == 900) nbrofPt--;
+                                if (minDistSW == 900) nbrofPt--;
+
+                                if (minDist < 1 | nbrofPt < 2)
+                                {
+                                    // if the closest point is under the center of the blade
+                                    avgAltitude = ct.ptList[closestPointMap].altitude;
+                                    avgCutAltitude = ct.ptList[closestPointMap].cutAltitude;
+                                }
+                                else if (mindistFromLine < 1)
+                                // if the blade is near a line
+                                {
+                                    avgAltitude = altitudeLine;
+                                    avgCutAltitude = cutAltLine;
+
+
                                 }
                                 else
-                                // if there are no lines but 2 pt build the diag
                                 {
-                                    double eastingDiaPt;
-                                    double northingDiaPt;
-
-                                    //Calculate the diag line SE to NW
-                                    if (minDistSE < 900 && minDistNW < 900)
+                                    if (distanceFromEline < 1000 | distanceFromNline < 1000 | distanceFromSline < 1000 | distanceFromWline < 1000)
                                     {
-                                        double dx = ct.ptList[closestPointMapNW].easting - ct.ptList[closestPointMapSE].easting;
-                                        double dy = ct.ptList[closestPointMapNW].northing - ct.ptList[closestPointMapSE].northing;
+                                        //if there is a line on at least one side
+                                        double sumofCloseDist = 1 / distanceFromNline + 1 / distanceFromSline + 1 / distanceFromEline + 1 / distanceFromWline;
 
-                                        //how far from Line is fix
-                                        //double distanceFromline = ((dy * pn.easting) - (dx * pn.northing) + (ct.ptList[closestPointMapNW].easting
-                                        //            * ct.ptList[closestPointMapSE].northing) - (ct.ptList[closestPointMapNW].northing * ct.ptList[closestPointMapSE].easting))
-                                        //            / Math.Sqrt((dy * dy) + (dx * dx));
+                                        avgAltitude = ((altitudeNpt / distanceFromNline) + (altitudeSpt / distanceFromSline) +
+                                        (altitudeEpt / distanceFromEline) + (altitudeWpt / distanceFromWline)) / sumofCloseDist;
 
-                                        //absolute the distance
-                                        //distanceFromline = Math.Abs(distanceFromline);
-
-
-                                        //calc point onLine closest to current blade position
-                                        double U = (((h - ct.ptList[closestPointMapSE].easting) * dx)
-                                                + ((i - ct.ptList[closestPointMapSE].northing) * dy))
-                                                / ((dx * dx) + (dy * dy));
-
-                                        //point on line closest to blade center
-                                        eastingDiaPt = ct.ptList[closestPointMapSE].easting + (U * dx);
-                                        northingDiaPt = ct.ptList[closestPointMapSE].northing + (U * dy);
-
-                                        //calc altitude for that point
-                                        avgAltitude = ct.ptList[closestPointMapSE].altitude + (U * (ct.ptList[closestPointMapNW].altitude - ct.ptList[closestPointMapSE].altitude));
-                                        if (ct.ptList[closestPointMapNW].cutAltitude > 0 && ct.ptList[closestPointMapSE].cutAltitude > 0)
+                                        if (cutAltNpt == -1 | cutAltSpt == -1 | cutAltWpt == -1 | cutAltEpt == -1)
                                         {
-                                            avgCutAltitude = ct.ptList[closestPointMapSE].cutAltitude + (U * (ct.ptList[closestPointMapNW].cutAltitude - ct.ptList[closestPointMapSE].cutAltitude));
+                                            avgCutAltitude = ct.ptList[closestPointMap].cutAltitude;
                                         }
                                         else
-                                            avgCutAltitude = -1;                                        
-                                    }
-                                    //Calculate the diag line SW to NE
-                                    else if (minDistSW < 900 && minDistNE < 900)
-                                    {
-                                        double dx = ct.ptList[closestPointMapNE].easting - ct.ptList[closestPointMapSW].easting;
-                                        double dy = ct.ptList[closestPointMapNE].northing - ct.ptList[closestPointMapSW].northing;
-
-                                        //how far from Line is fix
-                                        //double distanceFromline = ((dy * pn.easting) - (dx * pn.northing) + (ct.ptList[closestPointMapNE].easting
-                                        //            * ct.ptList[closestPointMapSW].northing) - (ct.ptList[closestPointMapNE].northing * ct.ptList[closestPointMapSW].easting))
-                                        //            / Math.Sqrt((dy * dy) + (dx * dx));
-
-                                        //absolute the distance
-                                        //distanceFromline = Math.Abs(distanceFromline);
-
-
-                                        //calc point onLine closest to current blade position
-                                        double U = (((h - ct.ptList[closestPointMapSW].easting) * dx)
-                                                + ((i - ct.ptList[closestPointMapSW].northing) * dy))
-                                                / ((dx * dx) + (dy * dy));
-
-                                        //point on line closest to blade center
-                                        eastingDiaPt = ct.ptList[closestPointMapSW].easting + (U * dx);
-                                        northingDiaPt = ct.ptList[closestPointMapSW].northing + (U * dy);
-
-                                        //calc altitude for that point
-                                        avgAltitude = ct.ptList[closestPointMapSW].altitude + (U * (ct.ptList[closestPointMapNE].altitude - ct.ptList[closestPointMapSW].altitude));
-                                        if (ct.ptList[closestPointMapNE].cutAltitude > 0 && ct.ptList[closestPointMapSW].cutAltitude > 0)
                                         {
-                                            avgCutAltitude = ct.ptList[closestPointMapSW].cutAltitude + (U * (ct.ptList[closestPointMapNE].cutAltitude - ct.ptList[closestPointMapSW].cutAltitude));
-                                        }
-                                        else
-                                            avgCutAltitude = -1;                                        
-                                    }
+                                            avgCutAltitude = (cutAltNpt / distanceFromNline + cutAltSpt / distanceFromSline +
+                                        cutAltEpt / distanceFromEline + cutAltWpt / distanceFromWline) / sumofCloseDist;
 
+                                        }
+                                    }
+                                    else
+                                    // if there are no lines but 2 pt build the diag
+                                    {
+                                        double eastingDiaPt;
+                                        double northingDiaPt;
+
+                                        //Calculate the diag line SE to NW
+                                        if (minDistSE < 900 && minDistNW < 900)
+                                        {
+                                            double dx = ct.ptList[closestPointMapNW].easting - ct.ptList[closestPointMapSE].easting;
+                                            double dy = ct.ptList[closestPointMapNW].northing - ct.ptList[closestPointMapSE].northing;
+
+                                            //how far from Line is fix
+                                            //double distanceFromline = ((dy * pn.easting) - (dx * pn.northing) + (ct.ptList[closestPointMapNW].easting
+                                            //            * ct.ptList[closestPointMapSE].northing) - (ct.ptList[closestPointMapNW].northing * ct.ptList[closestPointMapSE].easting))
+                                            //            / Math.Sqrt((dy * dy) + (dx * dx));
+
+                                            //absolute the distance
+                                            //distanceFromline = Math.Abs(distanceFromline);
+
+
+                                            //calc point onLine closest to current blade position
+                                            double U = (((h - ct.ptList[closestPointMapSE].easting) * dx)
+                                                    + ((i - ct.ptList[closestPointMapSE].northing) * dy))
+                                                    / ((dx * dx) + (dy * dy));
+
+                                            //point on line closest to blade center
+                                            eastingDiaPt = ct.ptList[closestPointMapSE].easting + (U * dx);
+                                            northingDiaPt = ct.ptList[closestPointMapSE].northing + (U * dy);
+
+                                            //calc altitude for that point
+                                            avgAltitude = ct.ptList[closestPointMapSE].altitude + (U * (ct.ptList[closestPointMapNW].altitude - ct.ptList[closestPointMapSE].altitude));
+                                            if (ct.ptList[closestPointMapNW].cutAltitude > 0 && ct.ptList[closestPointMapSE].cutAltitude > 0)
+                                            {
+                                                avgCutAltitude = ct.ptList[closestPointMapSE].cutAltitude + (U * (ct.ptList[closestPointMapNW].cutAltitude - ct.ptList[closestPointMapSE].cutAltitude));
+                                            }
+                                            else
+                                                avgCutAltitude = -1;
+                                        }
+                                        //Calculate the diag line SW to NE
+                                        else if (minDistSW < 900 && minDistNE < 900)
+                                        {
+                                            double dx = ct.ptList[closestPointMapNE].easting - ct.ptList[closestPointMapSW].easting;
+                                            double dy = ct.ptList[closestPointMapNE].northing - ct.ptList[closestPointMapSW].northing;
+
+                                            //how far from Line is fix
+                                            //double distanceFromline = ((dy * pn.easting) - (dx * pn.northing) + (ct.ptList[closestPointMapNE].easting
+                                            //            * ct.ptList[closestPointMapSW].northing) - (ct.ptList[closestPointMapNE].northing * ct.ptList[closestPointMapSW].easting))
+                                            //            / Math.Sqrt((dy * dy) + (dx * dx));
+
+                                            //absolute the distance
+                                            //distanceFromline = Math.Abs(distanceFromline);
+
+
+                                            //calc point onLine closest to current blade position
+                                            double U = (((h - ct.ptList[closestPointMapSW].easting) * dx)
+                                                    + ((i - ct.ptList[closestPointMapSW].northing) * dy))
+                                                    / ((dx * dx) + (dy * dy));
+
+                                            //point on line closest to blade center
+                                            eastingDiaPt = ct.ptList[closestPointMapSW].easting + (U * dx);
+                                            northingDiaPt = ct.ptList[closestPointMapSW].northing + (U * dy);
+
+                                            //calc altitude for that point
+                                            avgAltitude = ct.ptList[closestPointMapSW].altitude + (U * (ct.ptList[closestPointMapNE].altitude - ct.ptList[closestPointMapSW].altitude));
+                                            if (ct.ptList[closestPointMapNE].cutAltitude > 0 && ct.ptList[closestPointMapSW].cutAltitude > 0)
+                                            {
+                                                avgCutAltitude = ct.ptList[closestPointMapSW].cutAltitude + (U * (ct.ptList[closestPointMapNE].cutAltitude - ct.ptList[closestPointMapSW].cutAltitude));
+                                            }
+                                            else
+                                                avgCutAltitude = -1;
+                                        }
+
+                                    }
                                 }
+
+                                //end of copy
+
+
+                                if (avgCutAltitude < 1) cutFillMap = 9999;
+                                else cutFillMap = avgCutAltitude - avgAltitude;
+
+                                mapListPt point = new mapListPt(h, i, drawPtWidth, avgAltitude, avgCutAltitude,
+                                    cutFillMap, ct.ptList[closestPointMap].lastPassAltitude);
+                                ct.mapList.Add(point);
                             }
-
-                            //end of copy
-
-
-                            if (avgCutAltitude < 1) cutFillMap = 9999;
-                            else cutFillMap = avgCutAltitude - avgAltitude;
-
-                            mapListPt point = new mapListPt(h, i, drawPtWidth, avgAltitude, avgCutAltitude,
-                                cutFillMap, ct.ptList[closestPointMap].lastPassAltitude);
-                            ct.mapList.Add(point);
                         }
                     }
+                    
                 }
-            }
-            FileSaveMapPt(); // For keeping the visual mapping
+                FileSaveMapPt(); // For keeping the visual mapping
 
-            stopTheProgram = false;
+                stopTheProgram = false;
+            }
         }
+
+
+
+
+
+
+
+
+
+
 
         #endregion
 

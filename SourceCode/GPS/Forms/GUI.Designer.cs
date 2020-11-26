@@ -230,21 +230,63 @@ namespace OpenGrade
             if (isJobStarted)
             {
                 if (ct.ptList.Count < 1)
+                {             
                 FileOpenAgdDesign();
+                //ct.designList2ptList();
+                }
                 else
                 {
-                    var form = new FormTimedMessage(3000, "Contour.txt already exist", "Delete the Contour.txt or create a new Field");
-                    form.Show();
+                var form = new FormTimedMessage(3000, "Contour.txt already exist", "Delete the Contour.txt or create a new Field");
+                form.Show();
                 }
             }
             else
             {
-                var form = new FormTimedMessage(3000, "No field open", "Open a field First");
-                form.Show();
+                //var form = new FormTimedMessage(3000, "No field open", "Open a field First");
+                //form.Show();
+                //var form = new FormTimedMessage(3000, "AGD file will be opened", "BenchMark will be used as field origin");
+                //form.Show();
+
+                ct.ptList.Clear();
+                FileOpenAgdDesign();
+
+                
+
+
             }
         }
 
+        private void OpenFieldByAGDfile()
+        {
+            if (!isJobStarted)
+            {
 
+
+                if (timerSim.Enabled == true)
+                {
+                    sim.latitude = ct.designList[0].latitude;
+                    sim.longitude = ct.designList[0].longitude;
+                    sim.DoSimTick(sim.steerAngleScrollBar);
+                    ScanForNMEA();
+                }
+                //JobNewOpenResume();
+                //start a new job
+                JobNew();
+                //using (var form = new FormJob(this))
+                {
+                    //ask for a directory name
+                    using (var form2 = new FormFieldDir(this))
+                    { form2.ShowDialog(); }
+
+                }
+
+            }
+
+
+
+
+            ct.designList2ptList();
+        }
 
         //ABLine
         private void btnABLine_Click(object sender, EventArgs e)
@@ -1418,7 +1460,7 @@ namespace OpenGrade
                     //do all the NTRIP routines
                     if (sp.IsOpen) DoNTRIPSecondRoutine(); // Only when gps port is open
                     else lblWatch.Text = "Ntrip off";
-                    fiveSecondCounter = 0; 
+                    fiveSecondCounter = 0;
                 }
 
                 //GPS Update rate
@@ -1490,7 +1532,7 @@ namespace OpenGrade
                     btnABLine.Text = PassNumber;
                     lblPureSteerAngle.Text = PureSteerAngle;
 
-                    
+
 
                     //check for the fix quality
                     if (pn.fixQuality != 4 && lastFixQuality == 4)
@@ -1581,6 +1623,12 @@ namespace OpenGrade
                 }
                 //wait till timer fires again.  
             }
+            else if (CalculatingMinMaxEastNort)
+            {
+                CalculateMinMaxEastNort();
+            }
+            else stopTheProgram = false;
+
         }
 
        

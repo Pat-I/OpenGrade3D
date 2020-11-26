@@ -812,10 +812,10 @@ namespace OpenGrade
 
                     if (camPitch > -20) camPitch = -20;
 
-                    double paintEastingMax = mf.pn.easting + zoom * -camPitch/2;
-                    double paintEastingMin = mf.pn.easting - zoom * -camPitch/2;
-                    double paintNorthingMax = mf.pn.northing + zoom * -camPitch/2;
-                    double paintNorthingMin = mf.pn.northing - zoom * -camPitch/2;
+                    int paintEastingMax = (int)(mf.pn.easting + zoom * -camPitch/2);
+                    int paintEastingMin = (int)(mf.pn.easting - zoom * -camPitch/2);
+                    int paintNorthingMax = (int)(mf.pn.northing + zoom * -camPitch/2);
+                    int paintNorthingMin = (int)(mf.pn.northing - zoom * -camPitch/2);
 
                     gl.Begin(OpenGL.GL_QUADS);
 
@@ -1249,7 +1249,9 @@ namespace OpenGrade
                 mf.FileSaveContour();
                 mf.FileSaveBoundaryList();
                 mapList.Clear();
-                mf.CalculateMinMaxEastNort();
+                mf.CalculatingMinMaxEastNort = true;
+                //mf.CalculateMinMaxEastNort();
+
             }
         }
         #endregion

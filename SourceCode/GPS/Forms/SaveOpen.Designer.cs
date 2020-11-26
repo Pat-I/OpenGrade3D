@@ -1252,7 +1252,8 @@ namespace OpenGrade
 
 
                 FileSaveDesignList(); // for testing
-                ct.designList2ptList();
+                //ct.designList2ptList();
+                OpenFieldByAGDfile();
 
             }
             //cancelled out of open file
