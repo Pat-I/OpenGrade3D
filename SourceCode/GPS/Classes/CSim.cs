@@ -140,8 +140,7 @@ namespace OpenGrade
 
             //mf.isGPSPositionInitialized = false;
             //mf.isFirstFixPositionSet = false;
-            var form = new FormTimedMessage(4000, "Please restart OpenGrade", "To avoid strange beviavour!");
-            form.Show();
+            
 
         }
 

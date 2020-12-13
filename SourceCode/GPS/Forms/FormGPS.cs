@@ -834,10 +834,26 @@ namespace OpenGrade
 
         private void btnSimGoTo_click(object sender, EventArgs e)
         {
+            //check dist from old position and show a warning message if too far
+            double oldLat = Properties.Settings.Default.setSim_lastLat;
+            double oldLong = Properties.Settings.Default.setSim_lastLong;
+            double newLat = (double)nudLatitude.Value;
+            double newLong = (double)nudLongitude.Value;
+            double newSimDist;
+
+            newSimDist = 2 * (oldLat - newLat) * (oldLat - newLat) + (oldLong - newLong) * (oldLong - newLong);
+
+            if (newSimDist > 2)
+            {
+                var form = new FormTimedMessage(4000, "Please restart OpenGrade", "To avoid strange beviavour!");
+                form.Show();
+            }
+
             Properties.Settings.Default.setSim_lastLat = (double)nudLatitude.Value;
             Properties.Settings.Default.setSim_lastLong = (double)nudLongitude.Value;
             Properties.Settings.Default.Save();
             sim.ResetSim();
+            
         }
 
         //called everytime window is resized, clean up button positions
