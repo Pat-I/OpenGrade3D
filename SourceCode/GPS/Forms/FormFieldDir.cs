@@ -25,7 +25,7 @@ namespace OpenGrade
             if (String.IsNullOrEmpty(tboxFieldName.Text)) tboxFieldName.Text = "XX";
 
             //append date time to name
-            mf.currentFieldDirectory = tboxFieldName.Text.Trim() +
+            mf.currentFieldDirectory = "OG3d_" + tboxFieldName.Text.Trim() +
                 String.Format("{0}", DateTime.Now.ToString(" MMMdd", CultureInfo.InvariantCulture));
             try
             {

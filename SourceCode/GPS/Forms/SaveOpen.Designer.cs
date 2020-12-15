@@ -1262,7 +1262,7 @@ namespace OpenGrade
                 }
 
 
-                FileSaveDesignList(); // for testing
+                //FileSaveDesignList(); // for testing
                 //ct.designList2ptList();
                 OpenFieldByAGDfile();
 
@@ -1570,7 +1570,7 @@ namespace OpenGrade
             if ((directoryName.Length > 0) && (!Directory.Exists(directoryName)))
             { Directory.CreateDirectory(directoryName); }
 
-            string myFileName = "Survey_" + String.Format("{0}", DateTime.Now.ToString("yyyy_MMM_dd HH_mm", CultureInfo.InvariantCulture)) + ".ags";
+            string myFileName = "Survey_" + String.Format("{0}", DateTime.Now.ToString("yyyy_MMM_dd HH_mm_ss", CultureInfo.InvariantCulture)) + ".ags";
 
             //write out the file
             using (StreamWriter writer = new StreamWriter(dirField + myFileName))
