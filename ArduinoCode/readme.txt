@@ -1,8 +1,7 @@
-ValveControl7Steer is the code to use with relay port
-Work with arduino nano
-Output are pins D4 and D5
-they are always working you need to put extra switch on the relay cable or modify the code
 
-Plug in blade control port
+Update December 2020
 
-Edit INO for selecting deadband and propo/onoff mode
+Last ino is ValveControlPropLever.
+It will save the setting to EEPROM
+
+It has code for a proportional lever. You have to edit it to use it without lever.
