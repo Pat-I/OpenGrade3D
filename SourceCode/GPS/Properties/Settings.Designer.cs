@@ -12,7 +12,7 @@ namespace OpenGrade.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.7.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -649,7 +649,7 @@ namespace OpenGrade.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("70")]
         public byte setF_FillColorR {
             get {
                 return ((byte)(this["setF_FillColorR"]));
@@ -661,7 +661,7 @@ namespace OpenGrade.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("191")]
+        [global::System.Configuration.DefaultSettingValueAttribute("133")]
         public byte setF_FillColorG {
             get {
                 return ((byte)(this["setF_FillColorG"]));
@@ -673,7 +673,7 @@ namespace OpenGrade.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("180")]
         public byte setF_FillColorB {
             get {
                 return ((byte)(this["setF_FillColorB"]));
@@ -944,6 +944,174 @@ namespace OpenGrade.Properties {
             }
             set {
                 this["setDisplay_isKeyboardOn"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public byte setF_FillMidColorR {
+            get {
+                return ((byte)(this["setF_FillMidColorR"]));
+            }
+            set {
+                this["setF_FillMidColorR"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("191")]
+        public byte setF_FillMidColorG {
+            get {
+                return ((byte)(this["setF_FillMidColorG"]));
+            }
+            set {
+                this["setF_FillMidColorG"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("255")]
+        public byte setF_FillMidColorB {
+            get {
+                return ((byte)(this["setF_FillMidColorB"]));
+            }
+            set {
+                this["setF_FillMidColorB"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public byte setF_FillMinColorR {
+            get {
+                return ((byte)(this["setF_FillMinColorR"]));
+            }
+            set {
+                this["setF_FillMinColorR"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("255")]
+        public byte setF_FillMinColorG {
+            get {
+                return ((byte)(this["setF_FillMinColorG"]));
+            }
+            set {
+                this["setF_FillMinColorG"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public byte setF_FillMinColorB {
+            get {
+                return ((byte)(this["setF_FillMinColorB"]));
+            }
+            set {
+                this["setF_FillMinColorB"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("255")]
+        public byte setF_CutMinColorR {
+            get {
+                return ((byte)(this["setF_CutMinColorR"]));
+            }
+            set {
+                this["setF_CutMinColorR"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("255")]
+        public byte setF_CutMinColorG {
+            get {
+                return ((byte)(this["setF_CutMinColorG"]));
+            }
+            set {
+                this["setF_CutMinColorG"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public byte setF_CutMinColorB {
+            get {
+                return ((byte)(this["setF_CutMinColorB"]));
+            }
+            set {
+                this["setF_CutMinColorB"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("255")]
+        public byte setF_CutMidColorR {
+            get {
+                return ((byte)(this["setF_CutMidColorR"]));
+            }
+            set {
+                this["setF_CutMidColorR"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("165")]
+        public byte setF_CutMidColorG {
+            get {
+                return ((byte)(this["setF_CutMidColorG"]));
+            }
+            set {
+                this["setF_CutMidColorG"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public byte setF_CutMidColorB {
+            get {
+                return ((byte)(this["setF_CutMidColorB"]));
+            }
+            set {
+                this["setF_CutMidColorB"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool setMenu_isGradual {
+            get {
+                return ((bool)(this["setMenu_isGradual"]));
+            }
+            set {
+                this["setMenu_isGradual"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool setMenu_isGradualMulticolor {
+            get {
+                return ((bool)(this["setMenu_isGradualMulticolor"]));
+            }
+            set {
+                this["setMenu_isGradualMulticolor"] = value;
             }
         }
     }

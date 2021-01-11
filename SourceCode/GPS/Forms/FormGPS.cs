@@ -39,13 +39,19 @@ namespace OpenGrade
         public byte redField, grnField, bluField;
 
         //colors for mapping
-        //Fill and low altitude  default green
+        //Fill and lowest altitude  default
         public byte redFill, grnFill, bluFill;
-
+        //Fill and lowest altitude  default(mid)
+        public byte redFillMid, grnFillMid, bluFillMid;
+        //Fill and lowest altitude  default(min)
+        public byte redFillMin, grnFillMin, bluFillMin;
         // center color
         public byte redCenter, grnCenter, bluCenter;
-
-        // Cut and high altitude default red
+        // Cut and highest altitude default(min)
+        public byte redCutMin, grnCutMin, bluCutMin;
+        // Cut and highest altitude default(mid)
+        public byte redCutMid, grnCutMid, bluCutMid;
+        // Cut and highest altitude default
         public byte redCut, grnCut, bluCut;
 
         //polygon mode for section drawing
@@ -61,7 +67,7 @@ namespace OpenGrade
         private int flagNumberPicked = 0;
 
         //Is it in 2D or 3D, metric or imperial, display lightbar, display grid etc
-        public bool isIn3D = true, isMetric = true, isLightbarOn = true, isGridOn, isSideGuideLines = true;
+        public bool isIn3D = true, isMetric = true, isLightbarOn = true, isGridOn, isSideGuideLines = true, isGradual = false, isGradualMulticolor = true;
 
         public bool isPureDisplayOn = true, isSkyOn = true, isBigAltitudeOn = false;
 
@@ -553,10 +559,6 @@ namespace OpenGrade
             _rm = new ResourceManager("OpenGrade.gStr", Assembly.GetExecutingAssembly());
         }
 
-        private void DataPage_Click(object sender, EventArgs e)
-        {
-
-        }
 
         //keystrokes for easy and quick startup
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)

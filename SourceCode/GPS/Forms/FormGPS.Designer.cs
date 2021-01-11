@@ -58,7 +58,11 @@
             this.colorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fieldToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.rstMapColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MapColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rstColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.GradToolStrip = new System.Windows.Forms.ToolStripMenuItem();
+            this.StepToolStrip = new System.Windows.Forms.ToolStripMenuItem();
+            this.GradMultiToolStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripUnitsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.metricToolStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.imperialToolStrip = new System.Windows.Forms.ToolStripMenuItem();
@@ -195,6 +199,10 @@
             this.lblFillValue = new System.Windows.Forms.Label();
             this.lblCutValue = new System.Windows.Forms.Label();
             this.lblWatch = new System.Windows.Forms.Label();
+            this.btnColorFillMid = new System.Windows.Forms.Button();
+            this.btnColorFillMin = new System.Windows.Forms.Button();
+            this.btnColorCutMid = new System.Windows.Forms.Button();
+            this.btnColorCutMin = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControl)).BeginInit();
             this.contextMenuStripOpenGL.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControlBack)).BeginInit();
@@ -432,7 +440,7 @@
             this.colorsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.sectionToolStripMenuItem,
             this.fieldToolStripMenuItem1,
-            this.rstMapColorToolStripMenuItem});
+            this.MapColorToolStripMenuItem});
             this.colorsToolStripMenuItem.Name = "colorsToolStripMenuItem";
             this.colorsToolStripMenuItem.Size = new System.Drawing.Size(297, 40);
             this.colorsToolStripMenuItem.Text = "Colors";
@@ -440,23 +448,55 @@
             // sectionToolStripMenuItem
             // 
             this.sectionToolStripMenuItem.Name = "sectionToolStripMenuItem";
-            this.sectionToolStripMenuItem.Size = new System.Drawing.Size(274, 40);
+            this.sectionToolStripMenuItem.Size = new System.Drawing.Size(223, 40);
             this.sectionToolStripMenuItem.Text = "Section";
             this.sectionToolStripMenuItem.Click += new System.EventHandler(this.sectionToolStripMenuItem_Click);
             // 
             // fieldToolStripMenuItem1
             // 
             this.fieldToolStripMenuItem1.Name = "fieldToolStripMenuItem1";
-            this.fieldToolStripMenuItem1.Size = new System.Drawing.Size(274, 40);
+            this.fieldToolStripMenuItem1.Size = new System.Drawing.Size(223, 40);
             this.fieldToolStripMenuItem1.Text = "Field";
             this.fieldToolStripMenuItem1.Click += new System.EventHandler(this.fieldToolStripMenuItem1_Click);
             // 
-            // rstMapColorToolStripMenuItem
+            // MapColorToolStripMenuItem
             // 
-            this.rstMapColorToolStripMenuItem.Name = "rstMapColorToolStripMenuItem";
-            this.rstMapColorToolStripMenuItem.Size = new System.Drawing.Size(274, 40);
-            this.rstMapColorToolStripMenuItem.Text = "Rst Map Color";
-            this.rstMapColorToolStripMenuItem.Click += new System.EventHandler(this.btnResetMapColor_Click);
+            this.MapColorToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.rstColorToolStripMenuItem,
+            this.GradToolStrip,
+            this.StepToolStrip,
+            this.GradMultiToolStrip});
+            this.MapColorToolStripMenuItem.Name = "MapColorToolStripMenuItem";
+            this.MapColorToolStripMenuItem.Size = new System.Drawing.Size(223, 40);
+            this.MapColorToolStripMenuItem.Text = "Map Color";
+            // 
+            // rstColorToolStripMenuItem
+            // 
+            this.rstColorToolStripMenuItem.Name = "rstColorToolStripMenuItem";
+            this.rstColorToolStripMenuItem.Size = new System.Drawing.Size(291, 40);
+            this.rstColorToolStripMenuItem.Text = "Reset Colors";
+            this.rstColorToolStripMenuItem.Click += new System.EventHandler(this.btnResetMapColor_Click);
+            // 
+            // GradToolStrip
+            // 
+            this.GradToolStrip.Name = "GradToolStrip";
+            this.GradToolStrip.Size = new System.Drawing.Size(291, 40);
+            this.GradToolStrip.Text = "Gradual Scale";
+            this.GradToolStrip.Click += new System.EventHandler(this.GradToolStrip_Click);
+            // 
+            // StepToolStrip
+            // 
+            this.StepToolStrip.Name = "StepToolStrip";
+            this.StepToolStrip.Size = new System.Drawing.Size(291, 40);
+            this.StepToolStrip.Text = "Step Multicolor";
+            this.StepToolStrip.Click += new System.EventHandler(this.StepToolStrip_Click);
+            // 
+            // GradMultiToolStrip
+            // 
+            this.GradMultiToolStrip.Name = "GradMultiToolStrip";
+            this.GradMultiToolStrip.Size = new System.Drawing.Size(291, 40);
+            this.GradMultiToolStrip.Text = "Grad Multicolor";
+            this.GradMultiToolStrip.Click += new System.EventHandler(this.GradMultiToolStrip_Click);
             // 
             // toolStripUnitsMenu
             // 
@@ -1086,7 +1126,6 @@
             this.DataPage.Name = "DataPage";
             this.DataPage.Size = new System.Drawing.Size(248, 255);
             this.DataPage.TabIndex = 3;
-            this.DataPage.Click += new System.EventHandler(this.DataPage_Click);
             // 
             // label15
             // 
@@ -1443,7 +1482,7 @@
             this.lblCut.AutoSize = true;
             this.lblCut.BackColor = System.Drawing.SystemColors.ControlLight;
             this.lblCut.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCut.Location = new System.Drawing.Point(1009, 375);
+            this.lblCut.Location = new System.Drawing.Point(1008, 375);
             this.lblCut.Name = "lblCut";
             this.lblCut.Size = new System.Drawing.Size(55, 29);
             this.lblCut.TabIndex = 217;
@@ -1732,7 +1771,7 @@
             this.label4.AutoSize = true;
             this.label4.BackColor = System.Drawing.SystemColors.ControlLight;
             this.label4.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(1097, 610);
+            this.label4.Location = new System.Drawing.Point(1186, 611);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(39, 29);
             this.label4.TabIndex = 218;
@@ -2063,9 +2102,9 @@
             // 
             this.btnColorCut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnColorCut.BackColor = System.Drawing.Color.Red;
-            this.btnColorCut.Location = new System.Drawing.Point(972, 371);
+            this.btnColorCut.Location = new System.Drawing.Point(972, 372);
             this.btnColorCut.Name = "btnColorCut";
-            this.btnColorCut.Size = new System.Drawing.Size(32, 43);
+            this.btnColorCut.Size = new System.Drawing.Size(32, 32);
             this.btnColorCut.TabIndex = 234;
             this.btnColorCut.UseVisualStyleBackColor = false;
             this.btnColorCut.Click += new System.EventHandler(this.btnColorCut_Click);
@@ -2074,9 +2113,9 @@
             // 
             this.btnColorCenter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnColorCenter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnColorCenter.Location = new System.Drawing.Point(972, 420);
+            this.btnColorCenter.Location = new System.Drawing.Point(972, 480);
             this.btnColorCenter.Name = "btnColorCenter";
-            this.btnColorCenter.Size = new System.Drawing.Size(32, 43);
+            this.btnColorCenter.Size = new System.Drawing.Size(32, 32);
             this.btnColorCenter.TabIndex = 235;
             this.btnColorCenter.UseVisualStyleBackColor = false;
             this.btnColorCenter.Click += new System.EventHandler(this.btnColorCenter_Click);
@@ -2084,10 +2123,10 @@
             // btnColorFill
             // 
             this.btnColorFill.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnColorFill.BackColor = System.Drawing.Color.Lime;
-            this.btnColorFill.Location = new System.Drawing.Point(972, 469);
+            this.btnColorFill.BackColor = System.Drawing.Color.SteelBlue;
+            this.btnColorFill.Location = new System.Drawing.Point(972, 588);
             this.btnColorFill.Name = "btnColorFill";
-            this.btnColorFill.Size = new System.Drawing.Size(32, 43);
+            this.btnColorFill.Size = new System.Drawing.Size(32, 32);
             this.btnColorFill.TabIndex = 236;
             this.btnColorFill.UseVisualStyleBackColor = false;
             this.btnColorFill.Click += new System.EventHandler(this.btnColorFill_Click);
@@ -2098,7 +2137,7 @@
             this.lblFill.AutoSize = true;
             this.lblFill.BackColor = System.Drawing.SystemColors.ControlLight;
             this.lblFill.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFill.Location = new System.Drawing.Point(1009, 483);
+            this.lblFill.Location = new System.Drawing.Point(1010, 591);
             this.lblFill.Name = "lblFill";
             this.lblFill.Size = new System.Drawing.Size(54, 29);
             this.lblFill.TabIndex = 237;
@@ -2110,7 +2149,7 @@
             this.lblFillValue.AutoSize = true;
             this.lblFillValue.BackColor = System.Drawing.SystemColors.ControlLight;
             this.lblFillValue.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFillValue.Location = new System.Drawing.Point(1078, 483);
+            this.lblFillValue.Location = new System.Drawing.Point(1070, 591);
             this.lblFillValue.Name = "lblFillValue";
             this.lblFillValue.Size = new System.Drawing.Size(69, 29);
             this.lblFillValue.TabIndex = 238;
@@ -2140,12 +2179,56 @@
             this.lblWatch.Text = "NTRIP status";
             this.lblWatch.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // btnColorFillMid
+            // 
+            this.btnColorFillMid.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnColorFillMid.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.btnColorFillMid.Location = new System.Drawing.Point(972, 552);
+            this.btnColorFillMid.Name = "btnColorFillMid";
+            this.btnColorFillMid.Size = new System.Drawing.Size(32, 32);
+            this.btnColorFillMid.TabIndex = 241;
+            this.btnColorFillMid.UseVisualStyleBackColor = false;
+            // 
+            // btnColorFillMin
+            // 
+            this.btnColorFillMin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnColorFillMin.BackColor = System.Drawing.Color.Lime;
+            this.btnColorFillMin.Location = new System.Drawing.Point(972, 516);
+            this.btnColorFillMin.Name = "btnColorFillMin";
+            this.btnColorFillMin.Size = new System.Drawing.Size(32, 32);
+            this.btnColorFillMin.TabIndex = 242;
+            this.btnColorFillMin.UseVisualStyleBackColor = false;
+            // 
+            // btnColorCutMid
+            // 
+            this.btnColorCutMid.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnColorCutMid.BackColor = System.Drawing.Color.Orange;
+            this.btnColorCutMid.Location = new System.Drawing.Point(972, 408);
+            this.btnColorCutMid.Name = "btnColorCutMid";
+            this.btnColorCutMid.Size = new System.Drawing.Size(32, 32);
+            this.btnColorCutMid.TabIndex = 243;
+            this.btnColorCutMid.UseVisualStyleBackColor = false;
+            // 
+            // btnColorCutMin
+            // 
+            this.btnColorCutMin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnColorCutMin.BackColor = System.Drawing.Color.Yellow;
+            this.btnColorCutMin.Location = new System.Drawing.Point(972, 444);
+            this.btnColorCutMin.Name = "btnColorCutMin";
+            this.btnColorCutMin.Size = new System.Drawing.Size(32, 32);
+            this.btnColorCutMin.TabIndex = 244;
+            this.btnColorCutMin.UseVisualStyleBackColor = false;
+            // 
             // FormGPS
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(1306, 684);
+            this.Controls.Add(this.btnColorCutMin);
+            this.Controls.Add(this.btnColorCutMid);
+            this.Controls.Add(this.btnColorFillMin);
+            this.Controls.Add(this.btnColorFillMid);
             this.Controls.Add(this.lblWatch);
             this.Controls.Add(this.lblCutValue);
             this.Controls.Add(this.lblFillValue);
@@ -2379,7 +2462,7 @@
         private System.Windows.Forms.Button btnColorCut;
         private System.Windows.Forms.Button btnColorCenter;
         private System.Windows.Forms.Button btnColorFill;
-        private System.Windows.Forms.ToolStripMenuItem rstMapColorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem MapColorToolStripMenuItem;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label lblFill;
@@ -2387,6 +2470,14 @@
         private System.Windows.Forms.Label lblCutValue;
         private System.Windows.Forms.ToolStripMenuItem toolstripNTRIPConfig;
         private System.Windows.Forms.Label lblWatch;
+        private System.Windows.Forms.Button btnColorFillMid;
+        private System.Windows.Forms.Button btnColorFillMin;
+        private System.Windows.Forms.Button btnColorCutMid;
+        private System.Windows.Forms.Button btnColorCutMin;
+        private System.Windows.Forms.ToolStripMenuItem rstColorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem GradToolStrip;
+        private System.Windows.Forms.ToolStripMenuItem StepToolStrip;
+        private System.Windows.Forms.ToolStripMenuItem GradMultiToolStrip;
     }
 }
 

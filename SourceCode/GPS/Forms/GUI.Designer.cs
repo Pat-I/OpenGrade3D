@@ -39,6 +39,29 @@ namespace OpenGrade
                 imperialToolStrip.Checked = true;
             }
 
+            //Map display Settings
+            isGradual = Settings.Default.setMenu_isGradual;
+            isGradualMulticolor = Settings.Default.setMenu_isGradualMulticolor;
+
+            if (isGradual)
+            {
+                GradToolStrip.Checked = true;
+                GradMultiToolStrip.Checked = false;
+                StepToolStrip.Checked = false;
+            }
+            else if (isGradualMulticolor)
+            {
+                GradToolStrip.Checked = false;
+                GradMultiToolStrip.Checked = true;
+                StepToolStrip.Checked = false;
+            }
+            else //is step
+            {
+                GradToolStrip.Checked = false;
+                GradMultiToolStrip.Checked = false;
+                StepToolStrip.Checked = true;
+            }
+
             //load up colors
             redField = (Settings.Default.setF_FieldColorR);
             grnField = (Settings.Default.setF_FieldColorG);
@@ -52,6 +75,14 @@ namespace OpenGrade
             grnCut = Settings.Default.setF_CutColorG;
             bluCut = Settings.Default.setF_CutColorB;
 
+            redCutMid = Settings.Default.setF_CutMidColorR;
+            grnCutMid = Settings.Default.setF_CutMidColorG;
+            bluCutMid = Settings.Default.setF_CutMidColorB;
+
+            redCutMin = Settings.Default.setF_CutMinColorR;
+            grnCutMin = Settings.Default.setF_CutMinColorG;
+            bluCutMin = Settings.Default.setF_CutMinColorB;
+
             redCenter = Settings.Default.setF_CenterColorR;
             grnCenter = Settings.Default.setF_CenterColorG;
             bluCenter = Settings.Default.setF_CenterColorB;
@@ -60,9 +91,15 @@ namespace OpenGrade
             grnFill = Settings.Default.setF_FillColorG;
             bluFill = Settings.Default.setF_FillColorB;
 
-            btnColorFill.BackColor = System.Drawing.Color.FromArgb(redFill, grnFill, bluFill);
-            btnColorCenter.BackColor = System.Drawing.Color.FromArgb(redCenter, grnCenter, bluCenter);
-            btnColorCut.BackColor = System.Drawing.Color.FromArgb(redCut, grnCut, bluCut);
+            redFillMid = Settings.Default.setF_FillMidColorR;
+            grnFillMid = Settings.Default.setF_FillMidColorG;
+            bluFillMid = Settings.Default.setF_FillMidColorB;
+
+            redFillMin = Settings.Default.setF_FillMinColorR;
+            grnFillMin = Settings.Default.setF_FillMinColorG;
+            bluFillMin = Settings.Default.setF_FillMinColorB;
+
+            paintMapButtons();
 
             //set up grid and lightbar
             isGridOn = Settings.Default.setMenu_isGridOn;
@@ -197,6 +234,32 @@ namespace OpenGrade
 
         }
 
+        // Putting the right color to the map scale buttons
+        public void paintMapButtons()
+        {
+            btnColorCenter.BackColor = System.Drawing.Color.FromArgb(redCenter, grnCenter, bluCenter);
+            btnColorFill.BackColor = System.Drawing.Color.FromArgb(redFill, grnFill, bluFill);
+            btnColorCut.BackColor = System.Drawing.Color.FromArgb(redCut, grnCut, bluCut);
+
+            if (isGradual)
+            {               
+                int redCenterI = redCenter, grnCenterI = grnCenter, bluCenterI = bluCenter;
+                int redFillI = redFill, grnFillI =grnFill, bluFillI = bluFill;
+                int redCutI = redCut, grnCutI = grnCut, bluCutI = bluCut;
+
+                btnColorFillMid.BackColor = System.Drawing.Color.FromArgb((byte)(redCenterI- (redCenterI - redFillI)*.67), (byte)(grnCenterI - (grnCenterI - grnFillI) * .67), (byte)(bluCenterI - (bluCenterI - bluFillI) * .67));
+                btnColorCutMid.BackColor = System.Drawing.Color.FromArgb((byte)(redCenterI - (redCenterI - redCutI) * .67), (byte)(grnCenterI - (grnCenterI - grnCutI) * .67), (byte)(bluCenterI - (bluCenterI - bluCutI) * .67));
+                btnColorFillMin.BackColor = System.Drawing.Color.FromArgb((byte)(redCenterI - (redCenterI - redFillI) * .33), (byte)(grnCenterI - (grnCenterI - grnFillI) * .33), (byte)(bluCenterI - (bluCenterI - bluFillI) * .67));
+                btnColorCutMin.BackColor = System.Drawing.Color.FromArgb((byte)(redCenterI - (redCenterI - redCutI) * .33), (byte)(grnCenterI - (grnCenterI - grnCutI) * .33), (byte)(bluCenterI - (bluCenterI - bluCutI) * .67));
+            }
+            else
+            {
+                btnColorFillMid.BackColor = System.Drawing.Color.FromArgb(redFillMid, grnFillMid, bluFillMid);
+                btnColorCutMid.BackColor = System.Drawing.Color.FromArgb(redCutMid, grnCutMid, bluCutMid);
+                btnColorFillMin.BackColor = System.Drawing.Color.FromArgb(redFillMin, grnFillMin, bluFillMin);
+                btnColorCutMin.BackColor = System.Drawing.Color.FromArgb(redCutMin, grnCutMin, bluCutMin);
+            }
+        }
 
         // Buttons //-----------------------------------------------------------------------
 
@@ -922,6 +985,56 @@ namespace OpenGrade
             Settings.Default.setF_SectionColorB = bluSections;
             Settings.Default.Save();
         }
+        private void GradToolStrip_Click(object sender, EventArgs e)
+        {
+            GradToolStrip.Checked = true;
+            GradMultiToolStrip.Checked = false;
+            StepToolStrip.Checked = false;
+
+            isGradual = true;
+            isGradualMulticolor = false;
+            Settings.Default.setMenu_isGradual = isGradual;
+            Settings.Default.setMenu_isGradualMulticolor = isGradualMulticolor;
+            Settings.Default.Save();
+            //lblSpeedUnits.Text = "kmh";
+            //CalculateMinMaxZoom();
+            fillCutFillLbl();
+            paintMapButtons();
+        }
+
+        private void GradMultiToolStrip_Click(object sender, EventArgs e)
+        {
+            GradToolStrip.Checked = false; 
+            GradMultiToolStrip.Checked = true;
+            StepToolStrip.Checked = false;
+
+            isGradual = false;
+            isGradualMulticolor = true;
+            Settings.Default.setMenu_isGradual = isGradual;
+            Settings.Default.setMenu_isGradualMulticolor = isGradualMulticolor;
+            Settings.Default.Save();
+            //lblSpeedUnits.Text = "kmh";
+            //CalculateMinMaxZoom();
+            fillCutFillLbl();
+            paintMapButtons();
+        }
+
+        private void StepToolStrip_Click(object sender, EventArgs e)
+        {
+            GradToolStrip.Checked = false;
+            GradMultiToolStrip.Checked = false;
+            StepToolStrip.Checked = true;
+
+            isGradual = false;
+            isGradualMulticolor = false;
+            Settings.Default.setMenu_isGradual = isGradual;
+            Settings.Default.setMenu_isGradualMulticolor = isGradualMulticolor;
+            Settings.Default.Save();
+            //lblSpeedUnits.Text = "mph";
+            //CalculateMinMaxZoom();
+            fillCutFillLbl();
+            paintMapButtons();
+        }
         //setting Fill color off Options Menu
         private void btnColorFill_Click(object sender, EventArgs e)
         {
@@ -948,7 +1061,7 @@ namespace OpenGrade
             Settings.Default.setF_FillColorB = bluFill;
             Settings.Default.Save();
 
-            btnColorFill.BackColor = System.Drawing.Color.FromArgb(redFill, grnFill, bluFill);
+            paintMapButtons();
         }
         //setting  center color off Options Menu
         private void btnColorCenter_Click(object sender, EventArgs e)
@@ -976,7 +1089,7 @@ namespace OpenGrade
             Settings.Default.setF_CenterColorB = bluCenter;
             Settings.Default.Save();
 
-            btnColorCenter.BackColor = System.Drawing.Color.FromArgb(redCenter, grnCenter, bluCenter);
+            paintMapButtons();
         }
         //setting cut color off Options Menu
         private void btnColorCut_Click(object sender, EventArgs e)
@@ -1003,23 +1116,39 @@ namespace OpenGrade
             Settings.Default.setF_CutColorG = grnCut;
             Settings.Default.setF_CutColorB = bluCut;
             Settings.Default.Save();
-            
-            btnColorCut.BackColor = System.Drawing.Color.FromArgb(redCut, grnCut, bluCut);
+
+            paintMapButtons();
         }
 
         private void btnResetMapColor_Click(object sender, EventArgs e)
         {
-            redFill = 0;
-            grnFill = 191;
-            bluFill = 0;
+            redFill = 70; //SteelBlue
+            grnFill = 133;
+            bluFill = 180;
 
-            redCenter = 191;
+            redCenter = 191; //Gray
             grnCenter = 191;
             bluCenter = 191;
 
-            redCut = 191;
+            redCut = 191; // red
             grnCut = 0;
             bluCut = 0;
+
+            redFillMid = 0; //Blue
+            grnFillMid = 191;
+            bluFillMid = 255;
+
+            redCutMid = 255; // orange
+            grnCutMid = 165;
+            bluCutMid = 0;
+
+            redFillMin = 0; //Lime
+            grnFillMin = 255;
+            bluFillMin = 0;
+
+            redCutMin = 255; // yellow
+            grnCutMin = 255;
+            bluCutMin = 0;
 
             Settings.Default.setF_FillColorR = redFill;
             Settings.Default.setF_FillColorG = grnFill;
@@ -1032,11 +1161,25 @@ namespace OpenGrade
             Settings.Default.setF_CutColorR = redCut;
             Settings.Default.setF_CutColorG = grnCut;
             Settings.Default.setF_CutColorB = bluCut;
+
+            Settings.Default.setF_FillMidColorR = redFillMid;
+            Settings.Default.setF_FillMidColorG = grnFillMid;
+            Settings.Default.setF_FillMidColorB = bluFillMid;
+
+            Settings.Default.setF_CutMidColorR = redCutMid;
+            Settings.Default.setF_CutMidColorG = grnCutMid;
+            Settings.Default.setF_CutMidColorB = bluCutMid;
+
+            Settings.Default.setF_FillMinColorR = redFillMin;
+            Settings.Default.setF_FillMinColorG = grnFillMin;
+            Settings.Default.setF_FillMinColorB = bluFillMin;
+
+            Settings.Default.setF_CutMinColorR = redCutMin;
+            Settings.Default.setF_CutMinColorG = grnCutMin;
+            Settings.Default.setF_CutMinColorB = bluCutMin;
             Settings.Default.Save();
 
-            btnColorCenter.BackColor = System.Drawing.Color.FromArgb(redCenter, grnCenter, bluCenter);
-            btnColorFill.BackColor = System.Drawing.Color.FromArgb(redFill, grnFill, bluFill);
-            btnColorCut.BackColor = System.Drawing.Color.FromArgb(redCut, grnCut, bluCut);
+            paintMapButtons();
         }
 
         private void fieldToolStripMenuItem1_Click(object sender, EventArgs e)

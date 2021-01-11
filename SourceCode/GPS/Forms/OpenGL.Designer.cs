@@ -1152,7 +1152,7 @@ namespace OpenGrade
                                             else ct.mapList[i].lastPassAltitudeMap = paintLastPass;
                                         }
                                         // fill the last real pass
-                                        if (ct.mapList[i].cutDeltaMap <= 0)
+                                        if (ct.mapList[i].cutDeltaMap <= 0) //area to cut
                                         {
                                             if (paintLastPass <= ct.mapList[i].cutAltitudeMap) ct.mapList[i].lastPassRealAltitudeMap = ct.mapList[i].cutAltitudeMap;
                                             else
@@ -1161,13 +1161,13 @@ namespace OpenGrade
                                                     ct.mapList[i].lastPassRealAltitudeMap = paintLastPass;
                                             }
                                         }
-                                        else
+                                        else // area to fill
                                         {
                                             if (ct.mapList[i].lastPassRealAltitudeMap > paintLastPass | ct.mapList[i].lastPassRealAltitudeMap < 0)
                                             {
 
-                                                if (paintLastPass >= ct.mapList[i].altitudeMap) ct.mapList[i].lastPassRealAltitudeMap = ct.mapList[i].altitudeMap;
-                                                else if (paintLastPass <= ct.mapList[i].cutAltitudeMap) ct.mapList[i].lastPassRealAltitudeMap = ct.mapList[i].cutAltitudeMap;
+                                                if (paintLastPass >= ct.mapList[i].cutAltitudeMap) ct.mapList[i].lastPassRealAltitudeMap = ct.mapList[i].cutAltitudeMap;
+                                                else if (paintLastPass <= ct.mapList[i].altitudeMap) ct.mapList[i].lastPassRealAltitudeMap = ct.mapList[i].altitudeMap;
                                                 else ct.mapList[i].lastPassRealAltitudeMap = paintLastPass;
                                             }
                                         }
@@ -1444,13 +1444,15 @@ namespace OpenGrade
                     }
                 }
 
+                double minDistMapDist2 = Math.Sqrt(minDistMapDist);
+
                 if (eastingMax == -9999999 | eastingMin == 9999999 | northingMax == -9999999 | northingMin == 9999999)
                 {
                     eastingMin = 0; eastingMax = 0; northingMax = 0; northingMin = 0;
                 }
                 else
                 {
-                    eastingMin -= minDistMapDist; eastingMax += minDistMapDist; northingMax += minDistMapDist; northingMin -= minDistMapDist;
+                    eastingMin -= minDistMapDist2; eastingMax += minDistMapDist2; northingMax += minDistMapDist2; northingMin -= minDistMapDist2;
                 }
 
                 int ptCnt = ct.ptList.Count;
