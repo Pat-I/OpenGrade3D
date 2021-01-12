@@ -100,6 +100,7 @@ namespace OpenGrade
             bluFillMin = Settings.Default.setF_FillMinColorB;
 
             paintMapButtons();
+            fillCutFillLbl();
 
             //set up grid and lightbar
             isGridOn = Settings.Default.setMenu_isGridOn;
@@ -201,37 +202,138 @@ namespace OpenGrade
 
         public void fillCutFillLbl()
         {
-            if (ct.isElevation)
+            if (ct.mapList.Count > 0)
             {
-                lblCut.Text = "Max";
-                lblFill.Text = "Min";
-                if (isMetric)
+                if (ct.isElevation)
                 {
-                    lblCutValue.Text = Convert.ToString(Math.Round(ct.maxAltitude, 2));
-                    lblFillValue.Text = Convert.ToString(Math.Round(ct.minAltitude, 2));
+                    lblCut.Text = "Max";
+                    lblFill.Text = "Min";
+
+                    double altitudeSpred = (ct.maxAltitude - ct.minAltitude) * 100 / ct.ScaleFactor; // Spred of the scale in metre
+
+                    if (isMetric)
+                    {
+                        lblCutValue.Text = Convert.ToString(Math.Round((ct.midAltitude + (ct.maxAltitude - ct.midAltitude) * 100 / ct.ScaleFactor), 2)) + " m";
+                        lblFillValue.Text = Convert.ToString(Math.Round((ct.midAltitude + (ct.minAltitude - ct.midAltitude) * 100 / ct.ScaleFactor), 2)) + " m";
+
+                        lblCentreValue.Text = Convert.ToString(Math.Round(ct.midAltitude, 2));
+
+                        if (altitudeSpred > 0.29)
+                        {
+                            lblCutMidValue.Text = Convert.ToString(Math.Round((ct.midAltitude + (ct.maxAltitude - ct.midAltitude) * 67 / ct.ScaleFactor), 2));
+                            lblFillMidValue.Text = Convert.ToString(Math.Round((ct.midAltitude + (ct.minAltitude - ct.midAltitude) * 67 / ct.ScaleFactor), 2));
+
+                            lblCutMinValue.Text = Convert.ToString(Math.Round((ct.midAltitude + (ct.maxAltitude - ct.midAltitude) * 33 / ct.ScaleFactor), 2));
+                            lblFillMinValue.Text = Convert.ToString(Math.Round((ct.midAltitude + (ct.minAltitude - ct.midAltitude) * 33 / ct.ScaleFactor), 2));
+                        }
+                        else
+                        {
+                            lblCutMidValue.Text = null;
+                            lblFillMidValue.Text = null;
+
+                            lblCutMinValue.Text = null;
+                            lblFillMinValue.Text = null;
+                        }
+                    }
+                    else
+                    {
+                        lblCutValue.Text = Convert.ToString(Math.Round(((ct.midAltitude + (ct.maxAltitude - ct.midAltitude) * 100 / ct.ScaleFactor)) * 3.28084, 1)) + " ft";
+                        lblFillValue.Text = Convert.ToString(Math.Round(((ct.midAltitude + (ct.minAltitude - ct.midAltitude) * 100 / ct.ScaleFactor)) * 3.28084, 1)) + " ft";
+
+                        lblCentreValue.Text = Convert.ToString(Math.Round(ct.midAltitude * 3.28084, 1));
+
+                        if (altitudeSpred > 0.29)
+                        {
+                            lblCutMidValue.Text = Convert.ToString(Math.Round(((ct.midAltitude + (ct.maxAltitude - ct.midAltitude) * 67 / ct.ScaleFactor)) * 3.28084, 1));
+                            lblFillMidValue.Text = Convert.ToString(Math.Round(((ct.midAltitude + (ct.minAltitude - ct.midAltitude) * 67 / ct.ScaleFactor)) * 3.28084, 1));
+
+                            lblCutMinValue.Text = Convert.ToString(Math.Round(((ct.midAltitude + (ct.maxAltitude - ct.midAltitude) * 33 / ct.ScaleFactor)) * 3.28084, 1));
+                            lblFillMinValue.Text = Convert.ToString(Math.Round(((ct.midAltitude + (ct.minAltitude - ct.midAltitude) * 33 / ct.ScaleFactor)) * 3.28084, 1));
+                        }
+                        else
+                        {
+                            lblCutMidValue.Text = null;
+                            lblFillMidValue.Text = null;
+
+                            lblCutMinValue.Text = null;
+                            lblFillMinValue.Text = null;
+                        }
+                    }
                 }
                 else
                 {
-                    lblCutValue.Text = Convert.ToString(Math.Round(ct.maxAltitude * 3.28084, 2));
-                    lblFillValue.Text = Convert.ToString(Math.Round(ct.minAltitude * 3.28084, 2));
+                    lblCut.Text = "CUT";
+                    lblFill.Text = "FILL";
+
+                    lblCentreValue.Text = "0";
+
+                    double cutSpred = (ct.maxFill - ct.maxCut) * 100 / ct.ScaleFactor; // Spred of the scale in metre
+
+                    if (isMetric)
+                    {
+                        lblCutValue.Text = Convert.ToString(Math.Round(ct.maxCut * 10000 / ct.ScaleFactor, 0)) + " cm";
+                        lblFillValue.Text = Convert.ToString(Math.Round(ct.maxFill * 10000 / ct.ScaleFactor, 0)) + " cm";
+
+                        if (cutSpred > .09)
+                        {
+                            lblCutMidValue.Text = Convert.ToString(Math.Round(ct.maxCut * 6667 / ct.ScaleFactor, 0));
+                            lblFillMidValue.Text = Convert.ToString(Math.Round(ct.maxFill * 6667 / ct.ScaleFactor, 0));
+
+                            lblCutMinValue.Text = Convert.ToString(Math.Round(ct.maxCut * 3333 / ct.ScaleFactor, 0));
+                            lblFillMinValue.Text = Convert.ToString(Math.Round(ct.maxFill * 3333 / ct.ScaleFactor, 0));
+                        }
+                        else
+                        {
+                            lblCutMidValue.Text = null;
+                            lblFillMidValue.Text = null;
+
+                            lblCutMinValue.Text = null;
+                            lblFillMinValue.Text = null;
+                        }
+                    }
+                    else
+                    {
+                        lblCutValue.Text = Convert.ToString(Math.Round(ct.maxCut * 3937 / ct.ScaleFactor, 1)) + " in";
+                        lblFillValue.Text = Convert.ToString(Math.Round(ct.maxFill * 3937 / ct.ScaleFactor, 1)) + " in";
+
+                        if (cutSpred > .09)
+                        {
+                            lblCutMidValue.Text = Convert.ToString(Math.Round(ct.maxCut * 2625 / ct.ScaleFactor, 1));
+                            lblFillMidValue.Text = Convert.ToString(Math.Round(ct.maxFill * 2625 / ct.ScaleFactor, 1));
+
+                            lblCutMinValue.Text = Convert.ToString(Math.Round(ct.maxCut * 1312 / ct.ScaleFactor, 1));
+                            lblFillMinValue.Text = Convert.ToString(Math.Round(ct.maxFill * 1312 / ct.ScaleFactor, 1));
+                        }
+                        else
+                        {
+                            lblCutMidValue.Text = null;
+                            lblFillMidValue.Text = null;
+
+                            lblCutMinValue.Text = null;
+                            lblFillMinValue.Text = null;
+                        }
+                    }
                 }
+                lblScale.Text = ct.ScaleFactor + " %";
             }
             else
             {
-                lblCut.Text = "CUT";
-                lblFill.Text = "FILL";
-                if (isMetric)
-                {
-                    lblCutValue.Text = Convert.ToString(Math.Round(ct.maxCut * 100, 0)) + " cm";
-                    lblFillValue.Text = Convert.ToString(Math.Round(ct.maxFill * 100, 0)) + " cm";
-                }
-                else
-                {
-                    lblCutValue.Text = Convert.ToString(Math.Round(ct.maxCut * 39.37, 1)) + " in";
-                    lblFillValue.Text = Convert.ToString(Math.Round(ct.maxFill * 39.37, 1)) + " in";
-                }
-            }
+                lblCutMidValue.Text = null;
+                lblFillMidValue.Text = null;
 
+                lblCutMinValue.Text = null;
+                lblFillMinValue.Text = null;
+
+                lblCutValue.Text = null;
+                lblFillValue.Text = null;
+
+                lblCentreValue.Text = null;
+
+                lblCut.Text = null;
+                lblFill.Text = null;
+
+                lblScale.Text = "-- %";
+            }
         }
 
         // Putting the right color to the map scale buttons
@@ -1050,11 +1152,11 @@ namespace OpenGrade
             if (colorDlg.ShowDialog() != DialogResult.OK) return;
 
             redFill = colorDlg.Color.R;
-            if (redFill > 253) redFill = 253;
+            if (redFill > 255) redFill = 255;
             grnFill = colorDlg.Color.G;
-            if (grnFill > 253) grnFill = 253;
+            if (grnFill > 255) grnFill = 255;
             bluFill = colorDlg.Color.B;
-            if (bluFill > 253) bluFill = 253;
+            if (bluFill > 255) bluFill = 255;
 
             Settings.Default.setF_FillColorR = redFill;
             Settings.Default.setF_FillColorG = grnFill;
@@ -1062,6 +1164,28 @@ namespace OpenGrade
             Settings.Default.Save();
 
             paintMapButtons();
+        }
+
+        private void btnScalePlus_Click(object sender, EventArgs e)
+        {
+            if (ct.mapList.Count > 0 && ct.ScaleFactor < 4000)
+            {
+                if (ct.ScaleFactor > 199) ct.ScaleFactor += 100;
+                else if (ct.ScaleFactor > 74) ct.ScaleFactor += 25;
+                else ct.ScaleFactor += 10;
+                fillCutFillLbl();
+            }
+        }
+
+        private void btnScaleMinus_Click(object sender, EventArgs e)
+        {
+            if (ct.mapList.Count > 0 && ct.ScaleFactor > 45)
+            {
+                if (ct.ScaleFactor > 299) ct.ScaleFactor -= 100;
+                else if (ct.ScaleFactor > 99) ct.ScaleFactor -= 25;
+                else ct.ScaleFactor -= 10;
+                fillCutFillLbl();
+            }
         }
         //setting  center color off Options Menu
         private void btnColorCenter_Click(object sender, EventArgs e)
@@ -1078,11 +1202,11 @@ namespace OpenGrade
             if (colorDlg.ShowDialog() != DialogResult.OK) return;
 
             redCenter = colorDlg.Color.R;
-            if (redCenter > 253) redCenter = 253;
+            if (redCenter > 255) redCenter = 255;
             grnCenter = colorDlg.Color.G;
-            if (grnCenter > 253) grnCenter = 253;
+            if (grnCenter > 255) grnCenter = 255;
             bluCenter = colorDlg.Color.B;
-            if (bluCenter > 253) bluCenter = 253;
+            if (bluCenter > 255) bluCenter = 255;
 
             Settings.Default.setF_CenterColorR = redCenter;
             Settings.Default.setF_CenterColorG = grnCenter;
@@ -1106,11 +1230,11 @@ namespace OpenGrade
             if (colorDlg.ShowDialog() != DialogResult.OK) return;
 
             redCut = colorDlg.Color.R;
-            if (redCut > 253) redCut = 253;
+            if (redCut > 255) redCut = 255;
             grnCut = colorDlg.Color.G;
-            if (grnCut > 253) grnCut = 253;
+            if (grnCut > 255) grnCut = 255;
             bluCut = colorDlg.Color.B;
-            if (bluCut > 253) bluCut = 253;
+            if (bluCut > 255) bluCut = 255;
 
             Settings.Default.setF_CutColorR = redCut;
             Settings.Default.setF_CutColorG = grnCut;
@@ -1118,6 +1242,130 @@ namespace OpenGrade
             Settings.Default.Save();
 
             paintMapButtons();
+        }
+        //setting mid cut color off Options Menu
+        private void btnColorMidCut_Click(object sender, EventArgs e)
+        {
+            if (!isGradual)
+            {
+                //color picker for sections
+                ColorDialog colorDlg = new ColorDialog
+                {
+                    FullOpen = true,
+                    AnyColor = true,
+                    SolidColorOnly = false,
+                    Color = Color.FromArgb(255, redCutMid, grnCutMid, bluCutMid)
+                };
+
+                if (colorDlg.ShowDialog() != DialogResult.OK) return;
+
+                redCutMid = colorDlg.Color.R;
+                if (redCutMid > 255) redCutMid = 255;
+                grnCutMid = colorDlg.Color.G;
+                if (grnCutMid > 255) grnCutMid = 255;
+                bluCutMid = colorDlg.Color.B;
+                if (bluCutMid > 255) bluCutMid = 255;
+
+                Settings.Default.setF_CutMidColorR = redCutMid;
+                Settings.Default.setF_CutMidColorG = grnCutMid;
+                Settings.Default.setF_CutMidColorB = bluCutMid;
+                Settings.Default.Save();
+
+                paintMapButtons();
+            }
+        }
+        //setting min cut color off Options Menu
+        private void btnColorMinCut_Click(object sender, EventArgs e)
+        {
+            if (!isGradual)
+            {
+                //color picker for sections
+                ColorDialog colorDlg = new ColorDialog
+                {
+                    FullOpen = true,
+                    AnyColor = true,
+                    SolidColorOnly = false,
+                    Color = Color.FromArgb(255, redCutMin, grnCutMin, bluCutMin)
+                };
+
+                if (colorDlg.ShowDialog() != DialogResult.OK) return;
+
+                redCutMin = colorDlg.Color.R;
+                if (redCutMin > 255) redCutMin = 255;
+                grnCutMin = colorDlg.Color.G;
+                if (grnCutMin > 255) grnCutMin = 255;
+                bluCutMin = colorDlg.Color.B;
+                if (bluCutMin > 255) bluCutMin = 255;
+
+                Settings.Default.setF_CutMinColorR = redCutMin;
+                Settings.Default.setF_CutMinColorG = grnCutMin;
+                Settings.Default.setF_CutMinColorB = bluCutMin;
+                Settings.Default.Save();
+
+                paintMapButtons();
+            }
+        }
+        //setting mid Fill color off Options Menu
+        private void btnColorMidFill_Click(object sender, EventArgs e)
+        {
+            if (!isGradual)
+            {
+                //color picker for sections
+                ColorDialog colorDlg = new ColorDialog
+                {
+                    FullOpen = true,
+                    AnyColor = true,
+                    SolidColorOnly = false,
+                    Color = Color.FromArgb(255, redFillMid, grnFillMid, bluFillMid)
+                };
+
+                if (colorDlg.ShowDialog() != DialogResult.OK) return;
+
+                redFillMid = colorDlg.Color.R;
+                if (redFillMid > 255) redFillMid = 255;
+                grnFillMid = colorDlg.Color.G;
+                if (grnFillMid > 255) grnFillMid = 255;
+                bluFillMid = colorDlg.Color.B;
+                if (bluFillMid > 255) bluFillMid = 255;
+
+                Settings.Default.setF_FillMidColorR = redFillMid;
+                Settings.Default.setF_FillMidColorG = grnFillMid;
+                Settings.Default.setF_FillMidColorB = bluFillMid;
+                Settings.Default.Save();
+
+                paintMapButtons();
+            }
+        }
+        //setting min Fill color off Options Menu
+        private void btnColorMinFill_Click(object sender, EventArgs e)
+        {
+            if (!isGradual)
+            {
+                //color picker for sections
+                ColorDialog colorDlg = new ColorDialog
+                {
+                    FullOpen = true,
+                    AnyColor = true,
+                    SolidColorOnly = false,
+                    Color = Color.FromArgb(255, redFillMin, grnFillMin, bluFillMin)
+                };
+
+                if (colorDlg.ShowDialog() != DialogResult.OK) return;
+
+                redFillMin = colorDlg.Color.R;
+                if (redFillMin > 255) redFillMin = 255;
+                grnFillMin = colorDlg.Color.G;
+                if (grnFillMin > 255) grnFillMin = 255;
+                bluFillMin = colorDlg.Color.B;
+                if (bluFillMin > 255) bluFillMin = 255;
+
+                Settings.Default.setF_FillMinColorR = redFillMin;
+                Settings.Default.setF_FillMinColorG = grnFillMin;
+                Settings.Default.setF_FillMinColorB = bluFillMin;
+                Settings.Default.Save();
+
+                paintMapButtons();
+            }
         }
 
         private void btnResetMapColor_Click(object sender, EventArgs e)

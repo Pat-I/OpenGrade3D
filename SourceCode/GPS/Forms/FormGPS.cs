@@ -1049,12 +1049,14 @@ namespace OpenGrade
             ct.isContourOn = false;
             
             
+            
             cboxLastPass.Checked = false;
             
             cboxLaserModeOnOff.Checked = false;
 
             // by Pat
             ct.Build_eleViewList();
+            ct.drawTheMap = true;
 
             //update the menu
             fieldToolStripMenuItem.Text = gStr.gsCloseField;
@@ -1119,6 +1121,8 @@ namespace OpenGrade
             pn.northingOffset = 0;
             pn.altitudeOffset = 0;
             CancelSurvey();
+            ct.ScaleFactor = 100;
+            fillCutFillLbl();
         }
 
         //bring up field dialog for new/open/resume

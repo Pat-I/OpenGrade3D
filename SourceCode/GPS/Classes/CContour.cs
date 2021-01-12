@@ -238,6 +238,7 @@ namespace OpenGrade
 
         //
         public int eleViewListCount = 300;
+        public int ScaleFactor = 100;
 
         public double maxAltitude = -9999, minAltitude = 9999, maxCut = 0, maxFill = 0, midAltitude;
 
@@ -764,7 +765,7 @@ namespace OpenGrade
                     if (drawTheMap)
                     {
                         // Search for the max min painting values
-
+                        drawTheMap = false;
 
                         maxAltitude = -9999; minAltitude = 9999; maxCut = 0; maxFill = 0;
                         for (int h = 0; h < ptCount; h++)
@@ -784,8 +785,11 @@ namespace OpenGrade
                             }
                         }
 
-                        //if (maxCut == 9999) maxCut = 0;
-                        //if (maxFill == -9999) maxFill = 0;
+                        //maxCut is negative
+                        //maxFill is positive
+                        // equalize maxcut and maxfill
+                        if (Math.Abs(maxCut) < maxFill) maxCut = -maxFill;
+                        else if (maxFill < Math.Abs(maxCut)) maxFill = -maxCut;
 
                         midAltitude = ((maxAltitude + minAltitude) / 2);
 
@@ -816,7 +820,7 @@ namespace OpenGrade
                     double northing;
 
                     // this is the value for color selection
-                    int fillIndex = 0; // from -100 (max fill/ min alt)-- 0 (0 cut/average alt) to 100 (max cut/ max alt), 255 for black
+                    int fillIndex = 0; // from -1000 (max fill/ min alt)-- 0 (0 cut/average alt) to 1000 (max cut/ max alt), 99999 for black
 
                     //set the width of painting
 
@@ -859,7 +863,7 @@ namespace OpenGrade
                                         //red = (1 + (toCut / maxCut)) * mf.redCenter + -(toCut / maxCut) * mf.redCut;
                                         //green = (1 + (toCut / maxCut)) * mf.grnCenter + -(toCut / maxCut) * mf.grnCut;
                                         //blue = (1 + (toCut / maxCut)) * mf.bluCenter + -(toCut / maxCut) * mf.bluCut;
-                                        fillIndex = (int)((toCut / maxCut) * -100);// positive
+                                        fillIndex = (int)((toCut / maxCut) * -1000);// positive
 
                                     }
                                         else if (isActualFill && mapList[h].lastPassRealAltitudeMap > 0) // to fill and cut
@@ -874,11 +878,11 @@ namespace OpenGrade
                                         //blue = (1 + (toCut / maxCut)) * mf.bluCenter + -(toCut / maxCut) * mf.bluCut;
                                         if (toCut > 0) // still to cut
                                         {
-                                            fillIndex = (int)((toCut / maxCut) * -100); // positive
+                                            fillIndex = (int)((toCut / maxCut) * -1000); // positive
                                         }
                                         else
                                         {
-                                            fillIndex = (int)((toCut / maxFill) * 100); // to fill, negative
+                                            fillIndex = (int)((toCut / maxFill) * 1000); // to fill, negative
                                         }
                                     }
                                         else
@@ -893,7 +897,7 @@ namespace OpenGrade
                                             //red = redCenterI - (redCenterI - redFillI) * (mapList[h].cutDeltaMap / maxFill);
                                             //green = grnCenterI - (grnCenterI - grnFillI) * (mapList[h].cutDeltaMap / maxFill);
                                             //blue = bluCenterI - (bluCenterI - bluFillI) * (mapList[h].cutDeltaMap / maxFill);
-                                            fillIndex = (int)((mapList[h].cutDeltaMap / maxFill) * -100);//negative
+                                            fillIndex = (int)((mapList[h].cutDeltaMap / maxFill) * -1000);//negative
                                             }
                                             //to cut
 
@@ -906,7 +910,7 @@ namespace OpenGrade
                                                 //red = redCenterI - (redCenterI - redCutI) * (mapList[h].cutDeltaMap / maxCut);
                                                 //green = grnCenterI - (grnCenterI - grnCutI) * (mapList[h].cutDeltaMap / maxCut);
                                                 //blue = bluCenterI - (bluCenterI - bluCutI) * (mapList[h].cutDeltaMap / maxCut);
-                                                fillIndex = (int)((mapList[h].cutDeltaMap / maxCut) * 100);//positive
+                                                fillIndex = (int)((mapList[h].cutDeltaMap / maxCut) * 1000);//positive
                                         }
                                         }
 
@@ -916,7 +920,7 @@ namespace OpenGrade
                                     //red = 0;
                                     //green = 0;
                                     //blue = 0;
-                                    fillIndex = 255;
+                                    fillIndex = 99999;
                                     }
 
 
@@ -934,7 +938,7 @@ namespace OpenGrade
                                             //red = mf.redCenter;
                                             //green = mf.redCenter;
                                             //blue = mf.bluCenter;
-                                            fillIndex = 100;
+                                            fillIndex = 0;
                                             }
 
                                             if (mapList[h].altitudeMap < midAltitude)
@@ -942,7 +946,7 @@ namespace OpenGrade
                                             //red = (1 - (mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude)) * mf.redCenter + (mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude) * mf.redFill;
                                             //green = (1 - (mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude)) * mf.grnCenter + (mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude) * mf.grnFill;
                                             //blue = (1 - (mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude)) * mf.bluCenter + (mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude) * mf.bluFill;
-                                            fillIndex = (int)((mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude) * -100);//negative
+                                            fillIndex = (int)((mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude) * -1000);//negative
                                         }
 
                                             if (mapList[h].altitudeMap > midAltitude)
@@ -950,7 +954,7 @@ namespace OpenGrade
                                             //red = (1 - (mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude)) * mf.redCenter + (mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude) * mf.redCut;
                                             //green = (1 - (mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude)) * mf.grnCenter + (mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude) * mf.grnCut;
                                             //blue = (1 - (mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude)) * mf.bluCenter + (mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude) * mf.bluCut;
-                                            fillIndex = (int)((mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude) * 100);//positive
+                                            fillIndex = (int)((mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude) * 1000);//positive
                                         }
 
                                         }
@@ -959,7 +963,7 @@ namespace OpenGrade
                                         //red = 0;
                                         //green = 0;
                                         //blue = 0;
-                                        fillIndex = 255;
+                                        fillIndex = 99999;
                                         }
                                     }
                                     else // proposed elevation
@@ -981,7 +985,7 @@ namespace OpenGrade
                                             //red = (1 - (mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude)) * mf.redCenter + (mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude) * mf.redFill;
                                             //green = (1 - (mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude)) * mf.grnCenter + (mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude) * mf.grnFill;
                                             //blue = (1 - (mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude)) * mf.bluCenter + (mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude) * mf.bluFill;
-                                            fillIndex = (int)((mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude) * -100);//negative
+                                            fillIndex = (int)((mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude) * -1000);//negative
                                         }
 
                                             if (mapList[h].cutAltitudeMap > midAltitude)
@@ -989,7 +993,7 @@ namespace OpenGrade
                                             //red = (1 - (mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude)) * mf.redCenter + (mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude) * mf.redCut;
                                             //green = (1 - (mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude)) * mf.grnCenter + (mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude) * mf.grnCut;
                                             //blue = (1 - (mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude)) * mf.bluCenter + (mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude) * mf.bluCut;
-                                            fillIndex = (int)((mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude) * 100);//positive
+                                            fillIndex = (int)((mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude) * 1000);//positive
                                         }
                                         }
                                         else
@@ -997,14 +1001,14 @@ namespace OpenGrade
                                         //red = 0;
                                         //green = 0;
                                         //blue = 0;
-                                        fillIndex = 255;
+                                        fillIndex = 99999;
                                         }
                                     }
 
                                 }
 
                             // fill the color with the index
-                            if (fillIndex == 255) //black
+                            if (fillIndex == 99999) //black
                             {
                                 red = 0;
                                 green = 0;
@@ -1012,6 +1016,11 @@ namespace OpenGrade
                             }                           
                             else
                             {
+                                fillIndex = fillIndex * ScaleFactor / 100;
+
+                                if (fillIndex < -1000) fillIndex = -1000;
+                                if (fillIndex > 1000) fillIndex = 1000;
+
                                 if (mf.isGradual)
                                 {
                                     if (fillIndex == 0) // center
@@ -1022,90 +1031,90 @@ namespace OpenGrade
                                     }
                                     else if (fillIndex > 0)// cut or abvove avg alt
                                     {
-                                        red = (100 * redCenterI - (redCenterI - redCutI) * fillIndex) / 100;
-                                        green = (100 * grnCenterI - (grnCenterI - grnCutI) * fillIndex) / 100;
-                                        blue = (100 * bluCenterI - (bluCenterI - bluCutI) * fillIndex) / 100;
+                                        red = (1000 * redCenterI - (redCenterI - redCutI) * fillIndex) / 1000;
+                                        green = (1000 * grnCenterI - (grnCenterI - grnCutI) * fillIndex) / 1000;
+                                        blue = (1000 * bluCenterI - (bluCenterI - bluCutI) * fillIndex) / 1000;
                                     }
                                     else // fill or below avg alt
                                     {
-                                        red = (100 * redCenterI + (redCenterI - redFillI) * fillIndex) / 100;
-                                        green = (100 * grnCenterI + (grnCenterI - grnFillI) * fillIndex) / 100;
-                                        blue = (100 * bluCenterI + (bluCenterI - bluFillI) * fillIndex) / 100;
+                                        red = (1000 * redCenterI + (redCenterI - redFillI) * fillIndex) / 1000;
+                                        green = (1000 * grnCenterI + (grnCenterI - grnFillI) * fillIndex) / 1000;
+                                        blue = (1000 * bluCenterI + (bluCenterI - bluFillI) * fillIndex) / 1000;
                                         
                                     }
                                 }
                                 else if(mf.isGradualMulticolor)// is gradual multicolor
                                 {
-                                    if (fillIndex > 66)// from midfill to fill
+                                    if (fillIndex < -666)// from midfill to fill -1000 to -667
                                     {
-                                        red = (33 * redFillMidI - (redFillMidI - redFillI) * (fillIndex - 67)) / 33;
-                                        green = (33 * grnFillMidI - (grnFillMidI - grnFillI) * (fillIndex - 67)) / 33;
-                                        blue = (33 * bluFillMidI - (bluFillMidI - bluFillI) * (fillIndex - 67)) / 33;
+                                        red = (333 * redFillMidI + (redFillMidI - redFillI) * (fillIndex + 667)) / 333;
+                                        green = (333 * grnFillMidI + (grnFillMidI - grnFillI) * (fillIndex + 667)) / 333;
+                                        blue = (333 * bluFillMidI + (bluFillMidI - bluFillI) * (fillIndex + 667)) / 333;
                                     }
-                                    else if (fillIndex > 33)// from minfill to mid fill
+                                    else if (fillIndex < -332)// from minfill to mid fill -666 to -333
                                     {
-                                        red = (32 * redFillMinI - (redFillMinI - redFillMidI) * (fillIndex - 34)) / 32;
-                                        green = (32 * grnFillMinI - (grnFillMinI - grnFillMidI) * (fillIndex - 34)) / 32;
-                                        blue = (32 * bluFillMinI - (bluFillMinI - bluFillMidI) * (fillIndex - 34)) / 32;
+                                        red = (334 * redFillMinI + (redFillMinI - redFillMidI) * (fillIndex + 333)) / 334;
+                                        green = (334 * grnFillMinI + (grnFillMinI - grnFillMidI) * (fillIndex + 333)) / 334;
+                                        blue = (334 * bluFillMinI + (bluFillMinI - bluFillMidI) * (fillIndex + 333)) / 334;
                                     }
-                                    else if (fillIndex > -1)// from centre to minfill
+                                    else if (fillIndex < 1)// from centre to minfill -332 to 0
                                     {
-                                        red = (33 * redCenterI - (redCenterI - redFillMinI) * fillIndex) / 33;
-                                        green = (33 * grnCenterI - (grnCenterI - grnFillMinI) * fillIndex) / 33;
-                                        blue = (33 * bluCenterI - (bluCenterI - bluFillMinI) * fillIndex) / 33;
+                                        red = (333 * redCenterI + (redCenterI - redFillMinI) * fillIndex) / 333;
+                                        green = (333 * grnCenterI + (grnCenterI - grnFillMinI) * fillIndex) / 333;
+                                        blue = (333 * bluCenterI + (bluCenterI - bluFillMinI) * fillIndex) / 333;
                                     }
-                                    else if (fillIndex > -34) // from mincut to center
+                                    else if (fillIndex < 334) // from mincut to center from 1 to 333
                                     {
-                                        red = (32 * redCutMinI - (redCutMinI - redCenterI) * (fillIndex + 33)) / 32;
-                                        green = (32 * grnCutMinI - (grnCutMinI - grnCenterI) * (fillIndex + 33)) / 32;
-                                        blue = (32 * bluCutMinI - (bluCutMinI - bluCenterI) * (fillIndex + 33)) / 32;
+                                        red = (333 * redCutMinI + (redCutMinI - redCenterI) * (fillIndex - 333)) / 333;
+                                        green = (333 * grnCutMinI + (grnCutMinI - grnCenterI) * (fillIndex - 333)) / 333;
+                                        blue = (333 * bluCutMinI + (bluCutMinI - bluCenterI) * (fillIndex - 333)) / 333;
                                     }
-                                    else if (fillIndex > -68) // from midcut to mincut
+                                    else if (fillIndex < 668) // from midcut to mincut from 334 to 667
                                     {
-                                        red = (33 * redCutMidI - (redCutMidI - redCutMinI) * (fillIndex + 67)) / 33;
-                                        green = (33 * grnCutMidI - (grnCutMidI - grnCutMinI) * (fillIndex + 67)) / 33;
-                                        blue = (33 * bluCutMidI - (bluCutMidI - bluCutMinI) * (fillIndex + 67)) / 33;
+                                        red = (334 * redCutMidI + (redCutMidI - redCutMinI) * (fillIndex - 667)) / 334;
+                                        green = (334 * grnCutMidI + (grnCutMidI - grnCutMinI) * (fillIndex - 667)) / 334;
+                                        blue = (334 * bluCutMidI + (bluCutMidI - bluCutMinI) * (fillIndex - 667)) / 334;
                                     }
-                                    else // from cut to midcut
+                                    else // from cut to midcut from 668 to 1000
                                     {
-                                        red = (32 * redCutI - (redCutI - redCutMidI) * (fillIndex + 100)) / 32;
-                                        green = (32 * grnCutI - (grnCutI - grnCutMidI) * (fillIndex + 100)) / 32;
-                                        blue = (32 * bluCutI - (bluCutI - bluCutMidI) * (fillIndex + 100)) / 32;
+                                        red = (333 * redCutI + (redCutI - redCutMidI) * (fillIndex - 1000)) / 333;
+                                        green = (333 * grnCutI + (grnCutI - grnCutMidI) * (fillIndex - 1000)) / 333;
+                                        blue = (333 * bluCutI + (bluCutI - bluCutMidI) * (fillIndex - 1000)) / 333;
                                     }
                                 }
                                 else // is step
                                 {
-                                    if (fillIndex > 71)// cut or abvove avg alt
+                                    if (fillIndex > 710)// cut or abvove avg alt
                                     {
                                         red = redCutI;
                                         green = grnCutI;
                                         blue = bluCutI;
                                     }
-                                    else if (fillIndex > 42)// cut or abvove avg alt
+                                    else if (fillIndex > 420)// cut or abvove avg alt
                                     {
                                         red = mf.redCutMid;
                                         green = mf.grnCutMid;
                                         blue = mf.bluCutMid;
                                     }
-                                    else if (fillIndex > 13)// cut or abvove avg alt
+                                    else if (fillIndex > 130)// cut or abvove avg alt
                                     {
                                         red = mf.redCutMin;
                                         green = mf.grnCutMin;
                                         blue = mf.bluCutMin;
                                     }
-                                    else if (fillIndex > -13) // center
+                                    else if (fillIndex > -130) // center
                                     {
                                         red = mf.redCenter;
                                         green = mf.grnCenter;
                                         blue = mf.bluCenter;
                                     }
-                                    else if (fillIndex > -42) // fill or below avg alt
+                                    else if (fillIndex > -420) // fill or below avg alt
                                     {
                                         red = mf.redFillMin;
                                         green = mf.grnFillMin;
                                         blue = mf.bluFillMin;
                                     }
-                                    else if (fillIndex > -71) // fill or below avg alt
+                                    else if (fillIndex > -710) // fill or below avg alt
                                     {
                                         red = mf.redFillMid;
                                         green = mf.grnFillMid;
@@ -1161,7 +1170,7 @@ namespace OpenGrade
 
                     gl.End();
                 }
-                drawTheMap = false;
+                
                 
 
                 // Paint the elevation view line

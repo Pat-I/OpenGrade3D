@@ -172,7 +172,7 @@
             this.lblPureSteerAngle = new System.Windows.Forms.Label();
             this.timerSim = new System.Windows.Forms.Timer(this.components);
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.label4 = new System.Windows.Forms.Label();
+            this.lblScale = new System.Windows.Forms.Label();
             this.pbarCutBelow = new ProgBar.ProgBarPlus();
             this.pbarCutAbove = new ProgBar.ProgBarPlus();
             this.lblBarGraphMax = new System.Windows.Forms.Label();
@@ -203,6 +203,13 @@
             this.btnColorFillMin = new System.Windows.Forms.Button();
             this.btnColorCutMid = new System.Windows.Forms.Button();
             this.btnColorCutMin = new System.Windows.Forms.Button();
+            this.btnScalePlus = new System.Windows.Forms.Button();
+            this.btnScaleMinus = new System.Windows.Forms.Button();
+            this.lblFillMinValue = new System.Windows.Forms.Label();
+            this.lblCutMinValue = new System.Windows.Forms.Label();
+            this.lblCutMidValue = new System.Windows.Forms.Label();
+            this.lblFillMidValue = new System.Windows.Forms.Label();
+            this.lblCentreValue = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControl)).BeginInit();
             this.contextMenuStripOpenGL.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControlBack)).BeginInit();
@@ -1765,17 +1772,17 @@
             this.toolStripMenuItem2.Size = new System.Drawing.Size(334, 62);
             this.toolStripMenuItem2.Text = "toolStripMenuItem2";
             // 
-            // label4
+            // lblScale
             // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label4.AutoSize = true;
-            this.label4.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.label4.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(1186, 611);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(39, 29);
-            this.label4.TabIndex = 218;
-            this.label4.Text = "__";
+            this.lblScale.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblScale.AutoSize = true;
+            this.lblScale.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.lblScale.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblScale.Location = new System.Drawing.Point(1146, 483);
+            this.lblScale.Name = "lblScale";
+            this.lblScale.Size = new System.Drawing.Size(71, 29);
+            this.lblScale.TabIndex = 218;
+            this.lblScale.Text = "--- %";
             // 
             // pbarCutBelow
             // 
@@ -2188,6 +2195,7 @@
             this.btnColorFillMid.Size = new System.Drawing.Size(32, 32);
             this.btnColorFillMid.TabIndex = 241;
             this.btnColorFillMid.UseVisualStyleBackColor = false;
+            this.btnColorFillMid.Click += new System.EventHandler(this.btnColorMidFill_Click);
             // 
             // btnColorFillMin
             // 
@@ -2198,6 +2206,7 @@
             this.btnColorFillMin.Size = new System.Drawing.Size(32, 32);
             this.btnColorFillMin.TabIndex = 242;
             this.btnColorFillMin.UseVisualStyleBackColor = false;
+            this.btnColorFillMin.Click += new System.EventHandler(this.btnColorMinFill_Click);
             // 
             // btnColorCutMid
             // 
@@ -2208,6 +2217,7 @@
             this.btnColorCutMid.Size = new System.Drawing.Size(32, 32);
             this.btnColorCutMid.TabIndex = 243;
             this.btnColorCutMid.UseVisualStyleBackColor = false;
+            this.btnColorCutMid.Click += new System.EventHandler(this.btnColorMidCut_Click);
             // 
             // btnColorCutMin
             // 
@@ -2218,6 +2228,89 @@
             this.btnColorCutMin.Size = new System.Drawing.Size(32, 32);
             this.btnColorCutMin.TabIndex = 244;
             this.btnColorCutMin.UseVisualStyleBackColor = false;
+            this.btnColorCutMin.Click += new System.EventHandler(this.btnColorMinCut_Click);
+            // 
+            // btnScalePlus
+            // 
+            this.btnScalePlus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnScalePlus.Location = new System.Drawing.Point(1151, 430);
+            this.btnScalePlus.Name = "btnScalePlus";
+            this.btnScalePlus.Size = new System.Drawing.Size(52, 46);
+            this.btnScalePlus.TabIndex = 245;
+            this.btnScalePlus.Text = "+";
+            this.btnScalePlus.UseVisualStyleBackColor = true;
+            this.btnScalePlus.Click += new System.EventHandler(this.btnScalePlus_Click);
+            // 
+            // btnScaleMinus
+            // 
+            this.btnScaleMinus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnScaleMinus.Location = new System.Drawing.Point(1151, 516);
+            this.btnScaleMinus.Name = "btnScaleMinus";
+            this.btnScaleMinus.Size = new System.Drawing.Size(52, 46);
+            this.btnScaleMinus.TabIndex = 246;
+            this.btnScaleMinus.Text = "-";
+            this.btnScaleMinus.UseVisualStyleBackColor = true;
+            this.btnScaleMinus.Click += new System.EventHandler(this.btnScaleMinus_Click);
+            // 
+            // lblFillMinValue
+            // 
+            this.lblFillMinValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblFillMinValue.AutoSize = true;
+            this.lblFillMinValue.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.lblFillMinValue.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFillMinValue.Location = new System.Drawing.Point(1010, 516);
+            this.lblFillMinValue.Name = "lblFillMinValue";
+            this.lblFillMinValue.Size = new System.Drawing.Size(69, 29);
+            this.lblFillMinValue.TabIndex = 247;
+            this.lblFillMinValue.Text = "value";
+            // 
+            // lblCutMinValue
+            // 
+            this.lblCutMinValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblCutMinValue.AutoSize = true;
+            this.lblCutMinValue.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.lblCutMinValue.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCutMinValue.Location = new System.Drawing.Point(1010, 444);
+            this.lblCutMinValue.Name = "lblCutMinValue";
+            this.lblCutMinValue.Size = new System.Drawing.Size(69, 29);
+            this.lblCutMinValue.TabIndex = 248;
+            this.lblCutMinValue.Text = "value";
+            // 
+            // lblCutMidValue
+            // 
+            this.lblCutMidValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblCutMidValue.AutoSize = true;
+            this.lblCutMidValue.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.lblCutMidValue.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCutMidValue.Location = new System.Drawing.Point(1010, 411);
+            this.lblCutMidValue.Name = "lblCutMidValue";
+            this.lblCutMidValue.Size = new System.Drawing.Size(69, 29);
+            this.lblCutMidValue.TabIndex = 249;
+            this.lblCutMidValue.Text = "value";
+            // 
+            // lblFillMidValue
+            // 
+            this.lblFillMidValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblFillMidValue.AutoSize = true;
+            this.lblFillMidValue.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.lblFillMidValue.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFillMidValue.Location = new System.Drawing.Point(1010, 554);
+            this.lblFillMidValue.Name = "lblFillMidValue";
+            this.lblFillMidValue.Size = new System.Drawing.Size(69, 29);
+            this.lblFillMidValue.TabIndex = 250;
+            this.lblFillMidValue.Text = "value";
+            // 
+            // lblCentreValue
+            // 
+            this.lblCentreValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblCentreValue.AutoSize = true;
+            this.lblCentreValue.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.lblCentreValue.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCentreValue.Location = new System.Drawing.Point(1010, 479);
+            this.lblCentreValue.Name = "lblCentreValue";
+            this.lblCentreValue.Size = new System.Drawing.Size(69, 29);
+            this.lblCentreValue.TabIndex = 251;
+            this.lblCentreValue.Text = "value";
             // 
             // FormGPS
             // 
@@ -2225,6 +2318,13 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(1306, 684);
+            this.Controls.Add(this.lblCentreValue);
+            this.Controls.Add(this.lblFillMidValue);
+            this.Controls.Add(this.lblCutMidValue);
+            this.Controls.Add(this.lblCutMinValue);
+            this.Controls.Add(this.lblFillMinValue);
+            this.Controls.Add(this.btnScaleMinus);
+            this.Controls.Add(this.btnScalePlus);
             this.Controls.Add(this.btnColorCutMin);
             this.Controls.Add(this.btnColorCutMid);
             this.Controls.Add(this.btnColorFillMin);
@@ -2249,7 +2349,7 @@
             this.Controls.Add(this.pbarCutBelow);
             this.Controls.Add(this.btnGoogleEarth);
             this.Controls.Add(this.btnAutoSteer);
-            this.Controls.Add(this.label4);
+            this.Controls.Add(this.lblScale);
             this.Controls.Add(this.btnContour);
             this.Controls.Add(this.label25);
             this.Controls.Add(this.btnZoomIn);
@@ -2436,7 +2536,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label lblCutDelta;
         private System.Windows.Forms.Label lblCut;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lblScale;
         private System.Windows.Forms.CheckBox cboxLastPass;
         private System.Windows.Forms.Button btnZeroAltitude;
         private System.Windows.Forms.TabPage controlPage2;
@@ -2478,6 +2578,13 @@
         private System.Windows.Forms.ToolStripMenuItem GradToolStrip;
         private System.Windows.Forms.ToolStripMenuItem StepToolStrip;
         private System.Windows.Forms.ToolStripMenuItem GradMultiToolStrip;
+        private System.Windows.Forms.Button btnScalePlus;
+        private System.Windows.Forms.Button btnScaleMinus;
+        private System.Windows.Forms.Label lblFillMinValue;
+        private System.Windows.Forms.Label lblCutMinValue;
+        private System.Windows.Forms.Label lblCutMidValue;
+        private System.Windows.Forms.Label lblFillMidValue;
+        private System.Windows.Forms.Label lblCentreValue;
     }
 }
 
