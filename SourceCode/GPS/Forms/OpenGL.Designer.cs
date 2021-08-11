@@ -14,6 +14,8 @@ namespace OpenGrade
 
         //difference between blade tip and guide line
         public double cutDelta;
+        public int bladeOffSetMaster = 0;// in mm
+        public int bladeOffSetSlave = 0; // in mm
         private double minDist;
         private double minDistMap;
         private double mappingDist;

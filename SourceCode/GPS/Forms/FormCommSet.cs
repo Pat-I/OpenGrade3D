@@ -246,7 +246,8 @@ namespace OpenGrade
             //RateRelay phrases
             txtBoxRecvArduino.Text = mf.mc.serialRecvRelayRateStr;
             txtBoxSendArduino.Text = mf.mc.relayRateData[0] + "," + mf.mc.relayRateData[1]
-                 + "," + mf.mc.relayRateData[2]; //setpoint hi lo  
+                 + "," + mf.mc.relayRateData[2] + "," + mf.mc.relayRateData[3] + "," + mf.mc.relayRateData[4] + "," + mf.mc.relayRateData[5]
+                 + "," + mf.mc.relayRateData[6] + "," + mf.mc.relayRateData[7]; //setpoint hi lo  
             //autoSteer phrases
             txtBoxRecvAutoSteer.Text = mf.mc.serialRecvAutoSteerStr;
             txtBoxSendAutoSteer.Text = "32766, " + mf.mc.autoSteerData[mf.mc.sdRelay] + ", " + mf.mc.autoSteerData[mf.mc.sdSpeed]

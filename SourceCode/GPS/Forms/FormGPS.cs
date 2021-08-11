@@ -1258,6 +1258,7 @@ namespace OpenGrade
         {
             Vehicle.Default.setVehicle_bladeOffset = (double)numBladeOffset.Value /100;
             vehicle.bladeOffset = (double)numBladeOffset.Value /100;
+            //bladeOffSetMaster = (int)numBladeOffset.Value;
         }
 
         //message box pops up with info then goes away

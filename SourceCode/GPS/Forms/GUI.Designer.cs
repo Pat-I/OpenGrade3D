@@ -1942,10 +1942,8 @@ namespace OpenGrade
                         pbarCutBelow.Value = 0;
 
                         //Output to serial for blade control 
-                        mc.relayRateData[mc.cutValve] = (byte)(100);
-                        RateRelayDataOutToPort();
-
-                        //
+                        mc.relayRateData[mc.cutValve] = (byte)(100);                        
+                        
                     }
                     else
                     {
@@ -1953,19 +1951,19 @@ namespace OpenGrade
 
                         {
                             mc.relayRateData[mc.cutValve] = (byte)(1);
-                            RateRelayDataOutToPort();
+                            
                         }
                         else
                         {
                             if (cutDelta > 9.9)
                             {
                                 mc.relayRateData[mc.cutValve] = (byte)(199);
-                                RateRelayDataOutToPort();
+                                
                             }
                             else
                             {
                                 mc.relayRateData[mc.cutValve] = (byte)((cutDelta * 10) + 100);
-                                RateRelayDataOutToPort();
+                                
                             }
                         }
 
@@ -2000,6 +1998,23 @@ namespace OpenGrade
 
                         }
                     }
+                    //blade offset from arduino here
+                    if (!spRelay.IsOpen)
+                    {
+                        bladeOffSetSlave = 0;
+                    }
+
+                    bladeOffSetMaster = (int)numBladeOffset.Value;
+
+                    if (bladeOffSetSlave > 2 && bladeOffSetSlave != 100)
+                    {
+                        bladeOffSetMaster += (bladeOffSetSlave - 100);
+                        numBladeOffset.Value = (decimal)(bladeOffSetMaster);
+                    }
+
+                    mc.relayRateData[mc.bladeOffset] = (byte)(bladeOffSetMaster + 100);
+
+                    RateRelayDataOutToPort();
 
                     //update the online indicator
                     if (recvCounter > 50)
