@@ -210,6 +210,7 @@
             this.lblCutMidValue = new System.Windows.Forms.Label();
             this.lblFillMidValue = new System.Windows.Forms.Label();
             this.lblCentreValue = new System.Windows.Forms.Label();
+            this.btnUseSavedAGS = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControl)).BeginInit();
             this.contextMenuStripOpenGL.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControlBack)).BeginInit();
@@ -2008,9 +2009,9 @@
             this.btnManualOffOn.FlatAppearance.BorderColor = System.Drawing.Color.Yellow;
             this.btnManualOffOn.Font = new System.Drawing.Font("Tahoma", 14.25F);
             this.btnManualOffOn.Image = ((System.Drawing.Image)(resources.GetObject("btnManualOffOn.Image")));
-            this.btnManualOffOn.Location = new System.Drawing.Point(185, 51);
+            this.btnManualOffOn.Location = new System.Drawing.Point(178, 51);
             this.btnManualOffOn.Name = "btnManualOffOn";
-            this.btnManualOffOn.Size = new System.Drawing.Size(90, 90);
+            this.btnManualOffOn.Size = new System.Drawing.Size(108, 90);
             this.btnManualOffOn.TabIndex = 98;
             this.btnManualOffOn.UseVisualStyleBackColor = false;
             this.btnManualOffOn.Visible = false;
@@ -2312,12 +2313,24 @@
             this.lblCentreValue.TabIndex = 251;
             this.lblCentreValue.Text = "value";
             // 
+            // btnUseSavedAGS
+            // 
+            this.btnUseSavedAGS.Location = new System.Drawing.Point(185, 184);
+            this.btnUseSavedAGS.Name = "btnUseSavedAGS";
+            this.btnUseSavedAGS.Size = new System.Drawing.Size(97, 90);
+            this.btnUseSavedAGS.TabIndex = 252;
+            this.btnUseSavedAGS.Text = "Use Autosaved Survey";
+            this.btnUseSavedAGS.UseVisualStyleBackColor = true;
+            this.btnUseSavedAGS.Visible = false;
+            this.btnUseSavedAGS.Click += new System.EventHandler(this.btnUseSavedAGS_Click);
+            // 
             // FormGPS
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(1306, 684);
+            this.Controls.Add(this.btnUseSavedAGS);
             this.Controls.Add(this.lblCentreValue);
             this.Controls.Add(this.lblFillMidValue);
             this.Controls.Add(this.lblCutMidValue);
@@ -2585,6 +2598,7 @@
         private System.Windows.Forms.Label lblCutMidValue;
         private System.Windows.Forms.Label lblFillMidValue;
         private System.Windows.Forms.Label lblCentreValue;
+        private System.Windows.Forms.Button btnUseSavedAGS;
     }
 }
 

@@ -15,3 +15,4 @@ C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\SourceCode\KeyPad\Keypad\obj\Rel
 C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\SourceCode\KeyPad\Keypad\obj\Release\Keypad.csproj.GenerateResource.cache
 C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\SourceCode\KeyPad\Keypad\obj\Release\Keypad.csproj.CoreCompileInputs.cache
 C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\SourceCode\KeyPad\Keypad\obj\Release\Keypad.dll
+C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\SourceCode\KeyPad\Keypad\obj\Release\Keypad.csproj.AssemblyReference.cache

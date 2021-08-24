@@ -358,19 +358,22 @@ namespace OpenGrade
                 if (saveCounter > 600)       //10 counts per second X 60 seconds = 600 counts per minute.
                 {
                     // no auto save for now
-                    /*
+                    
                     if (isJobStarted && stripOnlineGPS.Value != 1)
                     {
                         //auto save the field patches, contours accumulated so far
-                        FileSaveField();
-                        FileSaveMapPt();
-                        FileSaveContour();
+                        //FileSaveField();
+                        //FileSaveMapPt();
+                        //FileSaveContour();
                         
 
                         //NMEA log file
                         if (isLogNMEA) FileSaveNMEA();
                     }
-                    */
+                    if (isJobStarted && ct.isSurveyOn && ct.surveyList.Count > 2)
+                    {
+                        FileSaveSurveyPt2text();
+                    }
                     saveCounter = 0;
                 }
 

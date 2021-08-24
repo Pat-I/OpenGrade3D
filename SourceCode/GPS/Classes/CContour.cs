@@ -601,7 +601,7 @@ namespace OpenGrade
 
                     if (markBM)
                     {
-
+                        surveyList.Clear();
                         SurveyPt point = new SurveyPt(mf.pn.easting, mf.pn.northing, mf.pn.latitude, mf.pn.longitude, mf.pn.altitude, 0, mf.pn.fixQuality);
                         surveyList.Add(point);
 
@@ -705,6 +705,7 @@ namespace OpenGrade
                     mf.FileSaveSurveyPt();
 
                     recSurveyPt = false;
+                    isBtnStartPause = false;
                 }
             }
 

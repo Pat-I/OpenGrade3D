@@ -528,7 +528,7 @@ namespace OpenGrade
                 case btnStates.Off:
                     manualBtnState = btnStates.StandBy;
                     btnManualOffOn.Image = null;
-                    btnManualOffOn.Text = "BenchMark";
+                    btnManualOffOn.Text = "Put BenchMark";
                     userDistance = 0;
                     
 
@@ -539,55 +539,23 @@ namespace OpenGrade
                     //btnDeleteLastPoint.Enabled = false;
                     //btnStartDraw.Enabled = false;
                     ct.isSurveyOn = true;
-                    ct.clearSurveyList = true;
+                    //ct.clearSurveyList = true;
                     ct.isBtnStartPause = false;
                     btnStartPause.Text = "START";
-
+                    checkForAutoSaveAGS();
                     break;
 
                 case btnStates.StandBy:
-                    manualBtnState = btnStates.RecBnd;
-                    btnManualOffOn.Image = null;
-                    btnManualOffOn.Text = "Recording Boundary";
-                    userDistance = 0;                  
-                    btnStartPause.Visible = true;
-                    btnBoundarySide.Visible = true;
-                    ct.isBtnStartPause = false;
-                    btnStartPause.Text = "START";
 
-
-                    cboxLastPass.Checked = false;
-                    //cboxRecLastOnOff.Checked = false;
-                    cboxLaserModeOnOff.Checked = false;
-                    //btnDoneDraw.Enabled = false;
-                    //btnDeleteLastPoint.Enabled = false;
-                    //btnStartDraw.Enabled = false;
-                    ct.isSurveyOn = true;
+                    recordSurveyBoundary();
                     ct.markBM = true;
-                    
-
 
                     break;
 
                 case btnStates.RecBnd:
-                    manualBtnState = btnStates.Rec;
-                    btnManualOffOn.Image = Properties.Resources.ManualOn;
-                    btnManualOffOn.Text = null;
-                    userDistance = 0;                  
-                    btnBoundarySide.Visible = false;
-                    ct.isBtnStartPause = false;
-                    btnStartPause.Text = "START";
 
-                    cboxLastPass.Checked = false;
-                    //cboxRecLastOnOff.Checked = false;
-                    cboxLaserModeOnOff.Checked = false;
-                    //btnDoneDraw.Enabled = false;
-                    //btnDeleteLastPoint.Enabled = false;
-                    //btnStartDraw.Enabled = false;
-                    ct.isSurveyOn = true;
-                    ct.recBoundary = false;
-                    ct.recSurveyPt = true;
-
+                    recordSurveyPts();
+                   
 
                     break;
 
@@ -602,11 +570,73 @@ namespace OpenGrade
                     //btnStartDraw.Enabled = true;
                     ct.isSurveyOn = false;
                     btnStartPause.Visible = false;
+                    ct.isBtnStartPause = false;
                     
 
 
                     break;
             }
+        }
+
+        public void recordSurveyBoundary()
+        {
+            manualBtnState = btnStates.RecBnd;
+            btnManualOffOn.Image = null;
+            btnManualOffOn.Text = "Recording Boundary";
+            userDistance = 0;
+            btnStartPause.Visible = true;
+            btnBoundarySide.Visible = true;
+            ct.isBtnStartPause = false;
+            btnStartPause.Text = "START";
+
+
+            cboxLastPass.Checked = false;
+            //cboxRecLastOnOff.Checked = false;
+            cboxLaserModeOnOff.Checked = false;
+            //btnDoneDraw.Enabled = false;
+            //btnDeleteLastPoint.Enabled = false;
+            //btnStartDraw.Enabled = false;
+            ct.isSurveyOn = true;
+            
+            btnUseSavedAGS.Visible = false;
+        }
+
+        public void recordSurveyPts()
+        {
+            manualBtnState = btnStates.Rec;
+            btnManualOffOn.Image = Properties.Resources.ManualOn;
+            btnManualOffOn.Text = null;
+            userDistance = 0;
+            btnStartPause.Visible = true;
+            btnBoundarySide.Visible = false;
+            ct.isBtnStartPause = false;
+            btnStartPause.Text = "START";
+
+            cboxLastPass.Checked = false;
+            //cboxRecLastOnOff.Checked = false;
+            cboxLaserModeOnOff.Checked = false;
+            //btnDoneDraw.Enabled = false;
+            //btnDeleteLastPoint.Enabled = false;
+            //btnStartDraw.Enabled = false;
+            ct.isSurveyOn = true;
+            ct.recBoundary = false;
+            ct.recSurveyPt = true;
+            FileSaveSurveyPt2text();
+            btnUseSavedAGS.Visible = false;
+        }
+
+        public void checkForAutoSaveAGS()
+        {
+            ct.surveyList.Clear();
+            FileOpenAut0SaveSurvey();
+
+            if (ct.surveyList.Count > 2)
+            {
+                
+                btnUseSavedAGS.Visible = true;
+            }
+
+
         }
 
         public void CancelSurvey()
@@ -628,6 +658,7 @@ namespace OpenGrade
                 ct.recSurveyPt = false;
                 ct.surveyList.Clear();
                 ct.markBM = false;
+                btnUseSavedAGS.Visible = false;
             }
 
         }

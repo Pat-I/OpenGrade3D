@@ -1629,7 +1629,9 @@ namespace OpenGrade
             //isSavingFile = false;
         }
 
-        //save the survey points for testing (check easting/northing to lat/lon conversion
+
+
+        //autosave and save the survey points for testing (check easting/northing to lat/lon conversion
         public void FileSaveSurveyPt2text()
         {
             //1  - points in patch
@@ -1649,7 +1651,7 @@ namespace OpenGrade
             if ((directoryName.Length > 0) && (!Directory.Exists(directoryName)))
             { Directory.CreateDirectory(directoryName); }
 
-            string myFileName = "Survey.txt";
+            string myFileName = "SurveyAutoSave.txt";
 
             //write out the file
             using (StreamWriter writer = new StreamWriter(dirField + myFileName))
@@ -1685,7 +1687,70 @@ namespace OpenGrade
             //isSavingFile = false;
         }
 
+        //function to open a previously autosaved survey
+        public void FileOpenAut0SaveSurvey()
+        {
+            string fileAndDirectory;
+            //get the directory where the fields are stored
+            //string directoryName = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)+ "\\fields\\";
 
+            
+                //Either exit or update running save
+                fileAndDirectory = fieldsDirectory + currentFieldDirectory + "\\SurveyAutoSave.txt";
+                if (!File.Exists(fileAndDirectory)) return;
+
+
+
+            // Boundary points ----------------------------------------------------------------------------
+
+            string line;
+            using (StreamReader reader = new StreamReader(fileAndDirectory))
+                    {
+                        try
+                        {
+                            //read the lines and skip them
+                            line = reader.ReadLine();
+                            //line = reader.ReadLine();
+                            //line = reader.ReadLine();
+                            //line = reader.ReadLine();
+                            //line = reader.ReadLine();
+                            //line = reader.ReadLine();
+
+                            while (!reader.EndOfStream)
+                            {
+                                //read how many vertices in the following patch
+                                //line = reader.ReadLine();
+                                //int verts = int.Parse(line);
+                                //CContourPt vecFix = new vec4(0, 0, 0, 0);
+
+                                //for (int v = 0; v < verts; v++)
+                                //{
+                                    line = reader.ReadLine();
+                                    string[] words = line.Split(',');
+
+                                    SurveyPt point = new SurveyPt(
+                                        double.Parse(words[0], CultureInfo.InvariantCulture),
+                                        double.Parse(words[1], CultureInfo.InvariantCulture),
+                                        double.Parse(words[2], CultureInfo.InvariantCulture),
+                                        double.Parse(words[3], CultureInfo.InvariantCulture),
+                                        double.Parse(words[4], CultureInfo.InvariantCulture),
+                                        double.Parse(words[5], CultureInfo.InvariantCulture),
+                                        int.Parse(words[6], CultureInfo.InvariantCulture));
+
+                                    ct.surveyList.Add(point);
+                                //}
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            WriteErrorLog("Loading AutoSave survey file" + e.ToString());
+
+                            var form = new FormTimedMessage(4000, "AutoSave File is Corrupt", "But Field is Loaded");
+                            form.Show();
+                        }
+                    }
+                           
+        }//end of open file
 
         //save all the flag markers
         public void FileSaveFlags()

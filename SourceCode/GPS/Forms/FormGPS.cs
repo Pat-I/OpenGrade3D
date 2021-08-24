@@ -225,6 +225,21 @@ namespace OpenGrade
             public short y;
         }
 
+        private void btnUseSavedAGS_Click(object sender, EventArgs e)
+        {
+            int ctn = ct.surveyList.Count;
+            double code = ct.surveyList[(ctn - 1)].code;
+
+            if (code == 2)
+            {
+                recordSurveyBoundary();
+                ct.recBoundary = true;
+            }
+            if (code == 3) recordSurveyPts();
+
+            btnUseSavedAGS.Visible = false;
+        }
+
         //
         // Gesture information structure
         //   - Pass the HGESTUREINFO received in the WM_GESTURE message lParam
