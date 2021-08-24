@@ -370,7 +370,7 @@ namespace OpenGrade
                         //NMEA log file
                         if (isLogNMEA) FileSaveNMEA();
                     }
-                    if (isJobStarted && ct.isSurveyOn && ct.surveyList.Count > 2)
+                    if (isJobStarted && ct.isSurveyOn && ct.surveyList.Count > 0)
                     {
                         FileSaveSurveyPt2text();
                     }

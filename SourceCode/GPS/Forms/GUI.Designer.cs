@@ -630,7 +630,7 @@ namespace OpenGrade
             ct.surveyList.Clear();
             FileOpenAut0SaveSurvey();
 
-            if (ct.surveyList.Count > 2)
+            if (ct.surveyList.Count > 0)
             {
                 
                 btnUseSavedAGS.Visible = true;
@@ -656,6 +656,10 @@ namespace OpenGrade
                 ct.isBtnStartPause = false;
                 btnStartPause.Text = "START";
                 ct.recSurveyPt = false;
+                if (ct.surveyList.Count > 0)
+                {
+                    FileSaveSurveyPt2text();
+                }
                 ct.surveyList.Clear();
                 ct.markBM = false;
                 btnUseSavedAGS.Visible = false;

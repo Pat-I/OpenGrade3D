@@ -230,7 +230,7 @@ namespace OpenGrade
             int ctn = ct.surveyList.Count;
             double code = ct.surveyList[(ctn - 1)].code;
 
-            if (code == 2)
+            if (code == 2 || code == 0)
             {
                 recordSurveyBoundary();
                 ct.recBoundary = true;
