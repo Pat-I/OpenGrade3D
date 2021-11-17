@@ -998,7 +998,7 @@ namespace OpenGrade
 
         public void FileOpenAgdDesign()
         {
-            ct.designList.Clear();
+            
 
             OpenFileDialog ofd = new OpenFileDialog();
 
@@ -1023,6 +1023,8 @@ namespace OpenGrade
             {
                 //if job started close it
                 //if (isJobStarted) JobClose();
+
+                ct.designList.Clear();
 
                 //make sure the file if fully valid and vehicle matches sections
                 string line;
@@ -1625,6 +1627,8 @@ namespace OpenGrade
                 }
             }
             FileSaveSurveyPt2text();
+            FileSaveSurveyPt2EFTmetric(); // create a file for EFT software
+            FileSaveSurveyPt2EFTimperial(); // create a file for EFT software
             //set saving flag off
             //isSavingFile = false;
         }
@@ -1685,6 +1689,160 @@ namespace OpenGrade
 
             //set saving flag off
             //isSavingFile = false;
+        }
+
+        //save the contour points which include elevation values in an eft compatible txt file.
+        public void FileSaveSurveyPt2EFTmetric()
+        {
+            //1  - points in patch
+            //64.697,0.168,-21.654,0 - east, heading, north, altitude
+            //Saturday, February 11, 2017  -->  7:26:52 AM
+            //12  - points in patch
+            //64.697,0.168,-21.654,0 - east, heading, north, altitude
+            //$ContourDir
+            //Bob_Feb11
+            //$Offsets
+            //533172,5927719,12
+
+            //get the directory and make sure it exists, create if not
+            string dirField = fieldsDirectory + currentFieldDirectory + "\\";
+
+            string directoryName = Path.GetDirectoryName(dirField);
+            if ((directoryName.Length > 0) && (!Directory.Exists(directoryName)))
+            { Directory.CreateDirectory(directoryName); }
+
+            string myFileName = "Survey_EFT_metric_" + String.Format("{0}", DateTime.Now.ToString("yyyy_MMM_dd HH_mm_ss", CultureInfo.InvariantCulture)) + ".txt";
+
+            //write out the file
+            // this format: “PENDZ: Point Name, Easting, Northing, Elevation, Description”
+            using (StreamWriter writer = new StreamWriter(dirField + myFileName))
+            {
+
+
+
+                //make sure there is something to save
+                if (ct.surveyList.Count() > 0)
+                {
+                    int count4 = ct.surveyList.Count;
+
+                    //for every new chunk of patch in the whole section
+
+                    //writer.WriteLine(count4.ToString(CultureInfo.InvariantCulture));
+
+                    for (int i = 0; i < count4; i++)
+                    {
+                        if (ct.surveyList[i].code == 0)
+                        {
+                            writer.WriteLine((i + 1).ToString(CultureInfo.InvariantCulture) + ", " +
+                            Math.Round(ct.surveyList[i].easting, 3).ToString(CultureInfo.InvariantCulture) + ", " +
+                            Math.Round(ct.surveyList[i].northing, 3).ToString(CultureInfo.InvariantCulture) + ", " +
+                            Math.Round(ct.surveyList[i].altitude, 3).ToString(CultureInfo.InvariantCulture) + ", " +
+                            Math.Round(ct.surveyList[i].code, 0).ToString(CultureInfo.InvariantCulture) + "mb_4g");
+
+                        }
+
+                        if (ct.surveyList[i].code == 2)
+                        {
+                            writer.WriteLine((i + 1).ToString(CultureInfo.InvariantCulture) + ", " +
+                            Math.Round(ct.surveyList[i].easting, 3).ToString(CultureInfo.InvariantCulture) + ", " +
+                            Math.Round(ct.surveyList[i].northing, 3).ToString(CultureInfo.InvariantCulture) + ", " +
+                            Math.Round(ct.surveyList[i].altitude, 3).ToString(CultureInfo.InvariantCulture) + ", " +
+                            Math.Round(ct.surveyList[i].code, 0).ToString(CultureInfo.InvariantCulture) + "PER");
+
+                        }
+
+                        if (ct.surveyList[i].code == 3)
+                        {
+                             writer.WriteLine((i + 1).ToString(CultureInfo.InvariantCulture) + ", " +
+                             Math.Round(ct.surveyList[i].easting, 3).ToString(CultureInfo.InvariantCulture) + ", " +
+                             Math.Round(ct.surveyList[i].northing, 3).ToString(CultureInfo.InvariantCulture) + ", " +
+                             Math.Round(ct.surveyList[i].altitude, 3).ToString(CultureInfo.InvariantCulture) + ", " +
+                             Math.Round(ct.surveyList[i].code, 0).ToString(CultureInfo.InvariantCulture) + "GRD");
+
+                        }
+
+
+
+                    }
+                }
+            }
+        }
+
+        //save the contour points which include elevation values in an eft compatible txt file.
+        public void FileSaveSurveyPt2EFTimperial()
+        {
+            //1  - points in patch
+            //64.697,0.168,-21.654,0 - east, heading, north, altitude
+            //Saturday, February 11, 2017  -->  7:26:52 AM
+            //12  - points in patch
+            //64.697,0.168,-21.654,0 - east, heading, north, altitude
+            //$ContourDir
+            //Bob_Feb11
+            //$Offsets
+            //533172,5927719,12
+
+            //get the directory and make sure it exists, create if not
+            string dirField = fieldsDirectory + currentFieldDirectory + "\\";
+
+            string directoryName = Path.GetDirectoryName(dirField);
+            if ((directoryName.Length > 0) && (!Directory.Exists(directoryName)))
+            { Directory.CreateDirectory(directoryName); }
+
+            string myFileName = "Survey_EFT_imperial_" + String.Format("{0}", DateTime.Now.ToString("yyyy_MMM_dd HH_mm_ss", CultureInfo.InvariantCulture)) + ".txt";
+
+            //write out the file
+            // this format: “PENDZ: Point Name, Easting, Northing, Elevation, Description”
+            using (StreamWriter writer = new StreamWriter(dirField + myFileName))
+            {
+
+
+
+                //make sure there is something to save
+                if (ct.surveyList.Count() > 0)
+                {
+                    int count4 = ct.surveyList.Count;
+
+                    //for every new chunk of patch in the whole section
+
+                    //writer.WriteLine(count4.ToString(CultureInfo.InvariantCulture));
+
+                    for (int i = 0; i < count4; i++)
+                    {
+                        if (ct.surveyList[i].code == 0)
+                        {
+                            writer.WriteLine((i + 1).ToString(CultureInfo.InvariantCulture) + ", " +
+                            Math.Round(ct.surveyList[i].easting * 3.2808399, 2).ToString(CultureInfo.InvariantCulture) + ", " +
+                            Math.Round(ct.surveyList[i].northing * 3.2808399, 2).ToString(CultureInfo.InvariantCulture) + ", " +
+                            Math.Round(ct.surveyList[i].altitude * 3.2808399, 2).ToString(CultureInfo.InvariantCulture) + ", " +
+                            Math.Round(ct.surveyList[i].code, 0).ToString(CultureInfo.InvariantCulture) + "mb_4g");
+
+                        }
+
+                        if (ct.surveyList[i].code == 2)
+                        {
+                            writer.WriteLine((i + 1).ToString(CultureInfo.InvariantCulture) + ", " +
+                            Math.Round(ct.surveyList[i].easting * 3.2808399, 2).ToString(CultureInfo.InvariantCulture) + ", " +
+                            Math.Round(ct.surveyList[i].northing * 3.2808399, 2).ToString(CultureInfo.InvariantCulture) + ", " +
+                            Math.Round(ct.surveyList[i].altitude * 3.2808399, 2).ToString(CultureInfo.InvariantCulture) + ", " +
+                            Math.Round(ct.surveyList[i].code, 0).ToString(CultureInfo.InvariantCulture) + "PER");
+
+                        }
+
+                        if (ct.surveyList[i].code == 3)
+                        {
+                            writer.WriteLine((i + 1).ToString(CultureInfo.InvariantCulture) + ", " +
+                            Math.Round(ct.surveyList[i].easting * 3.2808399, 2).ToString(CultureInfo.InvariantCulture) + ", " +
+                            Math.Round(ct.surveyList[i].northing * 3.2808399, 2).ToString(CultureInfo.InvariantCulture) + ", " +
+                            Math.Round(ct.surveyList[i].altitude * 3.2808399, 2).ToString(CultureInfo.InvariantCulture) + ", " +
+                            Math.Round(ct.surveyList[i].code, 0).ToString(CultureInfo.InvariantCulture) + "GRD");
+
+                        }
+
+
+
+                    }
+                }
+            }
         }
 
         //function to open a previously autosaved survey
