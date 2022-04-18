@@ -1247,7 +1247,7 @@
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(56, 23);
             this.label9.TabIndex = 3;
-            this.label9.Text = "Gyro:";
+            this.label9.Text = "Pitch:";
             // 
             // label8
             // 

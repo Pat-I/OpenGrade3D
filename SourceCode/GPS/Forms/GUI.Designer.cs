@@ -1264,8 +1264,8 @@ namespace OpenGrade
                 else if (pn.fixQuality == 1) return "GPS";
                 else if (pn.fixQuality == 2) return "DGPS";
                 else if (pn.fixQuality == 3) return "PPS";
-                else if (pn.fixQuality == 4) return "RTK fix";
-                else if (pn.fixQuality == 5) return "Flt RTK";
+                else if (pn.fixQuality == 4) return "RTK";
+                else if (pn.fixQuality == 5) return "Float";
                 else if (pn.fixQuality == 6) return "Estimate";
                 else if (pn.fixQuality == 7) return "Man IP";
                 else if (pn.fixQuality == 8) return "Sim";
@@ -1277,18 +1277,18 @@ namespace OpenGrade
         {
             get
             {
-                if (mc.gyroHeading != 9999)
-                    return Math.Round(mc.gyroHeading * 0.0625, 1) + "\u00B0";
-                else return "-";
+                //if (mc.gyroHeading != 9999)
+                    return Math.Round(pn.GPSpitch, 1) + "\u00B0";
+                //else return "-";
             }
         }
         public string RollInDegrees
         {
             get
             {
-                if (mc.rollRaw != 9999)
-                    return Math.Round(mc.rollRaw * 0.0625, 1) + "\u00B0";
-                else return "-";
+                //if (mc.rollRaw != 9999)
+                    return Math.Round(pn.GPSroll, 1) + "\u00B0";
+                //else return "-";
             }
         }
         public string PureSteerAngle { get { return ((double)(guidanceLineSteerAngle) * 0.1) + "\u00B0"; } }
@@ -1300,7 +1300,7 @@ namespace OpenGrade
         public string TotalStepDistance { get { return Math.Round(fixStepDist, 3).ToString(); } }
 
         public string WorkSwitchValue { get { return mc.workSwitchValue.ToString(); } }
-        public string AgeDiff { get { return pn.ageDiff.ToString(); } }
+        public string AgeDiff { get { return Math.Round(pn.ageDiff, 1).ToString(); } }
 
         //Metric and Imperial Properties
         public string SpeedMPH
@@ -1422,7 +1422,8 @@ namespace OpenGrade
                 }
 
                 //GPS Update rate
-                lblFixUpdateHz.Text = NMEAHz + " Hz " + FixQuality + " " + (int)(frameTime) + "ms";
+                if(pn.fixQuality == 4 || pn.fixQuality == 5) lblFixUpdateHz.Text = NMEAHz + " Hz " + FixQuality + " " + AgeDiff + " " + (int)(frameTime) + "ms";
+                else lblFixUpdateHz.Text = NMEAHz + " Hz " + FixQuality + " " + (int)(frameTime) + "ms";
 
                 //1 for every .100 of a second update all status ,now 10hz was 4hz
                 if (statusUpdateCounter > 1)
@@ -1495,11 +1496,17 @@ namespace OpenGrade
                     //check for the fix quality
                     if (pn.fixQuality != 4 && lastFixQuality == 4)
                     {
-                        var form = new FormTimedMessage(1000, "Lost RTK fix", "RTK fix is lost!");
+                        var form = new FormTimedMessage(5000, "Lost RTK fix", "RTK fix is lost!");
                         form.Show();
                     }
 
                     lastFixQuality = pn.fixQuality;
+
+                    if (pn.fixQuality == 4 && pn.ageDiff > 10 && pn.ageDiff < 11)
+                    {
+                        var form = new FormTimedMessage(5000, "RTK age over 10 sec", " Check RTK correction");
+                        form.Show();
+                    }
 
                     if (cutDelta == 9999)
                     {

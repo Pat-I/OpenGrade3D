@@ -75,6 +75,7 @@ namespace OpenGrade
         //other GIS Info
         public double altitude, speed;
         public double headingTrue, hdop, ageDiff;
+        public double GPSroll, GPSpitch, GPSyawRate;
 
         public int fixQuality;
         public int satellitesTracked;
@@ -133,8 +134,31 @@ namespace OpenGrade
                 words = nextNMEASentence.Split(',');
                 if (words.Length < 9) return;
 
-                if (words[0] == "$GPGGA" | words[0] == "$GNGGA") ParseGGA();
-                if (words[0] == "$GPVTG" | words[0] == "$GNVTG") ParseVTG();
+                //if (words.Length < 3) break; from AgIO v5.6
+
+                if ((words[0] == "$GPGGA" || words[0] == "$GNGGA") && words.Length > 13)
+                {
+                    ParseGGA();
+                    //if (isGPSSentencesOn) ggaSentence = nextNMEASentence; from AgIO v5.6
+                }
+
+                else if ((words[0] == "$GPVTG" || words[0] == "$GNVTG") && words.Length > 7)
+                {
+                    ParseVTG();
+                    //if (isGPSSentencesOn) vtgSentence = nextNMEASentence; from AgIO v5.6from 
+                }
+
+                else if (words[0] == "$PAOGI" && words.Length > 14)
+                {
+                    ParseOGI();
+                    //if (isGPSSentencesOn) paogiSentence = nextNMEASentence; from AgIO v5.6
+                }
+
+                else if (words[0] == "$PANDA" && words.Length > 14)
+                {
+                    ParsePANDA();
+                    //if (isGPSSentencesOn) pandaSentence = nextNMEASentence; from AgIO v5.6
+                }
             }// while still data
         }
 
@@ -244,6 +268,226 @@ namespace OpenGrade
 
                 //a valid VTG so set the flag
                 updatedVTG = true;
+
+                //average the speeds for display, not calcs
+                mf.avgSpeed[mf.ringCounter] = speed;
+                if (mf.ringCounter++ > 8) mf.ringCounter = 0;
+            }
+        }
+
+        private void ParseOGI()
+        {
+            #region PAOGI Message
+            /*
+            $PAOGI
+            (1) 123519 Fix taken at 1219 UTC
+
+            Roll corrected position
+            (2,3) 4807.038,N Latitude 48 deg 07.038' N
+            (4,5) 01131.000,E Longitude 11 deg 31.000' E
+
+            (6) 1 Fix quality: 
+                0 = invalid
+                1 = GPS fix(SPS)
+                2 = DGPS fix
+                3 = PPS fix
+                4 = Real Time Kinematic
+                5 = Float RTK
+                6 = estimated(dead reckoning)(2.3 feature)
+                7 = Manual input mode
+                8 = Simulation mode
+            (7) Number of satellites being tracked
+            (8) 0.9 Horizontal dilution of position
+            (9) 545.4 Altitude (ALWAYS in Meters, above mean sea level)
+            (10) 1.2 time in seconds since last DGPS update
+
+            (11) 022.4 Speed over the ground in knots - can be positive or negative
+
+            FROM AHRS:
+            (12) Heading in degrees
+            (13) Roll angle in degrees(positive roll = right leaning - right down, left up)
+            (14) Pitch angle in degrees(Positive pitch = nose up)
+            (15) Yaw Rate in Degrees / second
+
+            * CHKSUM
+            */
+            #endregion PAOGI Message
+
+            if (!string.IsNullOrEmpty(words[1]) && !string.IsNullOrEmpty(words[2]) && !string.IsNullOrEmpty(words[3])
+                && !string.IsNullOrEmpty(words[4]) && !string.IsNullOrEmpty(words[5]))
+            {
+
+                double temp;
+                //get latitude and convert to decimal degrees
+                double.TryParse(words[2].Substring(0, 2), NumberStyles.Float, CultureInfo.InvariantCulture, out latitude);
+                double.TryParse(words[2].Substring(2), NumberStyles.Float, CultureInfo.InvariantCulture, out temp);
+                temp *= 0.01666666666666666666666666666667;
+                latitude += temp;
+                if (words[3] == "S")
+                {
+                    latitude *= -1;
+                    hemisphere = 'S';
+                }
+                else { hemisphere = 'N'; }
+
+                //get longitude and convert to decimal degrees
+                double.TryParse(words[4].Substring(0, 3), NumberStyles.Float, CultureInfo.InvariantCulture, out longitude);
+                double.TryParse(words[4].Substring(3), NumberStyles.Float, CultureInfo.InvariantCulture, out temp);
+                longitude += temp * 0.01666666666666666666666666666667;
+
+                { if (words[5] == "W") longitude *= -1; }
+
+                //calculate zone and UTM coords
+                DecDeg2UTM();
+
+                //FixQuality
+                int.TryParse(words[6], NumberStyles.Float, CultureInfo.InvariantCulture, out fixQuality);
+
+                //satellites tracked
+                int.TryParse(words[7], NumberStyles.Float, CultureInfo.InvariantCulture, out satellitesTracked);
+
+                //hdop
+                double.TryParse(words[8], NumberStyles.Float, CultureInfo.InvariantCulture, out hdop);
+
+                //altitude
+                double.TryParse(words[9], NumberStyles.Float, CultureInfo.InvariantCulture, out altitude);
+
+                //kph for speed - knots read
+                double.TryParse(words[11], NumberStyles.Float, CultureInfo.InvariantCulture, out speed);
+
+                //Dual antenna derived heading
+                double.TryParse(words[12], NumberStyles.Float, CultureInfo.InvariantCulture, out headingTrue);
+
+                //roll
+                double.TryParse(words[13], NumberStyles.Float, CultureInfo.InvariantCulture, out GPSroll);
+                GPSroll *= 0.1;
+
+                //age
+                double.TryParse(words[10], NumberStyles.Float, CultureInfo.InvariantCulture, out ageDiff);
+
+                //Pitch
+                double.TryParse(words[14], NumberStyles.Float, CultureInfo.InvariantCulture, out GPSpitch);
+                GPSpitch *= 0.1;
+
+                //Yaw rate
+                double.TryParse(words[15], NumberStyles.Float, CultureInfo.InvariantCulture, out GPSyawRate);
+
+                //a valid VTG so set the flag
+                updatedVTG = true;
+                updatedGGA = true;
+                mf.recvCounter = 0;
+
+                //average the speeds for display, not calcs
+                mf.avgSpeed[mf.ringCounter] = speed;
+                if (mf.ringCounter++ > 8) mf.ringCounter = 0;
+            }
+        }
+
+        private void ParsePANDA()
+        {
+            #region PANDA Message
+            /*
+            $PANDA
+            (1) Time of fix
+
+            position
+            (2,3) 4807.038,N Latitude 48 deg 07.038' N
+            (4,5) 01131.000,E Longitude 11 deg 31.000' E
+
+            (6) 1 Fix quality: 
+                0 = invalid
+                1 = GPS fix(SPS)
+                2 = DGPS fix
+                3 = PPS fix
+                4 = Real Time Kinematic
+                5 = Float RTK
+                6 = estimated(dead reckoning)(2.3 feature)
+                7 = Manual input mode
+                8 = Simulation mode
+            (7) Number of satellites being tracked
+            (8) 0.9 Horizontal dilution of position
+            (9) 545.4 Altitude (ALWAYS in Meters, above mean sea level)
+            (10) 1.2 time in seconds since last DGPS update
+            (11) Speed in knots
+
+            FROM IMU:
+            (12) Heading in degrees
+            (13) Roll angle in degrees(positive roll = right leaning - right down, left up)
+            
+            (14) Pitch angle in degrees(Positive pitch = nose up)
+            (15) Yaw Rate in Degrees / second
+
+            * CHKSUM
+            */
+            #endregion PANDA Message
+
+            if (!string.IsNullOrEmpty(words[1]) && !string.IsNullOrEmpty(words[2]) && !string.IsNullOrEmpty(words[3])
+                && !string.IsNullOrEmpty(words[3]) && !string.IsNullOrEmpty(words[0]))
+            {
+
+
+                double temp;
+                //get latitude and convert to decimal degrees
+                double.TryParse(words[2].Substring(0, 2), NumberStyles.Float, CultureInfo.InvariantCulture, out latitude);
+                double.TryParse(words[2].Substring(2), NumberStyles.Float, CultureInfo.InvariantCulture, out temp);
+                temp *= 0.01666666666666666666666666666667;
+                latitude += temp;
+                if (words[3] == "S")
+                {
+                    latitude *= -1;
+                    hemisphere = 'S';
+                }
+                else { hemisphere = 'N'; }
+
+                //get longitude and convert to decimal degrees
+                double.TryParse(words[4].Substring(0, 3), NumberStyles.Float, CultureInfo.InvariantCulture, out longitude);
+                double.TryParse(words[4].Substring(3), NumberStyles.Float, CultureInfo.InvariantCulture, out temp);
+                longitude += temp * 0.01666666666666666666666666666667;
+
+                { if (words[5] == "W") longitude *= -1; }
+
+                //calculate zone and UTM coords
+                DecDeg2UTM();
+
+                //FixQuality
+                int.TryParse(words[6], NumberStyles.Float, CultureInfo.InvariantCulture, out fixQuality);
+
+
+                //satellites tracked
+                int.TryParse(words[7], NumberStyles.Float, CultureInfo.InvariantCulture, out satellitesTracked);
+
+                //hdop
+                double.TryParse(words[8], NumberStyles.Float, CultureInfo.InvariantCulture, out hdop);
+
+
+                //altitude
+                double.TryParse(words[9], NumberStyles.Float, CultureInfo.InvariantCulture, out altitude);
+
+                //age
+                double.TryParse(words[10], NumberStyles.Float, CultureInfo.InvariantCulture, out ageDiff);
+
+                //kph for speed - knots read
+                double.TryParse(words[11], NumberStyles.Float, CultureInfo.InvariantCulture, out speed);
+
+                //imu heading
+                double.TryParse(words[12], NumberStyles.Float, CultureInfo.InvariantCulture, out headingTrue);
+
+                //roll
+                double.TryParse(words[13], NumberStyles.Float, CultureInfo.InvariantCulture, out GPSroll);
+                GPSroll *= 0.1;
+
+                //Pitch
+                double.TryParse(words[14], NumberStyles.Float, CultureInfo.InvariantCulture, out GPSpitch);
+                GPSpitch *= 0.1;
+
+                //YawRate
+                double.TryParse(words[15], NumberStyles.Float, CultureInfo.InvariantCulture, out GPSyawRate);
+
+
+                //a valid VTG so set the flag
+                updatedVTG = true;
+                updatedGGA = true;
+                mf.recvCounter = 0;
 
                 //average the speeds for display, not calcs
                 mf.avgSpeed[mf.ringCounter] = speed;
