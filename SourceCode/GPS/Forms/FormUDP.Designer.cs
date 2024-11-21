@@ -178,7 +178,7 @@
             this.label7.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.Location = new System.Drawing.Point(5, 8);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(570, 23);
+            this.label7.Size = new System.Drawing.Size(565, 23);
             this.label7.TabIndex = 70;
             this.label7.Text = "** You must RESTART OpenGrade for any changes to take effect!\r\n";
             // 
@@ -217,9 +217,9 @@
             this.label3.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(179, 123);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(45, 19);
+            this.label3.Size = new System.Drawing.Size(18, 19);
             this.label3.TabIndex = 84;
-            this.label3.Text = "8888";
+            this.label3.Text = "0";
             // 
             // label4
             // 
@@ -227,9 +227,9 @@
             this.label4.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(8, 38);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(98, 23);
+            this.label4.Size = new System.Drawing.Size(130, 23);
             this.label4.TabIndex = 83;
-            this.label4.Text = "Auto Steer";
+            this.label4.Text = "GNSS receiver";
             // 
             // label5
             // 
@@ -260,19 +260,9 @@
             0,
             0,
             0});
-            this.nudAutoSteerPort.Minimum = new decimal(new int[] {
-            1025,
-            0,
-            0,
-            0});
             this.nudAutoSteerPort.Name = "nudAutoSteerPort";
             this.nudAutoSteerPort.Size = new System.Drawing.Size(96, 30);
             this.nudAutoSteerPort.TabIndex = 80;
-            this.nudAutoSteerPort.Value = new decimal(new int[] {
-            8888,
-            0,
-            0,
-            0});
             // 
             // tboxAutoSteerIP
             // 
@@ -281,7 +271,7 @@
             this.tboxAutoSteerIP.Name = "tboxAutoSteerIP";
             this.tboxAutoSteerIP.Size = new System.Drawing.Size(167, 30);
             this.tboxAutoSteerIP.TabIndex = 79;
-            this.tboxAutoSteerIP.Text = "192.168.1.255";
+            this.tboxAutoSteerIP.Text = "192.168.5.255";
             this.tboxAutoSteerIP.Validating += new System.ComponentModel.CancelEventHandler(this.tboxAutoSteerIP_Validating);
             // 
             // label8
@@ -292,7 +282,8 @@
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(45, 19);
             this.label8.TabIndex = 90;
-            this.label8.Text = "7777";
+            this.label8.Text = "8888";
+            this.label8.Click += new System.EventHandler(this.label8_Click);
             // 
             // label11
             // 
@@ -300,9 +291,9 @@
             this.label11.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label11.Location = new System.Drawing.Point(8, 201);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(113, 23);
+            this.label11.Size = new System.Drawing.Size(145, 23);
             this.label11.TabIndex = 89;
-            this.label11.Text = "Rate Control";
+            this.label11.Text = "Machine Control";
             // 
             // label12
             // 
@@ -342,7 +333,7 @@
             this.nudRateRelayPort.Size = new System.Drawing.Size(96, 30);
             this.nudRateRelayPort.TabIndex = 86;
             this.nudRateRelayPort.Value = new decimal(new int[] {
-            7777,
+            8888,
             0,
             0,
             0});
@@ -354,7 +345,7 @@
             this.tboxRateRelayIP.Name = "tboxRateRelayIP";
             this.tboxRateRelayIP.Size = new System.Drawing.Size(167, 30);
             this.tboxRateRelayIP.TabIndex = 85;
-            this.tboxRateRelayIP.Text = "192.168.1.255";
+            this.tboxRateRelayIP.Text = "192.168.5.255";
             this.tboxRateRelayIP.TextChanged += new System.EventHandler(this.tboxRateRelayIP_TextChanged);
             // 
             // groupBox1

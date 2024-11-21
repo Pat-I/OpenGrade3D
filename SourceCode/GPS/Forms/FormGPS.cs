@@ -712,6 +712,8 @@ namespace OpenGrade
             //try and open
             SerialPortOpenGPS();
 
+            LoadUDPNetwork(); // from AgIO v6.3.3
+
             //same for SectionRelay port
             portNameRelaySection = Settings.Default.setPort_portNameRateRelay;
             wasRateRelayConnectedLastRun = Settings.Default.setPort_wasRateRelayConnected;
@@ -920,7 +922,7 @@ namespace OpenGrade
 
             return texture[0];
         }
-
+        /*
         //start the UDP server
         private void StartUDPServer()
         {
@@ -964,7 +966,7 @@ namespace OpenGrade
                 MessageBox.Show("Load Error: " + e.Message, "UDP Server", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
+        */
         //dialog for requesting user to save or cancel
         public int SaveOrNot()
         {

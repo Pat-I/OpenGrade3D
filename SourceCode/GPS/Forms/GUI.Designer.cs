@@ -1811,6 +1811,7 @@ namespace OpenGrade
             {
                     isNTRIP_RequiredOn = true;
                     stripDistance.Text = gStr.gsWaiting;
+                    lblWatch.Text = "Waiting";
             }
             
 
@@ -1820,6 +1821,7 @@ namespace OpenGrade
                 if (!isNTRIP_Starting && ntripCounter > 20)
                 {
                     StartNTRIP();
+                    lblWatch.Text = "Starting";
                 }
             }
 
@@ -1829,6 +1831,7 @@ namespace OpenGrade
                 {
                     TimedMessageBox(2000, gStr.gsSocketConnectionProblem, gStr.gsNotConnectingToCaster);
                     ReconnectRequest();
+                    lblWatch.Text = "reconnect";
                 }
                 if (clientSocket != null && clientSocket.Connected)
                 {
@@ -1836,6 +1839,7 @@ namespace OpenGrade
                     //ReconnectRequest();
                     //return;
                     SendAuthorization();
+                    lblWatch.Text = "autorizing";
                 }
 
             }
@@ -1868,7 +1872,7 @@ namespace OpenGrade
         }
 
 
-        //Timer triggers at 50 msec, 20 hz, and is THE clock of the whole program//
+        //Timer triggers at 25 msec, 40 hz, and is THE clock of the whole program// changed 24-11
         private void tmrWatchdog_tick(object sender, EventArgs e)
         {
             if (!stopTheProgram)
@@ -1881,7 +1885,7 @@ namespace OpenGrade
                 //tmrWatchdog.Enabled = true;
                 statusUpdateCounter++;
 
-                if (fiveSecondCounter++ > 20)
+                if (fiveSecondCounter++ > 40)
                 {
                     //do all the NTRIP routines
                     if (sp.IsOpen) DoNTRIPSecondRoutine(); // Only when gps port is open
@@ -1894,7 +1898,7 @@ namespace OpenGrade
                 else lblFixUpdateHz.Text = NMEAHz + " Hz " + FixQuality + " " + (int)(frameTime) + "ms";
 
                 //1 for every .100 of a second update all status ,now 10hz was 4hz
-                if (statusUpdateCounter > 1)
+                if (statusUpdateCounter > 3)
                 {
                     //reset the counter
                     statusUpdateCounter = 0;

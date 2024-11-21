@@ -95,5 +95,10 @@ namespace OpenGrade
                 mf.TimedMessageBox(3000, "Invalid IP Address", "Set to Default Local 127.0.0.1");
             }
         }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

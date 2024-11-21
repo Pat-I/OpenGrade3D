@@ -1,12 +1,27 @@
 
-Update December 2020
+Update April 21 2022
 
 Last ino is ValveControlPropLever.
 It will save the setting to EEPROM
 
-It has code for a proportional lever. You have to edit it to use it without lever.
+Check at the beginning of the ino for settings
+You can set(true or false):
+Proportional valve; if false Cytron will only output 0 or 255.
 
-Update april 2021
+WorkButton --- the ino needs a signal to enter in automode, true momentory button, false continus btn
 
-New ino with outputs for up and down lights.
-use only pin A1 for the prop lever!
+lever or swiches for manual blade control are optional. Set to true if needed.
+None present:
+bool manualMovePropLever = false;
+bool invertManMove = false;
+bool manualMoveBtn = false;
+
+lever or swiches for manual offset control are optional. Set to true if needed.
+None present:
+bool bladeOffsetPropLever = false;
+bool invertBladeOffset = false;
+bool bladeOffsetBtn = false;
+
+
+
+
