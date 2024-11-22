@@ -16,7 +16,6 @@ C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\Ope
 C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGrade.Properties.Resources.resources
 C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGrade3D.csproj.GenerateResource.cache
 C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGrade3D.csproj.CoreCompileInputs.cache
-C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGrade3D.csproj.CopyComplete
 C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\Application\OpenGrade3D.exe.config
 C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\Application\OpenGrade3D.exe
 C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\Application\OpenGrade3D.pdb
@@ -56,3 +55,4 @@ C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\Ope
 C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGrade.FormNtrip.resources
 C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGrade.Forms.FormNumeric.resources
 C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGrade3D.csproj.AssemblyReference.cache
+C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGrad.B436895E.Up2Date

@@ -13,9 +13,9 @@ namespace OpenGrade
         public int incomingInt;
 
         // PGN - 32762 - 127.250
-        public static int numRelayRateDataItems = 3;
+        public static int numRelayRateDataItems = 8;
         public byte[] relayRateData = new byte[numRelayRateDataItems];
-        public int rdHeaderHi, rdHeaderLo = 1, cutValve = 2; // rdYouTurnControlByte = 6
+        public int rdHeaderHi, rdHeaderLo = 1, cutValve = 2, bladeOffset = 3, optOut1 = 4, optOut2 = 5, optOut3 = 6, optOut4 = 7; // rdYouTurnControlByte = 6
 
         // PGN - 32760 - 127.248
         public static int numRelayRateSettingsItems = 10;
@@ -65,7 +65,13 @@ namespace OpenGrade
         {
             relayRateData[rdHeaderHi] = 127; // PGN - 32762
             relayRateData[rdHeaderLo] = 250; 
-            relayRateData[cutValve] = 101;
+            relayRateData[cutValve] = 100;
+            relayRateData[bladeOffset] = 100;
+            relayRateData[optOut1] = 0;
+            relayRateData[optOut2] = 0;
+            relayRateData[optOut3] = 0;
+            relayRateData[optOut4] = 0;
+
             mf.RateRelayDataOutToPort(); // etait mf.RateRelayOutToPort(relayRateData, numRelayRateDataItems);
 
             relayRateSettings[rsHeaderHi] = 127; // PGN - 32760 Added by Pat

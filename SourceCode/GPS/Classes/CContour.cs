@@ -238,6 +238,7 @@ namespace OpenGrade
 
         //
         public int eleViewListCount = 300;
+        public int ScaleFactor = 100;
 
         public double maxAltitude = -9999, minAltitude = 9999, maxCut = 0, maxFill = 0, midAltitude;
 
@@ -600,7 +601,7 @@ namespace OpenGrade
 
                     if (markBM)
                     {
-
+                        surveyList.Clear();
                         SurveyPt point = new SurveyPt(mf.pn.easting, mf.pn.northing, mf.pn.latitude, mf.pn.longitude, mf.pn.altitude, 0, mf.pn.fixQuality);
                         surveyList.Add(point);
 
@@ -704,6 +705,7 @@ namespace OpenGrade
                     mf.FileSaveSurveyPt();
 
                     recSurveyPt = false;
+                    isBtnStartPause = false;
                 }
             }
 
@@ -751,7 +753,7 @@ namespace OpenGrade
 
 
             }
-            else
+            else //Grading mode
             {
                 //now paint the map, by Pat
                 int ptCount = mapList.Count;
@@ -764,7 +766,7 @@ namespace OpenGrade
                     if (drawTheMap)
                     {
                         // Search for the max min painting values
-
+                        drawTheMap = false;
 
                         maxAltitude = -9999; minAltitude = 9999; maxCut = 0; maxFill = 0;
                         for (int h = 0; h < ptCount; h++)
@@ -784,8 +786,11 @@ namespace OpenGrade
                             }
                         }
 
-                        //if (maxCut == 9999) maxCut = 0;
-                        //if (maxFill == -9999) maxFill = 0;
+                        //maxCut is negative
+                        //maxFill is positive
+                        // equalize maxcut and maxfill
+                        if (Math.Abs(maxCut) < maxFill) maxCut = -maxFill;
+                        else if (maxFill < Math.Abs(maxCut)) maxFill = -maxCut;
 
                         midAltitude = ((maxAltitude + minAltitude) / 2);
 
@@ -800,10 +805,23 @@ namespace OpenGrade
                     }
                     // begin painting
 
-                    double red = 0, green = 0, blue = 0;
+                    int red, green, blue;
+                    int redCenterI = mf.redCenter, grnCenterI = mf.grnCenter, bluCenterI = mf.bluCenter;
+                    int redFillI = mf.redFill, grnFillI = mf.grnFill, bluFillI = mf.bluFill;
+                    int redCutI = mf.redCut, grnCutI = mf.grnCut, bluCutI = mf.bluCut;
+
+                    int redCutMidI = mf.redCutMid, grnCutMidI = mf.grnCutMid, bluCutMidI = mf.bluCutMid;
+                    int redCutMinI = mf.redCutMin, grnCutMinI = mf.grnCutMin, bluCutMinI = mf.bluCutMin;
+
+                    int redFillMidI = mf.redFillMid, grnFillMidI = mf.grnFillMid, bluFillMidI = mf.bluFillMid;
+                    int redFillMinI = mf.redFillMin, grnFillMinI = mf.grnFillMin, bluFillMinI = mf.bluFillMin;
+
                     double drawPtWidth;
                     double easting;
                     double northing;
+
+                    // this is the value for color selection
+                    int fillIndex = 0; // from -1000 (max fill/ min alt)-- 0 (0 cut/average alt) to 1000 (max cut/ max alt), 99999 for black
 
                     //set the width of painting
 
@@ -812,10 +830,10 @@ namespace OpenGrade
 
                     if (camPitch > -20) camPitch = -20;
 
-                    double paintEastingMax = mf.pn.easting + zoom * -camPitch/2;
-                    double paintEastingMin = mf.pn.easting - zoom * -camPitch/2;
-                    double paintNorthingMax = mf.pn.northing + zoom * -camPitch/2;
-                    double paintNorthingMin = mf.pn.northing - zoom * -camPitch/2;
+                    int paintEastingMax = (int)(mf.pn.easting + zoom * -camPitch/2);
+                    int paintEastingMin = (int)(mf.pn.easting - zoom * -camPitch/2);
+                    int paintNorthingMax = (int)(mf.pn.northing + zoom * -camPitch/2);
+                    int paintNorthingMin = (int)(mf.pn.northing - zoom * -camPitch/2);
 
                     gl.Begin(OpenGL.GL_QUADS);
 
@@ -823,148 +841,304 @@ namespace OpenGrade
                     {
                         if (mapList[h].eastingMap < paintEastingMax && mapList[h].eastingMap > paintEastingMin && mapList[h].northingMap < paintNorthingMax && mapList[h].northingMap > paintNorthingMin)
                         {
-
-
                             // paint the cut fill value
                             if (!isElevation)
                             {
+                                    if (mapList[h].cutDeltaMap != 9999)
+                                    {
+                                        if (mapList[h].cutDeltaMap == 0)
+                                        {
+                                        //red = mf.redCenter;
+                                        //green = mf.redCenter;
+                                        //blue = mf.bluCenter;
+                                        fillIndex = 0;
+                                        }
+                                        else if (isActualCut && mapList[h].lastPassRealAltitudeMap > 0 && mapList[h].cutDeltaMap < 0) // to cut
+                                        {
+                                        //check for lastpass to not be greater than actual alt
+                                        double actAlt = mapList[h].lastPassRealAltitudeMap;
+                                        if (actAlt > mapList[h].altitudeMap) actAlt = mapList[h].altitudeMap;
+
+                                            double toCut = actAlt - mapList[h].cutAltitudeMap;
+
+                                        //red = (1 + (toCut / maxCut)) * mf.redCenter + -(toCut / maxCut) * mf.redCut;
+                                        //green = (1 + (toCut / maxCut)) * mf.grnCenter + -(toCut / maxCut) * mf.grnCut;
+                                        //blue = (1 + (toCut / maxCut)) * mf.bluCenter + -(toCut / maxCut) * mf.bluCut;
+                                        fillIndex = (int)((toCut / maxCut) * -1000);// positive
+
+                                    }
+                                        else if (isActualFill && mapList[h].lastPassRealAltitudeMap > 0) // to fill and cut
+                                        {
+                                        double actAlt = mapList[h].lastPassRealAltitudeMap;
+                                        if (actAlt > mapList[h].altitudeMap && mapList[h].cutAltitudeMap <= mapList[h].altitudeMap) actAlt = mapList[h].altitudeMap; // to 
+                                        if (actAlt > mapList[h].cutAltitudeMap && mapList[h].altitudeMap <= mapList[h].cutAltitudeMap) actAlt = mapList[h].cutAltitudeMap;
+                                            double toCut = actAlt - mapList[h].cutAltitudeMap;
+
+                                        //red = (1 + (toCut / maxCut)) * mf.redCenter + -(toCut / maxCut) * mf.redCut;
+                                        //green = (1 + (toCut / maxCut)) * mf.grnCenter + -(toCut / maxCut) * mf.grnCut;
+                                        //blue = (1 + (toCut / maxCut)) * mf.bluCenter + -(toCut / maxCut) * mf.bluCut;
+                                        if (toCut > 0) // still to cut
+                                        {
+                                            fillIndex = (int)((toCut / maxCut) * -1000); // positive
+                                        }
+                                        else
+                                        {
+                                            fillIndex = (int)((toCut / maxFill) * 1000); // to fill, negative
+                                        }
+                                    }
+                                        else
+                                        {
+                                            //to fill
+
+                                            if (mapList[h].cutDeltaMap > 0)
+                                            {
+                                            //red = (1 - (mapList[h].cutDeltaMap / maxFill)) * mf.redCenter + (mapList[h].cutDeltaMap / maxFill) * mf.redFill;
+                                            //green = (1 - (mapList[h].cutDeltaMap / maxFill)) * mf.grnCenter + (mapList[h].cutDeltaMap / maxFill) * mf.grnFill;
+                                            //blue = (1 - (mapList[h].cutDeltaMap / maxFill)) * mf.bluCenter + (mapList[h].cutDeltaMap / maxFill) * mf.bluFill;
+                                            //red = redCenterI - (redCenterI - redFillI) * (mapList[h].cutDeltaMap / maxFill);
+                                            //green = grnCenterI - (grnCenterI - grnFillI) * (mapList[h].cutDeltaMap / maxFill);
+                                            //blue = bluCenterI - (bluCenterI - bluFillI) * (mapList[h].cutDeltaMap / maxFill);
+                                            fillIndex = (int)((mapList[h].cutDeltaMap / maxFill) * -1000);//negative
+                                            }
+                                            //to cut
 
 
-                                if (mapList[h].cutDeltaMap != 9999)
+                                            if (mapList[h].cutDeltaMap <= 0)
+                                            {
+                                                //red = (1 - (mapList[h].cutDeltaMap / maxCut)) * mf.redCenter + (mapList[h].cutDeltaMap / maxCut) * mf.redCut;
+                                                //green = (1 - (mapList[h].cutDeltaMap / maxCut)) * mf.grnCenter + (mapList[h].cutDeltaMap / maxCut) * mf.grnCut;
+                                                //blue = (1 - (mapList[h].cutDeltaMap / maxCut)) * mf.bluCenter + (mapList[h].cutDeltaMap / maxCut) * mf.bluCut;
+                                                //red = redCenterI - (redCenterI - redCutI) * (mapList[h].cutDeltaMap / maxCut);
+                                                //green = grnCenterI - (grnCenterI - grnCutI) * (mapList[h].cutDeltaMap / maxCut);
+                                                //blue = bluCenterI - (bluCenterI - bluCutI) * (mapList[h].cutDeltaMap / maxCut);
+                                                fillIndex = (int)((mapList[h].cutDeltaMap / maxCut) * 1000);//positive
+                                        }
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                    //red = 0;
+                                    //green = 0;
+                                    //blue = 0;
+                                    fillIndex = 99999;
+                                    }
+
+
+
+                                }
+                                else
+                                // paint the desired altutude
                                 {
-                                    if (mapList[h].cutDeltaMap == 0)
+                                    if (isExistingElevation)
+                                    {
+                                        if (mapList[h].altitudeMap > 0)
+                                        {
+                                            if (mapList[h].altitudeMap == midAltitude)
+                                            {
+                                            //red = mf.redCenter;
+                                            //green = mf.redCenter;
+                                            //blue = mf.bluCenter;
+                                            fillIndex = 0;
+                                            }
+
+                                            if (mapList[h].altitudeMap < midAltitude)
+                                            {
+                                            //red = (1 - (mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude)) * mf.redCenter + (mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude) * mf.redFill;
+                                            //green = (1 - (mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude)) * mf.grnCenter + (mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude) * mf.grnFill;
+                                            //blue = (1 - (mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude)) * mf.bluCenter + (mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude) * mf.bluFill;
+                                            fillIndex = (int)((mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude) * -1000);//negative
+                                        }
+
+                                            if (mapList[h].altitudeMap > midAltitude)
+                                            {
+                                            //red = (1 - (mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude)) * mf.redCenter + (mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude) * mf.redCut;
+                                            //green = (1 - (mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude)) * mf.grnCenter + (mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude) * mf.grnCut;
+                                            //blue = (1 - (mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude)) * mf.bluCenter + (mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude) * mf.bluCut;
+                                            fillIndex = (int)((mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude) * 1000);//positive
+                                        }
+
+                                        }
+                                        else
+                                        {
+                                        //red = 0;
+                                        //green = 0;
+                                        //blue = 0;
+                                        fillIndex = 99999;
+                                        }
+                                    }
+                                    else // proposed elevation
+                                    {
+
+
+                                        if (mapList[h].cutAltitudeMap != -1)
+                                        {
+                                            if (mapList[h].cutAltitudeMap == midAltitude)
+                                            {
+                                            //red = mf.redCenter;
+                                            //green = mf.redCenter;
+                                            //blue = mf.bluCenter;
+                                            fillIndex = 0;
+                                            }
+
+                                            if (mapList[h].cutAltitudeMap < midAltitude)
+                                            {
+                                            //red = (1 - (mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude)) * mf.redCenter + (mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude) * mf.redFill;
+                                            //green = (1 - (mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude)) * mf.grnCenter + (mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude) * mf.grnFill;
+                                            //blue = (1 - (mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude)) * mf.bluCenter + (mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude) * mf.bluFill;
+                                            fillIndex = (int)((mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude) * -1000);//negative
+                                        }
+
+                                            if (mapList[h].cutAltitudeMap > midAltitude)
+                                            {
+                                            //red = (1 - (mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude)) * mf.redCenter + (mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude) * mf.redCut;
+                                            //green = (1 - (mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude)) * mf.grnCenter + (mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude) * mf.grnCut;
+                                            //blue = (1 - (mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude)) * mf.bluCenter + (mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude) * mf.bluCut;
+                                            fillIndex = (int)((mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude) * 1000);//positive
+                                        }
+                                        }
+                                        else
+                                        {
+                                        //red = 0;
+                                        //green = 0;
+                                        //blue = 0;
+                                        fillIndex = 99999;
+                                        }
+                                    }
+
+                                }
+
+                            // fill the color with the index
+                            if (fillIndex == 99999) //black
+                            {
+                                red = 0;
+                                green = 0;
+                                blue = 0;
+                            }                           
+                            else
+                            {
+                                fillIndex = fillIndex * ScaleFactor / 100;
+
+                                if (fillIndex < -1000) fillIndex = -1000;
+                                if (fillIndex > 1000) fillIndex = 1000;
+
+                                if (mf.isGradual)
+                                {
+                                    if (fillIndex == 0) // center
                                     {
                                         red = mf.redCenter;
-                                        green = mf.redCenter;
+                                        green = mf.grnCenter;
                                         blue = mf.bluCenter;
                                     }
-                                    else if (isActualCut && mapList[h].lastPassRealAltitudeMap > 0 && mapList[h].cutDeltaMap > 0)
+                                    else if (fillIndex > 0)// cut or abvove avg alt
                                     {
-                                        double toCut = mapList[h].lastPassRealAltitudeMap - mapList[h].cutAltitudeMap;
-
-                                        red = (1 + (toCut / maxCut)) * mf.redCenter + -(toCut / maxCut) * mf.redCut;
-                                        green = (1 + (toCut / maxCut)) * mf.grnCenter + -(toCut / maxCut) * mf.grnCut;
-                                        blue = (1 + (toCut / maxCut)) * mf.bluCenter + -(toCut / maxCut) * mf.bluCut;
+                                        red = (1000 * redCenterI - (redCenterI - redCutI) * fillIndex) / 1000;
+                                        green = (1000 * grnCenterI - (grnCenterI - grnCutI) * fillIndex) / 1000;
+                                        blue = (1000 * bluCenterI - (bluCenterI - bluCutI) * fillIndex) / 1000;
                                     }
-                                    else if (isActualFill && mapList[h].lastPassRealAltitudeMap > 0)
+                                    else // fill or below avg alt
                                     {
-                                        double toCut = mapList[h].lastPassRealAltitudeMap - mapList[h].cutAltitudeMap;
-
-                                        red = (1 + (toCut / maxCut)) * mf.redCenter + -(toCut / maxCut) * mf.redCut;
-                                        green = (1 + (toCut / maxCut)) * mf.grnCenter + -(toCut / maxCut) * mf.grnCut;
-                                        blue = (1 + (toCut / maxCut)) * mf.bluCenter + -(toCut / maxCut) * mf.bluCut;
-                                    }
-                                    else
-                                    {
-                                        //to fill
-
-                                        if (mapList[h].cutDeltaMap > 0)
-                                        {
-                                            red = (1 - (mapList[h].cutDeltaMap / maxFill)) * mf.redCenter + (mapList[h].cutDeltaMap / maxFill) * mf.redFill;
-                                            green = (1 - (mapList[h].cutDeltaMap / maxFill)) * mf.grnCenter + (mapList[h].cutDeltaMap / maxFill) * mf.grnFill;
-                                            blue = (1 - (mapList[h].cutDeltaMap / maxFill)) * mf.bluCenter + (mapList[h].cutDeltaMap / maxFill) * mf.bluFill;
-                                        }
-                                        //to cut
-
-
-                                        if (mapList[h].cutDeltaMap < 0)
-                                        {
-                                            red = (1 - (mapList[h].cutDeltaMap / maxCut)) * mf.redCenter + (mapList[h].cutDeltaMap / maxCut) * mf.redCut;
-                                            green = (1 - (mapList[h].cutDeltaMap / maxCut)) * mf.grnCenter + (mapList[h].cutDeltaMap / maxCut) * mf.grnCut;
-                                            blue = (1 - (mapList[h].cutDeltaMap / maxCut)) * mf.bluCenter + (mapList[h].cutDeltaMap / maxCut) * mf.bluCut;
-                                        }
-                                    }
-
-                                }
-                                else
-                                {
-                                    red = 0;
-                                    green = 0;
-                                    blue = 0;
-                                }
-
-
-
-                            }
-                            else
-                            // paint the desired altutude
-                            {
-                                if (isExistingElevation)
-                                {
-                                    if (mapList[h].altitudeMap > 0)
-                                    {
-                                        if (mapList[h].altitudeMap == midAltitude)
-                                        {
-                                            red = mf.redCenter;
-                                            green = mf.redCenter;
-                                            blue = mf.bluCenter;
-                                        }
-
-                                        if (mapList[h].altitudeMap < midAltitude)
-                                        {
-                                            red = (1 - (mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude)) * mf.redCenter + (mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude) * mf.redFill;
-                                            green = (1 - (mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude)) * mf.grnCenter + (mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude) * mf.grnFill;
-                                            blue = (1 - (mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude)) * mf.bluCenter + (mapList[h].altitudeMap - midAltitude) / (minAltitude - midAltitude) * mf.bluFill;
-                                        }
-
-                                        if (mapList[h].altitudeMap > midAltitude)
-                                        {
-                                            red = (1 - (mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude)) * mf.redCenter + (mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude) * mf.redCut;
-                                            green = (1 - (mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude)) * mf.grnCenter + (mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude) * mf.grnCut;
-                                            blue = (1 - (mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude)) * mf.bluCenter + (mapList[h].altitudeMap - midAltitude) / (maxAltitude - midAltitude) * mf.bluCut;
-                                        }
-
-                                    }
-                                    else
-                                    {
-                                        red = 0;
-                                        green = 0;
-                                        blue = 0;
+                                        red = (1000 * redCenterI + (redCenterI - redFillI) * fillIndex) / 1000;
+                                        green = (1000 * grnCenterI + (grnCenterI - grnFillI) * fillIndex) / 1000;
+                                        blue = (1000 * bluCenterI + (bluCenterI - bluFillI) * fillIndex) / 1000;
+                                        
                                     }
                                 }
-                                else
+                                else if(mf.isGradualMulticolor)// is gradual multicolor
                                 {
-
-
-                                    if (mapList[h].cutAltitudeMap != -1)
+                                    if (fillIndex < -666)// from midfill to fill -1000 to -667
                                     {
-                                        if (mapList[h].cutAltitudeMap == midAltitude)
-                                        {
-                                            red = mf.redCenter;
-                                            green = mf.redCenter;
-                                            blue = mf.bluCenter;
-                                        }
-
-                                        if (mapList[h].cutAltitudeMap < midAltitude)
-                                        {
-                                            red = (1 - (mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude)) * mf.redCenter + (mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude) * mf.redFill;
-                                            green = (1 - (mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude)) * mf.grnCenter + (mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude) * mf.grnFill;
-                                            blue = (1 - (mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude)) * mf.bluCenter + (mapList[h].cutAltitudeMap - midAltitude) / (minAltitude - midAltitude) * mf.bluFill;
-                                        }
-
-                                        if (mapList[h].cutAltitudeMap > midAltitude)
-                                        {
-                                            red = (1 - (mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude)) * mf.redCenter + (mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude) * mf.redCut;
-                                            green = (1 - (mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude)) * mf.grnCenter + (mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude) * mf.grnCut;
-                                            blue = (1 - (mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude)) * mf.bluCenter + (mapList[h].cutAltitudeMap - midAltitude) / (maxAltitude - midAltitude) * mf.bluCut;
-                                        }
+                                        red = (333 * redFillMidI + (redFillMidI - redFillI) * (fillIndex + 667)) / 333;
+                                        green = (333 * grnFillMidI + (grnFillMidI - grnFillI) * (fillIndex + 667)) / 333;
+                                        blue = (333 * bluFillMidI + (bluFillMidI - bluFillI) * (fillIndex + 667)) / 333;
                                     }
-                                    else
+                                    else if (fillIndex < -332)// from minfill to mid fill -666 to -333
                                     {
-                                        red = 0;
-                                        green = 0;
-                                        blue = 0;
+                                        red = (334 * redFillMinI + (redFillMinI - redFillMidI) * (fillIndex + 333)) / 334;
+                                        green = (334 * grnFillMinI + (grnFillMinI - grnFillMidI) * (fillIndex + 333)) / 334;
+                                        blue = (334 * bluFillMinI + (bluFillMinI - bluFillMidI) * (fillIndex + 333)) / 334;
+                                    }
+                                    else if (fillIndex < 1)// from centre to minfill -332 to 0
+                                    {
+                                        red = (333 * redCenterI + (redCenterI - redFillMinI) * fillIndex) / 333;
+                                        green = (333 * grnCenterI + (grnCenterI - grnFillMinI) * fillIndex) / 333;
+                                        blue = (333 * bluCenterI + (bluCenterI - bluFillMinI) * fillIndex) / 333;
+                                    }
+                                    else if (fillIndex < 334) // from mincut to center from 1 to 333
+                                    {
+                                        red = (333 * redCutMinI + (redCutMinI - redCenterI) * (fillIndex - 333)) / 333;
+                                        green = (333 * grnCutMinI + (grnCutMinI - grnCenterI) * (fillIndex - 333)) / 333;
+                                        blue = (333 * bluCutMinI + (bluCutMinI - bluCenterI) * (fillIndex - 333)) / 333;
+                                    }
+                                    else if (fillIndex < 668) // from midcut to mincut from 334 to 667
+                                    {
+                                        red = (334 * redCutMidI + (redCutMidI - redCutMinI) * (fillIndex - 667)) / 334;
+                                        green = (334 * grnCutMidI + (grnCutMidI - grnCutMinI) * (fillIndex - 667)) / 334;
+                                        blue = (334 * bluCutMidI + (bluCutMidI - bluCutMinI) * (fillIndex - 667)) / 334;
+                                    }
+                                    else // from cut to midcut from 668 to 1000
+                                    {
+                                        red = (333 * redCutI + (redCutI - redCutMidI) * (fillIndex - 1000)) / 333;
+                                        green = (333 * grnCutI + (grnCutI - grnCutMidI) * (fillIndex - 1000)) / 333;
+                                        blue = (333 * bluCutI + (bluCutI - bluCutMidI) * (fillIndex - 1000)) / 333;
+                                    }
+                                }
+                                else // is step
+                                {
+                                    if (fillIndex > 710)// cut or abvove avg alt
+                                    {
+                                        red = redCutI;
+                                        green = grnCutI;
+                                        blue = bluCutI;
+                                    }
+                                    else if (fillIndex > 420)// cut or abvove avg alt
+                                    {
+                                        red = mf.redCutMid;
+                                        green = mf.grnCutMid;
+                                        blue = mf.bluCutMid;
+                                    }
+                                    else if (fillIndex > 130)// cut or abvove avg alt
+                                    {
+                                        red = mf.redCutMin;
+                                        green = mf.grnCutMin;
+                                        blue = mf.bluCutMin;
+                                    }
+                                    else if (fillIndex > -130) // center
+                                    {
+                                        red = mf.redCenter;
+                                        green = mf.grnCenter;
+                                        blue = mf.bluCenter;
+                                    }
+                                    else if (fillIndex > -420) // fill or below avg alt
+                                    {
+                                        red = mf.redFillMin;
+                                        green = mf.grnFillMin;
+                                        blue = mf.bluFillMin;
+                                    }
+                                    else if (fillIndex > -710) // fill or below avg alt
+                                    {
+                                        red = mf.redFillMid;
+                                        green = mf.grnFillMid;
+                                        blue = mf.bluFillMid;
+                                    }
+                                    else // fill or below avg alt
+                                    {
+                                        red = redFillI;
+                                        green = grnFillI;
+                                        blue = bluFillI;
+
                                     }
                                 }
 
                             }
-                            if (red < 0) red = 0;
-                            if (red > 255) red = 255;
-                            if (green < 0) green = 0;
-                            if (green > 255) green = 255;
-                            if (blue < 0) blue = 0;
-                            if (blue > 255) blue = 255;
-
+                            /*
+                            if (red < 1) red = 0;
+                            if (red > 254) red = 254;
+                            if (green < 1) green = 0;
+                            if (green > 254) green = 254;
+                            if (blue < 1) blue = 0;
+                            if (blue > 254) blue = 254;
+                            */
                             gl.Color((byte)red, (byte)green, (byte)blue);
 
                             /*/test
@@ -997,7 +1171,7 @@ namespace OpenGrade
 
                     gl.End();
                 }
-                drawTheMap = false;
+                
                 
 
                 // Paint the elevation view line
@@ -1249,7 +1423,9 @@ namespace OpenGrade
                 mf.FileSaveContour();
                 mf.FileSaveBoundaryList();
                 mapList.Clear();
-                mf.CalculateMinMaxEastNort();
+                mf.CalculatingMinMaxEastNort = true;
+                //mf.CalculateMinMaxEastNort();
+
             }
         }
         #endregion

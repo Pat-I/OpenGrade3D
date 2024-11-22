@@ -63,20 +63,8 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_888ED19CE83B47119EED9A00A14CD1CB"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_97DAF713056E207B7813442173B07492"
         "OwnerKey" = "8:_BA8F68A4EA40410E8F8924D39F6D43B6"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_B9F812FF2B63447080CA6E70A588C5A0"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -412,26 +400,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_888ED19CE83B47119EED9A00A14CD1CB"
-            {
-            "SourcePath" = "8:..\\..\\ArduinoCode\\ValveControlUnified\\ValveControl\\ValveControl.ino"
-            "TargetName" = "8:ValveControl.ino"
-            "Tag" = "8:"
-            "Folder" = "8:_34985E843B7147B38E23DE98DEF30280"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_97DAF713056E207B7813442173B07492"
             {
             "AssemblyRegister" = "3:1"
@@ -461,26 +429,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B9F812FF2B63447080CA6E70A588C5A0"
-            {
-            "SourcePath" = "8:..\\..\\ArduinoCode\\ValveControlShematic.png"
-            "TargetName" = "8:ValveControlShematic.png"
-            "Tag" = "8:"
-            "Folder" = "8:_34985E843B7147B38E23DE98DEF30280"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_DD79BC1C6C9397E7F53ABA394D9613AE"
@@ -552,28 +500,6 @@
             "Property" = "8:DesktopFolder"
                 "Folders"
                 {
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_7535FC4725174DC5B737926E7C1E4EC4"
-                    {
-                    "Name" = "8:OpenGrade3Darduino"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_86A95A4024AA4E1BBC52B2ED1CCBD98A"
-                        "Folders"
-                        {
-                            "{9EF0B969-E518-4E46-987F-47570745A589}:_34985E843B7147B38E23DE98DEF30280"
-                            {
-                            "Name" = "8:ValveControl"
-                            "AlwaysCreate" = "11:FALSE"
-                            "Condition" = "8:"
-                            "Transitive" = "11:FALSE"
-                            "Property" = "8:_8EFD55FDC2CC4C8396C0F94798B6C1E9"
-                                "Folders"
-                                {
-                                }
-                            }
-                        }
-                    }
                 }
             }
             "{1525181F-901A-416C-8A58-119130FE478E}:_CA70E0BE0A1F48DA873146F474A693D1"
@@ -614,15 +540,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:OpenGrade3D"
-        "ProductCode" = "8:{5A8DBDC2-4B0C-419F-B34E-6E64E7A545BC}"
-        "PackageCode" = "8:{852FE9BA-AB12-4964-BDB2-FCCF5B88FA12}"
+        "ProductCode" = "8:{1102C401-9661-428C-B8B0-BD6A8BDA4DE5}"
+        "PackageCode" = "8:{72EB393D-A087-4888-96CB-F52984FBEF7E}"
         "UpgradeCode" = "8:{62563CD4-0EB3-449B-91F4-8A2AED0583A6}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.5"
+        "ProductVersion" = "8:1.1.1"
         "Manufacturer" = "8:OpenGrade3D"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

@@ -1,8 +1,27 @@
-ValveControl7Steer is the code to use with relay port
-Work with arduino nano
-Output are pins D4 and D5
-they are always working you need to put extra switch on the relay cable or modify the code
 
-Plug in blade control port
+Update April 21 2022
 
-Edit INO for selecting deadband and propo/onoff mode
+Last ino is ValveControlPropLever.
+It will save the setting to EEPROM
+
+Check at the beginning of the ino for settings
+You can set(true or false):
+Proportional valve; if false Cytron will only output 0 or 255.
+
+WorkButton --- the ino needs a signal to enter in automode, true momentory button, false continus btn
+
+lever or swiches for manual blade control are optional. Set to true if needed.
+None present:
+bool manualMovePropLever = false;
+bool invertManMove = false;
+bool manualMoveBtn = false;
+
+lever or swiches for manual offset control are optional. Set to true if needed.
+None present:
+bool bladeOffsetPropLever = false;
+bool invertBladeOffset = false;
+bool bladeOffsetBtn = false;
+
+
+
+

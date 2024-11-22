@@ -58,7 +58,11 @@
             this.colorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fieldToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.rstMapColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MapColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rstColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.GradToolStrip = new System.Windows.Forms.ToolStripMenuItem();
+            this.StepToolStrip = new System.Windows.Forms.ToolStripMenuItem();
+            this.GradMultiToolStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripUnitsMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.metricToolStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.imperialToolStrip = new System.Windows.Forms.ToolStripMenuItem();
@@ -168,7 +172,7 @@
             this.lblPureSteerAngle = new System.Windows.Forms.Label();
             this.timerSim = new System.Windows.Forms.Timer(this.components);
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.label4 = new System.Windows.Forms.Label();
+            this.lblScale = new System.Windows.Forms.Label();
             this.pbarCutBelow = new ProgBar.ProgBarPlus();
             this.pbarCutAbove = new ProgBar.ProgBarPlus();
             this.lblBarGraphMax = new System.Windows.Forms.Label();
@@ -195,6 +199,18 @@
             this.lblFillValue = new System.Windows.Forms.Label();
             this.lblCutValue = new System.Windows.Forms.Label();
             this.lblWatch = new System.Windows.Forms.Label();
+            this.btnColorFillMid = new System.Windows.Forms.Button();
+            this.btnColorFillMin = new System.Windows.Forms.Button();
+            this.btnColorCutMid = new System.Windows.Forms.Button();
+            this.btnColorCutMin = new System.Windows.Forms.Button();
+            this.btnScalePlus = new System.Windows.Forms.Button();
+            this.btnScaleMinus = new System.Windows.Forms.Button();
+            this.lblFillMinValue = new System.Windows.Forms.Label();
+            this.lblCutMinValue = new System.Windows.Forms.Label();
+            this.lblCutMidValue = new System.Windows.Forms.Label();
+            this.lblFillMidValue = new System.Windows.Forms.Label();
+            this.lblCentreValue = new System.Windows.Forms.Label();
+            this.btnUseSavedAGS = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControl)).BeginInit();
             this.contextMenuStripOpenGL.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControlBack)).BeginInit();
@@ -432,7 +448,7 @@
             this.colorsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.sectionToolStripMenuItem,
             this.fieldToolStripMenuItem1,
-            this.rstMapColorToolStripMenuItem});
+            this.MapColorToolStripMenuItem});
             this.colorsToolStripMenuItem.Name = "colorsToolStripMenuItem";
             this.colorsToolStripMenuItem.Size = new System.Drawing.Size(297, 40);
             this.colorsToolStripMenuItem.Text = "Colors";
@@ -440,23 +456,55 @@
             // sectionToolStripMenuItem
             // 
             this.sectionToolStripMenuItem.Name = "sectionToolStripMenuItem";
-            this.sectionToolStripMenuItem.Size = new System.Drawing.Size(274, 40);
+            this.sectionToolStripMenuItem.Size = new System.Drawing.Size(223, 40);
             this.sectionToolStripMenuItem.Text = "Section";
             this.sectionToolStripMenuItem.Click += new System.EventHandler(this.sectionToolStripMenuItem_Click);
             // 
             // fieldToolStripMenuItem1
             // 
             this.fieldToolStripMenuItem1.Name = "fieldToolStripMenuItem1";
-            this.fieldToolStripMenuItem1.Size = new System.Drawing.Size(274, 40);
+            this.fieldToolStripMenuItem1.Size = new System.Drawing.Size(223, 40);
             this.fieldToolStripMenuItem1.Text = "Field";
             this.fieldToolStripMenuItem1.Click += new System.EventHandler(this.fieldToolStripMenuItem1_Click);
             // 
-            // rstMapColorToolStripMenuItem
+            // MapColorToolStripMenuItem
             // 
-            this.rstMapColorToolStripMenuItem.Name = "rstMapColorToolStripMenuItem";
-            this.rstMapColorToolStripMenuItem.Size = new System.Drawing.Size(274, 40);
-            this.rstMapColorToolStripMenuItem.Text = "Rst Map Color";
-            this.rstMapColorToolStripMenuItem.Click += new System.EventHandler(this.btnResetMapColor_Click);
+            this.MapColorToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.rstColorToolStripMenuItem,
+            this.GradToolStrip,
+            this.StepToolStrip,
+            this.GradMultiToolStrip});
+            this.MapColorToolStripMenuItem.Name = "MapColorToolStripMenuItem";
+            this.MapColorToolStripMenuItem.Size = new System.Drawing.Size(223, 40);
+            this.MapColorToolStripMenuItem.Text = "Map Color";
+            // 
+            // rstColorToolStripMenuItem
+            // 
+            this.rstColorToolStripMenuItem.Name = "rstColorToolStripMenuItem";
+            this.rstColorToolStripMenuItem.Size = new System.Drawing.Size(291, 40);
+            this.rstColorToolStripMenuItem.Text = "Reset Colors";
+            this.rstColorToolStripMenuItem.Click += new System.EventHandler(this.btnResetMapColor_Click);
+            // 
+            // GradToolStrip
+            // 
+            this.GradToolStrip.Name = "GradToolStrip";
+            this.GradToolStrip.Size = new System.Drawing.Size(291, 40);
+            this.GradToolStrip.Text = "Gradual Scale";
+            this.GradToolStrip.Click += new System.EventHandler(this.GradToolStrip_Click);
+            // 
+            // StepToolStrip
+            // 
+            this.StepToolStrip.Name = "StepToolStrip";
+            this.StepToolStrip.Size = new System.Drawing.Size(291, 40);
+            this.StepToolStrip.Text = "Step Multicolor";
+            this.StepToolStrip.Click += new System.EventHandler(this.StepToolStrip_Click);
+            // 
+            // GradMultiToolStrip
+            // 
+            this.GradMultiToolStrip.Name = "GradMultiToolStrip";
+            this.GradMultiToolStrip.Size = new System.Drawing.Size(291, 40);
+            this.GradMultiToolStrip.Text = "Grad Multicolor";
+            this.GradMultiToolStrip.Click += new System.EventHandler(this.GradMultiToolStrip_Click);
             // 
             // toolStripUnitsMenu
             // 
@@ -643,7 +691,7 @@
             // 
             // tmrWatchdog
             // 
-            this.tmrWatchdog.Interval = 50;
+            this.tmrWatchdog.Interval = 25;
             this.tmrWatchdog.Tick += new System.EventHandler(this.tmrWatchdog_tick);
             // 
             // statusStrip1
@@ -1086,7 +1134,6 @@
             this.DataPage.Name = "DataPage";
             this.DataPage.Size = new System.Drawing.Size(248, 255);
             this.DataPage.TabIndex = 3;
-            this.DataPage.Click += new System.EventHandler(this.DataPage_Click);
             // 
             // label15
             // 
@@ -1443,7 +1490,7 @@
             this.lblCut.AutoSize = true;
             this.lblCut.BackColor = System.Drawing.SystemColors.ControlLight;
             this.lblCut.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCut.Location = new System.Drawing.Point(1009, 375);
+            this.lblCut.Location = new System.Drawing.Point(1008, 375);
             this.lblCut.Name = "lblCut";
             this.lblCut.Size = new System.Drawing.Size(55, 29);
             this.lblCut.TabIndex = 217;
@@ -1726,17 +1773,17 @@
             this.toolStripMenuItem2.Size = new System.Drawing.Size(334, 62);
             this.toolStripMenuItem2.Text = "toolStripMenuItem2";
             // 
-            // label4
+            // lblScale
             // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label4.AutoSize = true;
-            this.label4.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.label4.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(1097, 610);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(39, 29);
-            this.label4.TabIndex = 218;
-            this.label4.Text = "__";
+            this.lblScale.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblScale.AutoSize = true;
+            this.lblScale.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.lblScale.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblScale.Location = new System.Drawing.Point(1146, 483);
+            this.lblScale.Name = "lblScale";
+            this.lblScale.Size = new System.Drawing.Size(71, 29);
+            this.lblScale.TabIndex = 218;
+            this.lblScale.Text = "--- %";
             // 
             // pbarCutBelow
             // 
@@ -1962,9 +2009,9 @@
             this.btnManualOffOn.FlatAppearance.BorderColor = System.Drawing.Color.Yellow;
             this.btnManualOffOn.Font = new System.Drawing.Font("Tahoma", 14.25F);
             this.btnManualOffOn.Image = ((System.Drawing.Image)(resources.GetObject("btnManualOffOn.Image")));
-            this.btnManualOffOn.Location = new System.Drawing.Point(185, 51);
+            this.btnManualOffOn.Location = new System.Drawing.Point(178, 51);
             this.btnManualOffOn.Name = "btnManualOffOn";
-            this.btnManualOffOn.Size = new System.Drawing.Size(90, 90);
+            this.btnManualOffOn.Size = new System.Drawing.Size(108, 90);
             this.btnManualOffOn.TabIndex = 98;
             this.btnManualOffOn.UseVisualStyleBackColor = false;
             this.btnManualOffOn.Visible = false;
@@ -2063,9 +2110,9 @@
             // 
             this.btnColorCut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnColorCut.BackColor = System.Drawing.Color.Red;
-            this.btnColorCut.Location = new System.Drawing.Point(972, 371);
+            this.btnColorCut.Location = new System.Drawing.Point(972, 372);
             this.btnColorCut.Name = "btnColorCut";
-            this.btnColorCut.Size = new System.Drawing.Size(32, 43);
+            this.btnColorCut.Size = new System.Drawing.Size(32, 32);
             this.btnColorCut.TabIndex = 234;
             this.btnColorCut.UseVisualStyleBackColor = false;
             this.btnColorCut.Click += new System.EventHandler(this.btnColorCut_Click);
@@ -2074,9 +2121,9 @@
             // 
             this.btnColorCenter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnColorCenter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnColorCenter.Location = new System.Drawing.Point(972, 420);
+            this.btnColorCenter.Location = new System.Drawing.Point(972, 480);
             this.btnColorCenter.Name = "btnColorCenter";
-            this.btnColorCenter.Size = new System.Drawing.Size(32, 43);
+            this.btnColorCenter.Size = new System.Drawing.Size(32, 32);
             this.btnColorCenter.TabIndex = 235;
             this.btnColorCenter.UseVisualStyleBackColor = false;
             this.btnColorCenter.Click += new System.EventHandler(this.btnColorCenter_Click);
@@ -2084,10 +2131,10 @@
             // btnColorFill
             // 
             this.btnColorFill.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnColorFill.BackColor = System.Drawing.Color.Lime;
-            this.btnColorFill.Location = new System.Drawing.Point(972, 469);
+            this.btnColorFill.BackColor = System.Drawing.Color.SteelBlue;
+            this.btnColorFill.Location = new System.Drawing.Point(972, 588);
             this.btnColorFill.Name = "btnColorFill";
-            this.btnColorFill.Size = new System.Drawing.Size(32, 43);
+            this.btnColorFill.Size = new System.Drawing.Size(32, 32);
             this.btnColorFill.TabIndex = 236;
             this.btnColorFill.UseVisualStyleBackColor = false;
             this.btnColorFill.Click += new System.EventHandler(this.btnColorFill_Click);
@@ -2098,7 +2145,7 @@
             this.lblFill.AutoSize = true;
             this.lblFill.BackColor = System.Drawing.SystemColors.ControlLight;
             this.lblFill.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFill.Location = new System.Drawing.Point(1009, 483);
+            this.lblFill.Location = new System.Drawing.Point(1010, 591);
             this.lblFill.Name = "lblFill";
             this.lblFill.Size = new System.Drawing.Size(54, 29);
             this.lblFill.TabIndex = 237;
@@ -2110,7 +2157,7 @@
             this.lblFillValue.AutoSize = true;
             this.lblFillValue.BackColor = System.Drawing.SystemColors.ControlLight;
             this.lblFillValue.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFillValue.Location = new System.Drawing.Point(1078, 483);
+            this.lblFillValue.Location = new System.Drawing.Point(1070, 591);
             this.lblFillValue.Name = "lblFillValue";
             this.lblFillValue.Size = new System.Drawing.Size(69, 29);
             this.lblFillValue.TabIndex = 238;
@@ -2140,12 +2187,161 @@
             this.lblWatch.Text = "NTRIP status";
             this.lblWatch.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // btnColorFillMid
+            // 
+            this.btnColorFillMid.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnColorFillMid.BackColor = System.Drawing.Color.DeepSkyBlue;
+            this.btnColorFillMid.Location = new System.Drawing.Point(972, 552);
+            this.btnColorFillMid.Name = "btnColorFillMid";
+            this.btnColorFillMid.Size = new System.Drawing.Size(32, 32);
+            this.btnColorFillMid.TabIndex = 241;
+            this.btnColorFillMid.UseVisualStyleBackColor = false;
+            this.btnColorFillMid.Click += new System.EventHandler(this.btnColorMidFill_Click);
+            // 
+            // btnColorFillMin
+            // 
+            this.btnColorFillMin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnColorFillMin.BackColor = System.Drawing.Color.Lime;
+            this.btnColorFillMin.Location = new System.Drawing.Point(972, 516);
+            this.btnColorFillMin.Name = "btnColorFillMin";
+            this.btnColorFillMin.Size = new System.Drawing.Size(32, 32);
+            this.btnColorFillMin.TabIndex = 242;
+            this.btnColorFillMin.UseVisualStyleBackColor = false;
+            this.btnColorFillMin.Click += new System.EventHandler(this.btnColorMinFill_Click);
+            // 
+            // btnColorCutMid
+            // 
+            this.btnColorCutMid.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnColorCutMid.BackColor = System.Drawing.Color.Orange;
+            this.btnColorCutMid.Location = new System.Drawing.Point(972, 408);
+            this.btnColorCutMid.Name = "btnColorCutMid";
+            this.btnColorCutMid.Size = new System.Drawing.Size(32, 32);
+            this.btnColorCutMid.TabIndex = 243;
+            this.btnColorCutMid.UseVisualStyleBackColor = false;
+            this.btnColorCutMid.Click += new System.EventHandler(this.btnColorMidCut_Click);
+            // 
+            // btnColorCutMin
+            // 
+            this.btnColorCutMin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnColorCutMin.BackColor = System.Drawing.Color.Yellow;
+            this.btnColorCutMin.Location = new System.Drawing.Point(972, 444);
+            this.btnColorCutMin.Name = "btnColorCutMin";
+            this.btnColorCutMin.Size = new System.Drawing.Size(32, 32);
+            this.btnColorCutMin.TabIndex = 244;
+            this.btnColorCutMin.UseVisualStyleBackColor = false;
+            this.btnColorCutMin.Click += new System.EventHandler(this.btnColorMinCut_Click);
+            // 
+            // btnScalePlus
+            // 
+            this.btnScalePlus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnScalePlus.Location = new System.Drawing.Point(1151, 430);
+            this.btnScalePlus.Name = "btnScalePlus";
+            this.btnScalePlus.Size = new System.Drawing.Size(52, 46);
+            this.btnScalePlus.TabIndex = 245;
+            this.btnScalePlus.Text = "+";
+            this.btnScalePlus.UseVisualStyleBackColor = true;
+            this.btnScalePlus.Click += new System.EventHandler(this.btnScalePlus_Click);
+            // 
+            // btnScaleMinus
+            // 
+            this.btnScaleMinus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnScaleMinus.Location = new System.Drawing.Point(1151, 516);
+            this.btnScaleMinus.Name = "btnScaleMinus";
+            this.btnScaleMinus.Size = new System.Drawing.Size(52, 46);
+            this.btnScaleMinus.TabIndex = 246;
+            this.btnScaleMinus.Text = "-";
+            this.btnScaleMinus.UseVisualStyleBackColor = true;
+            this.btnScaleMinus.Click += new System.EventHandler(this.btnScaleMinus_Click);
+            // 
+            // lblFillMinValue
+            // 
+            this.lblFillMinValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblFillMinValue.AutoSize = true;
+            this.lblFillMinValue.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.lblFillMinValue.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFillMinValue.Location = new System.Drawing.Point(1010, 516);
+            this.lblFillMinValue.Name = "lblFillMinValue";
+            this.lblFillMinValue.Size = new System.Drawing.Size(69, 29);
+            this.lblFillMinValue.TabIndex = 247;
+            this.lblFillMinValue.Text = "value";
+            // 
+            // lblCutMinValue
+            // 
+            this.lblCutMinValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblCutMinValue.AutoSize = true;
+            this.lblCutMinValue.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.lblCutMinValue.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCutMinValue.Location = new System.Drawing.Point(1010, 444);
+            this.lblCutMinValue.Name = "lblCutMinValue";
+            this.lblCutMinValue.Size = new System.Drawing.Size(69, 29);
+            this.lblCutMinValue.TabIndex = 248;
+            this.lblCutMinValue.Text = "value";
+            // 
+            // lblCutMidValue
+            // 
+            this.lblCutMidValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblCutMidValue.AutoSize = true;
+            this.lblCutMidValue.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.lblCutMidValue.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCutMidValue.Location = new System.Drawing.Point(1010, 411);
+            this.lblCutMidValue.Name = "lblCutMidValue";
+            this.lblCutMidValue.Size = new System.Drawing.Size(69, 29);
+            this.lblCutMidValue.TabIndex = 249;
+            this.lblCutMidValue.Text = "value";
+            // 
+            // lblFillMidValue
+            // 
+            this.lblFillMidValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblFillMidValue.AutoSize = true;
+            this.lblFillMidValue.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.lblFillMidValue.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFillMidValue.Location = new System.Drawing.Point(1010, 554);
+            this.lblFillMidValue.Name = "lblFillMidValue";
+            this.lblFillMidValue.Size = new System.Drawing.Size(69, 29);
+            this.lblFillMidValue.TabIndex = 250;
+            this.lblFillMidValue.Text = "value";
+            // 
+            // lblCentreValue
+            // 
+            this.lblCentreValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblCentreValue.AutoSize = true;
+            this.lblCentreValue.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.lblCentreValue.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCentreValue.Location = new System.Drawing.Point(1010, 479);
+            this.lblCentreValue.Name = "lblCentreValue";
+            this.lblCentreValue.Size = new System.Drawing.Size(69, 29);
+            this.lblCentreValue.TabIndex = 251;
+            this.lblCentreValue.Text = "value";
+            // 
+            // btnUseSavedAGS
+            // 
+            this.btnUseSavedAGS.Location = new System.Drawing.Point(185, 184);
+            this.btnUseSavedAGS.Name = "btnUseSavedAGS";
+            this.btnUseSavedAGS.Size = new System.Drawing.Size(97, 90);
+            this.btnUseSavedAGS.TabIndex = 252;
+            this.btnUseSavedAGS.Text = "Use Autosaved Survey";
+            this.btnUseSavedAGS.UseVisualStyleBackColor = true;
+            this.btnUseSavedAGS.Visible = false;
+            this.btnUseSavedAGS.Click += new System.EventHandler(this.btnUseSavedAGS_Click);
+            // 
             // FormGPS
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(1306, 684);
+            this.Controls.Add(this.btnUseSavedAGS);
+            this.Controls.Add(this.lblCentreValue);
+            this.Controls.Add(this.lblFillMidValue);
+            this.Controls.Add(this.lblCutMidValue);
+            this.Controls.Add(this.lblCutMinValue);
+            this.Controls.Add(this.lblFillMinValue);
+            this.Controls.Add(this.btnScaleMinus);
+            this.Controls.Add(this.btnScalePlus);
+            this.Controls.Add(this.btnColorCutMin);
+            this.Controls.Add(this.btnColorCutMid);
+            this.Controls.Add(this.btnColorFillMin);
+            this.Controls.Add(this.btnColorFillMid);
             this.Controls.Add(this.lblWatch);
             this.Controls.Add(this.lblCutValue);
             this.Controls.Add(this.lblFillValue);
@@ -2166,7 +2362,7 @@
             this.Controls.Add(this.pbarCutBelow);
             this.Controls.Add(this.btnGoogleEarth);
             this.Controls.Add(this.btnAutoSteer);
-            this.Controls.Add(this.label4);
+            this.Controls.Add(this.lblScale);
             this.Controls.Add(this.btnContour);
             this.Controls.Add(this.label25);
             this.Controls.Add(this.btnZoomIn);
@@ -2353,7 +2549,7 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label lblCutDelta;
         private System.Windows.Forms.Label lblCut;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lblScale;
         private System.Windows.Forms.CheckBox cboxLastPass;
         private System.Windows.Forms.Button btnZeroAltitude;
         private System.Windows.Forms.TabPage controlPage2;
@@ -2379,7 +2575,7 @@
         private System.Windows.Forms.Button btnColorCut;
         private System.Windows.Forms.Button btnColorCenter;
         private System.Windows.Forms.Button btnColorFill;
-        private System.Windows.Forms.ToolStripMenuItem rstMapColorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem MapColorToolStripMenuItem;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label lblFill;
@@ -2387,6 +2583,22 @@
         private System.Windows.Forms.Label lblCutValue;
         private System.Windows.Forms.ToolStripMenuItem toolstripNTRIPConfig;
         private System.Windows.Forms.Label lblWatch;
+        private System.Windows.Forms.Button btnColorFillMid;
+        private System.Windows.Forms.Button btnColorFillMin;
+        private System.Windows.Forms.Button btnColorCutMid;
+        private System.Windows.Forms.Button btnColorCutMin;
+        private System.Windows.Forms.ToolStripMenuItem rstColorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem GradToolStrip;
+        private System.Windows.Forms.ToolStripMenuItem StepToolStrip;
+        private System.Windows.Forms.ToolStripMenuItem GradMultiToolStrip;
+        private System.Windows.Forms.Button btnScalePlus;
+        private System.Windows.Forms.Button btnScaleMinus;
+        private System.Windows.Forms.Label lblFillMinValue;
+        private System.Windows.Forms.Label lblCutMinValue;
+        private System.Windows.Forms.Label lblCutMidValue;
+        private System.Windows.Forms.Label lblFillMidValue;
+        private System.Windows.Forms.Label lblCentreValue;
+        private System.Windows.Forms.Button btnUseSavedAGS;
     }
 }
 

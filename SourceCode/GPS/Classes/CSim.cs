@@ -136,8 +136,12 @@ namespace OpenGrade
         public void ResetSim()
         {
             latitude = Properties.Settings.Default.setSim_lastLat;//53.436026;
-            //longitude = -111.160047;
             longitude = Properties.Settings.Default.setSim_lastLong;//-111.260047;
+
+            //mf.isGPSPositionInitialized = false;
+            //mf.isFirstFixPositionSet = false;
+            
+
         }
 
         private void BuildGGA()

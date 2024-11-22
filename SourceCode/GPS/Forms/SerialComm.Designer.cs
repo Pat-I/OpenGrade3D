@@ -220,7 +220,27 @@ namespace OpenGrade
             // Find end of sentence, if not a CR, return
             end = sentence.IndexOf("\r");
             if (end == -1) return;
+            
+            //0 - valve direction, 1 - pwm, 2 - cutvalve, 3 - bladeOffset, 4 - opt, 5 - opt, 6 - opt, 7 - opt, 8 - opt
 
+            string[] words = mc.serialRecvRelayRateStr.Split(',');
+            if (words.Length == 8)
+            {
+                //first 2 used for display mainly in autosteer window chart as strings
+                //parse the values
+
+                //int.TryParse(words[0], out valve direction
+                //int.TryParse(words[1], out pwmValue
+                //int.TryParse(words[2], out cutvalve
+                int.TryParse(words[3], out bladeOffSetSlave);
+                //int.TryParse(words[4], out mc.steerSwitchValue);//exemple
+                //int.TryParse(words[5],
+                //int.TryParse(words[6],
+                //int.TryParse(words[7],
+                //int.TryParse(words[8],
+                return;
+            }
+            
             ////the ArdRelay sentence to be parsed
             //sentence = sentence.Substring(0, end);
             //string[] words = sentence.Split(',');

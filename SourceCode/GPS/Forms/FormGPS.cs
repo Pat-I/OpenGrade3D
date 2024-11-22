@@ -39,13 +39,19 @@ namespace OpenGrade
         public byte redField, grnField, bluField;
 
         //colors for mapping
-        //Fill and low altitude  default green
+        //Fill and lowest altitude  default
         public byte redFill, grnFill, bluFill;
-
+        //Fill and lowest altitude  default(mid)
+        public byte redFillMid, grnFillMid, bluFillMid;
+        //Fill and lowest altitude  default(min)
+        public byte redFillMin, grnFillMin, bluFillMin;
         // center color
         public byte redCenter, grnCenter, bluCenter;
-
-        // Cut and high altitude default red
+        // Cut and highest altitude default(min)
+        public byte redCutMin, grnCutMin, bluCutMin;
+        // Cut and highest altitude default(mid)
+        public byte redCutMid, grnCutMid, bluCutMid;
+        // Cut and highest altitude default
         public byte redCut, grnCut, bluCut;
 
         //polygon mode for section drawing
@@ -61,7 +67,7 @@ namespace OpenGrade
         private int flagNumberPicked = 0;
 
         //Is it in 2D or 3D, metric or imperial, display lightbar, display grid etc
-        public bool isIn3D = true, isMetric = true, isLightbarOn = true, isGridOn, isSideGuideLines = true;
+        public bool isIn3D = true, isMetric = true, isLightbarOn = true, isGridOn, isSideGuideLines = true, isGradual = false, isGradualMulticolor = true;
 
         public bool isPureDisplayOn = true, isSkyOn = true, isBigAltitudeOn = false;
 
@@ -217,6 +223,21 @@ namespace OpenGrade
         {
             public short x;
             public short y;
+        }
+
+        private void btnUseSavedAGS_Click(object sender, EventArgs e)
+        {
+            int ctn = ct.surveyList.Count;
+            double code = ct.surveyList[(ctn - 1)].code;
+
+            if (code == 2 || code == 0)
+            {
+                recordSurveyBoundary();
+                ct.recBoundary = true;
+            }
+            if (code == 3) recordSurveyPts();
+
+            btnUseSavedAGS.Visible = false;
         }
 
         //
@@ -553,10 +574,6 @@ namespace OpenGrade
             _rm = new ResourceManager("OpenGrade.gStr", Assembly.GetExecutingAssembly());
         }
 
-        private void DataPage_Click(object sender, EventArgs e)
-        {
-
-        }
 
         //keystrokes for easy and quick startup
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -694,6 +711,8 @@ namespace OpenGrade
 
             //try and open
             SerialPortOpenGPS();
+
+            LoadUDPNetwork(); // from AgIO v6.3.3
 
             //same for SectionRelay port
             portNameRelaySection = Settings.Default.setPort_portNameRateRelay;
@@ -834,10 +853,26 @@ namespace OpenGrade
 
         private void btnSimGoTo_click(object sender, EventArgs e)
         {
+            //check dist from old position and show a warning message if too far
+            double oldLat = Properties.Settings.Default.setSim_lastLat;
+            double oldLong = Properties.Settings.Default.setSim_lastLong;
+            double newLat = (double)nudLatitude.Value;
+            double newLong = (double)nudLongitude.Value;
+            double newSimDist;
+
+            newSimDist = 2 * (oldLat - newLat) * (oldLat - newLat) + (oldLong - newLong) * (oldLong - newLong);
+
+            if (newSimDist > 2)
+            {
+                var form = new FormTimedMessage(4000, "Please restart OpenGrade", "To avoid strange beviavour!");
+                form.Show();
+            }
+
             Properties.Settings.Default.setSim_lastLat = (double)nudLatitude.Value;
             Properties.Settings.Default.setSim_lastLong = (double)nudLongitude.Value;
             Properties.Settings.Default.Save();
             sim.ResetSim();
+            
         }
 
         //called everytime window is resized, clean up button positions
@@ -887,7 +922,7 @@ namespace OpenGrade
 
             return texture[0];
         }
-
+        /*
         //start the UDP server
         private void StartUDPServer()
         {
@@ -931,7 +966,7 @@ namespace OpenGrade
                 MessageBox.Show("Load Error: " + e.Message, "UDP Server", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
+        */
         //dialog for requesting user to save or cancel
         public int SaveOrNot()
         {
@@ -1031,12 +1066,14 @@ namespace OpenGrade
             ct.isContourOn = false;
             
             
+            
             cboxLastPass.Checked = false;
             
             cboxLaserModeOnOff.Checked = false;
 
             // by Pat
             ct.Build_eleViewList();
+            ct.drawTheMap = true;
 
             //update the menu
             fieldToolStripMenuItem.Text = gStr.gsCloseField;
@@ -1101,6 +1138,8 @@ namespace OpenGrade
             pn.northingOffset = 0;
             pn.altitudeOffset = 0;
             CancelSurvey();
+            ct.ScaleFactor = 100;
+            fillCutFillLbl();
         }
 
         //bring up field dialog for new/open/resume
@@ -1236,6 +1275,7 @@ namespace OpenGrade
         {
             Vehicle.Default.setVehicle_bladeOffset = (double)numBladeOffset.Value /100;
             vehicle.bladeOffset = (double)numBladeOffset.Value /100;
+            //bladeOffSetMaster = (int)numBladeOffset.Value;
         }
 
         //message box pops up with info then goes away
