@@ -645,12 +645,13 @@ namespace OpenGrade
                             if (surveyDistance > 9)
                             {
                                 // convert the utm from the side of the blade to lat long
-                                double actualEasting = sideEasting + mf.pn.utmEast;
-                                double actualNorthing = sideNorthing + mf.pn.utmNorth;
+                                //double actualEasting = sideEasting + mf.pn.utmEast;
+                                //double actualNorthing = sideNorthing + mf.pn.utmNorth;
 
-                                mf.UTMToLatLon(actualEasting, actualNorthing);
+                                //mf.UTMToLatLon(actualEasting, actualNorthing);
+                                mf.pn.ConvertLocalToWGS84(sideNorthing, sideEasting, out double Lat, out double Lon);
 
-                                SurveyPt point = new SurveyPt(sideEasting, sideNorthing, mf.utmLat, mf.utmLon, mf.pn.altitude, 2, mf.pn.fixQuality);
+                                SurveyPt point = new SurveyPt(sideEasting, sideNorthing, Lat, Lon, mf.pn.altitude, 2, mf.pn.fixQuality) ;
                                 surveyList.Add(point);
 
                                 nearestSurveyEasting = mf.pn.easting;
@@ -1387,16 +1388,19 @@ namespace OpenGrade
                 {
                     double lat = designList[t].latitude;
                     double lon = designList[t].longitude;
-                    mf.pn.ConvertAgd2Utm(lat * 0.01745329251994329576923690766743, lon * 0.01745329251994329576923690766743);
+                    //double eastingAgd;
+                    //double northingAgd;
 
+                    //mf.pn.ConvertAgd2Utm(lat * 0.01745329251994329576923690766743, lon * 0.01745329251994329576923690766743);
+                    mf.pn.ConvertWGS84ToLocal(lat, lon, out double northingAgd, out double eastingAgd);
 
                     if (designList[t].code == 3)
                     {
 
                     
-                        CContourPt point = new CContourPt(mf.pn.eastingAgd,
+                        CContourPt point = new CContourPt(eastingAgd,
                                     0,
-                                    mf.pn.northingAgd,
+                                    northingAgd,
                                     designList[t].altitude,
                                     designList[t].latitude,
                                     designList[t].longitude,
@@ -1408,9 +1412,9 @@ namespace OpenGrade
                     }
                     else
                     {
-                        BoundaryPt point = new BoundaryPt(mf.pn.eastingAgd,
+                        BoundaryPt point = new BoundaryPt(eastingAgd,
                             0,
-                            mf.pn.northingAgd,
+                            northingAgd,
                             designList[t].altitude,
                             designList[t].latitude,
                             designList[t].longitude,

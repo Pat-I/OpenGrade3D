@@ -307,4 +307,7 @@
   <data name="LaserMode" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\btnImages\LaserMode.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Grade64_3Dicon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Grade64_3Dicon.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

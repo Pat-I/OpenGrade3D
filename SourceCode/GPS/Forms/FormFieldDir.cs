@@ -43,8 +43,13 @@ namespace OpenGrade
                 else
                 {
                     //reset the offsets
-                    mf.pn.utmEast = (int)mf.pn.actualEasting;
-                    mf.pn.utmNorth = (int)mf.pn.actualNorthing;
+                    //mf.pn.utmEast = (int)mf.pn.actualEasting;
+                    //mf.pn.utmNorth = (int)mf.pn.actualNorthing;
+                    mf.pn.latStart = mf.pn.latitude;
+                    mf.pn.lonStart = mf.pn.longitude;
+                    mf.pn.SetLocalMetersPerDegree();
+
+                
 
                     mf.worldGrid.CreateWorldGrid(0, 0);
 

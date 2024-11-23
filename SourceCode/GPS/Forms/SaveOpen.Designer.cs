@@ -427,8 +427,8 @@ namespace OpenGrade
             OpenGrade3D v1.0.1
             $FieldDir
             test optisurface 10m bnd Sep02
-            $Offsets
-            657908,4522604,14
+            $Start coordinates
+            46.000000,-72.0000000
             */
 
             //start to read the file
@@ -444,9 +444,9 @@ namespace OpenGrade
                     string[] words;
                     line = reader.ReadLine(); words = line.Split(',');
 
-                    if (words[0] != "OpenGrade3D v1.0.1")
+                    if (words[0] != "OpenGrade3D v4.0.1")
                     {
-                        var form = new FormTimedMessage(5000, "Field is Wrong Version", "Must be OpenGrade3D v1.0.1");
+                        var form = new FormTimedMessage(5000, "Field is Wrong Version", "Must be OpenGrade3D v4.0.1");
                         form.Show();
                         JobClose();
                         return;
@@ -466,12 +466,16 @@ namespace OpenGrade
                     //read the Offsets 
                     line = reader.ReadLine();
                     string[] offs = line.Split(',');
-                    pn.utmEast = int.Parse(offs[0]);
-                    pn.utmNorth = int.Parse(offs[1]);
-                    pn.zone = int.Parse(offs[2]);
+                    pn.latStart = double.Parse(offs[0]);
+                    pn.lonStart = double.Parse(offs[1]);
+
 
                     //create a new grid
-                    worldGrid.CreateWorldGrid(pn.actualNorthing - pn.utmNorth, pn.actualEasting - pn.utmEast);
+                    pn.SetLocalMetersPerDegree();
+
+                 
+
+                    worldGrid.CreateWorldGrid(0,0);
                 }
 
                 catch (Exception e)
@@ -498,7 +502,7 @@ namespace OpenGrade
             /*
                 2020-September-09 04:42:11 PM
                 easting, heading, northing, altitude, latitude, longitude, cutAltitude, lastPassAltitude, distance
-                OpenGrade3D v1.0.1
+                OpenGrade3D v4.0.1
                 test optisurface 2m Sep07
                 $Offsets
                 657744,4522397,14
@@ -521,9 +525,9 @@ namespace OpenGrade
                         string[] words;
                         line = reader.ReadLine(); words = line.Split(',');
                        
-                        if (words[0] != "OpenGrade3D v1.0.1")
+                        if (words[0] != "OpenGrade3D v4.0.1")
                         {
-                            var form = new FormTimedMessage(5000, "Contour.txt File is Wrong Version", "Must be OpenGrade3D v1.0.1");
+                            var form = new FormTimedMessage(5000, "Contour.txt File is Wrong Version", "Must be OpenGrade3D v4.0.1");
                             form.Show();
                             return;
                         }
@@ -882,11 +886,11 @@ namespace OpenGrade
         {
             /*
             2020 - September - 02 09:35:40 PM
-            OpenGrade3D v1.0.1
+            OpenGrade3D v4.0.1
             $FieldDir
             test optisurface 10m bnd Sep02
-            $Offsets
-            657908,4522604,14
+            $Start Coordinates
+            46.000000,-72.00000000
             */
 
             if (!isJobStarted)
@@ -911,15 +915,14 @@ namespace OpenGrade
                 //Write out the date
                 writer.WriteLine(DateTime.Now.ToString("yyyy-MMMM-dd hh:mm:ss tt", CultureInfo.InvariantCulture));
                 //Write the version
-                writer.WriteLine("OpenGrade3D v1.0.1");                
+                writer.WriteLine("OpenGrade3D v4.0.1");                
                 writer.WriteLine("$FieldDir");
                 writer.WriteLine(currentFieldDirectory.ToString(CultureInfo.InvariantCulture));
 
-                //write out the easting and northing Offsets
-                writer.WriteLine("$Offsets");
-                writer.WriteLine(pn.utmEast.ToString(CultureInfo.InvariantCulture) + "," + 
-                    pn.utmNorth.ToString(CultureInfo.InvariantCulture) + "," + 
-                    pn.zone.ToString(CultureInfo.InvariantCulture));
+                //write out the start lat and long
+                writer.WriteLine("$Start Coordinates");
+                writer.WriteLine(pn.latStart.ToString(CultureInfo.InvariantCulture) + "," + 
+                    pn.lonStart.ToString(CultureInfo.InvariantCulture));
             }
 
         }
@@ -958,8 +961,8 @@ namespace OpenGrade
                 easting, heading, northing, altitude, latitude, longitude, cutAltitude, lastPassAltitude, distance
                 $ContourDir
                 test optisurface 2m Sep07
-                $Offsets
-                657744,4522397,14
+                $Start Coordinates
+                46.00000, -72.0000000
                 35852
                 -66.439,0,-132.687,418.856,40.83626581,-97.1298216,418.784,-1,-1
              */
@@ -985,11 +988,12 @@ namespace OpenGrade
                 writer.WriteLine("$ContourDir");
                 writer.WriteLine(currentFieldDirectory);
 
-                //write out the easting and northing Offsets
-                writer.WriteLine("$Offsets");
-                writer.WriteLine(pn.utmEast.ToString(CultureInfo.InvariantCulture) + 
-                    "," + pn.utmNorth.ToString(CultureInfo.InvariantCulture) + "," + pn.zone.ToString(CultureInfo.InvariantCulture));
+                //write out the start lat and long
+                writer.WriteLine("$Start Coordinates");
+                writer.WriteLine(pn.latStart.ToString(CultureInfo.InvariantCulture) + "," +
+                    pn.lonStart.ToString(CultureInfo.InvariantCulture));
             }
+        
         }
 
         #region Load Optisuface .agd file
@@ -1287,8 +1291,8 @@ namespace OpenGrade
             //64.697,0.168,-21.654,0 - east, heading, north, altitude
             //$ContourDir
             //Bob_Feb11
-            //$Offsets
-            //533172,5927719,12
+            //$Start Coordinates
+            //46.000000, -72.000000
 
             //get the directory and make sure it exists, create if not
             string dirField = fieldsDirectory + currentFieldDirectory + "\\";
@@ -1310,14 +1314,15 @@ namespace OpenGrade
                 writer.WriteLine("$DesignListDir");
                 writer.WriteLine(currentFieldDirectory);
 
-                //write out the easting and northing Offsets
-                writer.WriteLine("$Offsets");
-                writer.WriteLine(pn.utmEast.ToString(CultureInfo.InvariantCulture) +
-                    "," + pn.utmNorth.ToString(CultureInfo.InvariantCulture) + "," + pn.zone.ToString(CultureInfo.InvariantCulture));
+                //write out the start lat and long
+                writer.WriteLine("$Start Coordinates");
+                writer.WriteLine(pn.latStart.ToString(CultureInfo.InvariantCulture) + "," +
+                    pn.lonStart.ToString(CultureInfo.InvariantCulture));
+            
 
 
-                //make sure there is something to save
-                if (ct.designList.Count() > 0)
+            //make sure there is something to save
+            if (ct.designList.Count() > 0)
                 {
                     int count3 = ct.designList.Count;
 
@@ -1350,10 +1355,10 @@ namespace OpenGrade
             /*
                 2020-September-09 04:42:11 PM
                 easting, heading, northing, altitude, latitude, longitude, cutAltitude, lastPassAltitude, distance
-                OpenGrade3D v1.0.1
+                OpenGrade3D v4.0.1
                 test optisurface 2m Sep07
-                $Offsets
-                657744,4522397,14
+                $Start Coordinates
+                46.00000,-72.000000
                 $Position correction
                 0.000,0.000,0.000
                 35852
@@ -1378,16 +1383,17 @@ namespace OpenGrade
                 writer.WriteLine("easting, heading, northing, altitude, latitude, longitude, cutAltitude, lastPassAltitude, distance");
 
                 //which field directory
-                writer.WriteLine("OpenGrade3D v1.0.1");
+                writer.WriteLine("OpenGrade3D v4.0.1");
                 writer.WriteLine(currentFieldDirectory);
 
-                //write out the easting and northing Offsets
-                writer.WriteLine("$Offsets");
-                writer.WriteLine(pn.utmEast.ToString(CultureInfo.InvariantCulture) +
-                    "," + pn.utmNorth.ToString(CultureInfo.InvariantCulture) + "," + pn.zone.ToString(CultureInfo.InvariantCulture));
+                //write out the start lat and long
+                writer.WriteLine("$Start Coordinates");
+                writer.WriteLine(pn.latStart.ToString(CultureInfo.InvariantCulture) + "," +
+                    pn.lonStart.ToString(CultureInfo.InvariantCulture));
+            
 
-                //write the position correction offset
-                writer.WriteLine("$Position correction");
+            //write the position correction offset
+            writer.WriteLine("$Position correction");
                 writer.WriteLine(Math.Round(pn.eastingOffset, 3).ToString(CultureInfo.InvariantCulture) +
                     "," + Math.Round(pn.northingOffset, 3).ToString(CultureInfo.InvariantCulture) + "," + Math.Round(pn.altitudeOffset, 3).ToString(CultureInfo.InvariantCulture));
 
@@ -1428,8 +1434,8 @@ namespace OpenGrade
             //64.697,0.168,-21.654,0 - east, heading, north, altitude
             //$ContourDir
             //Bob_Feb11
-            //$Offsets
-            //533172,5927719,12
+            //$Start Coordinates
+            //
 
             //get the directory and make sure it exists, create if not
             string dirField = fieldsDirectory + currentFieldDirectory + "\\";
@@ -1451,14 +1457,15 @@ namespace OpenGrade
                 writer.WriteLine("$BoundaryDir");
                 writer.WriteLine(currentFieldDirectory);
 
-                //write out the easting and northing Offsets
-                writer.WriteLine("$Offsets");
-                writer.WriteLine(pn.utmEast.ToString(CultureInfo.InvariantCulture) +
-                    "," + pn.utmNorth.ToString(CultureInfo.InvariantCulture) + "," + pn.zone.ToString(CultureInfo.InvariantCulture));
+                //write out the start lat and long
+                writer.WriteLine("$Start Coordinates");
+                writer.WriteLine(pn.latStart.ToString(CultureInfo.InvariantCulture) + "," +
+                    pn.lonStart.ToString(CultureInfo.InvariantCulture));
+            
 
 
-                //make sure there is something to save
-                if (ct.boundaryList.Count() > 0)
+            //make sure there is something to save
+            if (ct.boundaryList.Count() > 0)
                 {
                     int count2 = ct.boundaryList.Count;
 
@@ -1493,8 +1500,8 @@ namespace OpenGrade
             //64.697,0.168,-21.654,0 - east, heading, north, altitude
             //$ContourDir
             //Bob_Feb11
-            //$Offsets
-            //533172,5927719,12
+            //$Start Coordinates
+            //46.000000,-72.000000
 
             //get the directory and make sure it exists, create if not
             string dirField = fieldsDirectory + currentFieldDirectory + "\\";
@@ -1516,14 +1523,15 @@ namespace OpenGrade
                 writer.WriteLine("$MapPtDir");
                 writer.WriteLine(currentFieldDirectory);
 
-                //write out the easting and northing Offsets
-                writer.WriteLine("$Offsets");
-                writer.WriteLine(pn.utmEast.ToString(CultureInfo.InvariantCulture) +
-                    "," + pn.utmNorth.ToString(CultureInfo.InvariantCulture) + "," + pn.zone.ToString(CultureInfo.InvariantCulture));
+                //write out the start lat and long
+                writer.WriteLine("$Start Coordinates");
+                writer.WriteLine(pn.latStart.ToString(CultureInfo.InvariantCulture) + "," +
+                    pn.lonStart.ToString(CultureInfo.InvariantCulture));
+            
 
 
-                //make sure there is something to save
-                if (ct.mapList.Count() > 0)
+            //make sure there is something to save
+            if (ct.mapList.Count() > 0)
                 {
                     int count3 = ct.mapList.Count;
 
@@ -1562,8 +1570,8 @@ namespace OpenGrade
             //64.697,0.168,-21.654,0 - east, heading, north, altitude
             //$ContourDir
             //Bob_Feb11
-            //$Offsets
-            //533172,5927719,12
+            //$Start Coordinates
+            //46.00000,-72.000000
 
             //get the directory and make sure it exists, create if not
             string dirField = fieldsDirectory + currentFieldDirectory + "\\";
@@ -1916,8 +1924,8 @@ namespace OpenGrade
             //Saturday, February 11, 2017  -->  7:26:52 AM
             //$FlagsDir
             //Bob_Feb11
-            //$Offsets
-            //533172,5927719,12 - offset easting, northing, zone
+            //$Start Coordinates
+            //46.000000,-72.000000
 
             //get the directory and make sure it exists, create if not
             string dirField = fieldsDirectory + currentFieldDirectory + "\\";
@@ -1938,10 +1946,11 @@ namespace OpenGrade
                     writer.WriteLine("$FlagsDir");
                     writer.WriteLine(currentFieldDirectory);
 
-                    //write out the easting and northing Offsets
-                    writer.WriteLine("$Offsets");
-                    writer.WriteLine(pn.utmEast.ToString(CultureInfo.InvariantCulture) + "," +
-                                pn.utmNorth.ToString(CultureInfo.InvariantCulture) + "," + pn.zone.ToString(CultureInfo.InvariantCulture));
+                    //write out the start lat and long
+                    writer.WriteLine("$Start Coordinates");
+                    writer.WriteLine(pn.latStart.ToString(CultureInfo.InvariantCulture) + "," +
+                        pn.lonStart.ToString(CultureInfo.InvariantCulture));
+                
 
                     int count2 = flagPts.Count;
 

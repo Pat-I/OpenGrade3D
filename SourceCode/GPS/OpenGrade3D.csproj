@@ -55,7 +55,7 @@
     </NoWarn>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Grade64Icon.ico</ApplicationIcon>
+    <ApplicationIcon>Grade64_3Dicon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
@@ -363,6 +363,8 @@
     <Content Include="AppIcon64.ico" />
     <Content Include="aChangeLog.txt" />
     <Content Include="Grade64Icon.ico" />
+    <Content Include="Grade64_3Dicon.ico" />
+    <None Include="Resources\Grade64_3Dicon.ico" />
     <None Include="btnImages\VehicleSettings.jpg" />
     <None Include="btnImages\ToolSettings.jpg" />
     <None Include="btnImages\VehAft64.png" />
@@ -492,9 +494,7 @@
     </Content>
     <Content Include="ALicense.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\KeyPad\Keypad\Keypad.csproj">
       <Project>{f1053bac-22c7-4e6f-a3ea-cc1e1fba9cb0}</Project>

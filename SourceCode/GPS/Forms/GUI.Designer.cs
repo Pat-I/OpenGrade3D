@@ -1920,16 +1920,11 @@ namespace OpenGrade
                         lblGPSHeading.Text = GPSHeading;
 
                         //up in the menu a few pieces of info
-                        if (isJobStarted)
-                        {
-                            lblEasting.Text = "E: " + Math.Round(pn.easting, 1).ToString();
-                            lblNorthing.Text = "N: " + Math.Round(pn.northing, 1).ToString();
-                        }
-                        else
-                        {
-                            lblEasting.Text = "E: " + ((int)pn.actualEasting).ToString();
-                            lblNorthing.Text = "N: " + ((int)pn.actualNorthing).ToString();
-                        }
+                        
+                        lblEasting.Text = "E: " + Math.Round(pn.easting, 1).ToString();
+                        lblNorthing.Text = "N: " + Math.Round(pn.northing, 1).ToString();
+                        
+                        
 
                         lblZone.Text = pn.zone.ToString();
                         tboxSentence.Text = recvSentenceSettings;
