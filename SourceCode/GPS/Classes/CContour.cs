@@ -1374,6 +1374,9 @@ namespace OpenGrade
         //add the utm to the agd data and save to the ptList for code 3 pts, to boundaryList For the others , by Pat
         public void designList2ptList()
         {
+            var form = new FormTimedMessage(3000, "Creating map", "Can take several seconds");
+            form.Show();
+
             mf.stopTheProgram = true;
             //if (ptList != null) 
             ptList.Clear();

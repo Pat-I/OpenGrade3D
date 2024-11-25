@@ -26,7 +26,7 @@ namespace OpenGrade
 
             //append date time to name
             mf.currentFieldDirectory = "OG3d_" + tboxFieldName.Text.Trim() +
-                String.Format("{0}", DateTime.Now.ToString(" MMMdd", CultureInfo.InvariantCulture));
+                String.Format("{0}", DateTime.Now.ToString(" yyyyMMdd", CultureInfo.InvariantCulture));
             try
             {
                 //get the directory and make sure it exists, create if not

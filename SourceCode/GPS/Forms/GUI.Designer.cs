@@ -390,19 +390,14 @@ namespace OpenGrade
             }
         }
 
-        private void importAgsFile_click(object sender, EventArgs e)
+        public void importAgsFile()
         {
             if (isJobStarted)
             {
-                if (ct.ptList.Count < 1)
-                {             
-                FileOpenAgdDesign();
-                //ct.designList2ptList();
-                }
-                else
+               
                 {
-                var form = new FormTimedMessage(3000, "Contour.txt already exist", "Delete the Contour.txt or create a new Field");
-                form.Show();
+                    var form = new FormTimedMessage(3000, "Field already open", "Create from new Design");
+                    form.Show();
                 }
             }
             else
@@ -415,7 +410,7 @@ namespace OpenGrade
                 ct.ptList.Clear();
                 FileOpenAgdDesign();
 
-                
+
 
 
             }

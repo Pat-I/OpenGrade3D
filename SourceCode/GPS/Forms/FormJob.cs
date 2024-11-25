@@ -42,9 +42,14 @@ namespace OpenGrade
             //start a new job
             mf.JobNew();
 
+            mf.ct.surveyMode = false;
+            mf.SelectMode();
+
             //back to FormGPS
             DialogResult = DialogResult.Yes;
             Close();
+
+                       
         }
 
         private void btnJobResume_Click(object sender, EventArgs e)
@@ -75,5 +80,18 @@ namespace OpenGrade
             }
             else lblResumeDirectory.Text = mf.currentFieldDirectory;
         }
+
+        private void btnCreateDesign_Click(object sender, EventArgs e)
+        {
+            //back to FormGPS
+            DialogResult = DialogResult.OK;
+            Close();
+
+            mf.importAgsFile();
+            mf.ct.surveyMode = true;
+            mf.SelectMode();
+           
+        }
+
     }
 }

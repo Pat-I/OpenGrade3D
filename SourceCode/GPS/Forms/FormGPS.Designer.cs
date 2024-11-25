@@ -50,7 +50,6 @@
             this.saveVehicleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.fieldToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.importAgdFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.resetALLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -342,8 +341,7 @@
             this.loadVehicleToolStripMenuItem,
             this.saveVehicleToolStripMenuItem,
             this.toolStripSeparator8,
-            this.fieldToolStripMenuItem,
-            this.importAgdFileToolStripMenuItem});
+            this.fieldToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Padding = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(69, 38);
@@ -352,57 +350,50 @@
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(285, 6);
+            this.toolStripSeparator9.Size = new System.Drawing.Size(255, 6);
             // 
             // toolStripSeparator11
             // 
             this.toolStripSeparator11.Name = "toolStripSeparator11";
-            this.toolStripSeparator11.Size = new System.Drawing.Size(285, 6);
+            this.toolStripSeparator11.Size = new System.Drawing.Size(255, 6);
             // 
             // setWorkingDirectoryToolStripMenuItem
             // 
             this.setWorkingDirectoryToolStripMenuItem.Name = "setWorkingDirectoryToolStripMenuItem";
-            this.setWorkingDirectoryToolStripMenuItem.Size = new System.Drawing.Size(288, 40);
+            this.setWorkingDirectoryToolStripMenuItem.Size = new System.Drawing.Size(258, 40);
             this.setWorkingDirectoryToolStripMenuItem.Text = "Directories";
             this.setWorkingDirectoryToolStripMenuItem.Click += new System.EventHandler(this.setWorkingDirectoryToolStripMenuItem_Click);
             // 
             // toolStripSeparator10
             // 
             this.toolStripSeparator10.Name = "toolStripSeparator10";
-            this.toolStripSeparator10.Size = new System.Drawing.Size(285, 6);
+            this.toolStripSeparator10.Size = new System.Drawing.Size(255, 6);
             // 
             // loadVehicleToolStripMenuItem
             // 
             this.loadVehicleToolStripMenuItem.Name = "loadVehicleToolStripMenuItem";
-            this.loadVehicleToolStripMenuItem.Size = new System.Drawing.Size(288, 40);
+            this.loadVehicleToolStripMenuItem.Size = new System.Drawing.Size(258, 40);
             this.loadVehicleToolStripMenuItem.Text = "Load Vehicle";
             this.loadVehicleToolStripMenuItem.Click += new System.EventHandler(this.loadVehicleToolStripMenuItem_Click);
             // 
             // saveVehicleToolStripMenuItem
             // 
             this.saveVehicleToolStripMenuItem.Name = "saveVehicleToolStripMenuItem";
-            this.saveVehicleToolStripMenuItem.Size = new System.Drawing.Size(288, 40);
+            this.saveVehicleToolStripMenuItem.Size = new System.Drawing.Size(258, 40);
             this.saveVehicleToolStripMenuItem.Text = "Save Vehicle";
             this.saveVehicleToolStripMenuItem.Click += new System.EventHandler(this.saveVehicleToolStripMenuItem_Click);
             // 
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(285, 6);
+            this.toolStripSeparator8.Size = new System.Drawing.Size(255, 6);
             // 
             // fieldToolStripMenuItem
             // 
             this.fieldToolStripMenuItem.Name = "fieldToolStripMenuItem";
-            this.fieldToolStripMenuItem.Size = new System.Drawing.Size(288, 40);
+            this.fieldToolStripMenuItem.Size = new System.Drawing.Size(258, 40);
             this.fieldToolStripMenuItem.Text = "Start Field";
             this.fieldToolStripMenuItem.Click += new System.EventHandler(this.fieldToolStripMenuItem_Click);
-            // 
-            // importAgdFileToolStripMenuItem
-            // 
-            this.importAgdFileToolStripMenuItem.Name = "importAgdFileToolStripMenuItem";
-            this.importAgdFileToolStripMenuItem.Size = new System.Drawing.Size(288, 40);
-            this.importAgdFileToolStripMenuItem.Text = "Import agd file";
-            this.importAgdFileToolStripMenuItem.Click += new System.EventHandler(this.importAgsFile_click);
             // 
             // settingsToolStripMenuItem
             // 
@@ -871,7 +862,7 @@
             this.stripSelectMode.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.stripSelectMode.Margin = new System.Windows.Forms.Padding(0);
             this.stripSelectMode.Name = "stripSelectMode";
-            this.stripSelectMode.Size = new System.Drawing.Size(436, 41);
+            this.stripSelectMode.Size = new System.Drawing.Size(405, 41);
             this.stripSelectMode.Spring = true;
             this.stripSelectMode.Text = "Grade Mode";
             this.stripSelectMode.Click += new System.EventHandler(this.stripSelectMode_Click);
@@ -1292,7 +1283,7 @@
             this.label9.Font = new System.Drawing.Font("Tahoma", 14.25F);
             this.label9.Location = new System.Drawing.Point(3, 198);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(56, 23);
+            this.label9.Size = new System.Drawing.Size(57, 23);
             this.label9.TabIndex = 3;
             this.label9.Text = "Pitch:";
             // 
@@ -1626,7 +1617,7 @@
             this.label3.Font = new System.Drawing.Font("Tahoma", 9.75F);
             this.label3.Location = new System.Drawing.Point(304, 14);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(14, 16);
+            this.label3.Size = new System.Drawing.Size(13, 16);
             this.label3.TabIndex = 172;
             this.label3.Text = "L";
             // 
@@ -1676,7 +1667,7 @@
             this.label11.Font = new System.Drawing.Font("Tahoma", 9.75F);
             this.label11.Location = new System.Drawing.Point(4, 20);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(41, 16);
+            this.label11.Size = new System.Drawing.Size(40, 16);
             this.label11.TabIndex = 170;
             this.label11.Text = "B N M";
             // 
@@ -1687,7 +1678,7 @@
             this.label12.Font = new System.Drawing.Font("Tahoma", 9.75F);
             this.label12.Location = new System.Drawing.Point(367, 23);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(36, 16);
+            this.label12.Size = new System.Drawing.Size(35, 16);
             this.label12.TabIndex = 171;
             this.label12.Text = "H J K";
             // 
@@ -2562,7 +2553,6 @@
         private System.Windows.Forms.Label lblFixUpdateHz;
         private System.Windows.Forms.Button btnStartPause;
         private System.Windows.Forms.Button btnBoundarySide;
-        private System.Windows.Forms.ToolStripMenuItem importAgdFileToolStripMenuItem;
         private System.Windows.Forms.NumericUpDown numBladeOffset;
         private System.Windows.Forms.Button btnCutFillElev;
         private System.Windows.Forms.Button btnPropExist;
