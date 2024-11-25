@@ -1058,8 +1058,8 @@ namespace OpenGrade
                                     double.Parse(words[0], CultureInfo.InvariantCulture),
                                     double.Parse(words[1], CultureInfo.InvariantCulture),
                                     double.Parse(words[2], CultureInfo.InvariantCulture),
-                                    -1,
-                                    -1,
+                                    -999,
+                                    9999,
                                     0, 0, 0
                                     );
 
@@ -1072,8 +1072,8 @@ namespace OpenGrade
                                     double.Parse(words[0], CultureInfo.InvariantCulture),
                                     double.Parse(words[1], CultureInfo.InvariantCulture),
                                     double.Parse(words[2], CultureInfo.InvariantCulture),
-                                    -1,
-                                    -1,
+                                    -999,
+                                    9999,
                                     2, 0, 0
                                     );
 
@@ -1086,8 +1086,8 @@ namespace OpenGrade
                                     double.Parse(words[0], CultureInfo.InvariantCulture),
                                     double.Parse(words[1], CultureInfo.InvariantCulture),
                                     double.Parse(words[2], CultureInfo.InvariantCulture),
-                                    -1,
-                                    -1,
+                                    -999,
+                                    9999,
                                     21, 0, 0
                                     );
 
@@ -1100,8 +1100,8 @@ namespace OpenGrade
                                     double.Parse(words[0], CultureInfo.InvariantCulture),
                                     double.Parse(words[1], CultureInfo.InvariantCulture),
                                     double.Parse(words[2], CultureInfo.InvariantCulture),
-                                    -1,
-                                    -1,
+                                    -999,
+                                    9999,
                                     22, 0, 0
                                     );
 
@@ -1114,8 +1114,8 @@ namespace OpenGrade
                                     double.Parse(words[0], CultureInfo.InvariantCulture),
                                     double.Parse(words[1], CultureInfo.InvariantCulture),
                                     double.Parse(words[2], CultureInfo.InvariantCulture),
-                                    -1,
-                                    -1,
+                                    -999,
+                                    9999,
                                     23, 0, 0
                                     );
 
@@ -1128,8 +1128,8 @@ namespace OpenGrade
                                     double.Parse(words[0], CultureInfo.InvariantCulture),
                                     double.Parse(words[1], CultureInfo.InvariantCulture),
                                     double.Parse(words[2], CultureInfo.InvariantCulture),
-                                    -1,
-                                    -1,
+                                    -999,
+                                    9999,
                                     24, 0, 0
                                     );
 
@@ -1142,8 +1142,8 @@ namespace OpenGrade
                                     double.Parse(words[0], CultureInfo.InvariantCulture),
                                     double.Parse(words[1], CultureInfo.InvariantCulture),
                                     double.Parse(words[2], CultureInfo.InvariantCulture),
-                                    -1,
-                                    -1,
+                                    -999,
+                                    9999,
                                     25, 0, 0
                                     );
 
@@ -1156,8 +1156,8 @@ namespace OpenGrade
                                     double.Parse(words[0], CultureInfo.InvariantCulture),
                                     double.Parse(words[1], CultureInfo.InvariantCulture),
                                     double.Parse(words[2], CultureInfo.InvariantCulture),
-                                    -1,
-                                    -1,
+                                    -999,
+                                    9999,
                                     26, 0, 0
                                     );
 
@@ -1170,8 +1170,8 @@ namespace OpenGrade
                                     double.Parse(words[0], CultureInfo.InvariantCulture),
                                     double.Parse(words[1], CultureInfo.InvariantCulture),
                                     double.Parse(words[2], CultureInfo.InvariantCulture),
-                                    -1,
-                                    -1,
+                                    -999,
+                                    9999,
                                     27, 0, 0
                                     );
 
@@ -1184,8 +1184,8 @@ namespace OpenGrade
                                     double.Parse(words[0], CultureInfo.InvariantCulture),
                                     double.Parse(words[1], CultureInfo.InvariantCulture),
                                     double.Parse(words[2], CultureInfo.InvariantCulture),
-                                    -1,
-                                    -1,
+                                    -999,
+                                    9999,
                                     28, 0, 0
                                     );
 
@@ -1198,8 +1198,8 @@ namespace OpenGrade
                                     double.Parse(words[0], CultureInfo.InvariantCulture),
                                     double.Parse(words[1], CultureInfo.InvariantCulture),
                                     double.Parse(words[2], CultureInfo.InvariantCulture),
-                                    -1,
-                                    -1,
+                                    -999,
+                                    9999,
                                     29, 0, 0
                                     );
 
@@ -1225,8 +1225,8 @@ namespace OpenGrade
                                         double.Parse(words[0], CultureInfo.InvariantCulture),
                                         double.Parse(words[1], CultureInfo.InvariantCulture),
                                         double.Parse(words[2], CultureInfo.InvariantCulture),
-                                        -1,
-                                        -1,
+                                        -999,
+                                        9999,
                                         3, 0, 0
                                         );
 

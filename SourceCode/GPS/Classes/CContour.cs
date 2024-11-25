@@ -19,7 +19,7 @@ namespace OpenGrade
         //constructor
         public CContourPt(double _easting, double _heading, double _northing,
                             double _altitude, double _lat, double _long,
-                            double _cutAltitude = -1, double _lastPassAltitude = -1, double _distance = -1)
+                            double _cutAltitude = -999, double _lastPassAltitude = -999, double _distance = -1)
         {
             easting = _easting;
             northing = _northing;
@@ -79,8 +79,8 @@ namespace OpenGrade
 
         //constructor
         public ViewPt(double _easting = 0, double _northing = 0,
-                            double _altitude = 0, double _heading = 0,
-                            double _cutAltitude = -1, double _lastPassAltitude = -1) // , double _distance = -1
+                            double _altitude = -999, double _heading = 0,
+                            double _cutAltitude = -999, double _lastPassAltitude = -999) // , double _distance = -1
         {
             easting = _easting;
             northing = _northing;
@@ -124,7 +124,7 @@ namespace OpenGrade
 
 
         //constructor
-        public SurveyPt(double _easting, double _northing, double _lat, double _long, double _altitude = -1, double _code = -1, int _fixQuality = 0)
+        public SurveyPt(double _easting, double _northing, double _lat, double _long, double _altitude = -999, double _code = -1, int _fixQuality = 0)
         {
 
             easting = _easting;
@@ -159,10 +159,10 @@ namespace OpenGrade
         //constructor
         public mapListPt(double _eastingMap, double _northingMap, double _drawPtWidthMap,
                             double _altitudeMap,
-                            double _cutAltitudeMap = -1, 
+                            double _cutAltitudeMap = -999, 
                             double _cutDeltaMap = 9999,
-                            double _lastPassAltitudeMap = -1,
-                            double _lastPassRealAltitudeMap = -1)
+                            double _lastPassAltitudeMap = -999,
+                            double _lastPassRealAltitudeMap = -999)
         {
             eastingMap = _eastingMap;
             northingMap = _northingMap;
@@ -191,7 +191,7 @@ namespace OpenGrade
 
         //constructor
         public designPt(double _lat, double _long, double _altitude,
-                            double _cutAltitude = -1, double _cutfill = 9999,
+                            double _cutAltitude = -999, double _cutfill = 9999,
                               double _code = -1, double _easting = 0, double _northing = 0)
         {
             easting = _easting;
@@ -772,7 +772,7 @@ namespace OpenGrade
                         maxAltitude = -9999; minAltitude = 9999; maxCut = 0; maxFill = 0;
                         for (int h = 0; h < ptCount; h++)
                         {
-                            if (mapList[h].cutAltitudeMap != -1)
+                            if (mapList[h].cutAltitudeMap != -999)
                             {
                                 if (mapList[h].cutAltitudeMap < minAltitude) minAltitude = mapList[h].cutAltitudeMap;
                             }
@@ -868,7 +868,7 @@ namespace OpenGrade
                                         fillIndex = (int)((toCut / maxCut) * -1000);// positive
 
                                     }
-                                        else if (isActualFill && mapList[h].lastPassRealAltitudeMap > 0) // to fill and cut
+                                        else if (isActualFill && mapList[h].lastPassRealAltitudeMap > -998) // to fill and cut
                                         {
                                         double actAlt = mapList[h].lastPassRealAltitudeMap;
                                         if (actAlt > mapList[h].altitudeMap && mapList[h].cutAltitudeMap <= mapList[h].altitudeMap) actAlt = mapList[h].altitudeMap; // to 
@@ -933,7 +933,7 @@ namespace OpenGrade
                                 {
                                     if (isExistingElevation)
                                     {
-                                        if (mapList[h].altitudeMap > 0)
+                                        if (mapList[h].altitudeMap > -998)
                                         {
                                             if (mapList[h].altitudeMap == midAltitude)
                                             {
@@ -972,7 +972,7 @@ namespace OpenGrade
                                     {
 
 
-                                        if (mapList[h].cutAltitudeMap != -1)
+                                        if (mapList[h].cutAltitudeMap != -999)
                                         {
                                             if (mapList[h].cutAltitudeMap == midAltitude)
                                             {
@@ -1408,7 +1408,7 @@ namespace OpenGrade
                                     designList[t].latitude,
                                     designList[t].longitude,
                                     designList[t].cutAltitude,
-                                    -1,
+                                    -999,
                                     -1);
 
                         ptList.Add(point);
@@ -1450,7 +1450,7 @@ namespace OpenGrade
 
             for (int t = 0; t < eleViewListCount; t++)
             {
-                ViewPt point = new ViewPt(0, 0, -1, -1, -1);
+                ViewPt point = new ViewPt(0, 0, -999, 0, -999, -999);
                 eleViewList.Add(point);
             }
 

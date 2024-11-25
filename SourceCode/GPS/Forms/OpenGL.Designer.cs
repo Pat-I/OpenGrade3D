@@ -506,10 +506,10 @@ namespace OpenGrade
 
                 int ptCount = ct.ptList.Count - 1;
 
-                double minDistSE = 900; // if the point is further than 30 meters we forget it
-                double minDistSW = 900;
-                double minDistNE = 900;
-                double minDistNW = 900;
+                double minDistSE = 90000; // if the point is further than 300 meters we forget it
+                double minDistSW = 90000;
+                double minDistNE = 90000;
+                double minDistNW = 90000;
 
                 //find the closest point to current fix
                 for (int t = 0; t < ptCount; t++)
@@ -581,7 +581,7 @@ namespace OpenGrade
                 double NoLineCutCount = 0;
 
                 //Calculate the North line
-                if (minDistNE < 900 && minDistNW < 900)
+                if (minDistNE < 90000 && minDistNW < 90000)
                 {
                     double dxN = ct.ptList[closestPointMapNE].easting - ct.ptList[closestPointMapNW].easting;
                     double dyN = ct.ptList[closestPointMapNE].northing - ct.ptList[closestPointMapNW].northing;
@@ -606,20 +606,20 @@ namespace OpenGrade
 
                     //calc altitude for that point
                     altitudeNpt = ct.ptList[closestPointMapNW].altitude + (UN * (ct.ptList[closestPointMapNE].altitude - ct.ptList[closestPointMapNW].altitude));
-                    if (ct.ptList[closestPointMapNE].cutAltitude > 0 && ct.ptList[closestPointMapNW].cutAltitude > 0)
+                    if (ct.ptList[closestPointMapNE].cutAltitude > -998 && ct.ptList[closestPointMapNW].cutAltitude > -998)
                     {
                         cutAltNpt = ct.ptList[closestPointMapNW].cutAltitude + (UN * (ct.ptList[closestPointMapNE].cutAltitude - ct.ptList[closestPointMapNW].cutAltitude));
                         NoLineAverageCutAlt += cutAltNpt;
                         NoLineCutCount++;
                     }
-                    else cutAltNpt = -1;
+                    else cutAltNpt = -999;
 
                     NoLineAverageAlt += altitudeNpt;
                     NoLineCount++;
                 }
 
                 //Calculate the South line
-                if (minDistSE < 900 && minDistSW < 900)
+                if (minDistSE < 90000 && minDistSW < 90000)
                 {
                     double dxS = ct.ptList[closestPointMapSE].easting - ct.ptList[closestPointMapSW].easting;
                     double dyS = ct.ptList[closestPointMapSE].northing - ct.ptList[closestPointMapSW].northing;
@@ -644,20 +644,20 @@ namespace OpenGrade
 
                     //calc altitude for that point
                     altitudeSpt = ct.ptList[closestPointMapSW].altitude + (US * (ct.ptList[closestPointMapSE].altitude - ct.ptList[closestPointMapSW].altitude));
-                    if (ct.ptList[closestPointMapSE].cutAltitude > 0 && ct.ptList[closestPointMapSW].cutAltitude > 0)
+                    if (ct.ptList[closestPointMapSE].cutAltitude > -998 && ct.ptList[closestPointMapSW].cutAltitude > -998)
                     {
                         cutAltSpt = ct.ptList[closestPointMapSW].cutAltitude + (US * (ct.ptList[closestPointMapSE].cutAltitude - ct.ptList[closestPointMapSW].cutAltitude));
                         NoLineAverageCutAlt += cutAltSpt;
                         NoLineCutCount++;
                     }
-                    else cutAltSpt = -1;
+                    else cutAltSpt = -999;
 
                     NoLineAverageAlt += altitudeSpt;
                     NoLineCount++;
                 }
 
                 //Calculate the West line
-                if (minDistSW < 900 && minDistNW < 900)
+                if (minDistSW < 90000 && minDistNW < 90000)
                 {
                     double dxW = ct.ptList[closestPointMapNW].easting - ct.ptList[closestPointMapSW].easting;
                     double dyW = ct.ptList[closestPointMapNW].northing - ct.ptList[closestPointMapSW].northing;
@@ -682,20 +682,20 @@ namespace OpenGrade
 
                     //calc altitude for that point
                     altitudeWpt = ct.ptList[closestPointMapSW].altitude + (UW * (ct.ptList[closestPointMapNW].altitude - ct.ptList[closestPointMapSW].altitude));
-                    if (ct.ptList[closestPointMapNW].cutAltitude > 0 && ct.ptList[closestPointMapSW].cutAltitude > 0)
+                    if (ct.ptList[closestPointMapNW].cutAltitude > -998 && ct.ptList[closestPointMapSW].cutAltitude > -998)
                     {
                         cutAltWpt = ct.ptList[closestPointMapSW].cutAltitude + (UW * (ct.ptList[closestPointMapNW].cutAltitude - ct.ptList[closestPointMapSW].cutAltitude));
                         NoLineAverageCutAlt += cutAltWpt;
                         NoLineCutCount++;
                     }
-                    else cutAltWpt = -1;
+                    else cutAltWpt = -999;
 
                     NoLineAverageAlt += altitudeWpt;
                     NoLineCount++;
                 }
 
                 //Calculate the East line
-                if (minDistSE < 900 && minDistNE < 900)
+                if (minDistSE < 90000 && minDistNE < 90000)
                 {
                     double dxE = ct.ptList[closestPointMapNE].easting - ct.ptList[closestPointMapSE].easting;
                     double dyE = ct.ptList[closestPointMapNE].northing - ct.ptList[closestPointMapSE].northing;
@@ -720,14 +720,14 @@ namespace OpenGrade
 
                     //calc altitude for that point
                     altitudeEpt = ct.ptList[closestPointMapSE].altitude + (UE * (ct.ptList[closestPointMapNE].altitude - ct.ptList[closestPointMapSE].altitude));
-                    if (ct.ptList[closestPointMapNE].cutAltitude > 0 && ct.ptList[closestPointMapSE].cutAltitude > 0)
+                    if (ct.ptList[closestPointMapNE].cutAltitude > -998 && ct.ptList[closestPointMapSE].cutAltitude > -998)
                     {
                         cutAltEpt = ct.ptList[closestPointMapSE].cutAltitude + (UE * (ct.ptList[closestPointMapNE].cutAltitude - ct.ptList[closestPointMapSE].cutAltitude));
                         NoLineAverageCutAlt += cutAltEpt;
                         NoLineCutCount++;
                     }
                     else
-                        cutAltEpt = -1;
+                        cutAltEpt = -999;
 
                     NoLineAverageAlt += altitudeEpt;
                     NoLineCount++;
@@ -739,7 +739,7 @@ namespace OpenGrade
                     NoLineAverageAlt = NoLineAverageAlt / NoLineCount;
                     if (NoLineCutCount > 0)
                         NoLineAverageCutAlt = NoLineAverageCutAlt / NoLineCutCount;
-                    else NoLineAverageCutAlt = -1;
+                    else NoLineAverageCutAlt = -999;
 
                     if (distanceFromNline == 1000)
                     {
@@ -766,7 +766,7 @@ namespace OpenGrade
                     }
                 }
 
-                // check if the blade is close from a line
+                // put the minimun distance from a line the blade is.
                 double mindistFromLine = distanceFromNline;
                 double eastingLine = eastingNpt;
                 double northingLine = northingNpt;
@@ -804,8 +804,8 @@ namespace OpenGrade
                 // Calulate the closest point alitude and cutAltitude
 
                 //double cutFillMap;
-                double avgAltitude = -1;
-                double avgCutAltitude = -1;
+                double avgAltitude = -999;
+                double avgCutAltitude = -999;
 
                 ct.usedPtList.Clear();
                 UsedPt point = new UsedPt(ct.ptList[closestPoint].easting, ct.ptList[closestPoint].northing, 1);
@@ -813,10 +813,10 @@ namespace OpenGrade
 
                 // if the pt is near the closest pt or No Average is selected or there is only one survey pt
                 int nbrofPt = 4;
-                if (minDistNE == 900) nbrofPt--;
-                if (minDistNW == 900) nbrofPt--;
-                if (minDistSE == 900) nbrofPt--;
-                if (minDistSW == 900) nbrofPt--;
+                if (minDistNE == 90000) nbrofPt--;
+                if (minDistNW == 90000) nbrofPt--;
+                if (minDistSE == 90000) nbrofPt--;
+                if (minDistSW == 90000) nbrofPt--;
 
                 if (minDist < (noAvgDist * noAvgDist) | !averagePts | nbrofPt < 2)
                 {
@@ -830,25 +830,25 @@ namespace OpenGrade
                     avgAltitude = altitudeLine;
                     avgCutAltitude = cutAltLine;
 
-                    if (minDistNE < 900)
+                    if (minDistNE < 90000)
                     {
                         UsedPt point2 = new UsedPt(ct.ptList[closestPointMapNE].easting, ct.ptList[closestPointMapNE].northing, 1);
                         ct.usedPtList.Add(point2);
                     }
 
-                    if (minDistSE < 900)
+                    if (minDistSE < 90000)
                     {
                         UsedPt point2 = new UsedPt(ct.ptList[closestPointMapSE].easting, ct.ptList[closestPointMapSE].northing, 1);
                         ct.usedPtList.Add(point2);
                     }
 
-                    if (minDistNW < 900)
+                    if (minDistNW < 90000)
                     {
                         UsedPt point2 = new UsedPt(ct.ptList[closestPointMapNW].easting, ct.ptList[closestPointMapNW].northing, 1);
                         ct.usedPtList.Add(point2);
                     }
 
-                    if (minDistSW < 900)
+                    if (minDistSW < 90000)
                     {
                         UsedPt point2 = new UsedPt(ct.ptList[closestPointMapSW].easting, ct.ptList[closestPointMapSW].northing, 1);
                         ct.usedPtList.Add(point2);
@@ -867,7 +867,7 @@ namespace OpenGrade
                         avgAltitude = ((altitudeNpt / distanceFromNline) + (altitudeSpt / distanceFromSline) +
                         (altitudeEpt / distanceFromEline) + (altitudeWpt / distanceFromWline)) / sumofCloseDist;
 
-                        if (cutAltNpt == -1 | cutAltSpt == -1 | cutAltWpt == -1 | cutAltEpt == -1)
+                        if (cutAltNpt == -999 | cutAltSpt == -999 | cutAltWpt == -999 | cutAltEpt == -999)
                         {
                             avgCutAltitude = ct.ptList[closestPoint].cutAltitude;
                         }
@@ -885,7 +885,7 @@ namespace OpenGrade
                         double northingDiaPt;
 
                         //Calculate the diag line SE to NW
-                        if (minDistSE < 900 && minDistNW < 900)
+                        if (minDistSE < 90000 && minDistNW < 90000)
                         {
                             double dx = ct.ptList[closestPointMapNW].easting - ct.ptList[closestPointMapSE].easting;
                             double dy = ct.ptList[closestPointMapNW].northing - ct.ptList[closestPointMapSE].northing;
@@ -910,18 +910,18 @@ namespace OpenGrade
 
                             //calc altitude for that point
                             avgAltitude = ct.ptList[closestPointMapSE].altitude + (U * (ct.ptList[closestPointMapNW].altitude - ct.ptList[closestPointMapSE].altitude));
-                            if (ct.ptList[closestPointMapNW].cutAltitude > 0 && ct.ptList[closestPointMapSE].cutAltitude > 0)
+                            if (ct.ptList[closestPointMapNW].cutAltitude > -998 && ct.ptList[closestPointMapSE].cutAltitude > -998)
                             {
                                 avgCutAltitude = ct.ptList[closestPointMapSE].cutAltitude + (U * (ct.ptList[closestPointMapNW].cutAltitude - ct.ptList[closestPointMapSE].cutAltitude));
                             }
                             else
-                                avgCutAltitude = -1;
+                                avgCutAltitude = -999;
 
                             UsedPt point2 = new UsedPt(eastingDiaPt, northingDiaPt, 2);
                             ct.usedPtList.Add(point2);
                         }
                         //Calculate the diag line SW to NE
-                        else if (minDistSW < 900 && minDistNE < 900)
+                        else if (minDistSW < 90000 && minDistNE < 90000)
                         {
                             double dx = ct.ptList[closestPointMapNE].easting - ct.ptList[closestPointMapSW].easting;
                             double dy = ct.ptList[closestPointMapNE].northing - ct.ptList[closestPointMapSW].northing;
@@ -946,12 +946,12 @@ namespace OpenGrade
 
                             //calc altitude for that point
                             avgAltitude = ct.ptList[closestPointMapSW].altitude + (U * (ct.ptList[closestPointMapNE].altitude - ct.ptList[closestPointMapSW].altitude));
-                            if (ct.ptList[closestPointMapNE].cutAltitude > 0 && ct.ptList[closestPointMapSW].cutAltitude > 0)
+                            if (ct.ptList[closestPointMapNE].cutAltitude > -998 && ct.ptList[closestPointMapSW].cutAltitude > -998)
                             {
                                 avgCutAltitude = ct.ptList[closestPointMapSW].cutAltitude + (U * (ct.ptList[closestPointMapNE].cutAltitude - ct.ptList[closestPointMapSW].cutAltitude));
                             }
                             else
-                                avgCutAltitude = -1;
+                                avgCutAltitude = -999;
 
                             UsedPt point2 = new UsedPt(eastingDiaPt, northingDiaPt, 2);
                             ct.usedPtList.Add(point2);
@@ -960,25 +960,25 @@ namespace OpenGrade
                     }
 
                     // build the list to view the points in the map
-                    if (minDistNE < 900)
+                    if (minDistNE < 90000)
                     {
                         UsedPt point2 = new UsedPt(ct.ptList[closestPointMapNE].easting, ct.ptList[closestPointMapNE].northing, 1);
                         ct.usedPtList.Add(point2);
                     }
 
-                    if (minDistSE < 900)
+                    if (minDistSE < 90000)
                     {
                         UsedPt point2 = new UsedPt(ct.ptList[closestPointMapSE].easting, ct.ptList[closestPointMapSE].northing, 1);
                         ct.usedPtList.Add(point2);
                     }
 
-                    if (minDistNW < 900)
+                    if (minDistNW < 90000)
                     {
                         UsedPt point2 = new UsedPt(ct.ptList[closestPointMapNW].easting, ct.ptList[closestPointMapNW].northing, 1);
                         ct.usedPtList.Add(point2);
                     }
 
-                    if (minDistSW < 900)
+                    if (minDistSW < 90000)
                     {
                         UsedPt point2 = new UsedPt(ct.ptList[closestPointMapSW].easting, ct.ptList[closestPointMapSW].northing, 1);
                         ct.usedPtList.Add(point2);
@@ -1044,15 +1044,15 @@ namespace OpenGrade
                         ct.eleViewList[101].northing = pn.northing;
                         ct.eleViewList[101].heading = fixHeading;
 
-                        if (minDist < 900)
+                        if (minDist < 90000)
                         {
                             ct.eleViewList[101].altitude = avgAltitude;
                             ct.eleViewList[101].cutAltitude = avgCutAltitude;
                         }
                         else
                         {
-                            ct.eleViewList[101].altitude = -1;
-                            ct.eleViewList[101].cutAltitude = -1;
+                            ct.eleViewList[101].altitude = -999;
+                            ct.eleViewList[101].cutAltitude = -999;
                         }
 
                         // make the look ahead view
@@ -1106,8 +1106,8 @@ namespace OpenGrade
                                 else
                                 {
                                     //ct.eleViewList[101 + j * 10 - k].lastPassAltitude = pn.altitude;
-                                    ct.eleViewList[101 + j * 4 - k].altitude = -1;
-                                    ct.eleViewList[101 + j * 4 - k].cutAltitude = -1;
+                                    ct.eleViewList[101 + j * 4 - k].altitude = -999;
+                                    ct.eleViewList[101 + j * 4 - k].cutAltitude = -999;
 
                                 }
 
@@ -1128,7 +1128,7 @@ namespace OpenGrade
                         double paintCutAlt = ct.eleViewList[ptsBehind].cutAltitude;
                         double paintLastPass = ct.eleViewList[ptsBehind].lastPassAltitude;
 
-                        if (paintAltitude > 0 && paintCutAlt > 0 && paintLastPass > 0)
+                        if (paintAltitude > -998 && paintCutAlt > -998 && paintLastPass > -998)
                         {
                             // calculate the number of pts from to make calculation
                             double paintToolDist = (vehicle.toolWidth - mappingDist) / 2;
@@ -1151,7 +1151,7 @@ namespace OpenGrade
                                     //if (dist < paintDist)
                                     {
                                         // fill the lastpass value
-                                        if (paintLastPass < ct.mapList[i].lastPassAltitudeMap | ct.mapList[i].lastPassAltitudeMap < 1)
+                                        if (paintLastPass < ct.mapList[i].lastPassAltitudeMap | ct.mapList[i].lastPassAltitudeMap < -997)
                                         {
                                             if (paintLastPass < ct.mapList[i].cutAltitudeMap) ct.mapList[i].lastPassAltitudeMap = ct.mapList[i].cutAltitudeMap;
                                             else ct.mapList[i].lastPassAltitudeMap = paintLastPass;
@@ -1162,13 +1162,13 @@ namespace OpenGrade
                                             if (paintLastPass <= ct.mapList[i].cutAltitudeMap) ct.mapList[i].lastPassRealAltitudeMap = ct.mapList[i].cutAltitudeMap;
                                             else
                                             {
-                                                if (ct.mapList[i].lastPassRealAltitudeMap > paintLastPass | ct.mapList[i].lastPassRealAltitudeMap < 0)
+                                                if (ct.mapList[i].lastPassRealAltitudeMap > paintLastPass | ct.mapList[i].lastPassRealAltitudeMap < -997)
                                                     ct.mapList[i].lastPassRealAltitudeMap = paintLastPass;
                                             }
                                         }
                                         else // area to fill
                                         {
-                                            if (ct.mapList[i].lastPassRealAltitudeMap > paintLastPass | ct.mapList[i].lastPassRealAltitudeMap < 0)
+                                            if (ct.mapList[i].lastPassRealAltitudeMap > paintLastPass | ct.mapList[i].lastPassRealAltitudeMap < -997)
                                             {
 
                                                 if (paintLastPass >= ct.mapList[i].cutAltitudeMap) ct.mapList[i].lastPassRealAltitudeMap = ct.mapList[i].cutAltitudeMap;
@@ -1236,7 +1236,7 @@ namespace OpenGrade
                     gl.Begin(OpenGL.GL_LINE_STRIP);
                     for (int i = 0; i < elePtCount; i++)
                     {
-                        if (ct.eleViewList[i].cutAltitude > 0)
+                        if (ct.eleViewList[i].cutAltitude > -998)
                             gl.Vertex(i, (((ct.eleViewList[i].cutAltitude - centerY) * altitudeWindowGain) + centerY), 0);
                         else
                         {
@@ -1274,7 +1274,7 @@ namespace OpenGrade
                     gl.Color(0.40f, 0.970f, 0.400f);
                     for (int i = 0; i < elePtCount; i++)
                     {
-                        if (ct.eleViewList[i].lastPassAltitude > 0)
+                        if (ct.eleViewList[i].lastPassAltitude > -998)
                             gl.Vertex(i, (((ct.eleViewList[i].lastPassAltitude - centerY) * altitudeWindowGain) + centerY), 0);
                     }
                     gl.End();
@@ -1323,7 +1323,7 @@ namespace OpenGrade
 
                 }
 
-                if (minDist < 900) // original is 15, meter form the line scare, for 5 meter put 25
+                if (minDist < 90000) // original is 15, meter form the line scare, for 5 meter put 25
                 {
 
 
@@ -1361,7 +1361,7 @@ namespace OpenGrade
                     }
                     else
                     {
-                        if (avgCutAltitude > 0)
+                        if (avgCutAltitude > -998)
                         {
                             //in cm
                             cutDelta = (pn.altitude - avgCutAltitude) * 100;
@@ -1500,11 +1500,11 @@ namespace OpenGrade
                             int closestPointMapNW = -1;
 
 
-                            minDistMap = 1000;
-                            double minDistSE = 900;
-                            double minDistSW = 900;
-                            double minDistNE = 900;
-                            double minDistNW = 900;
+                            minDistMap = 100000;
+                            double minDistSE = 90000;
+                            double minDistSW = 90000;
+                            double minDistNE = 90000;
+                            double minDistNW = 90000;
 
                             //find the closest point to current fix
                             for (int t = 0; t < ptCount; t++)
@@ -1620,7 +1620,7 @@ namespace OpenGrade
                                 double NoLineCutCount = 0;
 
                                 //Calculate the North line
-                                if (minDistNE < 900 && minDistNW < 900)
+                                if (minDistNE < 90000 && minDistNW < 90000)
                                 {
                                     double dxN = ct.ptList[closestPointMapNE].easting - ct.ptList[closestPointMapNW].easting;
                                     double dyN = ct.ptList[closestPointMapNE].northing - ct.ptList[closestPointMapNW].northing;
@@ -1645,20 +1645,20 @@ namespace OpenGrade
 
                                     //calc altitude for that point
                                     altitudeNpt = ct.ptList[closestPointMapNW].altitude + (UN * (ct.ptList[closestPointMapNE].altitude - ct.ptList[closestPointMapNW].altitude));
-                                    if (ct.ptList[closestPointMapNE].cutAltitude > 0 && ct.ptList[closestPointMapNW].cutAltitude > 0)
+                                    if (ct.ptList[closestPointMapNE].cutAltitude > -998 && ct.ptList[closestPointMapNW].cutAltitude > -998)
                                     {
                                         cutAltNpt = ct.ptList[closestPointMapNW].cutAltitude + (UN * (ct.ptList[closestPointMapNE].cutAltitude - ct.ptList[closestPointMapNW].cutAltitude));
                                         NoLineAverageCutAlt += cutAltNpt;
                                         NoLineCutCount++;
                                     }
-                                    else cutAltNpt = -1;
+                                    else cutAltNpt = -999;
 
                                     NoLineAverageAlt += altitudeNpt;
                                     NoLineCount++;
                                 }
 
                                 //Calculate the South line
-                                if (minDistSE < 900 && minDistSW < 900)
+                                if (minDistSE < 90000 && minDistSW < 90000)
                                 {
                                     double dxS = ct.ptList[closestPointMapSE].easting - ct.ptList[closestPointMapSW].easting;
                                     double dyS = ct.ptList[closestPointMapSE].northing - ct.ptList[closestPointMapSW].northing;
@@ -1683,20 +1683,20 @@ namespace OpenGrade
 
                                     //calc altitude for that point
                                     altitudeSpt = ct.ptList[closestPointMapSW].altitude + (US * (ct.ptList[closestPointMapSE].altitude - ct.ptList[closestPointMapSW].altitude));
-                                    if (ct.ptList[closestPointMapSE].cutAltitude > 0 && ct.ptList[closestPointMapSW].cutAltitude > 0)
+                                    if (ct.ptList[closestPointMapSE].cutAltitude > -998 && ct.ptList[closestPointMapSW].cutAltitude > -998)
                                     {
                                         cutAltSpt = ct.ptList[closestPointMapSW].cutAltitude + (US * (ct.ptList[closestPointMapSE].cutAltitude - ct.ptList[closestPointMapSW].cutAltitude));
                                         NoLineAverageCutAlt += cutAltSpt;
                                         NoLineCutCount++;
                                     }
-                                    else cutAltSpt = -1;
+                                    else cutAltSpt = -999;
 
                                     NoLineAverageAlt += altitudeSpt;
                                     NoLineCount++;
                                 }
 
                                 //Calculate the West line
-                                if (minDistSW < 900 && minDistNW < 900)
+                                if (minDistSW < 90000 && minDistNW < 90000)
                                 {
                                     double dxW = ct.ptList[closestPointMapNW].easting - ct.ptList[closestPointMapSW].easting;
                                     double dyW = ct.ptList[closestPointMapNW].northing - ct.ptList[closestPointMapSW].northing;
@@ -1721,20 +1721,20 @@ namespace OpenGrade
 
                                     //calc altitude for that point
                                     altitudeWpt = ct.ptList[closestPointMapSW].altitude + (UW * (ct.ptList[closestPointMapNW].altitude - ct.ptList[closestPointMapSW].altitude));
-                                    if (ct.ptList[closestPointMapNW].cutAltitude > 0 && ct.ptList[closestPointMapSW].cutAltitude > 0)
+                                    if (ct.ptList[closestPointMapNW].cutAltitude > -998 && ct.ptList[closestPointMapSW].cutAltitude > -998)
                                     {
                                         cutAltWpt = ct.ptList[closestPointMapSW].cutAltitude + (UW * (ct.ptList[closestPointMapNW].cutAltitude - ct.ptList[closestPointMapSW].cutAltitude));
                                         NoLineAverageCutAlt += cutAltWpt;
                                         NoLineCutCount++;
                                     }
-                                    else cutAltWpt = -1;
+                                    else cutAltWpt = -999;
 
                                     NoLineAverageAlt += altitudeWpt;
                                     NoLineCount++;
                                 }
 
                                 //Calculate the East line
-                                if (minDistSE < 900 && minDistNE < 900)
+                                if (minDistSE < 90000 && minDistNE < 90000)
                                 {
                                     double dxE = ct.ptList[closestPointMapNE].easting - ct.ptList[closestPointMapSE].easting;
                                     double dyE = ct.ptList[closestPointMapNE].northing - ct.ptList[closestPointMapSE].northing;
@@ -1759,14 +1759,14 @@ namespace OpenGrade
 
                                     //calc altitude for that point
                                     altitudeEpt = ct.ptList[closestPointMapSE].altitude + (UE * (ct.ptList[closestPointMapNE].altitude - ct.ptList[closestPointMapSE].altitude));
-                                    if (ct.ptList[closestPointMapNE].cutAltitude > 0 && ct.ptList[closestPointMapSE].cutAltitude > 0)
+                                    if (ct.ptList[closestPointMapNE].cutAltitude > -998 && ct.ptList[closestPointMapSE].cutAltitude > -998)
                                     {
                                         cutAltEpt = ct.ptList[closestPointMapSE].cutAltitude + (UE * (ct.ptList[closestPointMapNE].cutAltitude - ct.ptList[closestPointMapSE].cutAltitude));
                                         NoLineAverageCutAlt += cutAltEpt;
                                         NoLineCutCount++;
                                     }
                                     else
-                                        cutAltEpt = -1;
+                                        cutAltEpt = -999;
 
                                     NoLineAverageAlt += altitudeEpt;
                                     NoLineCount++;
@@ -1778,7 +1778,7 @@ namespace OpenGrade
                                     NoLineAverageAlt = NoLineAverageAlt / NoLineCount;
                                     if (NoLineCutCount > 0)
                                         NoLineAverageCutAlt = NoLineAverageCutAlt / NoLineCutCount;
-                                    else NoLineAverageCutAlt = -1;
+                                    else NoLineAverageCutAlt = -999;
 
                                     if (distanceFromNline == 1000)
                                     {
@@ -1843,17 +1843,17 @@ namespace OpenGrade
                                 // Calulate the closest point alitude and cutAltitude
 
                                 //double cutFillMap;
-                                double avgAltitude = -1;
-                                double avgCutAltitude = -1;
+                                double avgAltitude = -999;
+                                double avgCutAltitude = -999;
 
 
 
                                 // if the pt is near the closest pt or No Average is selected or there is only one survey pt
                                 int nbrofPt = 4;
-                                if (minDistNE == 900) nbrofPt--;
-                                if (minDistNW == 900) nbrofPt--;
-                                if (minDistSE == 900) nbrofPt--;
-                                if (minDistSW == 900) nbrofPt--;
+                                if (minDistNE == 90000) nbrofPt--;
+                                if (minDistNW == 90000) nbrofPt--;
+                                if (minDistSE == 90000) nbrofPt--;
+                                if (minDistSW == 90000) nbrofPt--;
 
                                 if (minDist < 1 | nbrofPt < 2)
                                 {
@@ -1879,7 +1879,7 @@ namespace OpenGrade
                                         avgAltitude = ((altitudeNpt / distanceFromNline) + (altitudeSpt / distanceFromSline) +
                                         (altitudeEpt / distanceFromEline) + (altitudeWpt / distanceFromWline)) / sumofCloseDist;
 
-                                        if (cutAltNpt == -1 | cutAltSpt == -1 | cutAltWpt == -1 | cutAltEpt == -1)
+                                        if (cutAltNpt == -999 | cutAltSpt == -999 | cutAltWpt == -999 | cutAltEpt == -999)
                                         {
                                             avgCutAltitude = ct.ptList[closestPointMap].cutAltitude;
                                         }
@@ -1897,7 +1897,7 @@ namespace OpenGrade
                                         double northingDiaPt;
 
                                         //Calculate the diag line SE to NW
-                                        if (minDistSE < 900 && minDistNW < 900)
+                                        if (minDistSE < 90000 && minDistNW < 90000)
                                         {
                                             double dx = ct.ptList[closestPointMapNW].easting - ct.ptList[closestPointMapSE].easting;
                                             double dy = ct.ptList[closestPointMapNW].northing - ct.ptList[closestPointMapSE].northing;
@@ -1922,15 +1922,15 @@ namespace OpenGrade
 
                                             //calc altitude for that point
                                             avgAltitude = ct.ptList[closestPointMapSE].altitude + (U * (ct.ptList[closestPointMapNW].altitude - ct.ptList[closestPointMapSE].altitude));
-                                            if (ct.ptList[closestPointMapNW].cutAltitude > 0 && ct.ptList[closestPointMapSE].cutAltitude > 0)
+                                            if (ct.ptList[closestPointMapNW].cutAltitude > -998 && ct.ptList[closestPointMapSE].cutAltitude > -998)
                                             {
                                                 avgCutAltitude = ct.ptList[closestPointMapSE].cutAltitude + (U * (ct.ptList[closestPointMapNW].cutAltitude - ct.ptList[closestPointMapSE].cutAltitude));
                                             }
                                             else
-                                                avgCutAltitude = -1;
+                                                avgCutAltitude = -999;
                                         }
                                         //Calculate the diag line SW to NE
-                                        else if (minDistSW < 900 && minDistNE < 900)
+                                        else if (minDistSW < 90000 && minDistNE < 90000)
                                         {
                                             double dx = ct.ptList[closestPointMapNE].easting - ct.ptList[closestPointMapSW].easting;
                                             double dy = ct.ptList[closestPointMapNE].northing - ct.ptList[closestPointMapSW].northing;
@@ -1955,12 +1955,12 @@ namespace OpenGrade
 
                                             //calc altitude for that point
                                             avgAltitude = ct.ptList[closestPointMapSW].altitude + (U * (ct.ptList[closestPointMapNE].altitude - ct.ptList[closestPointMapSW].altitude));
-                                            if (ct.ptList[closestPointMapNE].cutAltitude > 0 && ct.ptList[closestPointMapSW].cutAltitude > 0)
+                                            if (ct.ptList[closestPointMapNE].cutAltitude > -998 && ct.ptList[closestPointMapSW].cutAltitude > -998)
                                             {
                                                 avgCutAltitude = ct.ptList[closestPointMapSW].cutAltitude + (U * (ct.ptList[closestPointMapNE].cutAltitude - ct.ptList[closestPointMapSW].cutAltitude));
                                             }
                                             else
-                                                avgCutAltitude = -1;
+                                                avgCutAltitude = -999;
                                         }
 
                                     }
@@ -1969,7 +1969,7 @@ namespace OpenGrade
                                 //end of copy
 
 
-                                if (avgCutAltitude < 1) cutFillMap = 9999;
+                                if (avgCutAltitude < -997) cutFillMap = 9999;
                                 else cutFillMap = avgCutAltitude - avgAltitude;
 
                                 mapListPt point = new mapListPt(h, i, drawPtWidth, avgAltitude, avgCutAltitude,
@@ -2019,11 +2019,11 @@ namespace OpenGrade
                     //also tally the max/min of Cut x and z
                     //if (minFieldX > x) minFieldX = x;
                     //if (maxFieldX < x) maxFieldX = x;
-                    if (y > 0)
+                    if (y > -998)
                     {
                         if (minFieldY > y) minFieldY = y;
                     }
-                    if (x > 0)
+                    if (x > -998)
                     {
                         if (minFieldY > x) minFieldY = x;
                     }

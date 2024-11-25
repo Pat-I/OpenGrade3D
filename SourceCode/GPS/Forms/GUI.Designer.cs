@@ -866,7 +866,7 @@ namespace OpenGrade
             int cnnt = ct.ptList.Count;
             if (cnnt > 0)
             {
-                for (int i = 0; i < cnnt; i++) ct.ptList[i].lastPassAltitude = -1;
+                for (int i = 0; i < cnnt; i++) ct.ptList[i].lastPassAltitude = -999;
             }
         }
         private void btnZeroAltitude_Click(object sender, EventArgs e)
