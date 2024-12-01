@@ -387,6 +387,7 @@ namespace OpenGrade
         private void nudGradeDistFromLine_ValueChanged(object sender, EventArgs e)
         {
             gradeDistFromLine = (double)nudGradeDistFromLine.Value * metFt2m;
+            if (gradeDistFromLine < 1) gradeDistFromLine = 1;
         }
 
 

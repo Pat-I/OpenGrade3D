@@ -26,7 +26,7 @@ namespace OpenGrade
 
             //append date time to name
             mf.currentFieldDirectory = "OG3d_" + tboxFieldName.Text.Trim() +
-                String.Format("{0}", DateTime.Now.ToString(" MMMdd", CultureInfo.InvariantCulture));
+                String.Format("{0}", DateTime.Now.ToString(" yyyyMMdd", CultureInfo.InvariantCulture));
             try
             {
                 //get the directory and make sure it exists, create if not
@@ -43,8 +43,13 @@ namespace OpenGrade
                 else
                 {
                     //reset the offsets
-                    mf.pn.utmEast = (int)mf.pn.actualEasting;
-                    mf.pn.utmNorth = (int)mf.pn.actualNorthing;
+                    //mf.pn.utmEast = (int)mf.pn.actualEasting;
+                    //mf.pn.utmNorth = (int)mf.pn.actualNorthing;
+                    mf.pn.latStart = mf.pn.latitude;
+                    mf.pn.lonStart = mf.pn.longitude;
+                    mf.pn.SetLocalMetersPerDegree();
+
+                
 
                     mf.worldGrid.CreateWorldGrid(0, 0);
 

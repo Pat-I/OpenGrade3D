@@ -35,6 +35,7 @@
             this.btnJobResume = new System.Windows.Forms.Button();
             this.lblResumeDirectory = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.btnCreateDesign = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnJobOpen
@@ -55,8 +56,8 @@
             // 
             // btnDeleteAB
             // 
-            resources.ApplyResources(this.btnDeleteAB, "btnDeleteAB");
             this.btnDeleteAB.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            resources.ApplyResources(this.btnDeleteAB, "btnDeleteAB");
             this.btnDeleteAB.ForeColor = System.Drawing.SystemColors.ControlText;
             this.btnDeleteAB.Image = global::OpenGrade.Properties.Resources.back_button;
             this.btnDeleteAB.Name = "btnDeleteAB";
@@ -79,11 +80,20 @@
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
             // 
+            // btnCreateDesign
+            // 
+            resources.ApplyResources(this.btnCreateDesign, "btnCreateDesign");
+            this.btnCreateDesign.Image = global::OpenGrade.Properties.Resources.FileNew;
+            this.btnCreateDesign.Name = "btnCreateDesign";
+            this.btnCreateDesign.UseVisualStyleBackColor = true;
+            this.btnCreateDesign.Click += new System.EventHandler(this.btnCreateDesign_Click);
+            // 
             // FormJob
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ControlBox = false;
+            this.Controls.Add(this.btnCreateDesign);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblResumeDirectory);
             this.Controls.Add(this.btnDeleteAB);
@@ -109,5 +119,6 @@
         private System.Windows.Forms.Button btnDeleteAB;
         private System.Windows.Forms.Label lblResumeDirectory;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnCreateDesign;
     }
 }

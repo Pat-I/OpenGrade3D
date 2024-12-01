@@ -768,7 +768,18 @@ namespace OpenGrade
 
             // load all the gui elements in gui.designer.cs
             LoadGUI();
-        }
+
+
+           
+            HideTabControl();
+
+
+        }           
+
+
+
+
+                
 
         
 

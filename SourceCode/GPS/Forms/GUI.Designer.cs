@@ -390,19 +390,14 @@ namespace OpenGrade
             }
         }
 
-        private void importAgsFile_click(object sender, EventArgs e)
+        public void importAgsFile()
         {
             if (isJobStarted)
             {
-                if (ct.ptList.Count < 1)
-                {             
-                FileOpenAgdDesign();
-                //ct.designList2ptList();
-                }
-                else
+               
                 {
-                var form = new FormTimedMessage(3000, "Contour.txt already exist", "Delete the Contour.txt or create a new Field");
-                form.Show();
+                    var form = new FormTimedMessage(3000, "Field already open", "Create from new Design");
+                    form.Show();
                 }
             }
             else
@@ -415,7 +410,7 @@ namespace OpenGrade
                 ct.ptList.Clear();
                 FileOpenAgdDesign();
 
-                
+
 
 
             }
@@ -871,7 +866,7 @@ namespace OpenGrade
             int cnnt = ct.ptList.Count;
             if (cnnt > 0)
             {
-                for (int i = 0; i < cnnt; i++) ct.ptList[i].lastPassAltitude = -1;
+                for (int i = 0; i < cnnt; i++) ct.ptList[i].lastPassAltitude = -999;
             }
         }
         private void btnZeroAltitude_Click(object sender, EventArgs e)
@@ -1920,16 +1915,11 @@ namespace OpenGrade
                         lblGPSHeading.Text = GPSHeading;
 
                         //up in the menu a few pieces of info
-                        if (isJobStarted)
-                        {
-                            lblEasting.Text = "E: " + Math.Round(pn.easting, 1).ToString();
-                            lblNorthing.Text = "N: " + Math.Round(pn.northing, 1).ToString();
-                        }
-                        else
-                        {
-                            lblEasting.Text = "E: " + ((int)pn.actualEasting).ToString();
-                            lblNorthing.Text = "N: " + ((int)pn.actualNorthing).ToString();
-                        }
+                        
+                        lblEasting.Text = "E: " + Math.Round(pn.easting, 1).ToString();
+                        lblNorthing.Text = "N: " + Math.Round(pn.northing, 1).ToString();
+                        
+                        
 
                         lblZone.Text = pn.zone.ToString();
                         tboxSentence.Text = recvSentenceSettings;
