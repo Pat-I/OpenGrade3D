@@ -173,7 +173,17 @@
             0,
             0,
             0});
+            this.nudMaxCuttingDepth.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
             this.nudMaxCuttingDepth.Name = "nudMaxCuttingDepth";
+            this.nudMaxCuttingDepth.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.nudMaxCuttingDepth.ValueChanged += new System.EventHandler(this.nudMaxCuttingDepth_ValueChanged);
             // 
             // nudMinSlope
