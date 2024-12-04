@@ -114,7 +114,6 @@
     <Compile Include="Classes\CVehicle.cs" />
     <Compile Include="Classes\CWaypoint.cs" />
     <Compile Include="Classes\CWorldGrid.cs" />
-    <Compile Include="Classes\PGN54908.cs" />
     <Compile Include="FormSource.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -1114,5 +1114,17 @@ namespace OpenGrade.Properties {
                 this["setMenu_isGradualMulticolor"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public double DesignPtCalcDist {
+            get {
+                return ((double)(this["DesignPtCalcDist"]));
+            }
+            set {
+                this["DesignPtCalcDist"] = value;
+            }
+        }
     }
 }
