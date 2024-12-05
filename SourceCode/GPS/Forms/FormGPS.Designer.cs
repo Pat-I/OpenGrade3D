@@ -862,7 +862,7 @@
             this.stripSelectMode.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.stripSelectMode.Margin = new System.Windows.Forms.Padding(0);
             this.stripSelectMode.Name = "stripSelectMode";
-            this.stripSelectMode.Size = new System.Drawing.Size(405, 41);
+            this.stripSelectMode.Size = new System.Drawing.Size(436, 41);
             this.stripSelectMode.Spring = true;
             this.stripSelectMode.Text = "Grade Mode";
             this.stripSelectMode.Click += new System.EventHandler(this.stripSelectMode_Click);
@@ -1563,6 +1563,7 @@
             this.nudLongitude.Name = "nudLongitude";
             this.nudLongitude.Size = new System.Drawing.Size(120, 27);
             this.nudLongitude.TabIndex = 190;
+            this.nudLongitude.Click += new System.EventHandler(this.nudLongitude_Click);
             // 
             // label13
             // 
@@ -1599,6 +1600,7 @@
             this.nudLatitude.Name = "nudLatitude";
             this.nudLatitude.Size = new System.Drawing.Size(120, 27);
             this.nudLatitude.TabIndex = 187;
+            this.nudLatitude.Click += new System.EventHandler(this.nudLatitude_Click);
             // 
             // btnSimGoTo
             // 
@@ -1739,6 +1741,7 @@
             0,
             0});
             this.nudElevation.ValueChanged += new System.EventHandler(this.nudElevation_ValueChanged);
+            this.nudElevation.MouseClick += new System.Windows.Forms.MouseEventHandler(this.nudElevation_MouseClick);
             // 
             // lblPureSteerAngle
             // 
@@ -2063,6 +2066,7 @@
             this.numBladeOffset.Size = new System.Drawing.Size(91, 56);
             this.numBladeOffset.TabIndex = 230;
             this.numBladeOffset.ValueChanged += new System.EventHandler(this.numBladeOffset_ValueChanged);
+            this.numBladeOffset.Click += new System.EventHandler(this.numBladeOffset_Click);
             // 
             // btnCutFillElev
             // 

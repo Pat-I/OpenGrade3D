@@ -13,6 +13,42 @@ using Microsoft.Win32;
 
 namespace OpenGrade
 {
+    public class NudlessNumericUpDown : NumericUpDown
+    {
+        public NudlessNumericUpDown()
+        {
+            Controls[0].Hide();
+        }
+
+        protected override void OnTextBoxResize(object source, EventArgs e)
+        {
+            Controls[1].Width = Width - 4;
+        }
+
+        public new decimal Value
+        {
+            get
+            {
+                return base.Value;
+            }
+            set
+            {
+                if (value != base.Value)
+                {
+                    if (value < Minimum)
+                    {
+                        value = Minimum;
+                    }
+                    if (value > Maximum)
+                    {
+                        value = Maximum;
+                    }
+                    base.Value = value;
+                }
+            }
+        }
+    }
+
     public partial class FormGPS
     {
 
@@ -432,6 +468,7 @@ namespace OpenGrade
                 //JobNewOpenResume();
                 //start a new job
                 JobNew();
+                isFolderCreated = false;
                 //using (var form = new FormJob(this))
                 {
                     //ask for a directory name
@@ -442,10 +479,15 @@ namespace OpenGrade
 
             }
 
-
-
-
-            ct.designList2ptList();
+            if (isFolderCreated)
+            {               
+                ct.designList2ptList(); 
+            }
+            else
+            {
+                ct.designList.Clear();
+                JobClose();
+            }
         }
 
         //ABLine
@@ -643,11 +685,11 @@ namespace OpenGrade
                 btnManualOffOn.Text = null;
 
                 ct.isSurveyOn = false;
-                btnStartPause.Visible = true;
+                btnStartPause.Visible = false;
                 btnManualOffOn.Enabled = false;
                 //others
                 ct.recBoundary = false;
-                btnBoundarySide.Visible = true;
+                btnBoundarySide.Visible = false;
                 ct.isBtnStartPause = false;
                 btnStartPause.Text = "START";
                 ct.recSurveyPt = false;
@@ -2073,6 +2115,54 @@ namespace OpenGrade
 
         }
 
-       
+        public bool KeypadToNUD(NudlessNumericUpDown sender, Form owner)
+        {
+            var colour = sender.BackColor;
+            sender.BackColor = Color.Red;
+            sender.Value = Math.Round(sender.Value, sender.DecimalPlaces);
+
+            using (FormNumeric form = new FormNumeric((double)sender.Minimum, (double)sender.Maximum, (double)sender.Value))
+            {
+                DialogResult result = form.ShowDialog(owner);
+                if (result == DialogResult.OK)
+                {
+                    sender.Value = (decimal)form.ReturnValue;
+                    sender.BackColor = colour;
+                    return true;
+                }
+                else if (result == DialogResult.Cancel)
+                {
+                    sender.BackColor = colour;
+                }
+                return false;
+            }
+        }
+
+        public void KeypadToNUD(NumericUpDown sender, Form owner)
+        {
+            sender.BackColor = System.Drawing.Color.Red;
+            using (var form = new FormNumeric((double)sender.Minimum, (double)sender.Maximum, (double)sender.Value))
+            {
+                if (form.ShowDialog(owner) == DialogResult.OK)
+                {
+                    sender.Value = (decimal)form.ReturnValue;
+                }
+            }
+            sender.BackColor = System.Drawing.Color.AliceBlue;
+        }
+
+        public void KeyboardToText(TextBox sender, Form owner)
+        {
+            var colour = sender.BackColor;
+            sender.BackColor = Color.Red;
+            using (FormKeyboard form = new FormKeyboard(sender.Text))
+            {
+                if (form.ShowDialog(owner) == DialogResult.OK)
+                {
+                    sender.Text = form.ReturnString;
+                }
+            }
+            sender.BackColor = colour;
+        }
     }//end class
 }//end namespace

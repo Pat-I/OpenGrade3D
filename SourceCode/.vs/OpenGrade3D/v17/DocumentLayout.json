@@ -1,101 +1,12 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{73933709-370E-43B3-8563-CC0F48FF587B}|GPS\\OpenGrade3D.csproj|C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\gps\\forms\\opengl.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{73933709-370E-43B3-8563-CC0F48FF587B}|GPS\\OpenGrade3D.csproj|solutionrelative:gps\\forms\\opengl.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{73933709-370E-43B3-8563-CC0F48FF587B}|GPS\\OpenGrade3D.csproj|c:\\users\\imhof\\documents\\github\\pat\\opengrade3d\\sourcecode\\gps\\forms\\udpcomm.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{73933709-370E-43B3-8563-CC0F48FF587B}|GPS\\OpenGrade3D.csproj|solutionrelative:gps\\forms\\udpcomm.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{73933709-370E-43B3-8563-CC0F48FF587B}|GPS\\OpenGrade3D.csproj|C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\gps\\forms\\gui.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{73933709-370E-43B3-8563-CC0F48FF587B}|GPS\\OpenGrade3D.csproj|solutionrelative:gps\\forms\\gui.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{73933709-370E-43B3-8563-CC0F48FF587B}|GPS\\OpenGrade3D.csproj|C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\gps\\forms\\formgps.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{73933709-370E-43B3-8563-CC0F48FF587B}|GPS\\OpenGrade3D.csproj|solutionrelative:gps\\forms\\formgps.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{73933709-370E-43B3-8563-CC0F48FF587B}|GPS\\OpenGrade3D.csproj|C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\gps\\forms\\formgps.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{73933709-370E-43B3-8563-CC0F48FF587B}|GPS\\OpenGrade3D.csproj|solutionrelative:gps\\forms\\formgps.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": [
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 2,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "UDPComm.Designer.cs",
-              "DocumentMoniker": "C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\GPS\\Forms\\UDPComm.Designer.cs",
-              "RelativeDocumentMoniker": "GPS\\Forms\\UDPComm.Designer.cs",
-              "ToolTip": "C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\GPS\\Forms\\UDPComm.Designer.cs",
-              "RelativeToolTip": "GPS\\Forms\\UDPComm.Designer.cs",
-              "ViewState": "AQIAABcBAAAAAAAAAAAAABQAAACbAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-04T02:50:43.079Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "GUI.Designer.cs",
-              "DocumentMoniker": "C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\GPS\\Forms\\GUI.Designer.cs",
-              "RelativeDocumentMoniker": "GPS\\Forms\\GUI.Designer.cs",
-              "ToolTip": "C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\GPS\\Forms\\GUI.Designer.cs",
-              "RelativeToolTip": "GPS\\Forms\\GUI.Designer.cs",
-              "ViewState": "AQIAAHoAAAAAAAAAAAAcwJQAAAAQAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-25T03:19:55.803Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "OpenGL.Designer.cs",
-              "DocumentMoniker": "C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\GPS\\Forms\\OpenGL.Designer.cs",
-              "RelativeDocumentMoniker": "GPS\\Forms\\OpenGL.Designer.cs",
-              "ToolTip": "C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\GPS\\Forms\\OpenGL.Designer.cs",
-              "RelativeToolTip": "GPS\\Forms\\OpenGL.Designer.cs",
-              "ViewState": "AQIAAEoDAAAAAAAAAAAcwNgEAAARAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-25T02:20:04.35Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "FormGPS.Designer.cs",
-              "DocumentMoniker": "C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\GPS\\Forms\\FormGPS.Designer.cs",
-              "RelativeDocumentMoniker": "GPS\\Forms\\FormGPS.Designer.cs",
-              "ToolTip": "C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\GPS\\Forms\\FormGPS.Designer.cs",
-              "RelativeToolTip": "GPS\\Forms\\FormGPS.Designer.cs",
-              "ViewState": "AQIAAAYAAAAAAAAAAAAcwHIJAAA3AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-01T04:31:39.114Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "FormGPS.cs [Design]",
-              "DocumentMoniker": "C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\GPS\\Forms\\FormGPS.cs",
-              "RelativeDocumentMoniker": "GPS\\Forms\\FormGPS.cs",
-              "ToolTip": "C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\GPS\\Forms\\FormGPS.cs [Design]",
-              "RelativeToolTip": "GPS\\Forms\\FormGPS.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-01T04:31:16.795Z"
-            }
-          ]
-        }
-      ]
+      "DocumentGroups": []
     }
   ]
 }
