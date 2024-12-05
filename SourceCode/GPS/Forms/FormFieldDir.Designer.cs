@@ -37,8 +37,8 @@
             // 
             // button1
             // 
-            resources.ApplyResources(this.button1, "button1");
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
+            resources.ApplyResources(this.button1, "button1");
             this.button1.Image = global::OpenGrade.Properties.Resources.OK64;
             this.button1.Name = "button1";
             this.button1.UseVisualStyleBackColor = true;
@@ -53,6 +53,7 @@
             // 
             resources.ApplyResources(this.tboxFieldName, "tboxFieldName");
             this.tboxFieldName.Name = "tboxFieldName";
+            this.tboxFieldName.Click += new System.EventHandler(this.tboxFieldName_Click);
             this.tboxFieldName.TextChanged += new System.EventHandler(this.tboxFieldName_TextChanged);
             // 
             // label2

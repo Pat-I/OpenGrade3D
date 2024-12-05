@@ -71,8 +71,10 @@ namespace OpenGrade
 
         public bool isPureDisplayOn = true, isSkyOn = true, isBigAltitudeOn = false;
 
+        public bool isKeyboardOn = true;
+
         //bool for whether or not a job is active
-        public bool isJobStarted = false, isAreaOnRight = true, isAutoSteerBtnOn = false;
+        public bool isJobStarted = false, isAreaOnRight = true, isAutoSteerBtnOn = false, isFolderCreated = true;
 
         // Manual, 3 states possible
         public enum btnStates { Off, Rec, RecBnd, Work, StandBy }
@@ -223,6 +225,26 @@ namespace OpenGrade
         {
             public short x;
             public short y;
+        }
+
+        private void nudElevation_MouseClick(object sender, MouseEventArgs e)
+        {
+            KeypadToNUD((NumericUpDown)sender, this);
+        }
+
+        private void numBladeOffset_Click(object sender, EventArgs e)
+        {
+            KeypadToNUD((NumericUpDown)sender, this);
+        }
+
+        private void nudLongitude_Click(object sender, EventArgs e)
+        {
+            KeypadToNUD((NumericUpDown)sender, this);
+        }
+
+        private void nudLatitude_Click(object sender, EventArgs e)
+        {
+            KeypadToNUD((NumericUpDown)sender, this);
         }
 
         private void btnUseSavedAGS_Click(object sender, EventArgs e)
@@ -1160,6 +1182,8 @@ namespace OpenGrade
 
             if (!isJobStarted)
             {
+                isFolderCreated = false;
+
                 if (stripOnlineGPS.Value == 1)
                 {
                     var form = new FormTimedMessage(3000, gStr.gsNoGPS, gStr.gsIsGPSOff);
@@ -1176,6 +1200,11 @@ namespace OpenGrade
                         using (var form2 = new FormFieldDir(this))
                         { form2.ShowDialog(); }
                     }
+                }
+
+                if (!isFolderCreated)
+                {
+                    JobClose();
                 }
 
                 if (isJobStarted) Text = "OpenGrade3D - " + currentFieldDirectory;

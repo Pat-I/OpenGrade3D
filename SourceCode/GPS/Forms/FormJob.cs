@@ -25,6 +25,7 @@ namespace OpenGrade
             if (mf.isJobStarted)
             {
                 //back to FormGPS
+                mf.isFolderCreated = true;
                 DialogResult = DialogResult.OK;
                 Close();
             }
@@ -41,7 +42,7 @@ namespace OpenGrade
         {
             //start a new job
             mf.JobNew();
-
+            mf.isFolderCreated = false;
             mf.ct.surveyMode = false;
             mf.SelectMode();
 
@@ -56,8 +57,9 @@ namespace OpenGrade
         {
             //open the Resume.txt and continue from last exit
             mf.FileOpenField("Resume");
-
+            mf.isFolderCreated = true;
             //back to FormGPS
+
             DialogResult = DialogResult.OK;
             Close();
         }
@@ -78,7 +80,11 @@ namespace OpenGrade
                 Properties.Settings.Default.setF_CurrentDir = "";
                 Properties.Settings.Default.Save();
             }
-            else lblResumeDirectory.Text = mf.currentFieldDirectory;
+            else
+            {
+                lblResumeDirectory.Text = mf.currentFieldDirectory;
+                mf.isFolderCreated = true;
+            }
         }
 
         private void btnCreateDesign_Click(object sender, EventArgs e)

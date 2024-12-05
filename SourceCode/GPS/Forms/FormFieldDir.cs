@@ -62,6 +62,7 @@ namespace OpenGrade
                     //mf.FileCreateContour();
                     mf.FileSaveFlags();
                     mf.FileSaveABLine();
+                    mf.isFolderCreated = true;
                 }
             }
             catch (Exception ex)
@@ -82,6 +83,14 @@ namespace OpenGrade
             var cursorPosition = textboxSender.SelectionStart;
             textboxSender.Text = Regex.Replace(textboxSender.Text, "[^0-9a-zA-Z ]", "");
             textboxSender.SelectionStart = cursorPosition;
+        }
+
+        private void tboxFieldName_Click(object sender, EventArgs e)
+        {
+            if (mf.isKeyboardOn)
+            {
+                mf.KeyboardToText((TextBox)sender, this);
+            }
         }
     }
 }

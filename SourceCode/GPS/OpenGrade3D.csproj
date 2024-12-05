@@ -137,20 +137,20 @@
     <Compile Include="Forms\FormJob.Designer.cs">
       <DependentUpon>FormJob.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FormKeyboard.cs">
+    <Compile Include="Inputs\FormKeyboard.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FormKeyboard.Designer.cs" />
+    <Compile Include="Inputs\FormKeyboard.Designer.cs" />
     <Compile Include="Forms\FormNtrip.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\FormNtrip.Designer.cs">
       <DependentUpon>FormNtrip.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FormNumeric.cs">
+    <Compile Include="Inputs\FormNumeric.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FormNumeric.Designer.cs" />
+    <Compile Include="Inputs\FormNumeric.Designer.cs" />
     <Compile Include="Forms\FormSaveOrNot.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -280,11 +280,11 @@
     <EmbeddedResource Include="Forms\FormJob.resx">
       <DependentUpon>FormJob.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormKeyboard.resx" />
+    <EmbeddedResource Include="Inputs\FormKeyboard.resx" />
     <EmbeddedResource Include="Forms\FormNtrip.resx">
       <DependentUpon>FormNtrip.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormNumeric.resx" />
+    <EmbeddedResource Include="Inputs\FormNumeric.resx" />
     <EmbeddedResource Include="Forms\FormSaveOrNot.resx">
       <DependentUpon>FormSaveOrNot.cs</DependentUpon>
     </EmbeddedResource>
