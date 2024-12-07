@@ -763,7 +763,7 @@ namespace OpenGrade
         private void btnFlag_Click(object sender, EventArgs e)
         {
             int nextflag = flagPts.Count + 1;
-            CFlag flagPt = new CFlag(pn.latitude, pn.longitude, pn.easting, pn.northing, flagColor, nextflag);
+            CFlag flagPt = new CFlag(pn.latitude, pn.longitude, pn.altitude, pn.easting, pn.northing, flagColor, nextflag);
             flagPts.Add(flagPt);
             FileSaveFlags();
         }
