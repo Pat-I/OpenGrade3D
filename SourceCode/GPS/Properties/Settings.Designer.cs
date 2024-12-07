@@ -85,7 +85,7 @@ namespace OpenGrade.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool setWindow_Maximized {
             get {
                 return ((bool)(this["setWindow_Maximized"]));
@@ -637,7 +637,7 @@ namespace OpenGrade.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        [global::System.Configuration.DefaultSettingValueAttribute("15")]
         public double Set_levelDistFactor {
             get {
                 return ((double)(this["Set_levelDistFactor"]));
@@ -937,7 +937,7 @@ namespace OpenGrade.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool setDisplay_isKeyboardOn {
             get {
                 return ((bool)(this["setDisplay_isKeyboardOn"]));

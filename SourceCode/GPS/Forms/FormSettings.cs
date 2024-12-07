@@ -294,6 +294,11 @@ namespace OpenGrade
             antennaHeight = (double)nudAntennaHeight.Value * metImp2m;
         }
 
+        private void label23_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void bntValveSettingsSend_Click(object sender, EventArgs e)
         {
             

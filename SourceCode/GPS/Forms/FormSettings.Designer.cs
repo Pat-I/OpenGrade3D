@@ -179,11 +179,6 @@
             0,
             -2147483648});
             this.nudMaxCuttingDepth.Name = "nudMaxCuttingDepth";
-            this.nudMaxCuttingDepth.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             this.nudMaxCuttingDepth.ValueChanged += new System.EventHandler(this.nudMaxCuttingDepth_ValueChanged);
             // 
             // nudMinSlope
@@ -727,6 +722,7 @@
             // 
             resources.ApplyResources(this.label23, "label23");
             this.label23.Name = "label23";
+            this.label23.Click += new System.EventHandler(this.label23_Click);
             // 
             // label21
             // 
@@ -748,7 +744,7 @@
             0});
             this.nudLevelDistFactor.Name = "nudLevelDistFactor";
             this.nudLevelDistFactor.Value = new decimal(new int[] {
-            100,
+            15,
             0,
             0,
             0});
@@ -770,7 +766,7 @@
             65536});
             this.nudNoAvgDist.Name = "nudNoAvgDist";
             this.nudNoAvgDist.Value = new decimal(new int[] {
-            16,
+            1,
             0,
             0,
             65536});

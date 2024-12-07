@@ -10,7 +10,7 @@ namespace OpenGrade
     {
         private readonly FormGPS mf = null;
         private string[] words;
-
+        private double cutDelta;
         //chart data
         private string dataSteerAngle = "0";
         //private string dataP = "4";
@@ -326,31 +326,32 @@ namespace OpenGrade
         private void DrawChart()
         {
             //just data
-            words = mf.mc.serialRecvAutoSteerStr.Split(',');
-            if (words.Length < 5)
+            words = mf.mc.serialRecvRelayRateStr.Split(',');
+            if (words.Length < 3)
             {
-                dataSteerAngle = "0";
+                //dataSteerAngle = "0";
                 //dataP = "1";
                 //dataI = "2";
                 //dataD = "-1";
-                dataPWM = "-2";
+                dataPWM = "0";
             }
             else
             {
-                //word 0 - steerangle, 1 - pwmDisplay
-                dataSteerAngle = mf.mc.serialRecvAutoSteerStr.Split(',')[0];
+                
                 //dataP = mf.mc.serialRecvAutoSteerStr.Split(',')[1];
                 //dataI = mf.mc.serialRecvAutoSteerStr.Split(',')[2];
                 //dataD = mf.mc.serialRecvAutoSteerStr.Split(',')[3];
-                dataPWM = mf.mc.serialRecvAutoSteerStr.Split(',')[1];
+                dataPWM = mf.mc.serialRecvRelayRateStr.Split(',')[1];
 
-                lblSteerAng.Text = dataSteerAngle;
+                
                 //lblP.Text = dataP;
                 //lblI.Text = dataI;
                 //lblD.Text = dataD;
                 lblPWM.Text = dataPWM;
             }
-
+            cutDelta = mf.cutDelta;
+            dataSteerAngle = cutDelta.ToString("N1");
+            lblSteerAng.Text = dataSteerAngle;
             //chart data            
             Series s = unoChart.Series["S"];
             //Series t = unoChart.Series["P"];

@@ -490,44 +490,6 @@ namespace OpenGrade
             }
         }
 
-        //ABLine
-        private void btnABLine_Click(object sender, EventArgs e)
-        {
-            //if contour is on, turn it off
-            if (ct.isContourBtnOn)
-            {
-                ct.isContourBtnOn = !ct.isContourBtnOn;
-                btnContour.Image = Properties.Resources.ContourOff;
-            }
-
-            using (var form = new FormABLine(this))
-            {
-                ABLine.isABLineBeingSet = true;
-                txtDistanceOffABLine.Visible = true;
-                var result = form.ShowDialog();
-
-                //Comes back
-
-                //if ABLine isn't set, turn off the YouTurn
-                if (!ABLine.isABLineSet)
-                {
-                    ABLine.isABLineBeingSet = false;
-                    txtDistanceOffABLine.Visible = false;
-                    //change image to reflect on off
-                    btnABLine.Image = Properties.Resources.ABLineOff;
-                    ABLine.isABLineBeingSet = false;
-
-                    if (isAutoSteerBtnOn) btnAutoSteer.PerformClick();
-                }
-                //ab line is made
-                else
-                {
-                    //change image to reflect on off
-                    btnABLine.Image = Properties.Resources.ABLineOn;
-                    ABLine.isABLineBeingSet = false;
-                }
-            }
-        }
         //turn on contour guidance or off
         private void btnContour_Click(object sender, EventArgs e)
         {
@@ -838,7 +800,7 @@ namespace OpenGrade
 
         private void btnSnap_Click(object sender, EventArgs e)
         {
-            ABLine.SnapABLine();
+           
         }
 
         //panel buttons
@@ -1992,7 +1954,6 @@ namespace OpenGrade
 
                     //not Metric/Standard units sensitive
                     lblHeading.Text = Heading;
-                    btnABLine.Text = PassNumber;
                     lblPureSteerAngle.Text = PureSteerAngle;
 
 

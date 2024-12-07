@@ -1,6 +1,5 @@
 C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\Application\Dependencies\Landscape.png
 C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGrade.FormFieldDir.resources
-C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGrade.FormABLine.resources
 C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGrade.FormCommSet.resources
 C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGrade.FormGPSData.resources
 C:\Users\Imhof\Documents\GitHub\Pat\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGrade.FormGPS.resources

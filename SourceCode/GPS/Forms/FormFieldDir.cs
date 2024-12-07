@@ -61,7 +61,6 @@ namespace OpenGrade
                     mf.FileCreateField();
                     //mf.FileCreateContour();
                     mf.FileSaveFlags();
-                    mf.FileSaveABLine();
                     mf.isFolderCreated = true;
                 }
             }

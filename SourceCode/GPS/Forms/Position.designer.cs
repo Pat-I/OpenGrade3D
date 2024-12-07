@@ -265,13 +265,6 @@ namespace OpenGrade
 
             guidanceLineDistanceOff = 32000;    //preset the values
 
-            //do the distance from line calculations for contour and AB
-            if (ct.isContourBtnOn) ct.DistanceFromContourLine();
-            if (ABLine.isABLineSet && !ct.isContourBtnOn)
-            {
-                ABLine.GetCurrentABLine();
-            }
-
             // autosteer at full speed of updates
             if (!isAutoSteerBtnOn) //32020 means auto steer is off
             {
