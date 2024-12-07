@@ -1,12 +1,71 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{73933709-370E-43B3-8563-CC0F48FF587B}|GPS\\OpenGrade3D.csproj|c:\\users\\imhof\\documents\\github\\pat\\opengrade3d\\sourcecode\\gps\\forms\\saveopen.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{73933709-370E-43B3-8563-CC0F48FF587B}|GPS\\OpenGrade3D.csproj|solutionrelative:gps\\forms\\saveopen.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{73933709-370E-43B3-8563-CC0F48FF587B}|GPS\\OpenGrade3D.csproj|c:\\users\\imhof\\documents\\github\\pat\\opengrade3d\\sourcecode\\gps\\classes\\cflag.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{73933709-370E-43B3-8563-CC0F48FF587B}|GPS\\OpenGrade3D.csproj|solutionrelative:gps\\classes\\cflag.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{73933709-370E-43B3-8563-CC0F48FF587B}|GPS\\OpenGrade3D.csproj|c:\\users\\imhof\\documents\\github\\pat\\opengrade3d\\sourcecode\\gps\\forms\\gui.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{73933709-370E-43B3-8563-CC0F48FF587B}|GPS\\OpenGrade3D.csproj|solutionrelative:gps\\forms\\gui.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SaveOpen.Designer.cs",
+              "DocumentMoniker": "C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\GPS\\Forms\\SaveOpen.Designer.cs",
+              "RelativeDocumentMoniker": "GPS\\Forms\\SaveOpen.Designer.cs",
+              "ToolTip": "C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\GPS\\Forms\\SaveOpen.Designer.cs",
+              "RelativeToolTip": "GPS\\Forms\\SaveOpen.Designer.cs",
+              "ViewState": "AQIAAMUHAAAAAAAAAAArwNsHAAARAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-07T04:34:47.734Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "GUI.Designer.cs",
+              "DocumentMoniker": "C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\GPS\\Forms\\GUI.Designer.cs",
+              "RelativeDocumentMoniker": "GPS\\Forms\\GUI.Designer.cs",
+              "ToolTip": "C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\GPS\\Forms\\GUI.Designer.cs",
+              "RelativeToolTip": "GPS\\Forms\\GUI.Designer.cs",
+              "ViewState": "AQIAAOsCAAAAAAAAAAAUwP0CAAAYAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-07T04:32:27.779Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CFlag.cs",
+              "DocumentMoniker": "C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\GPS\\Classes\\CFlag.cs",
+              "RelativeDocumentMoniker": "GPS\\Classes\\CFlag.cs",
+              "ToolTip": "C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\GPS\\Classes\\CFlag.cs",
+              "RelativeToolTip": "GPS\\Classes\\CFlag.cs",
+              "ViewState": "AQIAAAUAAAAAAAAAAAArwBgAAAAMAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-07T04:29:28.845Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -776,6 +776,7 @@ namespace OpenGrade
                         {
                             double lat;
                             double longi;
+                            double alti;
                             double east;
                             double nort;
                             int color, ID;
@@ -788,12 +789,13 @@ namespace OpenGrade
 
                                 lat = double.Parse(words[0], CultureInfo.InvariantCulture);
                                 longi = double.Parse(words[1], CultureInfo.InvariantCulture);
-                                east = double.Parse(words[2], CultureInfo.InvariantCulture);
-                                nort = double.Parse(words[3], CultureInfo.InvariantCulture);
-                                color = int.Parse(words[4]);
-                                ID = int.Parse(words[5]);
+                                alti = double.Parse(words[2], CultureInfo.InvariantCulture);
+                                east = double.Parse(words[3], CultureInfo.InvariantCulture);
+                                nort = double.Parse(words[4], CultureInfo.InvariantCulture);
+                                color = int.Parse(words[5]);
+                                ID = int.Parse(words[6]);
 
-                                CFlag flagPt = new CFlag(lat, longi, east, nort, color, ID);
+                                CFlag flagPt = new CFlag(lat, longi, alti, east, nort, color, ID);
                                 flagPts.Add(flagPt);
                             }
 
@@ -1891,6 +1893,7 @@ namespace OpenGrade
                         writer.WriteLine(
                             flagPts[i].latitude.ToString(CultureInfo.InvariantCulture) + "," +
                             flagPts[i].longitude.ToString(CultureInfo.InvariantCulture) + "," +
+                            flagPts[i].altitude.ToString(CultureInfo.InvariantCulture) + "," +
                             flagPts[i].easting.ToString(CultureInfo.InvariantCulture) + "," +
                             flagPts[i].northing.ToString(CultureInfo.InvariantCulture) + "," +
                             flagPts[i].color.ToString(CultureInfo.InvariantCulture) + "," +
@@ -1957,7 +1960,8 @@ namespace OpenGrade
                     writer.WriteLine(@"</IconStyle> </Style>");
                     writer.WriteLine(@" <name> " + (i + 1) + @"</name>");
                     writer.WriteLine(@"<Point><coordinates> " +
-                                    flagPts[i].longitude.ToString(CultureInfo.InvariantCulture) + "," + flagPts[i].latitude.ToString(CultureInfo.InvariantCulture) + ",0" +
+                                    flagPts[i].longitude.ToString(CultureInfo.InvariantCulture) + "," + flagPts[i].latitude.ToString(CultureInfo.InvariantCulture) + "," + 
+                                    flagPts[i].altitude.ToString(CultureInfo.InvariantCulture) +
                                     @"</coordinates> </Point> ");
                     writer.WriteLine(@"  </Placemark>                                 ");
 
@@ -2050,7 +2054,8 @@ namespace OpenGrade
                     writer.WriteLine(@"</IconStyle> </Style>");
                     writer.WriteLine(@" <name> " + flagNumber.ToString(CultureInfo.InvariantCulture) + @"</name>");
                     writer.WriteLine(@"<Point><coordinates> " +
-                                    flagPts[flagNumber-1].longitude.ToString(CultureInfo.InvariantCulture) + "," + flagPts[flagNumber-1].latitude.ToString(CultureInfo.InvariantCulture) + ",0" +
+                                    flagPts[flagNumber-1].longitude.ToString(CultureInfo.InvariantCulture) + "," + flagPts[flagNumber-1].latitude.ToString(CultureInfo.InvariantCulture) + "," +
+                                    flagPts[flagNumber - 1].altitude.ToString(CultureInfo.InvariantCulture) +
                                     @"</coordinates> </Point> ");
                     writer.WriteLine(@"  </Placemark>                                 ");
                 writer.WriteLine(@"</Document>");
