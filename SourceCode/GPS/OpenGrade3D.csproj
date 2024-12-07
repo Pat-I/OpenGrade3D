@@ -206,12 +206,6 @@
       <SubType>Form</SubType>
       <DependentUpon>FormGPS.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FormABLine.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\FormABLine.Designer.cs">
-      <DependentUpon>FormABLine.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\FormGPSData.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -260,10 +254,6 @@
     <EmbeddedResource Include="FormSource.resx" />
     <EmbeddedResource Include="Forms\FormFieldDir.resx">
       <DependentUpon>FormFieldDir.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FormABLine.resx">
-      <DependentUpon>FormABLine.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormCommSet.resx">
       <DependentUpon>FormCommSet.cs</DependentUpon>

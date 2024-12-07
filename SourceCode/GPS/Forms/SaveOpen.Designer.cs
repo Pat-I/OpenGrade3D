@@ -808,77 +808,7 @@ namespace OpenGrade
                     }
                 }
             }
-
-
-            // ABLine -------------------------------------------------------------------------------------------------
-
-            //Either exit or update running save
-            fileAndDirectory = fieldsDirectory + currentFieldDirectory + "\\ABLine.txt";
-            if (!File.Exists(fileAndDirectory))
-            {
-                var form = new FormTimedMessage(4000, "Missing ABLine File", "But Field is Loaded");
-                form.Show();
-            }
-
-            else
-            {
-                using (StreamReader reader = new StreamReader(fileAndDirectory))
-                {
-                    try
-                    {
-                        //read the lines and skip them
-                        line = reader.ReadLine();
-                        line = reader.ReadLine();
-
-                        line = reader.ReadLine();
-                        bool isAB = bool.Parse(line);
-
-                        if (isAB)
-                        {
-                            //set gui image button on
-                            btnABLine.Image = global::OpenGrade.Properties.Resources.ABLineOn;
-
-                            //Heading  , ,refPoint2x,z                    
-                            line = reader.ReadLine();
-                            ABLine.abHeading = double.Parse(line, CultureInfo.InvariantCulture);
-
-                            //refPoint1x,z
-                            line = reader.ReadLine();
-                            string[] words = line.Split(',');
-                            ABLine.refPoint1.easting = double.Parse(words[0], CultureInfo.InvariantCulture);
-                            ABLine.refPoint1.northing = double.Parse(words[1], CultureInfo.InvariantCulture);
-
-                            //refPoint2x,z
-                            line = reader.ReadLine();
-                            words = line.Split(',');
-                            ABLine.refPoint2.easting = double.Parse(words[0], CultureInfo.InvariantCulture);
-                            ABLine.refPoint2.northing = double.Parse(words[1], CultureInfo.InvariantCulture);
-
-                            //Tramline
-                            line = reader.ReadLine();
-                            words = line.Split(',');
-                            ABLine.tramPassEvery = int.Parse(words[0]);
-                            ABLine.passBasedOn = int.Parse(words[1]);
-
-                            ABLine.refABLineP1.easting = ABLine.refPoint1.easting - Math.Sin(ABLine.abHeading) * 10000.0;
-                            ABLine.refABLineP1.northing = ABLine.refPoint1.northing - Math.Cos(ABLine.abHeading) * 10000.0;
-
-                            ABLine.refABLineP2.easting = ABLine.refPoint1.easting + Math.Sin(ABLine.abHeading) * 10000.0;
-                            ABLine.refABLineP2.northing = ABLine.refPoint1.northing + Math.Cos(ABLine.abHeading) * 10000.0;
-
-                            ABLine.isABLineSet = true;
-                        }
-                    }
-
-                    catch (Exception e)
-                    {
-                        var form = new FormTimedMessage(4000, "AB Line File is Corrupt", "But Field is Loaded");
-                        form.Show();
-                        WriteErrorLog("Load AB Line" + e.ToString());
-
-                    }
-                }
-            }
+          
         }//end of open file
 
         //creates the field file when starting new field
@@ -1979,50 +1909,6 @@ namespace OpenGrade
             }
         }
 
-        //save all the flag markers
-        public void FileSaveABLine()
-        {
-            //Saturday, February 11, 2017  -->  7:26:52 AM
-
-            //get the directory and make sure it exists, create if not
-            string dirField = fieldsDirectory + currentFieldDirectory + "\\";
-
-            string directoryName = Path.GetDirectoryName(dirField);
-            if ((directoryName.Length > 0) && (!Directory.Exists(directoryName)))
-            { Directory.CreateDirectory(directoryName); }
-
-            //use Streamwriter to create and overwrite existing ABLine file
-            using (StreamWriter writer = new StreamWriter(dirField + "ABLine.txt"))
-            {
-                try
-                {
-                    //Write out the date time
-                    writer.WriteLine(DateTime.Now.ToString("yyyy-MMMM-dd hh:mm:ss tt", CultureInfo.InvariantCulture));
-
-                    //write out the ABLine
-                    writer.WriteLine("$Heading");
-
-                    //true or false if ABLine is set
-                    if (ABLine.isABLineSet) writer.WriteLine(true);
-                    else writer.WriteLine(false);
-
-                    writer.WriteLine(ABLine.abHeading.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine(ABLine.refPoint1.easting.ToString(CultureInfo.InvariantCulture) + "," + ABLine.refPoint1.northing.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine(ABLine.refPoint2.easting.ToString(CultureInfo.InvariantCulture) + "," + ABLine.refPoint2.northing.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine(ABLine.tramPassEvery.ToString(CultureInfo.InvariantCulture) + "," + ABLine.passBasedOn.ToString(CultureInfo.InvariantCulture));
-                }
-
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message + "\n Cannot write to file.");
-                    WriteErrorLog("Saving AB Line" + e.ToString());
-
-                    return;
-                }
-
-            }
-        }
-
         //save nmea sentences
         public void FileSaveNMEA()
         {
@@ -2097,7 +1983,7 @@ namespace OpenGrade
             string myFileName;
             myFileName = "Cut.kml";
 
-            int cnt = ct.ptList.Count;
+            int cnt = ct.boundaryList.Count;
             
             using (StreamWriter sw = new StreamWriter(dirField + myFileName))
             {
@@ -2114,7 +2000,11 @@ namespace OpenGrade
                 if (cnt > 0)
                 {
                     for (int i = 0; i < cnt; i++)
-                        sw.Write(Convert.ToString(ct.ptList[i].longitude) + ',' + Convert.ToString(ct.ptList[i].latitude) + ",0 ");
+                        if (ct.boundaryList[i].code == 2)
+                        {
+                            sw.Write(Convert.ToString(ct.boundaryList[i].longitude) + ',' + Convert.ToString(ct.boundaryList[i].latitude) + ",0 ");
+                        }
+                        
                 }
                 else sw.Write(Convert.ToString(pn.longitude) + ',' + Convert.ToString(pn.latitude) + ",0 ");
 

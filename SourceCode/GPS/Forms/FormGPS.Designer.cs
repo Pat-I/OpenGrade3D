@@ -30,10 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormGPS));
-            ProgBar.cBlendItems cBlendItems1 = new ProgBar.cBlendItems();
-            ProgBar.cFocalPoints cFocalPoints1 = new ProgBar.cFocalPoints();
-            ProgBar.cBlendItems cBlendItems2 = new ProgBar.cBlendItems();
-            ProgBar.cFocalPoints cFocalPoints2 = new ProgBar.cFocalPoints();
+            ProgBar.cBlendItems cBlendItems9 = new ProgBar.cBlendItems();
+            ProgBar.cFocalPoints cFocalPoints9 = new ProgBar.cFocalPoints();
+            ProgBar.cBlendItems cBlendItems10 = new ProgBar.cBlendItems();
+            ProgBar.cFocalPoints cFocalPoints10 = new ProgBar.cFocalPoints();
             this.openGLControl = new SharpGL.OpenGLControl();
             this.contextMenuStripOpenGL = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteFlagToolOpenGLContextMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -138,12 +138,10 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.configPage1 = new System.Windows.Forms.TabPage();
-            this.btnABLine = new System.Windows.Forms.Button();
             this.btnUnits = new System.Windows.Forms.Button();
             this.btnFileExplorer = new System.Windows.Forms.Button();
             this.btnGPSData = new System.Windows.Forms.Button();
             this.btnFlag = new System.Windows.Forms.Button();
-            this.btnSnap = new System.Windows.Forms.Button();
             this.controlPage2 = new System.Windows.Forms.TabPage();
             this.lblCutDelta = new System.Windows.Forms.Label();
             this.btnZeroAltitude = new System.Windows.Forms.Button();
@@ -845,13 +843,14 @@
             // toolstripAutoSteerConfig
             // 
             this.toolstripAutoSteerConfig.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.toolstripAutoSteerConfig.Enabled = false;
             this.toolstripAutoSteerConfig.Font = new System.Drawing.Font("Tahoma", 22F);
             this.toolstripAutoSteerConfig.Image = ((System.Drawing.Image)(resources.GetObject("toolstripAutoSteerConfig.Image")));
             this.toolstripAutoSteerConfig.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.toolstripAutoSteerConfig.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.toolstripAutoSteerConfig.Name = "toolstripAutoSteerConfig";
-            this.toolstripAutoSteerConfig.Size = new System.Drawing.Size(292, 86);
-            this.toolstripAutoSteerConfig.Text = "Auto Steer";
+            this.toolstripAutoSteerConfig.Size = new System.Drawing.Size(384, 86);
+            this.toolstripAutoSteerConfig.Text = "Not Implemented";
             this.toolstripAutoSteerConfig.Click += new System.EventHandler(this.toolstripAutoSteerConfig_Click);
             // 
             // stripSelectMode
@@ -1300,12 +1299,10 @@
             // configPage1
             // 
             this.configPage1.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.configPage1.Controls.Add(this.btnABLine);
             this.configPage1.Controls.Add(this.btnUnits);
             this.configPage1.Controls.Add(this.btnFileExplorer);
             this.configPage1.Controls.Add(this.btnGPSData);
             this.configPage1.Controls.Add(this.btnFlag);
-            this.configPage1.Controls.Add(this.btnSnap);
             this.configPage1.ImageIndex = 0;
             this.configPage1.Location = new System.Drawing.Point(4, 4);
             this.configPage1.Name = "configPage1";
@@ -1313,30 +1310,13 @@
             this.configPage1.Size = new System.Drawing.Size(248, 255);
             this.configPage1.TabIndex = 0;
             // 
-            // btnABLine
-            // 
-            this.btnABLine.BackColor = System.Drawing.Color.Lavender;
-            this.btnABLine.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnABLine.Enabled = false;
-            this.btnABLine.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnABLine.Font = new System.Drawing.Font("Tahoma", 14.25F);
-            this.btnABLine.Image = ((System.Drawing.Image)(resources.GetObject("btnABLine.Image")));
-            this.btnABLine.Location = new System.Drawing.Point(3, 83);
-            this.btnABLine.Name = "btnABLine";
-            this.btnABLine.Size = new System.Drawing.Size(90, 90);
-            this.btnABLine.TabIndex = 0;
-            this.btnABLine.Text = "0";
-            this.btnABLine.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.btnABLine.UseVisualStyleBackColor = false;
-            this.btnABLine.Click += new System.EventHandler(this.btnABLine_Click);
-            // 
             // btnUnits
             // 
             this.btnUnits.BackColor = System.Drawing.Color.AliceBlue;
             this.btnUnits.ContextMenuStrip = this.contextMenuStripFlag;
             this.btnUnits.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold);
             this.btnUnits.Image = ((System.Drawing.Image)(resources.GetObject("btnUnits.Image")));
-            this.btnUnits.Location = new System.Drawing.Point(102, 0);
+            this.btnUnits.Location = new System.Drawing.Point(134, 19);
             this.btnUnits.Name = "btnUnits";
             this.btnUnits.Size = new System.Drawing.Size(100, 100);
             this.btnUnits.TabIndex = 142;
@@ -1351,7 +1331,7 @@
             this.btnFileExplorer.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold);
             this.btnFileExplorer.Image = ((System.Drawing.Image)(resources.GetObject("btnFileExplorer.Image")));
             this.btnFileExplorer.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnFileExplorer.Location = new System.Drawing.Point(3, 0);
+            this.btnFileExplorer.Location = new System.Drawing.Point(20, 19);
             this.btnFileExplorer.Name = "btnFileExplorer";
             this.btnFileExplorer.Size = new System.Drawing.Size(100, 100);
             this.btnFileExplorer.TabIndex = 141;
@@ -1367,7 +1347,7 @@
             this.btnGPSData.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Bold);
             this.btnGPSData.Image = ((System.Drawing.Image)(resources.GetObject("btnGPSData.Image")));
             this.btnGPSData.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.btnGPSData.Location = new System.Drawing.Point(99, 83);
+            this.btnGPSData.Location = new System.Drawing.Point(134, 143);
             this.btnGPSData.Name = "btnGPSData";
             this.btnGPSData.Size = new System.Drawing.Size(100, 100);
             this.btnGPSData.TabIndex = 138;
@@ -1383,27 +1363,13 @@
             this.btnFlag.ContextMenuStrip = this.contextMenuStripFlag;
             this.btnFlag.Font = new System.Drawing.Font("Tahoma", 14.25F);
             this.btnFlag.Image = ((System.Drawing.Image)(resources.GetObject("btnFlag.Image")));
-            this.btnFlag.Location = new System.Drawing.Point(6, 165);
+            this.btnFlag.Location = new System.Drawing.Point(20, 143);
             this.btnFlag.Name = "btnFlag";
-            this.btnFlag.Size = new System.Drawing.Size(90, 90);
+            this.btnFlag.Size = new System.Drawing.Size(100, 100);
             this.btnFlag.TabIndex = 121;
             this.btnFlag.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnFlag.UseVisualStyleBackColor = false;
             this.btnFlag.Click += new System.EventHandler(this.btnFlag_Click);
-            // 
-            // btnSnap
-            // 
-            this.btnSnap.BackColor = System.Drawing.Color.Lavender;
-            this.btnSnap.ContextMenuStrip = this.contextMenuStripFlag;
-            this.btnSnap.Font = new System.Drawing.Font("Tahoma", 14.25F);
-            this.btnSnap.Image = ((System.Drawing.Image)(resources.GetObject("btnSnap.Image")));
-            this.btnSnap.Location = new System.Drawing.Point(131, 170);
-            this.btnSnap.Name = "btnSnap";
-            this.btnSnap.Size = new System.Drawing.Size(90, 90);
-            this.btnSnap.TabIndex = 132;
-            this.btnSnap.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnSnap.UseVisualStyleBackColor = false;
-            this.btnSnap.Click += new System.EventHandler(this.btnSnap_Click);
             // 
             // controlPage2
             // 
@@ -1783,13 +1749,13 @@
             // 
             this.pbarCutBelow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.pbarCutBelow.BarBackColor = System.Drawing.SystemColors.ControlLight;
-            cBlendItems1.iColor = new System.Drawing.Color[] {
+            cBlendItems9.iColor = new System.Drawing.Color[] {
         System.Drawing.Color.Navy,
         System.Drawing.Color.Blue};
-            cBlendItems1.iPoint = new float[] {
+            cBlendItems9.iPoint = new float[] {
         0F,
         1F};
-            this.pbarCutBelow.BarColorBlend = cBlendItems1;
+            this.pbarCutBelow.BarColorBlend = cBlendItems9;
             this.pbarCutBelow.BarColorSolid = System.Drawing.Color.Black;
             this.pbarCutBelow.BarColorSolidB = System.Drawing.Color.Red;
             this.pbarCutBelow.BarLengthValue = ((short)(40));
@@ -1807,9 +1773,9 @@
             this.pbarCutBelow.CylonInterval = ((short)(1));
             this.pbarCutBelow.CylonMove = 5F;
             this.pbarCutBelow.FillDirection = ProgBar.ProgBarPlus.eFillDirection.Down_Left;
-            cFocalPoints1.CenterPoint = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints1.CenterPoint")));
-            cFocalPoints1.FocusScales = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints1.FocusScales")));
-            this.pbarCutBelow.FocalPoints = cFocalPoints1;
+            cFocalPoints9.CenterPoint = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints9.CenterPoint")));
+            cFocalPoints9.FocusScales = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints9.FocusScales")));
+            this.pbarCutBelow.FocalPoints = cFocalPoints9;
             this.pbarCutBelow.Location = new System.Drawing.Point(1231, 493);
             this.pbarCutBelow.Name = "pbarCutBelow";
             this.pbarCutBelow.Orientation = ProgBar.ProgBarPlus.eOrientation.Vertical;
@@ -1823,13 +1789,13 @@
             // 
             this.pbarCutAbove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbarCutAbove.BarBackColor = System.Drawing.SystemColors.ControlLight;
-            cBlendItems2.iColor = new System.Drawing.Color[] {
+            cBlendItems10.iColor = new System.Drawing.Color[] {
         System.Drawing.Color.Navy,
         System.Drawing.Color.Blue};
-            cBlendItems2.iPoint = new float[] {
+            cBlendItems10.iPoint = new float[] {
         0F,
         1F};
-            this.pbarCutAbove.BarColorBlend = cBlendItems2;
+            this.pbarCutAbove.BarColorBlend = cBlendItems10;
             this.pbarCutAbove.BarColorSolid = System.Drawing.Color.Black;
             this.pbarCutAbove.BarColorSolidB = System.Drawing.Color.LimeGreen;
             this.pbarCutAbove.BarLengthValue = ((short)(40));
@@ -1846,9 +1812,9 @@
             this.pbarCutAbove.Corners.UpperRight = ((short)(0));
             this.pbarCutAbove.CylonInterval = ((short)(1));
             this.pbarCutAbove.CylonMove = 5F;
-            cFocalPoints2.CenterPoint = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints2.CenterPoint")));
-            cFocalPoints2.FocusScales = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints2.FocusScales")));
-            this.pbarCutAbove.FocalPoints = cFocalPoints2;
+            cFocalPoints10.CenterPoint = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints10.CenterPoint")));
+            cFocalPoints10.FocusScales = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints10.FocusScales")));
+            this.pbarCutAbove.FocalPoints = cFocalPoints10;
             this.pbarCutAbove.Location = new System.Drawing.Point(1231, 343);
             this.pbarCutAbove.Name = "pbarCutAbove";
             this.pbarCutAbove.Orientation = ProgBar.ProgBarPlus.eOrientation.Vertical;
@@ -2418,7 +2384,6 @@
         #endregion
 
         private SharpGL.OpenGLControl openGLControl;
-        private System.Windows.Forms.Button btnABLine;
         private System.Windows.Forms.TextBox txtDistanceOffABLine;
         private SharpGL.OpenGLControl openGLControlBack;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
@@ -2475,7 +2440,6 @@
         private System.Windows.Forms.ToolStripMenuItem metricToolStrip;
         private System.Windows.Forms.ToolStripMenuItem imperialToolStrip;
         private System.Windows.Forms.ToolStripMenuItem skyToolStripMenu;
-        private System.Windows.Forms.Button btnSnap;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
         private System.Windows.Forms.TextBox tboxSentence;
         private System.Windows.Forms.Label lblZone;

@@ -119,8 +119,6 @@ namespace OpenGrade
 
                 ct.DrawContourLine();
 
-                // draw the current and reference AB Lines
-                if (ABLine.isABLineSet | ABLine.isABLineBeingSet) ABLine.DrawABLines();
 
 
 
@@ -497,8 +495,8 @@ namespace OpenGrade
                 int closestPointMap6 = -1;
 
                 int ptCount = ct.ptList.Count - 1;
-                //SurveyPtDist = 300;
-                //SurveyPtDistSqr = SurveyPtDist * SurveyPtDist;// Will be done elsewhere
+                SurveyPtDist = levelDistFactor;
+                SurveyPtDistSqr = SurveyPtDist * SurveyPtDist;
                 double minDist2 = SurveyPtDistSqr; // if the point is further than 30 meters we forget it
                 double minDist3 = SurveyPtDistSqr;
                 double minDist4 = SurveyPtDistSqr;
@@ -1357,7 +1355,8 @@ namespace OpenGrade
                         if (northingMax < z) northingMax = z;
                     }
                 }
-
+                SurveyPtDist = levelDistFactor;
+                SurveyPtDistSqr = SurveyPtDist * SurveyPtDist;
                 double minDistMapDist2 = Math.Sqrt(minDistMapDist);
 
                 if (eastingMax == -9999999 | eastingMin == 9999999 | northingMax == -9999999 | northingMin == 9999999)
@@ -1398,9 +1397,7 @@ namespace OpenGrade
                             int closestPointMap4 = -1;
                             int closestPointMap5 = -1;
                             int closestPointMap6 = -1;
-                            
-                            //SurveyPtDist = 300;
-                            //SurveyPtDistSqr = SurveyPtDist * SurveyPtDist;// Will be done elsewhere
+                                                      
                             double minDist2 = SurveyPtDistSqr; // if the point is further than 30 meters we forget it
                             double minDist3 = SurveyPtDistSqr;
                             double minDist4 = SurveyPtDistSqr;
@@ -1743,8 +1740,21 @@ namespace OpenGrade
                                 {
                                     double sumofCloseDist = 1 / distanceFromAline + 1 / distanceFromBline + 1 / distanceFromCline + 1 / distanceFromDline;
 
-                                    avgAltitude = ((altitudeApt / distanceFromAline) + (altitudeBpt / distanceFromBline) +
-                                    (altitudeCpt / distanceFromCline) + (altitudeDpt / distanceFromDline)) / sumofCloseDist;
+                                    if (altitudeApt < -997)
+                                    {
+                                        avgAltitude = ct.ptList[closestPoint].altitude;
+                                    }
+                                    else if (altitudeBpt < -997 | altitudeCpt < -997 | altitudeDpt < -997)
+                                    {
+                                        avgAltitude = altitudeApt;
+
+                                    }
+                                    else
+                                    {
+                                        avgAltitude = ((altitudeApt / distanceFromAline) + (altitudeBpt / distanceFromBline) +
+                                   (altitudeCpt / distanceFromCline) + (altitudeDpt / distanceFromDline)) / sumofCloseDist;
+                                    }
+                                   
 
                                     if (cutAltApt < -997)
                                     {
@@ -1768,7 +1778,7 @@ namespace OpenGrade
                                 //end of copy
 
                                 cutDeltalMap = 9999;
-                                if (avgCutAltitude > -999) cutDeltalMap = avgCutAltitude - avgAltitude;
+                                if (avgCutAltitude > -998 && avgAltitude > -998) cutDeltalMap = avgCutAltitude - avgAltitude;
 
                                 mapListPt point = new mapListPt(h, i, drawPtWidth, avgAltitude, avgCutAltitude,
                                     cutDeltalMap, ct.ptList[closestPoint].lastPassAltitude);

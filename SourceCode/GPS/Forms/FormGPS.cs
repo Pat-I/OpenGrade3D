@@ -685,10 +685,6 @@ namespace OpenGrade
         //Initialize items before the form Loads or is visible
         private void FormGPS_Load(object sender, EventArgs e)
         {
-            //tooltips of controls
-            ToolTip ToolTip1 = new ToolTip();
-            ToolTip1.SetToolTip(btnABLine, "Set and configure\n an ABLine");
-
             if (Settings.Default.setF_workingDirectory == "Default")
                 baseDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\OpenGrade\\";
             else baseDirectory = Settings.Default.setF_workingDirectory + "\\OpenGrade\\";
@@ -1088,7 +1084,6 @@ namespace OpenGrade
             btnManualOffOn.Enabled = true;
             btnManualOffOn.Image = Properties.Resources.ManualOff;
 
-            btnABLine.Enabled = true;
             btnContour.Enabled = true;
             btnAutoSteer.Enabled = true;
             ABLine.abHeading = 0.00;
@@ -1130,7 +1125,6 @@ namespace OpenGrade
             btnFlag.Enabled = false;
 
             //reset the buttons
-            btnABLine.Enabled = false;
             btnContour.Enabled = false;
             btnAutoSteer.Enabled = false;
             isAutoSteerBtnOn = false;
@@ -1145,16 +1139,12 @@ namespace OpenGrade
             
 
             //change images to reflect on off
-            btnABLine.Image = Properties.Resources.ABLineOff;
             btnContour.Image = Properties.Resources.ContourOff;
             btnAutoSteer.Image = Properties.Resources.AutoSteerOff;
 
             //fix ManualOffOnAuto buttons
             btnManualOffOn.Enabled = false;
             btnManualOffOn.Image = Properties.Resources.ManualOff;
-
-            //reset all the ABLine stuff
-            ABLine.ResetABLine();
 
             //update the menu
             fieldToolStripMenuItem.Text = gStr.gsStartNewField;

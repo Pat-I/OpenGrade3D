@@ -18,7 +18,7 @@
       <Value Profile="(Default)">1016, 839</Value>
     </Setting>
     <Setting Name="setWindow_Maximized" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="setWindow_Minimized" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -156,7 +156,7 @@
       <Value Profile="(Default)">0.1</Value>
     </Setting>
     <Setting Name="Set_levelDistFactor" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">100</Value>
+      <Value Profile="(Default)">15</Value>
     </Setting>
     <Setting Name="setF_FillColorR" Type="System.Byte" Scope="User">
       <Value Profile="(Default)">70</Value>
@@ -231,7 +231,7 @@
       <Value Profile="(Default)">en</Value>
     </Setting>
     <Setting Name="setDisplay_isKeyboardOn" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="setF_FillMidColorR" Type="System.Byte" Scope="User">
       <Value Profile="(Default)">0</Value>
