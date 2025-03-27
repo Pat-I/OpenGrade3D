@@ -30,10 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormGPS));
-            ProgBar.cBlendItems cBlendItems9 = new ProgBar.cBlendItems();
-            ProgBar.cFocalPoints cFocalPoints9 = new ProgBar.cFocalPoints();
-            ProgBar.cBlendItems cBlendItems10 = new ProgBar.cBlendItems();
-            ProgBar.cFocalPoints cFocalPoints10 = new ProgBar.cFocalPoints();
+            ProgBar.cBlendItems cBlendItems1 = new ProgBar.cBlendItems();
+            ProgBar.cFocalPoints cFocalPoints1 = new ProgBar.cFocalPoints();
+            ProgBar.cBlendItems cBlendItems2 = new ProgBar.cBlendItems();
+            ProgBar.cFocalPoints cFocalPoints2 = new ProgBar.cFocalPoints();
             this.openGLControl = new SharpGL.OpenGLControl();
             this.contextMenuStripOpenGL = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteFlagToolOpenGLContextMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -208,6 +208,7 @@
             this.lblFillMidValue = new System.Windows.Forms.Label();
             this.lblCentreValue = new System.Windows.Forms.Label();
             this.btnUseSavedAGS = new System.Windows.Forms.Button();
+            this.btnBuildFromElevation = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControl)).BeginInit();
             this.contextMenuStripOpenGL.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControlBack)).BeginInit();
@@ -804,7 +805,7 @@
             this.toolstripUDPConfig.Image = ((System.Drawing.Image)(resources.GetObject("toolstripUDPConfig.Image")));
             this.toolstripUDPConfig.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.toolstripUDPConfig.Name = "toolstripUDPConfig";
-            this.toolstripUDPConfig.Size = new System.Drawing.Size(292, 86);
+            this.toolstripUDPConfig.Size = new System.Drawing.Size(384, 86);
             this.toolstripUDPConfig.Text = "UDP";
             this.toolstripUDPConfig.Click += new System.EventHandler(this.toolstripUDPConfig_Click);
             // 
@@ -815,7 +816,7 @@
             this.toolstripUSBPortsConfig.Image = ((System.Drawing.Image)(resources.GetObject("toolstripUSBPortsConfig.Image")));
             this.toolstripUSBPortsConfig.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.toolstripUSBPortsConfig.Name = "toolstripUSBPortsConfig";
-            this.toolstripUSBPortsConfig.Size = new System.Drawing.Size(292, 86);
+            this.toolstripUSBPortsConfig.Size = new System.Drawing.Size(384, 86);
             this.toolstripUSBPortsConfig.Text = "Ports";
             this.toolstripUSBPortsConfig.Click += new System.EventHandler(this.toolstripUSBPortsConfig_Click);
             // 
@@ -825,7 +826,7 @@
             this.toolstripNTRIPConfig.Image = global::OpenGrade.Properties.Resources.Satellite64;
             this.toolstripNTRIPConfig.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.toolstripNTRIPConfig.Name = "toolstripNTRIPConfig";
-            this.toolstripNTRIPConfig.Size = new System.Drawing.Size(292, 86);
+            this.toolstripNTRIPConfig.Size = new System.Drawing.Size(384, 86);
             this.toolstripNTRIPConfig.Text = "NTRIP";
             this.toolstripNTRIPConfig.Click += new System.EventHandler(this.toolstripNtripConfig_Click);
             // 
@@ -836,7 +837,7 @@
             this.toolstripVehicleConfig.Image = global::OpenGrade.Properties.Resources.Settings64;
             this.toolstripVehicleConfig.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.toolstripVehicleConfig.Name = "toolstripVehicleConfig";
-            this.toolstripVehicleConfig.Size = new System.Drawing.Size(292, 86);
+            this.toolstripVehicleConfig.Size = new System.Drawing.Size(384, 86);
             this.toolstripVehicleConfig.Text = "Vehicle";
             this.toolstripVehicleConfig.Click += new System.EventHandler(this.toolstripVehicleConfig_Click);
             // 
@@ -1749,13 +1750,13 @@
             // 
             this.pbarCutBelow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.pbarCutBelow.BarBackColor = System.Drawing.SystemColors.ControlLight;
-            cBlendItems9.iColor = new System.Drawing.Color[] {
+            cBlendItems1.iColor = new System.Drawing.Color[] {
         System.Drawing.Color.Navy,
         System.Drawing.Color.Blue};
-            cBlendItems9.iPoint = new float[] {
+            cBlendItems1.iPoint = new float[] {
         0F,
         1F};
-            this.pbarCutBelow.BarColorBlend = cBlendItems9;
+            this.pbarCutBelow.BarColorBlend = cBlendItems1;
             this.pbarCutBelow.BarColorSolid = System.Drawing.Color.Black;
             this.pbarCutBelow.BarColorSolidB = System.Drawing.Color.Red;
             this.pbarCutBelow.BarLengthValue = ((short)(40));
@@ -1773,9 +1774,9 @@
             this.pbarCutBelow.CylonInterval = ((short)(1));
             this.pbarCutBelow.CylonMove = 5F;
             this.pbarCutBelow.FillDirection = ProgBar.ProgBarPlus.eFillDirection.Down_Left;
-            cFocalPoints9.CenterPoint = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints9.CenterPoint")));
-            cFocalPoints9.FocusScales = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints9.FocusScales")));
-            this.pbarCutBelow.FocalPoints = cFocalPoints9;
+            cFocalPoints1.CenterPoint = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints1.CenterPoint")));
+            cFocalPoints1.FocusScales = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints1.FocusScales")));
+            this.pbarCutBelow.FocalPoints = cFocalPoints1;
             this.pbarCutBelow.Location = new System.Drawing.Point(1231, 493);
             this.pbarCutBelow.Name = "pbarCutBelow";
             this.pbarCutBelow.Orientation = ProgBar.ProgBarPlus.eOrientation.Vertical;
@@ -1789,13 +1790,13 @@
             // 
             this.pbarCutAbove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbarCutAbove.BarBackColor = System.Drawing.SystemColors.ControlLight;
-            cBlendItems10.iColor = new System.Drawing.Color[] {
+            cBlendItems2.iColor = new System.Drawing.Color[] {
         System.Drawing.Color.Navy,
         System.Drawing.Color.Blue};
-            cBlendItems10.iPoint = new float[] {
+            cBlendItems2.iPoint = new float[] {
         0F,
         1F};
-            this.pbarCutAbove.BarColorBlend = cBlendItems10;
+            this.pbarCutAbove.BarColorBlend = cBlendItems2;
             this.pbarCutAbove.BarColorSolid = System.Drawing.Color.Black;
             this.pbarCutAbove.BarColorSolidB = System.Drawing.Color.LimeGreen;
             this.pbarCutAbove.BarLengthValue = ((short)(40));
@@ -1812,9 +1813,9 @@
             this.pbarCutAbove.Corners.UpperRight = ((short)(0));
             this.pbarCutAbove.CylonInterval = ((short)(1));
             this.pbarCutAbove.CylonMove = 5F;
-            cFocalPoints10.CenterPoint = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints10.CenterPoint")));
-            cFocalPoints10.FocusScales = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints10.FocusScales")));
-            this.pbarCutAbove.FocalPoints = cFocalPoints10;
+            cFocalPoints2.CenterPoint = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints2.CenterPoint")));
+            cFocalPoints2.FocusScales = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints2.FocusScales")));
+            this.pbarCutAbove.FocalPoints = cFocalPoints2;
             this.pbarCutAbove.Location = new System.Drawing.Point(1231, 343);
             this.pbarCutAbove.Name = "pbarCutAbove";
             this.pbarCutAbove.Orientation = ProgBar.ProgBarPlus.eOrientation.Vertical;
@@ -2285,12 +2286,24 @@
             this.btnUseSavedAGS.Visible = false;
             this.btnUseSavedAGS.Click += new System.EventHandler(this.btnUseSavedAGS_Click);
             // 
+            // btnBuildFromElevation
+            // 
+            this.btnBuildFromElevation.Location = new System.Drawing.Point(600, 125);
+            this.btnBuildFromElevation.Name = "btnBuildFromElevation";
+            this.btnBuildFromElevation.Size = new System.Drawing.Size(97, 90);
+            this.btnBuildFromElevation.TabIndex = 253;
+            this.btnBuildFromElevation.Text = "Add pts from AOG elevation";
+            this.btnBuildFromElevation.UseVisualStyleBackColor = true;
+            this.btnBuildFromElevation.Visible = false;
+            this.btnBuildFromElevation.Click += new System.EventHandler(this.btnBuildFromElevation_Click);
+            // 
             // FormGPS
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(1306, 684);
+            this.Controls.Add(this.btnBuildFromElevation);
             this.Controls.Add(this.btnUseSavedAGS);
             this.Controls.Add(this.lblCentreValue);
             this.Controls.Add(this.lblFillMidValue);
@@ -2557,6 +2570,7 @@
         private System.Windows.Forms.Label lblFillMidValue;
         private System.Windows.Forms.Label lblCentreValue;
         private System.Windows.Forms.Button btnUseSavedAGS;
+        private System.Windows.Forms.Button btnBuildFromElevation;
     }
 }
 

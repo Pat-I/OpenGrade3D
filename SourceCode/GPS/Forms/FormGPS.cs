@@ -242,6 +242,12 @@ namespace OpenGrade
             KeypadToNUD((NumericUpDown)sender, this);
         }
 
+        private void btnBuildFromElevation_Click(object sender, EventArgs e)
+        {
+            FileOpenElevationFromAOG();
+            btnBuildFromElevation.Visible = false;
+        }
+
         private void nudLatitude_Click(object sender, EventArgs e)
         {
             KeypadToNUD((NumericUpDown)sender, this);

@@ -207,6 +207,7 @@ namespace OpenGrade
                     ct.surveyMode = false;
                     stripSelectMode.Text = "Grade Mode";
                     btnManualOffOn.Visible = false;
+                    btnBuildFromElevation.Visible = false;
                     btnCutFillElev.Visible = true;
                     btnPropExist.Visible = true;
                     btnStartPause.Visible = false;
@@ -525,6 +526,7 @@ namespace OpenGrade
             switch (manualBtnState)
             {
                 case btnStates.Off:
+                    //Button has been pressed to start a survey
                     manualBtnState = btnStates.StandBy;
                     btnManualOffOn.Image = null;
                     btnManualOffOn.Text = "Put BenchMark";
@@ -553,6 +555,7 @@ namespace OpenGrade
 
                 case btnStates.RecBnd:
 
+                    btnBuildFromElevation.Visible = true;
                     recordSurveyPts();
                    
 
@@ -570,8 +573,8 @@ namespace OpenGrade
                     ct.isSurveyOn = false;
                     btnStartPause.Visible = false;
                     ct.isBtnStartPause = false;
-                    
 
+                    btnBuildFromElevation.Visible=false;
 
                     break;
             }
