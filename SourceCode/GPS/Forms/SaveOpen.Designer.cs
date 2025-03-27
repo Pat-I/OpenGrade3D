@@ -1850,6 +1850,80 @@ namespace OpenGrade
                            
         }//end of open file
 
+        //function to open a previously autosaved survey
+        public void FileOpenElevationFromAOG()
+        {
+            string fileAndDirectory;
+            //get the directory where the fields are stored
+            //string directoryName = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)+ "\\fields\\";
+
+
+            //Either exit or update running save
+            fileAndDirectory = fieldsDirectory + currentFieldDirectory + "\\Elevation.txt";
+            if (!File.Exists(fileAndDirectory)) return;
+
+
+
+            // Boundary points ----------------------------------------------------------------------------
+
+            string line;
+            using (StreamReader reader = new StreamReader(fileAndDirectory))
+            {
+                try
+                {
+                    //read the lines and skip them
+                    line = reader.ReadLine();
+                    line = reader.ReadLine();
+                    line = reader.ReadLine();
+                    line = reader.ReadLine();
+                    line = reader.ReadLine();
+                    line = reader.ReadLine();
+                    line = reader.ReadLine();
+                    line = reader.ReadLine();
+                    line = reader.ReadLine();
+                    line = reader.ReadLine();
+
+                    while (!reader.EndOfStream)
+                    {
+                        //read how many vertices in the following patch
+                        //line = reader.ReadLine();
+                        //int verts = int.Parse(line);
+                        //CContourPt vecFix = new vec4(0, 0, 0, 0);
+
+                        //for (int v = 0; v < verts; v++)
+                        //{
+
+                        line = reader.ReadLine();
+                        string[] words = line.Split(',');
+
+                        double lat = double.Parse(words[0], CultureInfo.InvariantCulture);
+                        double lon = double.Parse(words[1], CultureInfo.InvariantCulture);
+                        pn.ConvertWGS84ToLocal(lat, lon, out double Northing, out double Easting);
+
+                        SurveyPt point = new SurveyPt(
+                            Easting,
+                            Northing,
+                            lat ,
+                            lon ,
+                            double.Parse(words[2], CultureInfo.InvariantCulture),
+                            3,
+                            int.Parse(words[3], CultureInfo.InvariantCulture));
+
+                        ct.surveyList.Add(point);
+                        //}
+                    }
+                }
+                catch (Exception e)
+                {
+                    WriteErrorLog("Loading AutoSave survey file" + e.ToString());
+
+                    var form = new FormTimedMessage(4000, "Elevation File is Corrupt", "Or missing");
+                    form.Show();
+                }
+            }
+
+        }//end of open file
+
         //save all the flag markers
         public void FileSaveFlags()
         {
