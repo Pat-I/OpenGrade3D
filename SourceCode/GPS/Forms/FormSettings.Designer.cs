@@ -95,6 +95,7 @@
             this.lblInchesCm = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
             this.bntOK = new System.Windows.Forms.Button();
+            this.label35 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabVehicle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMaxCuttingDepth)).BeginInit();
@@ -596,6 +597,7 @@
             // 
             // tabDesingPt
             // 
+            this.tabDesingPt.Controls.Add(this.label35);
             this.tabDesingPt.Controls.Add(this.btnSendCorr);
             this.tabDesingPt.Controls.Add(this.label34);
             this.tabDesingPt.Controls.Add(this.label33);
@@ -827,6 +829,11 @@
             this.bntOK.UseVisualStyleBackColor = true;
             this.bntOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
+            // label35
+            // 
+            resources.ApplyResources(this.label35, "label35");
+            this.label35.Name = "label35";
+            // 
             // FormSettings
             // 
             resources.ApplyResources(this, "$this");
@@ -944,5 +951,6 @@
         private System.Windows.Forms.NumericUpDown nudNoAvgDist;
         private System.Windows.Forms.Button butAvgDesignPt;
         private System.Windows.Forms.Button btnSendCorr;
+        private System.Windows.Forms.Label label35;
     }
 }

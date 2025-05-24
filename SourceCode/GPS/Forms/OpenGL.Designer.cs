@@ -497,7 +497,7 @@ namespace OpenGrade
                 int ptCount = ct.ptList.Count - 1;
                 SurveyPtDist = levelDistFactor;
                 SurveyPtDistSqr = SurveyPtDist * SurveyPtDist;
-                double minDist2 = SurveyPtDistSqr; // if the point is further than 30 meters we forget it
+                double minDist2 = SurveyPtDistSqr; // if the point is further than "pts dist for calc" we forget it
                 double minDist3 = SurveyPtDistSqr;
                 double minDist4 = SurveyPtDistSqr;
                 double minDist5 = SurveyPtDistSqr;
@@ -509,14 +509,14 @@ namespace OpenGrade
                     double distMap = ((pn.easting - ct.ptList[t].easting) * (pn.easting - ct.ptList[t].easting))
                                     + ((pn.northing - ct.ptList[t].northing) * (pn.northing - ct.ptList[t].northing));
 
-                    if (distMap < minDist && distMap > SurveyPtDistSqr) // to at least have one pt if more than 30 m away
+                    if (distMap < minDist && distMap > SurveyPtDistSqr) // to at least have one pt if more than "pts dist for calc" away
                     {
                         minDist = distMap;
                         closestPoint = t;
 
                     }
 
-                    else if (distMap < minDist6) // if less than 30m from position do all this stuff
+                    else if (distMap < minDist6) // if less than "pts dist for calc" from position do all this stuff
                     {
                         if (distMap < minDist5)
                         {
@@ -1335,7 +1335,7 @@ namespace OpenGrade
                 northingMin = 9999999;
                 northingMax = -9999999;
 
-                drawPtWidth = Properties.Vehicle.Default.setVehicle_GradeDistFromLine;
+                drawPtWidth = Properties.Vehicle.Default.setVehicle_GradeDistFromLine; //badly named, its used for the display map resolution
                 if (drawPtWidth < 1) drawPtWidth = 1;
 
                 int cnt = ct.ptList.Count;
@@ -1398,7 +1398,7 @@ namespace OpenGrade
                             int closestPointMap5 = -1;
                             int closestPointMap6 = -1;
                                                       
-                            double minDist2 = SurveyPtDistSqr; // if the point is further than 30 meters we forget it
+                            double minDist2 = SurveyPtDistSqr; // if the point is further than "pts dist for calc" we forget it
                             double minDist3 = SurveyPtDistSqr;
                             double minDist4 = SurveyPtDistSqr;
                             double minDist5 = SurveyPtDistSqr;
@@ -1410,14 +1410,14 @@ namespace OpenGrade
                                 double distMap = ((h - ct.ptList[t].easting) * (h - ct.ptList[t].easting))
                                                 + ((i - ct.ptList[t].northing) * (i - ct.ptList[t].northing));
 
-                                if (distMap < minDist && distMap > SurveyPtDistSqr) // to at least have one pt if more than 30 m away
+                                if (distMap < minDist && distMap > SurveyPtDistSqr) // to at least have one pt if more than "pts dist for calc" away
                                 {
                                     minDist = distMap;
                                     closestPoint = t;
 
                                 }
 
-                                else if (distMap < minDist6) // if less than 30m from position do all this stuff
+                                else if (distMap < minDist6) // if less than "pts dist for calc" from position do all this stuff
                                 {
                                     if (distMap < minDist5)
                                     {

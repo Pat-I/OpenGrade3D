@@ -667,7 +667,7 @@
     <value>Tahoma, 40pt</value>
   </data>
   <data name="nudViewDistUnderGnd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>406, 350</value>
+    <value>455, 350</value>
   </data>
   <data name="nudViewDistUnderGnd.Size" type="System.Drawing.Size, System.Drawing">
     <value>147, 72</value>
@@ -727,7 +727,7 @@
     <value>Tahoma, 40pt</value>
   </data>
   <data name="nudViewDistAboveGnd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>406, 200</value>
+    <value>455, 200</value>
   </data>
   <data name="nudViewDistAboveGnd.Size" type="System.Drawing.Size, System.Drawing">
     <value>147, 72</value>
@@ -760,7 +760,7 @@
     <value>Tahoma, 12pt</value>
   </data>
   <data name="label16.Location" type="System.Drawing.Point, System.Drawing">
-    <value>310, 76</value>
+    <value>359, 76</value>
   </data>
   <data name="label16.Size" type="System.Drawing.Size, System.Drawing">
     <value>90, 19</value>
@@ -790,13 +790,13 @@
     <value>51, 65</value>
   </data>
   <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 33</value>
+    <value>282, 33</value>
   </data>
   <data name="label14.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
   <data name="label14.Text" xml:space="preserve">
-    <value>Map resolution</value>
+    <value>Display Map resolution</value>
   </data>
   <data name="&gt;&gt;label14.Name" xml:space="preserve">
     <value>label14</value>
@@ -814,7 +814,7 @@
     <value>Tahoma, 40pt</value>
   </data>
   <data name="nudGradeDistFromLine.Location" type="System.Drawing.Point, System.Drawing">
-    <value>406, 50</value>
+    <value>455, 37</value>
   </data>
   <data name="nudGradeDistFromLine.Size" type="System.Drawing.Size, System.Drawing">
     <value>147, 72</value>
@@ -1416,6 +1416,39 @@
   <data name="&gt;&gt;tabValve.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="label35.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label35.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Tahoma, 9pt</value>
+  </data>
+  <data name="label35.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label35.Location" type="System.Drawing.Point, System.Drawing">
+    <value>474, 413</value>
+  </data>
+  <data name="label35.Size" type="System.Drawing.Size, System.Drawing">
+    <value>240, 14</value>
+  </data>
+  <data name="label35.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="label35.Text" xml:space="preserve">
+    <value>Should be at least 1.5x the design pts dist</value>
+  </data>
+  <data name="&gt;&gt;label35.Name" xml:space="preserve">
+    <value>label35</value>
+  </data>
+  <data name="&gt;&gt;label35.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label35.Parent" xml:space="preserve">
+    <value>tabDesingPt</value>
+  </data>
+  <data name="&gt;&gt;label35.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="btnSendCorr.Location" type="System.Drawing.Point, System.Drawing">
     <value>156, 315</value>
   </data>
@@ -1438,7 +1471,7 @@
     <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;btnSendCorr.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="label34.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1450,7 +1483,7 @@
     <value>NoControl</value>
   </data>
   <data name="label34.Location" type="System.Drawing.Point, System.Drawing">
-    <value>483, 181</value>
+    <value>483, 73</value>
   </data>
   <data name="label34.Size" type="System.Drawing.Size, System.Drawing">
     <value>231, 19</value>
@@ -1471,7 +1504,7 @@
     <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;label34.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="label33.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1504,7 +1537,7 @@
     <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;label33.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="label32.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1537,7 +1570,7 @@
     <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;label32.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="butPosCorrection.Location" type="System.Drawing.Point, System.Drawing">
     <value>283, 403</value>
@@ -1561,7 +1594,7 @@
     <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;butPosCorrection.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="label31.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1594,7 +1627,7 @@
     <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;label31.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="label30.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1627,7 +1660,7 @@
     <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;label30.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="label29.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1660,7 +1693,7 @@
     <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;label29.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="nudCorrAltitude.Font" type="System.Drawing.Font, System.Drawing">
     <value>Tahoma, 30pt</value>
@@ -1687,7 +1720,7 @@
     <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;nudCorrAltitude.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="nudCorrNorthing.Font" type="System.Drawing.Font, System.Drawing">
     <value>Tahoma, 30pt</value>
@@ -1714,7 +1747,7 @@
     <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;nudCorrNorthing.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="label27.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1741,7 +1774,7 @@
     <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;label27.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="nudCorrEasting.Font" type="System.Drawing.Font, System.Drawing">
     <value>Tahoma, 30pt</value>
@@ -1768,7 +1801,7 @@
     <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;nudCorrEasting.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="label23.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1780,7 +1813,7 @@
     <value>NoControl</value>
   </data>
   <data name="label23.Location" type="System.Drawing.Point, System.Drawing">
-    <value>540, 408</value>
+    <value>540, 385</value>
   </data>
   <data name="label23.Size" type="System.Drawing.Size, System.Drawing">
     <value>174, 19</value>
@@ -1801,7 +1834,7 @@
     <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;label23.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="label21.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1813,7 +1846,7 @@
     <value>NoControl</value>
   </data>
   <data name="label21.Location" type="System.Drawing.Point, System.Drawing">
-    <value>664, 315</value>
+    <value>664, 223</value>
   </data>
   <data name="label21.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 19</value>
@@ -1834,7 +1867,7 @@
     <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;label21.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>14</value>
   </data>
   <data name="label19.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1843,7 +1876,7 @@
     <value>Tahoma, 12pt</value>
   </data>
   <data name="label19.Location" type="System.Drawing.Point, System.Drawing">
-    <value>475, 296</value>
+    <value>475, 204</value>
   </data>
   <data name="label19.Size" type="System.Drawing.Size, System.Drawing">
     <value>239, 19</value>
@@ -1864,7 +1897,7 @@
     <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;label19.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>15</value>
   </data>
   <data name="nudLevelDistFactor.Location" type="System.Drawing.Point, System.Drawing">
     <value>594, 430</value>
@@ -1888,10 +1921,10 @@
     <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;nudLevelDistFactor.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>16</value>
   </data>
   <data name="nudNoAvgDist.Location" type="System.Drawing.Point, System.Drawing">
-    <value>594, 337</value>
+    <value>594, 251</value>
   </data>
   <data name="nudNoAvgDist.Size" type="System.Drawing.Size, System.Drawing">
     <value>120, 40</value>
@@ -1912,10 +1945,10 @@
     <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;nudNoAvgDist.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>17</value>
   </data>
   <data name="butAvgDesignPt.Location" type="System.Drawing.Point, System.Drawing">
-    <value>570, 203</value>
+    <value>576, 95</value>
   </data>
   <data name="butAvgDesignPt.Size" type="System.Drawing.Size, System.Drawing">
     <value>104, 67</value>
@@ -1936,7 +1969,7 @@
     <value>tabDesingPt</value>
   </data>
   <data name="&gt;&gt;butAvgDesignPt.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>18</value>
   </data>
   <data name="tabDesingPt.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 45</value>

@@ -119,7 +119,7 @@ namespace OpenGrade
 
             viewDistUnderGnd = Properties.Vehicle.Default.setVehicle_ViewDistUnderGnd;
             viewDistAboveGnd = Properties.Vehicle.Default.setVehicle_ViewDistAboveGnd;
-            gradeDistFromLine = Properties.Vehicle.Default.setVehicle_GradeDistFromLine;
+            gradeDistFromLine = Properties.Vehicle.Default.setVehicle_GradeDistFromLine; //badly named, its used for the display map resolution
 
             nudViewDistUnderGnd.ValueChanged -= nudViewDistUnderGnd_ValueChanged;
             nudViewDistUnderGnd.Value = (decimal)(viewDistUnderGnd * m2MetImp);
@@ -195,7 +195,7 @@ namespace OpenGrade
             mf.vehicle.viewDistAboveGnd = viewDistAboveGnd;
             Properties.Vehicle.Default.setVehicle_ViewDistAboveGnd = mf.vehicle.viewDistAboveGnd;
 
-            mf.vehicle.gradeDistFromLine = gradeDistFromLine;
+            mf.vehicle.gradeDistFromLine = gradeDistFromLine; //badly named, its used for the display map resolution
             Properties.Vehicle.Default.setVehicle_GradeDistFromLine = mf.vehicle.gradeDistFromLine;
 
             //Valve settings ---------------------------------------------------------------------------------
@@ -491,7 +491,7 @@ namespace OpenGrade
 
         private void nudGradeDistFromLine_ValueChanged(object sender, EventArgs e)
         {
-            gradeDistFromLine = (double)nudGradeDistFromLine.Value * metFt2m;
+            gradeDistFromLine = (double)nudGradeDistFromLine.Value * metFt2m; //badly named, its used for the display map resolution
             if (gradeDistFromLine < 1) gradeDistFromLine = 1;
         }
 
