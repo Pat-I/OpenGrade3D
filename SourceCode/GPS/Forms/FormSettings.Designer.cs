@@ -180,6 +180,7 @@
             -2147483648});
             this.nudMaxCuttingDepth.Name = "nudMaxCuttingDepth";
             this.nudMaxCuttingDepth.ValueChanged += new System.EventHandler(this.nudMaxCuttingDepth_ValueChanged);
+            this.nudMaxCuttingDepth.Click += new System.EventHandler(this.nudMaxCuttingDepth_Click);
             // 
             // nudMinSlope
             // 
@@ -207,6 +208,7 @@
             0,
             -2147418112});
             this.nudMinSlope.ValueChanged += new System.EventHandler(this.nudMinSlope_ValueChanged);
+            this.nudMinSlope.Click += new System.EventHandler(this.nudMinSlope_Click);
             // 
             // nudToolWidth
             // 
@@ -228,6 +230,7 @@
             0,
             0});
             this.nudToolWidth.ValueChanged += new System.EventHandler(this.nudToolWidth_ValueChanged);
+            this.nudToolWidth.Click += new System.EventHandler(this.nudToolWidth_Click);
             // 
             // label5
             // 
@@ -299,6 +302,7 @@
             0,
             0});
             this.nudAntennaHeight.ValueChanged += new System.EventHandler(this.nudAntennaHeight_ValueChanged);
+            this.nudAntennaHeight.Click += new System.EventHandler(this.nudAntennaHeight_Click);
             // 
             // tabDisplay
             // 
@@ -328,6 +332,7 @@
             0});
             this.nudViewDistUnderGnd.Name = "nudViewDistUnderGnd";
             this.nudViewDistUnderGnd.ValueChanged += new System.EventHandler(this.nudViewDistUnderGnd_ValueChanged);
+            this.nudViewDistUnderGnd.Click += new System.EventHandler(this.nudViewDistUnderGnd_Click);
             // 
             // label20
             // 
@@ -344,6 +349,7 @@
             0});
             this.nudViewDistAboveGnd.Name = "nudViewDistAboveGnd";
             this.nudViewDistAboveGnd.ValueChanged += new System.EventHandler(this.nudViewDistAboveGnd_ValueChanged);
+            this.nudViewDistAboveGnd.Click += new System.EventHandler(this.nudViewDistAboveGnd_Click);
             // 
             // label16
             // 
@@ -375,6 +381,7 @@
             0,
             0});
             this.nudGradeDistFromLine.ValueChanged += new System.EventHandler(this.nudGradeDistFromLine_ValueChanged);
+            this.nudGradeDistFromLine.Click += new System.EventHandler(this.nudGradeDistFromLine_Click);
             // 
             // tabValve
             // 
@@ -456,6 +463,7 @@
             0,
             0});
             this.nudPwmMinUp.ValueChanged += new System.EventHandler(this.nudPwmMinUp_ValueChanged);
+            this.nudPwmMinUp.Click += new System.EventHandler(this.nudPwmMinUp_Click);
             // 
             // nudPwmGainUp
             // 
@@ -467,6 +475,7 @@
             0,
             0});
             this.nudPwmGainUp.ValueChanged += new System.EventHandler(this.nudPwmGainUp_ValueChanged);
+            this.nudPwmGainUp.Click += new System.EventHandler(this.nudPwmGainUp_Click);
             // 
             // nudPwmMaxUp
             // 
@@ -488,6 +497,7 @@
             0,
             0});
             this.nudPwmMaxUp.ValueChanged += new System.EventHandler(this.nudPwmMaxUp_ValueChanged);
+            this.nudPwmMaxUp.Click += new System.EventHandler(this.nudPwmMaxUp_Click);
             // 
             // nudDeadband
             // 
@@ -504,6 +514,7 @@
             0,
             0});
             this.nudDeadband.ValueChanged += new System.EventHandler(this.nudDeadband_ValueChanged);
+            this.nudDeadband.Click += new System.EventHandler(this.nudDeadband_Click);
             // 
             // nudIntegralMultiplier
             // 
@@ -515,6 +526,7 @@
             0,
             0});
             this.nudIntegralMultiplier.ValueChanged += new System.EventHandler(this.nudIntegralMultiplier_ValueChanged);
+            this.nudIntegralMultiplier.Click += new System.EventHandler(this.nudIntegralMultiplier_Click);
             // 
             // nudPwmMaxDown
             // 
@@ -536,6 +548,7 @@
             0,
             0});
             this.nudPwmMaxDown.ValueChanged += new System.EventHandler(this.nudPwmMaxDown_ValueChanged);
+            this.nudPwmMaxDown.Click += new System.EventHandler(this.nudPwmMaxDown_Click);
             // 
             // nudPwmGainDown
             // 
@@ -547,6 +560,7 @@
             0,
             0});
             this.nudPwmGainDown.ValueChanged += new System.EventHandler(this.nudPwmGainDown_ValueChanged);
+            this.nudPwmGainDown.Click += new System.EventHandler(this.nudPwmGainDown_Click);
             // 
             // nudPwmMinDown
             // 
@@ -568,6 +582,7 @@
             0,
             0});
             this.nudPwmMinDown.ValueChanged += new System.EventHandler(this.nudPwmMinDown_ValueChanged);
+            this.nudPwmMinDown.Click += new System.EventHandler(this.nudPwmMinDown_Click);
             // 
             // label4
             // 
@@ -657,17 +672,18 @@
             0,
             65536});
             this.nudCorrAltitude.Maximum = new decimal(new int[] {
-            999,
+            9999,
             0,
             0,
             0});
             this.nudCorrAltitude.Minimum = new decimal(new int[] {
-            999,
+            9999,
             0,
             0,
             -2147483648});
             this.nudCorrAltitude.Name = "nudCorrAltitude";
             this.nudCorrAltitude.ValueChanged += new System.EventHandler(this.nudCorrAltitude_ValueChanged);
+            this.nudCorrAltitude.Click += new System.EventHandler(this.nudCorrAltitude_Click);
             // 
             // nudCorrNorthing
             // 
@@ -679,17 +695,18 @@
             0,
             65536});
             this.nudCorrNorthing.Maximum = new decimal(new int[] {
-            999,
+            9999,
             0,
             0,
             0});
             this.nudCorrNorthing.Minimum = new decimal(new int[] {
-            999,
+            9999,
             0,
             0,
             -2147483648});
             this.nudCorrNorthing.Name = "nudCorrNorthing";
             this.nudCorrNorthing.ValueChanged += new System.EventHandler(this.nudCorrNorthing_ValueChanged);
+            this.nudCorrNorthing.Click += new System.EventHandler(this.nudCorrNorthing_Click);
             // 
             // label27
             // 
@@ -706,17 +723,18 @@
             0,
             65536});
             this.nudCorrEasting.Maximum = new decimal(new int[] {
-            999,
+            9999,
             0,
             0,
             0});
             this.nudCorrEasting.Minimum = new decimal(new int[] {
-            999,
+            9999,
             0,
             0,
             -2147483648});
             this.nudCorrEasting.Name = "nudCorrEasting";
             this.nudCorrEasting.ValueChanged += new System.EventHandler(this.nudCorrEasting_ValueChanged);
+            this.nudCorrEasting.Click += new System.EventHandler(this.nudCorrEasting_Click);
             // 
             // label23
             // 
@@ -749,6 +767,7 @@
             0,
             0});
             this.nudLevelDistFactor.ValueChanged += new System.EventHandler(this.nudLevelDistFactor_ValueChanged);
+            this.nudLevelDistFactor.Click += new System.EventHandler(this.nudLevelDistFactor_Click);
             // 
             // nudNoAvgDist
             // 
@@ -771,6 +790,7 @@
             0,
             65536});
             this.nudNoAvgDist.ValueChanged += new System.EventHandler(this.nudNoAvgDist_ValueChanged);
+            this.nudNoAvgDist.Click += new System.EventHandler(this.nudNoAvgDist_Click);
             // 
             // butAvgDesignPt
             // 

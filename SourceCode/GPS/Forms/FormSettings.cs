@@ -299,6 +299,106 @@ namespace OpenGrade
 
         }
 
+        private void nudToolWidth_Click(object sender, EventArgs e)
+        {
+            mf.KeypadToNUD((NumericUpDown)sender, this);
+        }
+
+        private void nudAntennaHeight_Click(object sender, EventArgs e)
+        {
+            mf.KeypadToNUD((NumericUpDown)sender, this);
+        }
+
+        private void nudMinSlope_Click(object sender, EventArgs e)
+        {            
+           mf.KeypadToNUD((NumericUpDown)sender, this);
+        }
+
+        private void nudMaxCuttingDepth_Click(object sender, EventArgs e)
+        {
+            mf.KeypadToNUD((NumericUpDown)sender, this);
+        }
+
+        private void nudGradeDistFromLine_Click(object sender, EventArgs e)
+        {
+            mf.KeypadToNUD((NumericUpDown)sender, this);
+        }
+
+        private void nudViewDistAboveGnd_Click(object sender, EventArgs e)
+        {
+            mf.KeypadToNUD((NumericUpDown)sender, this);
+        }
+
+        private void nudViewDistUnderGnd_Click(object sender, EventArgs e)
+        {
+            mf.KeypadToNUD((NumericUpDown)sender, this);
+        }
+
+        private void nudPwmMinDown_Click(object sender, EventArgs e)
+        {
+            mf.KeypadToNUD((NumericUpDown)sender, this);
+        }
+
+        private void nudPwmGainDown_Click(object sender, EventArgs e)
+        {
+            mf.KeypadToNUD((NumericUpDown)sender, this);
+        }
+
+        private void nudPwmMaxDown_Click(object sender, EventArgs e)
+        {
+            mf.KeypadToNUD((NumericUpDown)sender, this);
+        }
+
+        private void nudIntegralMultiplier_Click(object sender, EventArgs e)
+        {
+            mf.KeypadToNUD((NumericUpDown)sender, this);
+        }
+
+        private void nudPwmMinUp_Click(object sender, EventArgs e)
+        {
+            mf.KeypadToNUD((NumericUpDown)sender, this);
+        }
+
+        private void nudPwmGainUp_Click(object sender, EventArgs e)
+        {
+            mf.KeypadToNUD((NumericUpDown)sender, this);
+        }
+
+        private void nudPwmMaxUp_Click(object sender, EventArgs e)
+        {
+            mf.KeypadToNUD((NumericUpDown)sender, this);
+        }
+
+        private void nudDeadband_Click(object sender, EventArgs e)
+        {
+            mf.KeypadToNUD((NumericUpDown)sender, this);
+        }
+
+        private void nudCorrEasting_Click(object sender, EventArgs e)
+        {
+            mf.KeypadToNUD((NumericUpDown)sender, this);
+        }
+
+        private void nudCorrNorthing_Click(object sender, EventArgs e)
+        {
+            mf.KeypadToNUD((NumericUpDown)sender, this);
+        }
+
+        private void nudCorrAltitude_Click(object sender, EventArgs e)
+        {
+            mf.KeypadToNUD((NumericUpDown)sender, this);
+        }
+
+        private void nudNoAvgDist_Click(object sender, EventArgs e)
+        {
+            mf.KeypadToNUD((NumericUpDown)sender, this);
+        }
+
+        private void nudLevelDistFactor_Click(object sender, EventArgs e)
+        {
+            mf.KeypadToNUD((NumericUpDown)sender, this);
+        }
+
         private void bntValveSettingsSend_Click(object sender, EventArgs e)
         {
             
