@@ -110,7 +110,7 @@ namespace OpenGrade
 
                     writer.WriteLine("ViewDistUnderGnd," + Properties.Vehicle.Default.setVehicle_ViewDistUnderGnd.ToString(CultureInfo.InvariantCulture));
                     writer.WriteLine("ViewDistAboveGnd," + Properties.Vehicle.Default.setVehicle_ViewDistAboveGnd.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("Map Resolution," + Properties.Vehicle.Default.setVehicle_GradeDistFromLine.ToString(CultureInfo.InvariantCulture));
+                    writer.WriteLine("Map Resolution," + Properties.Vehicle.Default.setVehicle_GradeDistFromLine.ToString(CultureInfo.InvariantCulture)); //badly named, its used for the display map resolution
                     writer.WriteLine("MaxCuttingDepth," + Properties.Vehicle.Default.setVehicle_MaxCuttingDepth.ToString(CultureInfo.InvariantCulture));
                     writer.WriteLine("Blade Offset," + Properties.Vehicle.Default.setVehicle_bladeOffset.ToString(CultureInfo.InvariantCulture));
 
@@ -275,7 +275,7 @@ namespace OpenGrade
                         line = reader.ReadLine(); words = line.Split(',');
                         Properties.Vehicle.Default.setVehicle_ViewDistAboveGnd = double.Parse(words[1], CultureInfo.InvariantCulture);
                         line = reader.ReadLine(); words = line.Split(',');
-                        Properties.Vehicle.Default.setVehicle_GradeDistFromLine = double.Parse(words[1], CultureInfo.InvariantCulture);
+                        Properties.Vehicle.Default.setVehicle_GradeDistFromLine = double.Parse(words[1], CultureInfo.InvariantCulture); //badly named, its used for the display map resolution
                         line = reader.ReadLine(); words = line.Split(',');
                         Properties.Vehicle.Default.setVehicle_MaxCuttingDepth = double.Parse(words[1], CultureInfo.InvariantCulture);
                         line = reader.ReadLine(); words = line.Split(',');
@@ -308,7 +308,7 @@ namespace OpenGrade
 
                         vehicle.viewDistUnderGnd = Properties.Vehicle.Default.setVehicle_ViewDistUnderGnd;
                         vehicle.viewDistAboveGnd = Properties.Vehicle.Default.setVehicle_ViewDistAboveGnd;
-                        vehicle.gradeDistFromLine = Properties.Vehicle.Default.setVehicle_GradeDistFromLine;
+                        vehicle.gradeDistFromLine = Properties.Vehicle.Default.setVehicle_GradeDistFromLine; //badly named, its used for the display map resolution
                         vehicle.maxCuttingDepth = Properties.Vehicle.Default.setVehicle_MaxCuttingDepth;
                         vehicle.bladeOffset = Properties.Vehicle.Default.setVehicle_bladeOffset;
                         numBladeOffset.Value = (decimal)Properties.Vehicle.Default.setVehicle_bladeOffset *100;

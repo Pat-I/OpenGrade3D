@@ -63,7 +63,7 @@ namespace OpenGrade
             maxCuttingDepth = Properties.Vehicle.Default.setVehicle_MaxCuttingDepth;
             viewDistUnderGnd = Properties.Vehicle.Default.setVehicle_ViewDistUnderGnd;
             viewDistAboveGnd = Properties.Vehicle.Default.setVehicle_ViewDistAboveGnd;
-            gradeDistFromLine = Properties.Vehicle.Default.setVehicle_GradeDistFromLine;
+            gradeDistFromLine = Properties.Vehicle.Default.setVehicle_GradeDistFromLine; //badly named, its used for the display map resolution
             bladeOffset = Properties.Vehicle.Default.setVehicle_bladeOffset;
         }
 
