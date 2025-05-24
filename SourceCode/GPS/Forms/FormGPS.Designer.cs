@@ -681,7 +681,7 @@
             // 
             // tmrWatchdog
             // 
-            this.tmrWatchdog.Interval = 25;
+            this.tmrWatchdog.Interval = 10;
             this.tmrWatchdog.Tick += new System.EventHandler(this.tmrWatchdog_tick);
             // 
             // statusStrip1
@@ -1680,13 +1680,13 @@
             // 
             // nudElevation
             // 
-            this.nudElevation.DecimalPlaces = 3;
+            this.nudElevation.DecimalPlaces = 2;
             this.nudElevation.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nudElevation.Increment = new decimal(new int[] {
             1,
             0,
             0,
-            196608});
+            131072});
             this.nudElevation.Location = new System.Drawing.Point(421, 4);
             this.nudElevation.Maximum = new decimal(new int[] {
             10000,
@@ -1694,10 +1694,10 @@
             0,
             0});
             this.nudElevation.Minimum = new decimal(new int[] {
-            10,
+            500,
             0,
             0,
-            0});
+            -2147483648});
             this.nudElevation.Name = "nudElevation";
             this.nudElevation.Size = new System.Drawing.Size(123, 36);
             this.nudElevation.TabIndex = 185;

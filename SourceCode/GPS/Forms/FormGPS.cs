@@ -84,6 +84,8 @@ namespace OpenGrade
         //if we are saving a file
         public bool isSavingFile = false, isLogNMEA = false, isOKtoOpenMap = false;
 
+        public uint isGNSSrecieved = 0;
+
         //Zoom variables
         public double gridZoom;
 
