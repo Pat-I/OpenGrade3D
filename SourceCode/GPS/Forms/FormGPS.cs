@@ -161,7 +161,7 @@ namespace OpenGrade
         private Point _ptFirst = new Point();
 
         //for the NTRIP CLient counting
-        private int ntripCounter = 10;
+        private int ntripCounter = 21;
 
         private Point _ptSecond = new Point();
         private int _iArguments = 0;

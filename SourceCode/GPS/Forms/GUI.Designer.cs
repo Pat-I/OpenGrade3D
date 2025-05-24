@@ -1857,11 +1857,11 @@ namespace OpenGrade
                 //NTRIPBytesMenu.Text = ((tripBytes) * 0.001).ToString("###,###,###") + " kb";
 
                 //watchdog for Ntrip
-                if (isNTRIP_Connecting) lblWatch.Text = gStr.gsAuthourizing;
+                if (isNTRIP_Connecting) lblWatch.Text = "Authourizing";
                 else
                 {
-                    if (NTRIP_Watchdog > 10) lblWatch.Text = gStr.gsWaiting;
-                    else lblWatch.Text = gStr.gsListening;
+                    if (NTRIP_Watchdog > 10) lblWatch.Text = "Waiting";
+                    else lblWatch.Text = "Listening";
                 }
 
                 if (sendGGAInterval > 0 && isNTRIP_Sending)
