@@ -1,7 +1,10 @@
 /*
   AOG Section Control
 */
-// Last change: 2022-04-21 by Pat 23h00
+char arduinoDate[] = "2025-05-22";
+char arduinoVersion[] = "v 2.0.0";
+
+// by Pat
 // to be used with OpenGrade3D v1.1.xx and OpenGrade v2.2.xx
 // test with blade offset
 //Only cytron output
@@ -42,34 +45,34 @@
 //PWM or relay mode
 bool proportionalValve = true;
 //cytron
-#define DIR_ENABLE 4 //PD4 cytron dir
-#define PWM_OUT 3 //PD3  cytron pwm
+#define DIR_ENABLE 4  //PD4 cytron dir
+#define PWM_OUT 3     //PD3  cytron pwm
 
 //workswitch or work button
-bool workButton = true; // true for momentary button, false for switch(continus)
-#define WORKSW_PIN 7  //PD7 this pin must be low (to ground) to activate automode IMP on PCB
+bool workButton = true;  // true for momentary button, false for switch(continus)
+#define WORKSW_PIN 7     //PD7 this pin must be low (to ground) to activate automode IMP on PCB
 
 //proportional lever
-bool manualMovePropLever = true; //if a lever for manual operation is installed
+bool manualMovePropLever = true;  //if a lever for manual operation is installed
 bool invertManMove = false;
 bool manualMoveBtn = false;
-#define LEVER_UP A1 // first axle
-#define BMANUP_PIN 10 //signal (to GND) to move the blade up
+#define LEVER_UP A1    // first axle
+#define BMANUP_PIN 10  //signal (to GND) to move the blade up
 #define BMANDW_PIN 11
 
 // blade off set choose betwen lever or btn or none.
 bool bladeOffsetPropLever = false;
 bool invertBladeOffset = false;
-bool bladeOffsetBtn = false; // true if this fonctionality is used
-#define BOFFUP_PIN 8 //signal (to GND) to move the blade offset up 1 cm?
-#define BOFFDW_PIN 6 //offset down
-#define LEVER_SIDE A2 // second axle, if used for blade offset
+bool bladeOffsetBtn = false;  // true if this fonctionality is used
+#define BOFFUP_PIN 8          //signal (to GND) to move the blade offset up 1 cm?
+#define BOFFDW_PIN 6          //offset down
+#define LEVER_SIDE A2         // second axle, if used for blade offset
 
 //leds
-#define LED_DW 2 //DO2 led down (if used)
-#define LED_UP 5 //DO5 led up (if used)
-#define LED_AUTO 9 //DO9 led auto
-#define LED_ON A0 //A0 on led 
+#define LED_DW 2    //DO2 led down (if used)
+#define LED_UP 5    //DO5 led up (if used)
+#define LED_AUTO 9  //DO9 led auto
+#define LED_ON A0   //A0 on led
 
 
 
@@ -77,14 +80,16 @@ bool bladeOffsetBtn = false; // true if this fonctionality is used
 //end of user set variables
 
 //loop time variables in milliseconds
-const byte LOOP_TIME = 50; //20hz
+const byte LOOP_TIME = 2;  //500hz
 unsigned long lastTime = LOOP_TIME;
 unsigned long currentTime = LOOP_TIME;
 
 //Comm checks
-byte watchdogTimer = 0;      //make sure we are talking to AOG
-byte serialResetTimer = 0;   //if serial buffer is getting full, empty it
+byte watchdogTimer = 0;  //make sure we are talking to AOG
+byte loopTimer = 0;      //if serial buffer is getting full, empty it
 bool settingsRecieved = false;
+bool dataRecieved = false;
+
 //EEPROM identifier
 byte EEP_Ident = 138;
 
@@ -98,7 +103,7 @@ int header = 0, tempHeader = 0, temp;
 byte relayHi = 0, relayLo = 0, cutValve = 100;
 
 //workSwitch
-byte workSwitch = 1; //high is circuit open, low is switch grounded
+byte workSwitch = 1;  //high is circuit open, low is switch grounded
 byte autoEnable = 0;
 
 //pwm variables
@@ -129,16 +134,15 @@ int onLedTime = 0;
 int autoLedTime = 0;
 
 
-void setup()
-{
-
-  TCCR2B = TCCR2B & B11111000 | B00000110;    // set timer 2 to 256 for PWM frequency of   122.55 Hz
-  TCCR1B = TCCR1B & B11111000 | B00000100;    // set timer 1 to 256 for PWM frequency of   122.55 Hz
+void setup() {
+  delay(100);
+  TCCR2B = TCCR2B & B11111000 | B00000110;  // set timer 2 to 256 for PWM frequency of   122.55 Hz
+  TCCR1B = TCCR1B & B11111000 | B00000100;  // set timer 1 to 256 for PWM frequency of   122.55 Hz
 
 
   //set the baud rate
-  Serial.begin(38400);
-
+  Serial.begin(115200);
+  delay(50);
   //set pins to output
   pinMode(DIR_ENABLE, OUTPUT);
   pinMode(LED_BUILTIN, OUTPUT);
@@ -152,245 +156,218 @@ void setup()
   //keep pulled high and drag low to activate, noise free safe
   pinMode(WORKSW_PIN, INPUT_PULLUP);
 
-  if (manualMoveBtn)
-  {
+  if (manualMoveBtn) {
     pinMode(BMANUP_PIN, INPUT_PULLUP);
     pinMode(BMANDW_PIN, INPUT_PULLUP);
   }
 
-  if (bladeOffsetBtn)
-  {
+  if (bladeOffsetBtn) {
     pinMode(BOFFUP_PIN, INPUT_PULLUP);
     pinMode(BOFFDW_PIN, INPUT_PULLUP);
   }
 
-  ReadFromEEPROM();// read saved settings
+  ReadFromEEPROM();  // read saved settings
 
+  Serial.println("OG machine controler");
+  Serial.println(arduinoVersion);
+  Serial.println(arduinoDate);
 }
 
-void loop()
-{
-  //Loop triggers every 50 msec (20hz)
+void loop() {
+  //Loop triggers every 2 msec (500hz)
 
   currentTime = millis();
   unsigned int time = currentTime;
 
-  if (currentTime - lastTime >= LOOP_TIME)
-  {
+  if (currentTime - lastTime >= LOOP_TIME) {
     lastTime = currentTime;
-
+    loopTimer++;
     //If connection lost to AgOpenGPS, the watchdog will count up
-    if (watchdogTimer++ > 250) watchdogTimer = 32;
+    if (watchdogTimer++ > 250) watchdogTimer = 150;
 
-    //clean out serial buffer to prevent buffer overflow
-    if (serialResetTimer++ > 20)
+    if (dataRecieved || loopTimer > 105)  //as soon as data is recieved or each 210 ms
     {
-      while (Serial.available() > 0) char t = Serial.read();
-      serialResetTimer = 0;
-    }
+      dataRecieved = false;
+      loopTimer = 0;
 
-    // On LED settings
-    if (settingsRecieved) {
-      digitalWrite(LED_ON, HIGH);
-      onLedTime = 0;
-    }
-    else {
-      if (onLedTime > 19) onLedTime = 0;
-      if (onLedTime < 11) digitalWrite(LED_ON, HIGH);
-      else digitalWrite(LED_ON, LOW);
-      onLedTime++;
-    }
+      // On LED settings
+      if (settingsRecieved) {
+        digitalWrite(LED_ON, HIGH);
+        onLedTime = 0;
+      } else {
+        if (onLedTime > 19) onLedTime = 0;
+        if (onLedTime < 11) digitalWrite(LED_ON, HIGH);
+        else digitalWrite(LED_ON, LOW);
+        onLedTime++;
+      }
 
-    // auto LED settings
-    if (workSwitch == 0)// Auto mode
-    {
+      // auto LED settings
+      if (workSwitch == 0)  // Auto mode
+      {
 
-      if (autoEnable == 1) {
-        digitalWrite(LED_AUTO, HIGH);
+        if (autoEnable == 1) {
+          digitalWrite(LED_AUTO, HIGH);
+          autoLedTime = 0;
+        } else {
+          if (autoLedTime > 7) autoLedTime = 0;
+          if (autoLedTime > 3) digitalWrite(LED_AUTO, HIGH);
+          else digitalWrite(LED_AUTO, LOW);
+          autoLedTime++;
+        }
+      } else {
+        digitalWrite(LED_AUTO, LOW);
         autoLedTime = 0;
       }
-      else {
-        if (autoLedTime > 7) autoLedTime = 0;
-        if (autoLedTime > 3) digitalWrite(LED_AUTO, HIGH);
-        else digitalWrite(LED_AUTO, LOW);
-        autoLedTime++;
-      }
-    }
-    else {
-      digitalWrite(LED_AUTO, LOW);
-      autoLedTime = 0;
-    }
 
-    //safety - turn off if confused
-    if (watchdogTimer > 30) cutValve = 100;
-
-    if (watchdogTimer < 29)
-    {
-      //read the  work switch
-      if (workButton)
+      //safety - turn off if confused
+      if (watchdogTimer > 140) 
       {
-        //steer Button momentary
+        workSwitch = 1;
+        cutValve = 100;
+      }
+      else
+      {
+        //read the  work switch
+        if (workButton) {
+          //steer Button momentary
 
-        reading = digitalRead(WORKSW_PIN);
-        if (reading == LOW && previous == HIGH)
-        {
-          if (currentState == 1)
-          {
-            currentState = 0;
-            workSwitch = 0;
+          reading = digitalRead(WORKSW_PIN);
+          if (reading == LOW && previous == HIGH) {
+            if (currentState == 1) {
+              currentState = 0;
+              workSwitch = 0;
+            } else {
+              currentState = 1;
+              workSwitch = 1;
+            }
           }
-          else
-          {
-            currentState = 1;
-            workSwitch = 1;
-          }
+          previous = reading;
+
+        } else workSwitch = digitalRead(WORKSW_PIN);  // read work switch
+      }
+
+      //read the inputs for manual blade controls
+      if (manualMovePropLever) {
+        //if a lever for manual operation is installed
+        LeverUpValue = analogRead(LEVER_UP);  //
+        if (invertManMove) LeverUpValue = map(LeverUpValue, 0, 1023, 1023, 0);
+      } else if (manualMoveBtn) {
+        if (digitalRead(BMANUP_PIN) == LOW) LeverUpValue = 1;
+        else if (digitalRead(BMANDW_PIN) == LOW) LeverUpValue = 1022;
+        else LeverUpValue = 512;
+      } else LeverUpValue = 512;
+      //0 lift -- 512 neutral-- 1023 lower
+
+
+
+      //BladeOffset ************************************************
+      if (bladeOffsetPropLever) {
+        LeverSideValue = analogRead(LEVER_SIDE);
+        LeverSideValue = map(LeverSideValue, 0, 1023, 0, 5);
+        if (invertBladeOffset) LeverSideValue = map(LeverSideValue, 0, 5, 5, 0);
+        //0 offset down -- 2 neutral -- 4-5 offset up
+
+        if (LeverSideValue >= 4 && bOUprevious == HIGH) {
+          bladeOffsetOut++;
         }
-        previous = reading;
-
+        if (LeverSideValue == 0 && bOUprevious == HIGH) {
+          bladeOffsetOut--;
+        }
+        if (LeverSideValue >= 1 && LeverSideValue <= 3) bOUprevious = HIGH;
+        else bOUprevious = LOW;
       }
-      else workSwitch = digitalRead(WORKSW_PIN);  // read work switch
-    }
-    else workSwitch = 1;
 
-    //read the inputs for manual blade controls
-    if (manualMovePropLever)
-    {
-      //if a lever for manual operation is installed
-      LeverUpValue = analogRead(LEVER_UP); //
-      if (invertManMove) LeverUpValue = map(LeverUpValue, 0, 1023, 1023, 0);
-    }
-    else if (manualMoveBtn)
-    {
-      if (digitalRead(BMANUP_PIN) == LOW) LeverUpValue = 1;
-      else if (digitalRead(BMANDW_PIN) == LOW) LeverUpValue = 1022;
-      else LeverUpValue = 512;
-    }
-    else LeverUpValue = 512;
-    //0 lift -- 512 neutral-- 1023 lower
+      else if (bladeOffsetBtn) {
+        reading = digitalRead(BOFFUP_PIN);
+        if (reading == LOW && bOUprevious == HIGH) {
+          bladeOffsetOut++;
+        }
+        bOUprevious = reading;
+
+        reading = digitalRead(BOFFDW_PIN);
+        if (reading == LOW && bODprevious == HIGH) {
+          bladeOffsetOut--;
+        }
+        bODprevious = reading;
 
 
+      } else bladeOffsetOut = 0;  // 0 mean not activated
 
-    //BladeOffset ************************************************
-    if (bladeOffsetPropLever)
-    {
-      LeverSideValue = analogRead(LEVER_SIDE);
-      LeverSideValue = map(LeverSideValue, 0, 1023, 0, 5);
-      if (invertBladeOffset) LeverSideValue = map(LeverSideValue, 0, 5, 5, 0);
-      //0 offset down -- 2 neutral -- 4-5 offset up
+      //section relays
+      SetPWM();
 
-      if (LeverSideValue >= 4 && bOUprevious == HIGH)
-      {
-        bladeOffsetOut ++;
+      if (pwmValue < 0) {
+        digitalWrite(LED_DW, HIGH);  // lowering the blade
+        digitalWrite(LED_UP, LOW);
       }
-      if (LeverSideValue == 0 && bOUprevious == HIGH)
-      {
-        bladeOffsetOut --;
+      if (pwmValue > 0) {
+        digitalWrite(LED_UP, HIGH);  // lift the blade
+        digitalWrite(LED_DW, LOW);
       }
-      if (LeverSideValue >= 1 && LeverSideValue <= 3) bOUprevious = HIGH;
-      else bOUprevious = LOW;
-    }
-
-    else if (bladeOffsetBtn) {
-      reading = digitalRead(BOFFUP_PIN);
-      if (reading == LOW && bOUprevious == HIGH)
-      {
-        bladeOffsetOut ++;
+      if (pwmValue == 0) {
+        digitalWrite(LED_UP, LOW);
+        digitalWrite(LED_DW, LOW);
       }
-      bOUprevious = reading;
-
-      reading = digitalRead(BOFFDW_PIN);
-      if (reading == LOW && bODprevious == HIGH)
-      {
-        bladeOffsetOut --;
-      }
-      bODprevious = reading;
-
-
-    }
-    else bladeOffsetOut = 0; // 0 mean not activated
-
-    //section relays
-    SetPWM();
-
-    if (pwmValue < 0) {
-      digitalWrite(LED_DW, HIGH); // lowering the blade
-      digitalWrite(LED_UP, LOW);
-    }
-    if (pwmValue > 0) {
-      digitalWrite(LED_UP, HIGH); // lift the blade
-      digitalWrite(LED_DW, LOW);
-    }
-    if (pwmValue == 0) {
-      digitalWrite(LED_UP, LOW);
-      digitalWrite(LED_DW, LOW);
     }
 
-  } //end of timed loop
+  }  //end of timed loop
 
   //****************************************************************************************
   //This runs continuously, outside of the timed loop, keeps checking UART for new data
   // PGN - 32762 - 127.250 0x7FFA
   //public int mdHeaderHi, mdHeaderLo = 1, cutValve = 2
   //Settind PGN - 32760 - 127.248 0x7FF8
-  if (Serial.available() > 0 && !isDataFound && !isSettingFound)
-  {
+  if (Serial.available() > 0 && !isDataFound && !isSettingFound) {
     int temp = Serial.read();
-    header = tempHeader << 8 | temp;                //high,low bytes to make int
-    tempHeader = temp;                              //save for next time
-    if (header == 32762) isDataFound = true;        //Do we have a match?
-    if (header == 32760) isSettingFound = true;        //Do we have a match?
+    header = tempHeader << 8 | temp;             //high,low bytes to make int
+    tempHeader = temp;                           //save for next time
+    if (header == 32762) isDataFound = true;     //Do we have a match?
+    if (header == 32760) isSettingFound = true;  //Do we have a match?
   }
 
   //Data Header has been found, so the next 6 bytes are the data
-  if (Serial.available() > 5 && isDataFound)
-  {
+  if (Serial.available() > 5 && isDataFound) {
+    dataRecieved = true;
     isDataFound = false;
     cutValve = Serial.read();
-    bladeOffsetIn = Serial.read(); //bladeOffset value in opengrade 100 mean 0 offset.
-    Serial.read(); //optOut1
-    Serial.read(); //optOut2
-    Serial.read(); //optOut3
-    Serial.read(); //optOut4
+    bladeOffsetIn = Serial.read();  //bladeOffset value in opengrade 100 mean 0 offset.
+    Serial.read();                  //optOut1
+    Serial.read();                  //optOut2
+    Serial.read();                  //optOut3
+    Serial.read();                  //optOut4
 
     //reset watchdog
     watchdogTimer = 0;
 
-    //Reset serial Watchdog
-    serialResetTimer = 0;
-
     //Print data to openGrade, MUST send 8 bytes!
     //valve direction,pwm value,cutvalve,blade offset,opt,opt,opt,opt
 
-    if (pwmValue < 0) // lowering the blade
+    if (pwmValue < 0)  // lowering the blade
     {
       Serial.print("1,");
-    }
-    else Serial.print("0,");
+    } else Serial.print("0,");
 
 
     Serial.print(String((int)pwmDrive) + ",");
 
     Serial.print(cutValve);
     Serial.print(",");
-    Serial.print(bladeOffsetOut); // 100 mean no movement, 0 mean not active, in mm
+    Serial.print(bladeOffsetOut);  // 100 mean no movement, 0 mean not active, in mm
     bladeOffsetOut = 100;
     Serial.print(",");
-    Serial.print(LeverUpValue); //just for info, not used
+    Serial.print(LeverUpValue);  //just for info, not used
     Serial.print(",");
-    Serial.print(LeverSideValue); //just for info, not used
+    Serial.print(LeverSideValue);  //just for info, not used
     Serial.print(",");
-    Serial.print(bladeOffsetIn); //just for info, not used //(LeverPushValue);
+    Serial.print(bladeOffsetIn);  //just for info, not used //(LeverPushValue);
     Serial.print(",");
-    Serial.println(pwmHist); //just for info, not used
+    Serial.println(pwmHist);  //just for info, not used
 
-    Serial.flush();   // flush out buffer
-
-
+    Serial.flush();  // flush out buffer
   }
 
   //Setting Header has been found, so the next 8 bytes are the data
-  if (Serial.available() > 7 && isSettingFound)
-  {
+  if (Serial.available() > 7 && isSettingFound) {
     isSettingFound = false;
     pwmGainUp = Serial.read();
     pwmGainDw = Serial.read();
@@ -410,31 +387,35 @@ void loop()
     settingsRecieved = true;
   }
 
-
+  //Flush serial, something is wrong
+  if (Serial.available() > 10) {
+    isSettingFound = false;
+    isDataFound = false;
+    while (Serial.available() > 0) char t = Serial.read();
+  }
 }
 
-void SetPWM(void)
-{
-  if (workSwitch == 1) autoEnable = 1; // if auto switch is tourned off turn on AutoEnable for the next time auto switch will be turned on
-  if (LeverUpValue < 480) autoEnable = 0; //turn off automode when lifting the blade
-  if (LeverUpValue > 1000) autoEnable = 1; // tur on automode when lever is fully presed for lowering the blade
+void SetPWM(void) {
+  if (workSwitch == 1) autoEnable = 1;      // if auto switch is tourned off turn on AutoEnable for the next time auto switch will be turned on
+  if (LeverUpValue < 480) autoEnable = 0;   //turn off automode when lifting the blade
+  if (LeverUpValue > 1000) autoEnable = 1;  // tur on automode when lever is fully presed for lowering the blade
 
   pwmValue = 0;
 
-  if (workSwitch == 0 && autoEnable == 1)// Auto mode
+  if (workSwitch == 0 && autoEnable == 1)  // Auto mode
   {
-    digitalWrite(LED_BUILTIN, HIGH);// led on when automode
+    digitalWrite(LED_BUILTIN, HIGH);  // led on when automode
 
-    if (cutValve >= (100 + deadband))// then lower the blade
+    if (cutValve >= (100 + deadband))  // then lower the blade
     {
-      pwmValue = -((cutValve - 100 - deadband) * pwmGainDw + pwmMinDw); //pwmValue is negative
+      pwmValue = -((cutValve - 100 - deadband) * pwmGainDw + pwmMinDw);  //pwmValue is negative
     }
-    if  (cutValve <= (100 - deadband)) // then lift the blade
+    if (cutValve <= (100 - deadband))  // then lift the blade
     {
-      pwmValue = -((cutValve - 100 + deadband) * pwmGainUp - pwmMinUp); //pwmValue is positive
+      pwmValue = -((cutValve - 100 + deadband) * pwmGainUp - pwmMinUp);  //pwmValue is positive
     }
 
-    if (cutValve != 100 && pwmValue != 0) //calculate some sort of derivative
+    if (cutValve != 100 && pwmValue != 0)  //calculate some sort of derivative
     {
       pwmHist = ((((pwm1ago) + pwm2ago + (pwm3ago) + (pwm4ago) + (pwm5ago / 2.000)) * (sq(integralMultiplier) / 100.0000)) / sq(cutValve - 100.0000));
 
@@ -443,7 +424,6 @@ void SetPWM(void)
       if (cutValve < 100 && (pwm1ago + pwm2ago + pwm3ago + pwm4ago + pwm5ago) < 0) pwmHist = 0;
 
       pwmValue = (pwmValue - pwmHist);
-
     }
 
     if (cutValve > 100 && pwmValue > 0) pwmValue = 0;
@@ -463,47 +443,42 @@ void SetPWM(void)
 
     pwmDrive = abs(pwmValue);
     plannedValveValue = cutValve;
-  } // end of automode
-  else // if manual mode
+  }     // end of automode
+  else  // if manual mode
   {
-    digitalWrite(LED_BUILTIN, LOW);// led low when manual mode
+    digitalWrite(LED_BUILTIN, LOW);  // led low when manual mode
     pwmDrive = 0;
     plannedValveValue = 100;
 
     // now give an output value by the lever
-    if (LeverUpValue < 480)// lifting the blade range 480 to 0
+    if (LeverUpValue < 480)  // lifting the blade range 480 to 0
     {
-      pwmValueCalc = (((480 - LeverUpValue) / 450.000 * (pwmMaxUp - pwmMinUp)) + pwmMinUp); // (1 to 480)/450 *(pwmMaxUp-pwmMinUp)+ pwmMinUp
+      pwmValueCalc = (((480 - LeverUpValue) / 450.000 * (pwmMaxUp - pwmMinUp)) + pwmMinUp);  // (1 to 480)/450 *(pwmMaxUp-pwmMinUp)+ pwmMinUp
       pwmValue = pwmValueCalc;
       if (pwmValue > pwmMaxUp) pwmValue = pwmMaxUp;
     }
-    if (LeverUpValue > 540) // lovering the blade range 540 to 1024
+    if (LeverUpValue > 540)  // lovering the blade range 540 to 1024
     {
-      pwmValueCalc = ((LeverUpValue - 540) / 450.000 * -(pwmMaxDw - pwmMinDw) - pwmMinDw); // (1 to 484)/450*-(pwmMaxDw-pwmMinDw)- pwmMinDw
+      pwmValueCalc = ((LeverUpValue - 540) / 450.000 * -(pwmMaxDw - pwmMinDw) - pwmMinDw);  // (1 to 484)/450*-(pwmMaxDw-pwmMinDw)- pwmMinDw
       pwmValue = pwmValueCalc;
       if (pwmValue < -pwmMaxDw) pwmValue = -pwmMaxDw;
     }
 
     pwmDrive = abs(pwmValue);
-
-
   }
 
-  if (pwmValue < 0) // lowering the blade
+  if (pwmValue < 0)  // lowering the blade
   {
     digitalWrite(DIR_ENABLE, HIGH);
     //Serial.print("1,");
-  }
-  else
-  {
+  } else {
     digitalWrite(DIR_ENABLE, LOW);
     //Serial.print("0,");
   }
 
 
   if (proportionalValve) analogWrite(PWM_OUT, pwmDrive);
-  else
-  {
+  else {
     if (pwmDrive > 2) analogWrite(PWM_OUT, 255);
     else analogWrite(PWM_OUT, 0);
   }
@@ -515,10 +490,6 @@ void SetPWM(void)
   pwm3ago = pwm2ago;
   pwm2ago = pwm1ago;
   pwm1ago = pwmValue;
-
-
-
-
 }
 
 void SaveToEEPROM() {
