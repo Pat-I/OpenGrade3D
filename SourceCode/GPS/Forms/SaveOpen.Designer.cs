@@ -476,6 +476,18 @@ namespace OpenGrade
                  
 
                     worldGrid.CreateWorldGrid(0,0);
+
+                    //set the simulator
+                    
+                        Properties.Settings.Default.setSim_lastLat = pn.latStart;
+                        nudLatitude.Value = (decimal)pn.latStart;
+                        Properties.Settings.Default.setSim_lastLong = pn.lonStart;
+                        nudLongitude.Value = (decimal)pn.lonStart;
+                        Properties.Settings.Default.Save();
+                    if (timerSim.Enabled)
+                    {
+                        sim.ResetSim();
+                    }
                 }
 
                 catch (Exception e)

@@ -1874,7 +1874,7 @@ namespace OpenGrade
         }
 
 
-        //Timer triggers at 25 msec, 40 hz, and is THE clock of the whole program// changed 24-11
+        //Timer triggers at 10 msec, 100 hz, and is THE clock of the whole program// changed 24-11
         private void tmrWatchdog_tick(object sender, EventArgs e)
         {
             if (!stopTheProgram)
@@ -1887,7 +1887,11 @@ namespace OpenGrade
                 //tmrWatchdog.Enabled = true;
                 statusUpdateCounter++;
 
-                if (fiveSecondCounter++ > 40)
+
+
+                isGNSSrecieved++;
+
+                if (fiveSecondCounter++ > 500)
                 {
                     //do all the NTRIP routines
                     if (sp.IsOpen) DoNTRIPSecondRoutine(); // Only when gps port is open
@@ -1895,18 +1899,20 @@ namespace OpenGrade
                     fiveSecondCounter = 0;
                 }
 
-                //GPS Update rate
-                if(pn.fixQuality == 4 || pn.fixQuality == 5) lblFixUpdateHz.Text = NMEAHz + " Hz " + FixQuality + " " + AgeDiff + " " + (int)(frameTime) + "ms";
-                else lblFixUpdateHz.Text = NMEAHz + " Hz " + FixQuality + " " + (int)(frameTime) + "ms";
+               
 
-                //1 for every .100 of a second update all status ,now 10hz was 4hz
-                if (statusUpdateCounter > 3)
+                //1 for every .10 of a second update all status ,now 100hz was 4hz
+                if (statusUpdateCounter > 9) //eavery 100ms 10hz
                 {
                     //reset the counter
                     statusUpdateCounter = 0;
 
                     //counter used for saving field in background
                     saveCounter++;
+
+                    //GPS Update rate
+                    if (pn.fixQuality == 4 || pn.fixQuality == 5) lblFixUpdateHz.Text = NMEAHz + " Hz " + FixQuality + " " + AgeDiff + " " + (int)(frameTime) + "ms";
+                    else lblFixUpdateHz.Text = NMEAHz + " Hz " + FixQuality + " " + (int)(frameTime) + "ms";
 
                     if (tabControl1.SelectedIndex == 0 && tabControl1.Visible)
                     {
@@ -1981,37 +1987,10 @@ namespace OpenGrade
                         lblCutDelta.Text = "--";
                         lblCutDelta.BackColor = Color.Lavender;
                         pbarCutAbove.Value = 0;
-                        pbarCutBelow.Value = 0;
-
-                        //Output to serial for blade control 
-                        mc.relayRateData[mc.cutValve] = (byte)(100);                        
-                        
+                        pbarCutBelow.Value = 0;                                                                     
                     }
                     else
-                    {
-                        if (cutDelta < -9.9) //par Pat
-
-                        {
-                            mc.relayRateData[mc.cutValve] = (byte)(1);
-                            
-                        }
-                        else
-                        {
-                            if (cutDelta > 9.9)
-                            {
-                                mc.relayRateData[mc.cutValve] = (byte)(199);
-                                
-                            }
-                            else
-                            {
-                                mc.relayRateData[mc.cutValve] = (byte)((cutDelta * 10) + 100);
-                                
-                            }
-                        }
-
-
-
-
+                    {             
                         if (isMetric)  //metric or imperial
                         {
                             lblCutDelta.Text = cutDelta.ToString("N1");
@@ -2040,23 +2019,7 @@ namespace OpenGrade
 
                         }
                     }
-                    //blade offset from arduino here
-                    if (!spRelay.IsOpen)
-                    {
-                        bladeOffSetSlave = 0;
-                    }
-
-                    bladeOffSetMaster = (int)numBladeOffset.Value;
-
-                    if (bladeOffSetSlave > 2 && bladeOffSetSlave != 100)
-                    {
-                        bladeOffSetMaster += (bladeOffSetSlave - 100);
-                        numBladeOffset.Value = (decimal)(bladeOffSetMaster);
-                    }
-
-                    mc.relayRateData[mc.bladeOffset] = (byte)(bladeOffSetMaster + 100);
-
-                    RateRelayDataOutToPort();
+                    
 
                     //update the online indicator
                     if (recvCounter > 50)
