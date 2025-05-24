@@ -1,6 +1,6 @@
 # OpenGrade3D
  
-Update November 27 2020 V1.0.6
+Update May 24 2025 V1.0.6
 
 OpenGrade3D is a software designed to make topographic surveys in Optisurface compatible .ags format and control a blade from an Optisurface .agd file.
 
@@ -8,11 +8,17 @@ Survey Mode:
 To switch from grade mode to survey mode press the the bottom task bar
 Only points with an RTK fix (or float if selected) will be added.
 
+New:
+Click on "Add pts from AOG elevation" and it will try to open the "elevation.txt" file from AOG that you have put in the OG field folder.
+This will create an .Ags file (without boundary but still usable in Optisurface)
+
 In survey mode a Survey.ags is created in the field folder at the end of the survey
+
+Design Tips:
 
 Currently points with code (in this order) MB, 2SUBZONE1 (to9)(name it SUBZONE1 (to 9) in optisurface), 2PER, 3GRD the design file (.agd) will be added OpenGrade3D
 
-Right now it is recommanded to select 0 deg for the "export grid heading" when creating the .agd file(in the last step after saving the file) 
+On the last version you should be able to use any heading for the "export grid heading" when creating the .agd file(in the last step after saving the file) 
 
 
 Gradding Mode:
