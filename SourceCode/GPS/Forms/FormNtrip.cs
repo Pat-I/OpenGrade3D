@@ -309,38 +309,34 @@ namespace OpenGrade
 
         private void tboxEnterURL_Click(object sender, EventArgs e)
         {
-            //if (mf.isKeyboardOn)
-            //{
-            //    mf.KeyboardToText((TextBox)sender);
-            //    btnSerialCancel.Focus();
-            //}
+            if (mf.isKeyboardOn)
+            {
+                mf.KeyboardToText((TextBox)sender, this);
+            }
         }
 
         private void tboxMount_Click(object sender, EventArgs e)
         {
-            //if (mf.isKeyboardOn)
-            //{
-            //    mf.KeyboardToText((TextBox)sender);
-            //    btnSerialCancel.Focus();
-            //}
+            if (mf.isKeyboardOn)
+            {
+                mf.KeyboardToText((TextBox)sender, this);
+            }
         }
 
         private void tboxUserName_Click(object sender, EventArgs e)
         {
-            //if (mf.isKeyboardOn)
-            //{
-            //    mf.KeyboardToText((TextBox)sender);
-            //    btnSerialCancel.Focus();
-            //}
+            if (mf.isKeyboardOn)
+            {
+                mf.KeyboardToText((TextBox)sender, this);
+            }
         }
 
         private void tboxUserPassword_Click(object sender, EventArgs e)
         {
-            //if (mf.isKeyboardOn)
-            //{
-            //    mf.KeyboardToText((TextBox)sender);
-            //    btnSerialCancel.Focus();
-            //}
+            if (mf.isKeyboardOn)
+            {
+                mf.KeyboardToText((TextBox)sender, this);
+            }
         }
 
         private void btnPassUsername_Click(object sender, EventArgs e)
