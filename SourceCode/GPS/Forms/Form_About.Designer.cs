@@ -103,9 +103,9 @@
             this.label2.Font = new System.Drawing.Font("Tahoma", 11.25F);
             this.label2.Location = new System.Drawing.Point(167, 33);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(123, 18);
+            this.label2.Size = new System.Drawing.Size(125, 18);
             this.label2.TabIndex = 14;
-            this.label2.Text = "v4.0.1  Nov 2024";
+            this.label2.Text = "v4.0.2  May 2025";
             // 
             // label1
             // 
@@ -122,10 +122,10 @@
             this.linkLabelGit.AutoSize = true;
             this.linkLabelGit.Location = new System.Drawing.Point(14, 165);
             this.linkLabelGit.Name = "linkLabelGit";
-            this.linkLabelGit.Size = new System.Drawing.Size(95, 13);
+            this.linkLabelGit.Size = new System.Drawing.Size(196, 13);
             this.linkLabelGit.TabIndex = 11;
             this.linkLabelGit.TabStop = true;
-            this.linkLabelGit.Text = "https://github.com";
+            this.linkLabelGit.Text = "https://github.com/Pat-I/OpenGrade3D";
             this.linkLabelGit.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelGit_LinkClicked);
             // 
             // linkLabelCombineForum
@@ -133,10 +133,10 @@
             this.linkLabelCombineForum.AutoSize = true;
             this.linkLabelCombineForum.Location = new System.Drawing.Point(14, 372);
             this.linkLabelCombineForum.Name = "linkLabelCombineForum";
-            this.linkLabelCombineForum.Size = new System.Drawing.Size(169, 13);
+            this.linkLabelCombineForum.Size = new System.Drawing.Size(172, 13);
             this.linkLabelCombineForum.TabIndex = 12;
             this.linkLabelCombineForum.TabStop = true;
-            this.linkLabelCombineForum.Text = "http://agopengps.discourse.group";
+            this.linkLabelCombineForum.Text = "https://discourse.agopengps.com/";
             this.linkLabelCombineForum.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelCombineForum_LinkClicked);
             // 
             // button1

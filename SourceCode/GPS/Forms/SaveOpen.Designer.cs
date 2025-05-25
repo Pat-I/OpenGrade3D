@@ -182,7 +182,7 @@ namespace OpenGrade
 
                         if (words[1] != " OpenGrade3D v1.0")
                         {
-                            var form = new FormTimedMessage(5000, "Vehicle File is Wrong Version", "Must be OpenGrade3D v1.0");
+                            var form = new FormTimedMessage(5000, "Vehicle File is Wrong Version", "Must be OpenGrade3D v1.0 or higher");
                             form.Show();
                             return;
                         }
@@ -444,9 +444,9 @@ namespace OpenGrade
                     string[] words;
                     line = reader.ReadLine(); words = line.Split(',');
 
-                    if (words[0] != "OpenGrade3D v4.0.1")
+                    if (words[0] != "OpenGrade3D v4.x.x")
                     {
-                        var form = new FormTimedMessage(5000, "Field is Wrong Version", "Must be OpenGrade3D v4.0.1");
+                        var form = new FormTimedMessage(5000, "Field is Wrong Version", "Must be OpenGrade3D v4.x.x");
                         form.Show();
                         JobClose();
                         return;
@@ -829,8 +829,8 @@ namespace OpenGrade
         public void FileCreateField()
         {
             /*
-            2020 - September - 02 09:35:40 PM
-            OpenGrade3D v4.0.1
+            2025 - May - 02 09:35:40 PM
+            OpenGrade3D v4.x.x
             $FieldDir
             test optisurface 10m bnd Sep02
             $Start Coordinates
@@ -859,7 +859,7 @@ namespace OpenGrade
                 //Write out the date
                 writer.WriteLine(DateTime.Now.ToString("yyyy-MMMM-dd hh:mm:ss tt", CultureInfo.InvariantCulture));
                 //Write the version
-                writer.WriteLine("OpenGrade3D v4.0.1");                
+                writer.WriteLine("OpenGrade3D v4.x.x");                
                 writer.WriteLine("$FieldDir");
                 writer.WriteLine(currentFieldDirectory.ToString(CultureInfo.InvariantCulture));
 

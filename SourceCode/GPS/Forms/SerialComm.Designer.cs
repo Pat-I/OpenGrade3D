@@ -11,10 +11,10 @@ namespace OpenGrade
     public partial class FormGPS
     {
         public static string portNameGPS = "COM GPS";
-        public static int baudRateGPS = 4800;
+        public static int baudRateGPS = 115200;
 
-        public static string portNameRelaySection = "COM Sect";
-        public static int baudRateRelaySection = 38400;
+        public static string portNameRelaySection = "COM Blade";
+        public static int baudRateRelaySection = 115200;
 
         public static string portNameAutoSteer = "COM AS";
         public static int baudRateAutoSteer = 38400;
