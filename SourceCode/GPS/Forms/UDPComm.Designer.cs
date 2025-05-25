@@ -26,7 +26,7 @@ namespace OpenGrade
         private IPEndPoint epNtrip = new IPEndPoint(IPAddress.Parse(Properties.Settings.Default.setIP_autoSteerIP), 2233);
         //end from AgIO v6.3.3
 
-        private bool isSendConnected;
+        private bool isSendConnected = false;
 
         //endpoint of the auto steer module
         IPEndPoint epAutoSteer;

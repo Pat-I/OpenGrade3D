@@ -737,9 +737,10 @@ namespace OpenGrade
 
             //try and open
             SerialPortOpenGPS();
-
-            LoadUDPNetwork(); // from AgIO v6.3.3
-
+            /*
+            // No UDP for now; May 24 2025
+            LoadUDPNetwork(); // from AgIO v6.3.3, this would enable UDP but block AgIO because it uses the same socket
+            */
             //same for SectionRelay port
             portNameRelaySection = Settings.Default.setPort_portNameRateRelay;
             wasRateRelayConnectedLastRun = Settings.Default.setPort_wasRateRelayConnected;
