@@ -415,7 +415,7 @@
     <value>19, 84</value>
   </data>
   <data name="label16.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 16</value>
+    <value>64, 16</value>
   </data>
   <data name="label16.TabIndex" type="System.Int32, mscorlib">
     <value>48</value>
@@ -445,7 +445,7 @@
     <value>89, 84</value>
   </data>
   <data name="lblCurrentPort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 16</value>
+    <value>35, 16</value>
   </data>
   <data name="lblCurrentPort.TabIndex" type="System.Int32, mscorlib">
     <value>47</value>
@@ -472,10 +472,10 @@
     <value>Tahoma, 9.75pt, style=Bold</value>
   </data>
   <data name="lblCurrentBaud.Location" type="System.Drawing.Point, System.Drawing">
-    <value>137, 84</value>
+    <value>187, 84</value>
   </data>
   <data name="lblCurrentBaud.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 16</value>
+    <value>39, 16</value>
   </data>
   <data name="lblCurrentBaud.TabIndex" type="System.Int32, mscorlib">
     <value>46</value>
@@ -565,10 +565,10 @@
     <value>Tahoma, 9.75pt</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>225, 89</value>
+    <value>319, 89</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>167, 16</value>
+    <value>166, 16</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>41</value>
@@ -715,7 +715,7 @@
     <value>303, 77</value>
   </data>
   <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 16</value>
+    <value>149, 16</value>
   </data>
   <data name="label15.TabIndex" type="System.Int32, mscorlib">
     <value>58</value>
@@ -745,7 +745,7 @@
     <value>162, 48</value>
   </data>
   <data name="lblCurrentArduinoPort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 16</value>
+    <value>35, 16</value>
   </data>
   <data name="lblCurrentArduinoPort.TabIndex" type="System.Int32, mscorlib">
     <value>59</value>
@@ -826,7 +826,7 @@
     <value>29, 77</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>135, 16</value>
+    <value>134, 16</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>66</value>
@@ -883,7 +883,7 @@
     <value>162, 28</value>
   </data>
   <data name="label17.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 16</value>
+    <value>64, 16</value>
   </data>
   <data name="label17.TabIndex" type="System.Int32, mscorlib">
     <value>60</value>
@@ -940,7 +940,7 @@
     <value>29, 77</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>93, 16</value>
+    <value>92, 16</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>66</value>
@@ -1048,7 +1048,7 @@
     <value>162, 28</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 16</value>
+    <value>64, 16</value>
   </data>
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
     <value>60</value>
@@ -1078,7 +1078,7 @@
     <value>162, 48</value>
   </data>
   <data name="lblCurrentAutoSteerPort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 16</value>
+    <value>35, 16</value>
   </data>
   <data name="lblCurrentAutoSteerPort.TabIndex" type="System.Int32, mscorlib">
     <value>59</value>
@@ -1108,7 +1108,7 @@
     <value>303, 77</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>108, 16</value>
+    <value>107, 16</value>
   </data>
   <data name="label6.TabIndex" type="System.Int32, mscorlib">
     <value>58</value>
@@ -1225,7 +1225,7 @@
     <value>17, 513</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>186, 16</value>
+    <value>185, 16</value>
   </data>
   <data name="label5.TabIndex" type="System.Int32, mscorlib">
     <value>51</value>

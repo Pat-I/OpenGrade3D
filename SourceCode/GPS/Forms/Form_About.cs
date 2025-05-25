@@ -29,13 +29,13 @@ namespace OpenGrade
         private void Form_About_Load(object sender, EventArgs e)
         {
             // Add a link to the LinkLabel.
-            LinkLabel.Link link = new LinkLabel.Link { LinkData = "https://github.com/farmerbriantee/OpenGrade" };
+            LinkLabel.Link link = new LinkLabel.Link { LinkData = "https://github.com/Pat-I/OpenGrade3D" };
             linkLabelGit.Links.Add(link);
 
             // Add a link to the LinkLabel.
             LinkLabel.Link linkCf = new LinkLabel.Link
             {
-                LinkData = "http://www.thecombineforum.com/forums/31-technology/278810-OpenGrade.html"
+                LinkData = "https://discourse.agopengps.com/"
             };
             linkLabelCombineForum.Links.Add(linkCf);
         }
