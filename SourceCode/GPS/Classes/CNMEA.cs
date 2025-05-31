@@ -251,7 +251,7 @@ namespace OpenGrade
                 //altitude = altitude - mf.vehicle.antennaHeight + mf.vehicle.bladeOffset;
 
                 //age of differential
-                double.TryParse(words[12], NumberStyles.Float, CultureInfo.InvariantCulture, out ageDiff);
+                double.TryParse(words[13], NumberStyles.Float, CultureInfo.InvariantCulture, out ageDiff);
 
                 updatedGGA = true;
                 mf.recvCounter = 0;

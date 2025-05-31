@@ -1,5 +1,6 @@
 
-Update April 21 2022
+Original April 21 2022
+Update May 24 2025
 
 Last ino is ValveControlPropLever.
 It will save the setting to EEPROM
