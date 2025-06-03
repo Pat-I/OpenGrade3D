@@ -17,7 +17,7 @@ namespace OpenGrade
         public static int baudRateRelaySection = 115200;
 
         public static string portNameAutoSteer = "COM AS";
-        public static int baudRateAutoSteer = 38400;
+        public static int baudRateAutoSteer = 115200;
 
         //private string[] words;
 

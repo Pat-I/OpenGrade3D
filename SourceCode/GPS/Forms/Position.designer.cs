@@ -128,7 +128,7 @@ namespace OpenGrade
             //must make sure arduinos are kept off
             else
             {
-                if (!isGPSPositionInitialized && isGNSSrecieved > 20)  mc.ResetAllModuleCommValues();
+                if (!isGPSPositionInitialized)  mc.ResetAllModuleCommValues();
             }
             
             //Update the port connecition counter - is reset every time new sentence is valid and ready
@@ -1168,7 +1168,7 @@ namespace OpenGrade
 
                 //Draw a grid once we know where in the world we are.
                 isFirstFixPositionSet = true;
-                worldGrid.CreateWorldGrid(pn.northing, pn.easting);
+                worldGrid.CreateWorldGrid( 0, 0);
 
                 //most recent fixes
                 prevFix.easting = pn.easting;
