@@ -70,7 +70,7 @@ namespace OpenGrade
         //step position - slow speed spinner killer
         private int totalFixSteps = 10, currentStepFix = 0;
         private vec3 vHold;
-        public vec3[] stepFixPts = new vec3[50];
+        public vec3[] stepFixPts = new vec3[250];
         public double distanceCurrentStepFix = 0, fixStepDist, minFixStepDist = 0;        
         bool isFixHolding = false, isFixHoldLoaded = false;
         
@@ -102,7 +102,7 @@ namespace OpenGrade
                     if (et > 23 && et < 28) fixUpdateHz = 25;
                     if (et > 28 && et < 38) fixUpdateHz = 30;
                     if (et > 38 && et < 47) fixUpdateHz = 40;
-                    if (et > 47 && et < 99) fixUpdateHz = 50;
+                    if (et > 47) fixUpdateHz = 50;
                     if (et > 4 && et < 7) fixUpdateHz = 5;
                     if (et > 7 && et < 9) fixUpdateHz = 8;
                     if (et > 9 && et < 13) fixUpdateHz = 10;

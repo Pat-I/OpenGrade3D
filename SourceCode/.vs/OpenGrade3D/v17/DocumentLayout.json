@@ -7,11 +7,15 @@
       "RelativeMoniker": "D:0:0:{73933709-370E-43B3-8563-CC0F48FF587B}|GPS\\OpenGrade3D.csproj|solutionrelative:gps\\forms\\position.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{73933709-370E-43B3-8563-CC0F48FF587B}|GPS\\OpenGrade3D.csproj|c:\\users\\imhof\\documents\\github\\pat\\opengrade3d\\sourcecode\\gps\\forms\\gui.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{73933709-370E-43B3-8563-CC0F48FF587B}|GPS\\OpenGrade3D.csproj|solutionrelative:gps\\forms\\gui.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{73933709-370E-43B3-8563-CC0F48FF587B}|GPS\\OpenGrade3D.csproj|C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\gps\\classes\\cnmea.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{73933709-370E-43B3-8563-CC0F48FF587B}|GPS\\OpenGrade3D.csproj|solutionrelative:gps\\classes\\cnmea.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{73933709-370E-43B3-8563-CC0F48FF587B}|GPS\\OpenGrade3D.csproj|c:\\users\\imhof\\documents\\github\\pat\\opengrade3d\\sourcecode\\gps\\forms\\formjob.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{73933709-370E-43B3-8563-CC0F48FF587B}|GPS\\OpenGrade3D.csproj|C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\gps\\forms\\formjob.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{73933709-370E-43B3-8563-CC0F48FF587B}|GPS\\OpenGrade3D.csproj|solutionrelative:gps\\forms\\formjob.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -30,11 +34,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
+              "Title": "GUI.Designer.cs",
+              "DocumentMoniker": "C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\GPS\\Forms\\GUI.Designer.cs",
+              "RelativeDocumentMoniker": "GPS\\Forms\\GUI.Designer.cs",
+              "ToolTip": "C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\GPS\\Forms\\GUI.Designer.cs",
+              "RelativeToolTip": "GPS\\Forms\\GUI.Designer.cs",
+              "ViewState": "AgIAAEcHAAAAAAAAAAAhwF0HAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-04T02:33:32.172Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "FormJob.cs",
               "DocumentMoniker": "C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\GPS\\Forms\\FormJob.cs",
               "RelativeDocumentMoniker": "GPS\\Forms\\FormJob.cs",
@@ -42,12 +59,11 @@
               "RelativeToolTip": "GPS\\Forms\\FormJob.cs",
               "ViewState": "AgIAAAkAAAAAAAAAAAArwBUAAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-03T03:03:07.484Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-03T03:03:07.484Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "CModuleComm.cs",
               "DocumentMoniker": "C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\GPS\\Classes\\CModuleComm.cs",
               "RelativeDocumentMoniker": "GPS\\Classes\\CModuleComm.cs",
@@ -55,12 +71,11 @@
               "RelativeToolTip": "GPS\\Classes\\CModuleComm.cs",
               "ViewState": "AgIAADwAAAAAAAAAAAAUwEIAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-03T02:31:58.528Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-03T02:31:58.528Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "CNMEA.cs",
               "DocumentMoniker": "C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\GPS\\Classes\\CNMEA.cs",
               "RelativeDocumentMoniker": "GPS\\Classes\\CNMEA.cs",
@@ -68,12 +83,11 @@
               "RelativeToolTip": "GPS\\Classes\\CNMEA.cs",
               "ViewState": "AgIAACoCAAAAAAAAAAArwD4CAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-31T15:22:47.014Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-31T15:22:47.014Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "SerialComm.Designer.cs",
               "DocumentMoniker": "C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\GPS\\Forms\\SerialComm.Designer.cs",
               "RelativeDocumentMoniker": "GPS\\Forms\\SerialComm.Designer.cs",
@@ -81,8 +95,7 @@
               "RelativeToolTip": "GPS\\Forms\\SerialComm.Designer.cs",
               "ViewState": "AgIAABcAAAAAAAAAAAAAALYAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-25T02:07:26.8Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-25T02:07:26.8Z"
             },
             {
               "$type": "Document",
@@ -92,7 +105,7 @@
               "RelativeDocumentMoniker": "GPS\\Forms\\Position.designer.cs",
               "ToolTip": "C:\\Users\\Imhof\\Documents\\GitHub\\Pat\\OpenGrade3D\\SourceCode\\GPS\\Forms\\Position.designer.cs",
               "RelativeToolTip": "GPS\\Forms\\Position.designer.cs",
-              "ViewState": "AgIAAHwEAAAAAAAAAAAUwJIEAAAxAAAAAAAAAA==",
+              "ViewState": "AgIAADcAAAAAAAAAAAAUwEgAAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-27T15:58:15.737Z",
               "EditorCaption": ""
