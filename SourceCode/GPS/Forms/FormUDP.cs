@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Net;
 using System.Windows.Forms;
 
@@ -38,8 +39,13 @@ namespace OpenGrade
             tboxHostName.Text = hostName;
 
             IPAddress[] ipaddress = Dns.GetHostAddresses(hostName);
-            tboxThisIP.Text = ipaddress[1].ToString();
+            IPAddress selectedIP = ipaddress
+                .Where(ip => ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork) // Filter for IPv4 addresses
+                .FirstOrDefault(ip => ip.ToString().StartsWith("192."))    // Try to find a 192.x.x.x address first
+                ?? ipaddress
+                .FirstOrDefault(ip => ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork); // If not found, get the first general IPv4
 
+            tboxThisIP.Text = selectedIP.ToString();
             nudThisPort.Value = Properties.Settings.Default.setIP_thisPort;
 
             tboxAutoSteerIP.Text = Properties.Settings.Default.setIP_autoSteerIP;
