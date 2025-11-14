@@ -1,6 +1,8 @@
 # OpenGrade3D
  
-Update May 24 2025 V1.0.6
+Update November 14 2025 V4.0.2
+
+Discusions on Telegram: https://t.me/OpenGrade3D
 
 OpenGrade3D is a software designed to make topographic surveys in Optisurface compatible .ags format and control a blade from an Optisurface .agd file.
 
