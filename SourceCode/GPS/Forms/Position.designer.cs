@@ -293,8 +293,6 @@ namespace OpenGrade
 
                 //out serial to autosteer module  //indivdual classes load the distance and heading deltas 
                 AutoSteerDataOutToPort();
-                
-                SendUDPMessage(guidanceLineSteerAngle + "," + guidanceLineDistanceOff);
             }
 
             else

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
+using System.Threading;
 using System.Windows.Forms;
-using System.Diagnostics;
 
 
 namespace OpenGrade
@@ -13,23 +14,19 @@ namespace OpenGrade
     public partial class FormGPS
     {
         // Send and Recv socket
-        private Socket sendSocket;
-        private Socket recvSocket;
+        private Socket loopBackSocket;
+
 
         // UDP Socket from AgIO v6.3.3
-        public Socket UDPSocket;
-        private EndPoint endPointUDP = new IPEndPoint(IPAddress.Parse(Properties.Settings.Default.setIP_autoSteerIP), (Properties.Settings.Default.setIP_autoSteerPort));
+        private EndPoint endPointLoopBack = new IPEndPoint(IPAddress.Loopback, 0);
 
         public bool isUDPNetworkConnected;
 
-        public IPEndPoint epModule = new IPEndPoint(IPAddress.Parse(Properties.Settings.Default.setIP_rateRelayIP), Properties.Settings.Default.setIP_rateRelayPort);
-        private IPEndPoint epNtrip = new IPEndPoint(IPAddress.Parse(Properties.Settings.Default.setIP_autoSteerIP), 2233);
+        private EndPoint epAgIO = new IPEndPoint(IPAddress.Parse("127.255.255.255"), 17777);
+        //private IPEndPoint epNtrip = new IPEndPoint(IPAddress.Parse(Properties.Settings.Default.setIP_autoSteerIP), 2233);
         //end from AgIO v6.3.3
 
-        private bool isSendConnected = false;
-
-        //endpoint of the auto steer module
-        IPEndPoint epAutoSteer;
+        private bool isSendConnected = true;
 
         // Data stream
         private byte[] buffer = new byte[1024];
@@ -38,103 +35,52 @@ namespace OpenGrade
         private delegate void UpdateRecvMessageDelegate(string recvMessage);
         private UpdateRecvMessageDelegate updateRecvMessageDelegate = null;
 
-        private void SendUDPMessage(string message)
+        public void SendPgnToLoop(byte[] byteData)
         {
-            if (isSendConnected)
+            if (loopBackSocket != null && byteData.Length > 2)
             {
                 try
                 {
-                    // Get packet as byte array
-                    byte[] byteData = Encoding.ASCII.GetBytes(message);
+                    int crc = 0;
+                    for (int i = 2; i + 1 < byteData.Length; i++)
+                    {
+                        crc += byteData[i];
+                    }
+                    byteData[byteData.Length - 1] = (byte)crc;
 
-                    if (byteData.Length != 0)
-
-                        // Send packet to the zero
-                        sendSocket.BeginSendTo(byteData, 0, byteData.Length, SocketFlags.None, epAutoSteer, new AsyncCallback(SendData), null);
+                    loopBackSocket.BeginSendTo(byteData, 0, byteData.Length, SocketFlags.None,
+                        epAgIO, new AsyncCallback(SendAsyncLoopData), null);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    WriteErrorLog("Sending UDP Message" + e.ToString());
-
-                    MessageBox.Show("Send Error: " + e.Message, "UDP Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //Log.EventWriter("Sending UDP Message" + e.ToString());
+                    //MessageBox.Show("Send Error: " + e.Message, "UDP Client", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
- 
-        public void SendData(IAsyncResult asyncResult)
+        public void SendAsyncLoopData(IAsyncResult asyncResult)
         {
             try
             {
-                sendSocket.EndSend(asyncResult);
+                loopBackSocket.EndSend(asyncResult);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                WriteErrorLog(" UDP Send Data" + e.ToString());
-
-                MessageBox.Show("SendData Error: " + e.Message, "UDP Server", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show("SendData Error: " + ex.Message, "UDP Server", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        private void ReceiveData(IAsyncResult asyncResult)
-        {
-            try
-            {
-                // Initialise the IPEndPoint for the client
-                EndPoint epSender = new IPEndPoint(IPAddress.Any, 0);
-            
-                // Receive all data
-                int msgLen = recvSocket.EndReceiveFrom(asyncResult, ref epSender);
-
-                byte[] localMsg = new byte[msgLen];
-                Array.Copy(buffer, localMsg, msgLen);
-
-                // Listen for more connections again...
-                recvSocket.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None, ref epSender, new AsyncCallback(ReceiveData), epSender);
-
-                string text = Encoding.ASCII.GetString(localMsg);
-
-                // Update status through a delegate
-                Invoke(updateRecvMessageDelegate, new object[] { text });
-            }
-            catch (Exception e)
-            {
-                WriteErrorLog("UDP Recv data " + e.ToString());
-
-                MessageBox.Show("ReceiveData Error: " + e.Message, "UDP Server", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        
-        private void UpdateRecvMessage(string recvd)
-        {
-            recvSentenceSettings = recvd;
-            pn.rawBuffer += recvd;
-            //textBox1.Text = pn.rawBuffer;
-            //textBox1.Text = recvd;
         }
 
         //initialize loopback and udp network
         public void LoadUDPNetwork()
         {
-            //helloFromAgIO[5] = 56;
-
             //lblIP.Text = "";
             try //udp network
             {
-                foreach (IPAddress IPA in Dns.GetHostAddresses(Dns.GetHostName()))
-                {
-                    if (IPA.AddressFamily == AddressFamily.InterNetwork)
-                    {
-                        string data = IPA.ToString();
-                        //lblIP.Text += IPA.ToString().Trim() + "\r\n";
-                    }
-                }
-
                 // Initialise the socket
-                UDPSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-                UDPSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, true);
-                UDPSocket.Bind(new IPEndPoint(IPAddress.Any, 9999));
-                UDPSocket.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None, ref endPointUDP,
+                loopBackSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                loopBackSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, true);
+                loopBackSocket.Bind(new IPEndPoint(IPAddress.Loopback, 15555));
+                loopBackSocket.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None, ref endPointLoopBack,
                     new AsyncCallback(ReceiveDataUDPAsync), null);
 
                 isUDPNetworkConnected = true;
@@ -159,6 +105,7 @@ namespace OpenGrade
                 lblIP.Text = "Error";
                 */
             }
+            
         }
         #region Receive UDP 
         //from AgIO v6.3.3
@@ -168,13 +115,13 @@ namespace OpenGrade
             try
             {
                 // Receive all data
-                int msgLen = UDPSocket.EndReceiveFrom(asyncResult, ref endPointUDP);
+                int msgLen = loopBackSocket.EndReceiveFrom(asyncResult, ref endPointLoopBack);
 
                 byte[] localMsg = new byte[msgLen];
                 Array.Copy(buffer, localMsg, msgLen);
 
                 // Listen for more connections again...
-                UDPSocket.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None, ref endPointUDP,
+                loopBackSocket.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None, ref endPointLoopBack,
                     new AsyncCallback(ReceiveDataUDPAsync), null);
 
                 BeginInvoke((MethodInvoker)(() => ReceiveFromUDP(localMsg)));
