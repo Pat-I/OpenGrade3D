@@ -15,7 +15,8 @@ namespace OpenGrade
     {
         // Send and Recv socket
         private Socket loopBackSocket;
-
+        public static UdpClient udpServer;
+        private static int port = 15555; // Port to listen on
 
         // UDP Socket from AgIO v6.3.3
         private EndPoint endPointLoopBack = new IPEndPoint(IPAddress.Loopback, 0);
@@ -73,72 +74,33 @@ namespace OpenGrade
         //initialize loopback and udp network
         public void LoadUDPNetwork()
         {
-            //lblIP.Text = "";
-            try //udp network
+            new Thread(() =>
             {
-                // Initialise the socket
-                loopBackSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-                loopBackSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, true);
-                loopBackSocket.Bind(new IPEndPoint(IPAddress.Loopback, 15555));
-                loopBackSocket.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None, ref endPointLoopBack,
-                    new AsyncCallback(ReceiveDataUDPAsync), null);
+                using (udpServer = new UdpClient(port))
+                {
+                    while (true)
+                    {
+                        ListenForMessages();
+                    }
+                }
+            })
+            { IsBackground = true }.Start();
 
-                isUDPNetworkConnected = true;
-                //btnUDP.BackColor = Color.LimeGreen;
+            //        udpServer.Close(); // where would I put this?
 
-                //if (!isFound)
-                //{
-                //    MessageBox.Show("Network Address of Modules -> " + Properties.Settings.Default.setIP_localAOG+"[2 - 254] May not exist. \r\n"
-                //    + "Are you sure ethernet is connected?\r\n" + "Go to UDP Settings to fix.\r\n\r\n", "Network Connection Error",
-                //    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                //    //btnUDP.BackColor = Color.Red;
-                //    lblIP.Text = "Not Connected";
-                //}
-            }
-            catch (Exception e)
-            {
-                //WriteErrorLog("UDP Server" + e);
-                /*
-                MessageBox.Show(e.Message, "Serious Network Connection Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                btnUDP.BackColor = Color.Red;
-                lblIP.Text = "Error";
-                */
-            }
-            
         }
         #region Receive UDP 
         //from AgIO v6.3.3
 
-        private void ReceiveDataUDPAsync(IAsyncResult asyncResult)
+        private void ListenForMessages()
         {
             try
             {
-                // Receive all data
-                int msgLen = loopBackSocket.EndReceiveFrom(asyncResult, ref endPointLoopBack);
+                // Listen for UDP packets on the given port
+                IPEndPoint endPoint = new IPEndPoint(IPAddress.Loopback, 0);
+                byte[] data = udpServer.Receive(ref endPoint);
+                string receivedData = Encoding.UTF8.GetString(data);
 
-                byte[] localMsg = new byte[msgLen];
-                Array.Copy(buffer, localMsg, msgLen);
-
-                // Listen for more connections again...
-                loopBackSocket.BeginReceiveFrom(buffer, 0, buffer.Length, SocketFlags.None, ref endPointLoopBack,
-                    new AsyncCallback(ReceiveDataUDPAsync), null);
-
-                BeginInvoke((MethodInvoker)(() => ReceiveFromUDP(localMsg)));
-
-            }
-            catch (Exception)
-            {
-                //WriteErrorLog("UDP Recv data " + e.ToString());
-                //MessageBox.Show("ReceiveData Error: " + e.Message, "UDP Server", MessageBoxButtons.OK,
-                //MessageBoxIcon.Error);
-            }
-        }
-
-        private void ReceiveFromUDP(byte[] data)
-        {
-            try
-            {
                 if (data[0] == 0x80 && data[1] == 0x81)
                 {
                     //module return via udp sent to AOG
