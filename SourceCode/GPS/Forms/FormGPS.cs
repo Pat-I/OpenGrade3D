@@ -737,10 +737,10 @@ namespace OpenGrade
 
             //try and open
             SerialPortOpenGPS();
-            /*
+            
             // No UDP for now; May 24 2025
             LoadUDPNetwork(); // from AgIO v6.3.3, this would enable UDP but block AgIO because it uses the same socket
-            */
+            
             //same for SectionRelay port
             portNameRelaySection = Settings.Default.setPort_portNameRateRelay;
             wasRateRelayConnectedLastRun = Settings.Default.setPort_wasRateRelayConnected;
@@ -822,23 +822,47 @@ namespace OpenGrade
                 {
                     //OK
                     case 0:
-                        isSendConnected = false;
-                        //sendSocket.Shutdown(SocketShutdown.Both);
-                        //recvSocket.Shutdown(SocketShutdown.Both);
+                        {
+                            isSendConnected = false;
+                            //sendSocket.Shutdown(SocketShutdown.Both);
+                            //recvSocket.Shutdown(SocketShutdown.Both);
 
-                        Settings.Default.setSim_lastLong = pn.longitude;
-                        Settings.Default.setSim_lastLat = pn.latitude;
-                        Settings.Default.setF_CurrentDir = currentFieldDirectory;
-                        Settings.Default.Save();
+                            Settings.Default.setSim_lastLong = pn.longitude;
+                            Settings.Default.setSim_lastLat = pn.latitude;
+                            Settings.Default.setF_CurrentDir = currentFieldDirectory;
+                            Settings.Default.Save();
 
-                        FileSaveEverythingBeforeClosingField();
+                            FileSaveEverythingBeforeClosingField();
 
-                        //shutdown and reset all module data
-                        mc.ResetAllModuleCommValues();
+                            //shutdown and reset all module data
+                            mc.ResetAllModuleCommValues();
 
-                        //sendSocket.Disconnect(true);
-                        //recvSocket.Disconnect(true);
+                            //sendSocket.Disconnect(true);
+                            //recvSocket.Disconnect(true);
 
+                            // Close loopback socket if active
+                            if (loopBackSocket != null)
+                            {
+                                try
+                                {
+                                    loopBackSocket.Shutdown(SocketShutdown.Both);
+                                    loopBackSocket.Close();
+                                }
+                                catch { }
+                            }
+                            /*
+                            // Auto close AgIO process if enabled
+                            if (Settings.Default.setDisplay_isAutoOffAgIO)
+                            {
+                                try
+                                {
+                                    Process[] agio = Process.GetProcessesByName("AgIO");
+                                    if (agio.Length > 0) agio[0].CloseMainWindow();
+                                }
+                                catch { }
+                            }
+                            */
+                        }
                         break;
 
                     //Ignore and return

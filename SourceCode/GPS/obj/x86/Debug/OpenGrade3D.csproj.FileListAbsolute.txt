@@ -60,7 +60,6 @@ C:\Users\imhof\Documents\Github\Clones\OpenGrade3D\Application\OpenGrade3D.exe.c
 C:\Users\imhof\Documents\Github\Clones\OpenGrade3D\Application\OpenGrade3D.exe
 C:\Users\imhof\Documents\Github\Clones\OpenGrade3D\Application\OpenGrade3D.pdb
 C:\Users\imhof\Documents\Github\Clones\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGrade3D.csproj.AssemblyReference.cache
-C:\Users\imhof\Documents\Github\Clones\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGrade3D.exe.config
 C:\Users\imhof\Documents\Github\Clones\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGrade.FormSource.resources
 C:\Users\imhof\Documents\Github\Clones\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGrade.FormFieldDir.resources
 C:\Users\imhof\Documents\Github\Clones\OpenGrade3D\SourceCode\GPS\obj\x86\Debug\OpenGrade.FormCommSet.resources
