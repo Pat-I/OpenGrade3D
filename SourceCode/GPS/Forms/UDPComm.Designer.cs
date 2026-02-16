@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -99,133 +100,124 @@ namespace OpenGrade
                 // Listen for UDP packets on the given port
                 IPEndPoint endPoint = new IPEndPoint(IPAddress.Loopback, 0);
                 byte[] data = udpServer.Receive(ref endPoint);
-                string receivedData = Encoding.UTF8.GetString(data);
+                recvSentenceSettings = Encoding.UTF8.GetString(data);
 
                 if (data[0] == 0x80 && data[1] == 0x81)
                 {
-                    //module return via udp sent to AOG
-                    //SendToLoopBackMessageAOG(data);
-
-                    //check for Scan and Hello
-                    if (data[3] == 126 && data.Length == 11)
+                    switch (data[3])
                     {
-                        /*
-                        traffic.helloFromAutoSteer = 0;
-                        if (isViewAdvanced)
-                        {
-                            lblPing.Text = (((DateTime.Now - Process.GetCurrentProcess().StartTime).TotalSeconds - pingSecondsStart) * 1000).ToString("N0");
-                            double actualSteerAngle = (Int16)((data[6] << 8) + data[5]);
-                            lblSteerAngle.Text = (actualSteerAngle * 0.01).ToString("N1");
-                            lblWASCounts.Text = ((Int16)((data[8] << 8) + data[7])).ToString();
+                        case 0xD6:
+                            {
+                                //todo add a condition to use UDP GPS as source
+                                double Lon = BitConverter.ToDouble(data, 5);
+                                double Lat = BitConverter.ToDouble(data, 13);
 
-                            lblSwitchStatus.Text = ((data[9] & 2) == 2).ToString();
-                            lblWorkSwitchStatus.Text = ((data[9] & 1) == 1).ToString();
-                        }
-                        */
+                                if (Lon != double.MaxValue && Lat != double.MaxValue)
+                                {
+                                    pn.longitude = Lon;
+                                    pn.latitude = Lat;
+
+                                    //if (timerSim.Enabled) DisableSim();//todo
+
+
+                                    if (pn.latitude < 0)
+                                    {
+                                        pn.hemisphere = 'S';
+                                    }
+                                    else { pn.hemisphere = 'N'; }
+
+                                    //calculate zone and UTM coords
+                                    //DecDeg2UTM();
+                                    pn.ConvertWGS84ToLocal(pn.latitude, pn.longitude, out pn.northing, out pn.easting);
+
+                                    //From dual antenna heading sentences
+                                    float temp = BitConverter.ToSingle(data, 21);
+                                    if (temp != float.MaxValue)
+                                    {
+                                        pn.headingTrue = temp;
+                                    }
+                                    else
+                                    {
+                                    //from single antenna sentences (VTG,RMC)
+                                    pn.headingTrue = BitConverter.ToSingle(data, 25);
+                                    }
+
+                                    //always save the speed.
+                                    temp = BitConverter.ToSingle(data, 29);
+                                    if (temp != float.MaxValue)
+                                    {
+                                        pn.speed = temp;
+                                    }
+
+                                    //roll in degrees
+                                    temp = BitConverter.ToSingle(data, 33);
+                                    if (temp != float.MaxValue)
+                                    {
+                                        pn.GPSroll = temp;
+                                    }
+                                    if (temp == float.MinValue)
+                                        pn.GPSroll = 0;
+
+                                    //altitude in meters
+                                    temp = BitConverter.ToSingle(data, 37);
+                                    if (temp != float.MaxValue)
+                                        pn.altitude = temp;
+
+                                    ushort sats = BitConverter.ToUInt16(data, 41);
+                                    if (sats != ushort.MaxValue)
+                                        pn.satellitesTracked = sats;
+
+                                    byte fix = data[43];
+                                    if (fix != byte.MaxValue)
+                                        pn.fixQuality = fix;
+
+                                    ushort hdop = BitConverter.ToUInt16(data, 44);
+                                    if (hdop != ushort.MaxValue)
+                                        pn.hdop = hdop * 0.01;
+
+                                    ushort age = BitConverter.ToUInt16(data, 46);
+                                    if (age != ushort.MaxValue)
+                                        pn.ageDiff = age * 0.01;
+
+                                    ushort imuHead = BitConverter.ToUInt16(data, 48);
+                                    if (imuHead != ushort.MaxValue)
+                                    {
+                                        //ahrs.imuHeading = imuHead; //no use for IMU heading yet
+                                        //ahrs.imuHeading *= 0.1;
+                                    }
+
+                                    short imuRol = BitConverter.ToInt16(data, 50);
+                                    if (imuRol != short.MaxValue)
+                                    {
+                                        double rollK = imuRol;
+                                        pn.GPSroll = rollK *= 0.1;
+                                    }
+
+                                    short imuPich = BitConverter.ToInt16(data, 52);
+                                    if (imuPich != short.MaxValue)
+                                    {
+                                        pn.GPSpitch = imuPich;
+                                    }
+
+                                    short imuYaw = BitConverter.ToInt16(data, 54);
+                                    if (imuYaw != short.MaxValue)
+                                    {
+                                        pn.GPSyawRate = imuYaw;
+                                    }
+
+                                    //a valid VTG so set the flag
+                                    recvCounter = 0;
+
+                                    //average the speeds for display, not calcs
+                                    avgSpeed[ringCounter] = pn.speed;
+                                    if (ringCounter++ > 8) ringCounter = 0;
+
+                                    ProcessFixPosition();
+                                }
+                            }
+                            break;
                     }
-
-                    else if (data[3] == 123 && data.Length == 11)
-                    {
-                        /*
-                        traffic.helloFromMachine = 0;
-
-                        if (isViewAdvanced)
-                        {
-                            lblPingMachine.Text = (((DateTime.Now - Process.GetCurrentProcess().StartTime).TotalSeconds - pingSecondsStart) * 1000).ToString("N0");
-                            lbl1To8.Text = Convert.ToString(data[5], 2).PadLeft(8, '0');
-                            lbl9To16.Text = Convert.ToString(data[6], 2).PadLeft(8, '0');
-                        }
-                        */
-                    }
-
-                    else if (data[3] == 121 && data.Length == 11)
-                    {
-                        //traffic.helloFromIMU = 0;
-                    }
-
-
-                    //scan Reply
-                    else if (data[3] == 203 && data.Length == 13) //
-                    {
-                        /*
-                        if (data[2] == 126)  //steer module
-                        {
-                            scanReply.steerIP = data[5].ToString() + "." + data[6].ToString() + "." + data[7].ToString() + "." + data[8].ToString();
-
-                            scanReply.subnet[0] = data[09];
-                            scanReply.subnet[1] = data[10];
-                            scanReply.subnet[2] = data[11];
-
-                            scanReply.subnetStr = data[9].ToString() + "." + data[10].ToString() + "." + data[11].ToString();
-
-                            scanReply.isNewData = true;
-                            scanReply.isNewSteer = true;
-                        }
-                        //
-                        else if (data[2] == 123)   //machine module
-                        {
-                            scanReply.machineIP = data[5].ToString() + "." + data[6].ToString() + "." + data[7].ToString() + "." + data[8].ToString();
-
-                            scanReply.subnet[0] = data[09];
-                            scanReply.subnet[1] = data[10];
-                            scanReply.subnet[2] = data[11];
-
-                            scanReply.subnetStr = data[9].ToString() + "." + data[10].ToString() + "." + data[11].ToString();
-
-                            scanReply.isNewData = true;
-                            scanReply.isNewMachine = true;
-
-                        }
-                        else if (data[2] == 121)   //IMU Module
-                        {
-                            scanReply.IMU_IP = data[5].ToString() + "." + data[6].ToString() + "." + data[7].ToString() + "." + data[8].ToString();
-
-                            scanReply.subnet[0] = data[09];
-                            scanReply.subnet[1] = data[10];
-                            scanReply.subnet[2] = data[11];
-
-                            scanReply.subnetStr = data[9].ToString() + "." + data[10].ToString() + "." + data[11].ToString();
-
-                            scanReply.isNewData = true;
-                            scanReply.isNewIMU = true;
-                        }
-
-                        else if (data[2] == 120)    //GPS module
-                        {
-                            scanReply.GPS_IP = data[5].ToString() + "." + data[6].ToString() + "." + data[7].ToString() + "." + data[8].ToString();
-
-                            scanReply.subnet[0] = data[09];
-                            scanReply.subnet[1] = data[10];
-                            scanReply.subnet[2] = data[11];
-
-                            scanReply.subnetStr = data[9].ToString() + "." + data[10].ToString() + "." + data[11].ToString();
-
-                            scanReply.isNewData = true;
-                            scanReply.isNewGPS = true;
-                        }
-                        */
-                    }
-                    /*
-                    if (isUDPMonitorOn)
-                    {
-                        logUDPSentence.Append(DateTime.Now.ToString("ss.fff\t") + endPointUDP.ToString() + "\t" + " < " + data[3].ToString() + "\r\n");
-                    }
-                    */
-
                 } // end of pgns
-
-                else if (data[0] == 36 && (data[1] == 71 || data[1] == 80 || data[1] == 75))
-                {
-                    //traffic.cntrGPSOut += data.Length;
-                    pn.rawBuffer += Encoding.ASCII.GetString(data);
-                    //ParseNMEA(ref rawBuffer);
-                    /*
-                    if (isUDPMonitorOn && isGPSLogOn)
-                    {
-                        logUDPSentence.Append(DateTime.Now.ToString("ss.fff\t") + System.Text.Encoding.ASCII.GetString(data));
-                    }
-                    */
-                }
             }
             catch
             {

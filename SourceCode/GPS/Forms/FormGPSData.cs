@@ -21,7 +21,6 @@ namespace OpenGrade
         private void timer1_Tick(object sender, EventArgs e)
         {
             //all the fixings and position
-            lblZone.Text = mf.Zone;
             lblNorthing.Text = mf.FixNorthing;
             lblEasting.Text = mf.FixEasting;
             lblLatitude.Text = mf.Latitude;

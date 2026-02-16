@@ -83,46 +83,9 @@ namespace OpenGrade
             //time for a frame update with new valid nmea data
             if (pn.updatedGGA)
             {
-                isGNSSrecieved = 0;
-                //if saving a file ignore any movement
-                if (isSavingFile) return;
-
-                //accumulate time over multiple frames  
-                hzTime += swFrame.ElapsedMilliseconds;
-
-                //reset the timer         
-                swFrame.Reset();
-
-                //now calculate NMEA rate
-                if (timerPn++ == 36)
-                {
-                    et = (1 / (hzTime * 0.000025));
-                    if (et > 13 && et < 18) fixUpdateHz = 15;
-                    if (et > 18 && et < 23) fixUpdateHz = 20;
-                    if (et > 23 && et < 28) fixUpdateHz = 25;
-                    if (et > 28 && et < 38) fixUpdateHz = 30;
-                    if (et > 38 && et < 47) fixUpdateHz = 40;
-                    if (et > 47) fixUpdateHz = 50;
-                    if (et > 4 && et < 7) fixUpdateHz = 5;
-                    if (et > 7 && et < 9) fixUpdateHz = 8;
-                    if (et > 9 && et < 13) fixUpdateHz = 10;
-                    if (et > 1.2 && et < 3) fixUpdateHz = 2;
-                    if (et > 0.8 && et < 1.2) fixUpdateHz = 1;
-                    fixUpdateTime = 1 / (double)fixUpdateHz;
-                    timerPn = 0;
-                    hzTime = 0;
-                    //fixUpdateHz = 5;
-                    //fixUpdateTime = 0.2;
-                }
-
-                //start the watch and time till it gets back here
-                swFrame.Start();
-
+                ProcessFixPosition();
                 //reset both flags
                 pn.updatedGGA = false;
-
-                //update all data for new frame
-                UpdateFixPosition();
             }
             
             //must make sure arduinos are kept off
@@ -133,6 +96,47 @@ namespace OpenGrade
             
             //Update the port connecition counter - is reset every time new sentence is valid and ready
             recvCounter++;
+        }
+
+        public void ProcessFixPosition()
+        {
+            isGNSSrecieved = 0;
+            //if saving a file ignore any movement
+            if (isSavingFile) return;
+
+            //accumulate time over multiple frames  
+            hzTime += swFrame.ElapsedMilliseconds;
+
+            //reset the timer         
+            swFrame.Reset();
+
+            //now calculate NMEA rate
+            if (timerPn++ == 36)
+            {
+                et = (1 / (hzTime * 0.000025));
+                if (et > 13 && et < 18) fixUpdateHz = 15;
+                if (et > 18 && et < 23) fixUpdateHz = 20;
+                if (et > 23 && et < 28) fixUpdateHz = 25;
+                if (et > 28 && et < 38) fixUpdateHz = 30;
+                if (et > 38 && et < 47) fixUpdateHz = 40;
+                if (et > 47) fixUpdateHz = 50;
+                if (et > 4 && et < 7) fixUpdateHz = 5;
+                if (et > 7 && et < 9) fixUpdateHz = 8;
+                if (et > 9 && et < 13) fixUpdateHz = 10;
+                if (et > 1.2 && et < 3) fixUpdateHz = 2;
+                if (et > 0.8 && et < 1.2) fixUpdateHz = 1;
+                fixUpdateTime = 1 / (double)fixUpdateHz;
+                timerPn = 0;
+                hzTime = 0;
+                //fixUpdateHz = 5;
+                //fixUpdateTime = 0.2;
+            }
+
+            //start the watch and time till it gets back here
+            swFrame.Start();
+
+            //update all data for new frame
+            UpdateFixPosition();
         }
 
         //call for position update after valid NMEA sentence

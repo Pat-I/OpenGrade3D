@@ -52,8 +52,6 @@
             this.tboxSerialFromRelay = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.lblZone = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.tboxSerialToRelay = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
@@ -325,29 +323,6 @@
             this.label12.TabIndex = 112;
             this.label12.Text = "Frm";
             // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.label11.Location = new System.Drawing.Point(263, 9);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(52, 23);
-            this.label11.TabIndex = 114;
-            this.label11.Text = "Zone";
-            // 
-            // lblZone
-            // 
-            this.lblZone.AutoSize = true;
-            this.lblZone.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblZone.Location = new System.Drawing.Point(326, 12);
-            this.lblZone.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
-            this.lblZone.Name = "lblZone";
-            this.lblZone.Size = new System.Drawing.Size(49, 19);
-            this.lblZone.TabIndex = 113;
-            this.lblZone.Text = "Zone";
-            this.lblZone.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
             // label13
             // 
             this.label13.AutoSize = true;
@@ -455,8 +430,6 @@
             this.Controls.Add(this.tboxSerialToAutoSteer);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.tboxSerialToRelay);
-            this.Controls.Add(this.label11);
-            this.Controls.Add(this.lblZone);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.tboxSerialFromRelay);
@@ -518,8 +491,6 @@
         private System.Windows.Forms.TextBox tboxSerialFromRelay;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label lblZone;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox tboxSerialToRelay;
         private System.Windows.Forms.Label label14;

@@ -1713,18 +1713,16 @@ namespace OpenGrade
 
         #region Properties // ---------------------------------------------------------------------
 
-        public string Zone { get { return Convert.ToString(pn.zone); } }
-        public string FixNorthing { get { return Convert.ToString(Math.Round(pn.northing + pn.utmNorth, 2)); } }
-        public string FixEasting { get { return Convert.ToString(Math.Round(pn.easting + pn.utmEast, 2)); } }
-        public string Latitude { get { return Convert.ToString(Math.Round(pn.latitude, 7)); } }
-        public string Longitude { get { return Convert.ToString(Math.Round(pn.longitude, 7)); } }
-
+        public string FixNorthing { get { return pn.northing.ToString("0.00"); } }
+        public string FixEasting { get { return pn.easting.ToString("0.00"); } }
+        public string Latitude { get { return pn.latitude.ToString("0.0000000"); } }
+        public string Longitude { get { return pn.longitude.ToString("0.0000000"); } }
         public string SatsTracked { get { return Convert.ToString(pn.satellitesTracked); } }
-        public string HDOP { get { return Convert.ToString(pn.hdop); } }
+        public string HDOP { get { return pn.hdop.ToString("0.00"); } }
         public string NMEAHz { get { return Convert.ToString(fixUpdateHz); } }
         public string PassNumber { get { return Convert.ToString(ABLine.passNumber); } }
-        public string Heading { get { return Convert.ToString(Math.Round(glm.toDegrees(fixHeading), 1)) + "\u00B0"; } }
-        public string GPSHeading { get { return (Math.Round(glm.toDegrees(gpsHeading), 1)) + "\u00B0"; } }
+        public string Heading { get { return glm.toDegrees(fixHeading).ToString("0.0\u00B0"); } }
+        public string GPSHeading { get { return glm.toDegrees(gpsHeading).ToString("0.0\u00B0"); } }
         public string Status { get { if (pn.status == "A") return "Active"; else return "Void"; } }
         public string FixQuality
         {
@@ -1763,14 +1761,14 @@ namespace OpenGrade
         }
         public string PureSteerAngle { get { return ((double)(guidanceLineSteerAngle) * 0.1) + "\u00B0"; } }
 
-        public string FixHeading { get { return Math.Round(fixHeading, 4).ToString(); } }
+        public string FixHeading { get { return fixHeading.ToString("0.00000"); } }
 
         public string StepFixNum { get { return (currentStepFix).ToString(); } }
-        public string CurrentStepDistance { get { return Math.Round(distanceCurrentStepFix, 3).ToString(); } }
-        public string TotalStepDistance { get { return Math.Round(fixStepDist, 3).ToString(); } }
+        public string CurrentStepDistance { get { return distanceCurrentStepFix.ToString("0.000"); } }
+        public string TotalStepDistance { get { return fixStepDist.ToString("0.000"); } }
 
         public string WorkSwitchValue { get { return mc.workSwitchValue.ToString(); } }
-        public string AgeDiff { get { return Math.Round(pn.ageDiff, 1).ToString(); } }
+        public string AgeDiff { get { return pn.ageDiff.ToString("0.0"); } }
 
         //Metric and Imperial Properties
         public string SpeedMPH
@@ -1780,7 +1778,7 @@ namespace OpenGrade
                 double spd = 0;
                 for (int c = 0; c < 10; c++) spd += avgSpeed[c];
                 spd *= 0.0621371;
-                return Convert.ToString(Math.Round(spd, 1));
+                return spd.ToString("F1");
             }
         }
         public string SpeedKPH
@@ -1790,12 +1788,12 @@ namespace OpenGrade
                 double spd = 0;
                 for (int c = 0; c < 10; c++) spd += avgSpeed[c];
                 spd *= 0.1;
-                return Convert.ToString(Math.Round(spd, 1));
+                return spd.ToString("F1");
             }
         }
 
-        public string Altitude { get { return Convert.ToString(Math.Round(pn.altitude,3)); } }
-        public string AltitudeFeet { get { return Convert.ToString((Math.Round((pn.altitude * 3.28084),3))); } }
+        public string Altitude { get { return pn.altitude.ToString("0.000"); } }
+        public string AltitudeFeet { get { return (pn.altitude * 3.28084).ToString("0.00"); } }
 
         public Texture ParticleTexture { get; set; }
 
@@ -1929,12 +1927,10 @@ namespace OpenGrade
 
                         //up in the menu a few pieces of info
                         
-                        lblEasting.Text = "E: " + Math.Round(pn.easting, 1).ToString();
-                        lblNorthing.Text = "N: " + Math.Round(pn.northing, 1).ToString();
-                        
+                        lblEasting.Text = "E: " + FixEasting;
+                        lblNorthing.Text = "N: " + FixNorthing;
                         
 
-                        lblZone.Text = pn.zone.ToString();
                         tboxSentence.Text = recvSentenceSettings;
                     }
 
@@ -2027,8 +2023,7 @@ namespace OpenGrade
                         stripOnlineGPS.Value = 1;
                         lblEasting.Text = "-";
                         lblNorthing.Text = gStr.gsNoGPS;
-                        lblZone.Text = "-";
-                        tboxSentence.Text = gStr.gsNoSentenceData;
+                        //tboxSentence.Text = gStr.gsNoSentenceData;
                     }
                     else stripOnlineGPS.Value = 100;
                 }
