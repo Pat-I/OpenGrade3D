@@ -114,14 +114,12 @@
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuFlagDeleteAll = new System.Windows.Forms.ToolStripMenuItem();
             this.tboxSentence = new System.Windows.Forms.TextBox();
-            this.lblZone = new System.Windows.Forms.Label();
             this.lblSpeedUnits = new System.Windows.Forms.Label();
             this.lblHeading = new System.Windows.Forms.Label();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.DataPage = new System.Windows.Forms.TabPage();
             this.label15 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
             this.lblSats = new System.Windows.Forms.Label();
             this.lblFixQuality = new System.Windows.Forms.Label();
             this.lblGPSHeading = new System.Windows.Forms.Label();
@@ -1032,19 +1030,6 @@
             this.tboxSentence.Size = new System.Drawing.Size(242, 80);
             this.tboxSentence.TabIndex = 134;
             // 
-            // lblZone
-            // 
-            this.lblZone.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblZone.AutoSize = true;
-            this.lblZone.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.lblZone.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold);
-            this.lblZone.Location = new System.Drawing.Point(192, 143);
-            this.lblZone.Name = "lblZone";
-            this.lblZone.Size = new System.Drawing.Size(29, 19);
-            this.lblZone.TabIndex = 135;
-            this.lblZone.Text = "Zn";
-            this.lblZone.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
             // lblSpeedUnits
             // 
             this.lblSpeedUnits.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -1099,11 +1084,9 @@
             // 
             this.DataPage.BackColor = System.Drawing.SystemColors.ControlLight;
             this.DataPage.Controls.Add(this.label15);
-            this.DataPage.Controls.Add(this.label14);
             this.DataPage.Controls.Add(this.lblSats);
             this.DataPage.Controls.Add(this.lblFixQuality);
             this.DataPage.Controls.Add(this.lblGPSHeading);
-            this.DataPage.Controls.Add(this.lblZone);
             this.DataPage.Controls.Add(this.lblEasting);
             this.DataPage.Controls.Add(this.lblNorthing);
             this.DataPage.Controls.Add(this.label1);
@@ -1135,16 +1118,6 @@
             this.label15.Size = new System.Drawing.Size(44, 23);
             this.label15.TabIndex = 187;
             this.label15.Text = "Sat:";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(146, 140);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(39, 23);
-            this.label14.TabIndex = 186;
-            this.label14.Text = "Zn:";
             // 
             // lblSats
             // 
@@ -2455,7 +2428,6 @@
         private System.Windows.Forms.ToolStripMenuItem skyToolStripMenu;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
         private System.Windows.Forms.TextBox tboxSentence;
-        private System.Windows.Forms.Label lblZone;
         private System.Windows.Forms.Button btnGPSData;
         private System.Windows.Forms.Button btnFileExplorer;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem1;
@@ -2548,7 +2520,6 @@
         private System.Windows.Forms.Button btnColorFill;
         private System.Windows.Forms.ToolStripMenuItem MapColorToolStripMenuItem;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label lblFill;
         private System.Windows.Forms.Label lblFillValue;
         private System.Windows.Forms.Label lblCutValue;

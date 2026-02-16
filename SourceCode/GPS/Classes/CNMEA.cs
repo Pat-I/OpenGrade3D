@@ -71,7 +71,6 @@ namespace OpenGrade
         //UTM coordinates
         public double northing, easting, northingAgd, eastingAgd;
         //public double actualEasting, actualNorthing;
-        public double zone;
 
         //Position Offset corrections, by Pat
         public double northingOffset, eastingOffset, altitudeOffset;
@@ -89,7 +88,6 @@ namespace OpenGrade
         public char hemisphere = 'N';
 
         //UTM numbers are huge, these cut them way down.
-        public int utmNorth = 0, utmEast = 0;
         public StringBuilder logNMEASentence = new StringBuilder();
         private readonly FormGPS mf;
 
