@@ -823,7 +823,7 @@ namespace OpenGrade
                     //OK
                     case 0:
                         {
-                            isSendConnected = false;
+                            ShutdownUDPNetwork();
                             //sendSocket.Shutdown(SocketShutdown.Both);
                             //recvSocket.Shutdown(SocketShutdown.Both);
 
