@@ -1,2 +1,16 @@
 
 Application/Error Log.txt
+# Configuration locale de Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.json
+
+# Dossiers de compilation et caches (obj et bin)
+[Bb]in/
+[Oo]bj/
+Application/Error Log.txt
+Application/Error Log.txt
+/SourceCode/.vs
