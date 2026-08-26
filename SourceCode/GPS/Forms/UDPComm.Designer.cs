@@ -18,8 +18,9 @@ namespace OpenGrade
         private const int Port = 15555;
 
         private readonly EndPoint epAgIO = new IPEndPoint(IPAddress.Parse("127.255.255.255"), 17777);
-        public bool isUDPNetworkConnected;
-
+        public bool isUDPNetworkConnected = false;
+        public bool isGNSSfromOG1 = false;
+        public bool isDataFromOGudpBlade = false;
         // Verrou pour empêcher les accès simultanés aux données de positionnement (Thread-safety)
         private readonly object _positionLock = new object();
 
@@ -94,7 +95,7 @@ namespace OpenGrade
                                 // 8. Validate frame integrity and filter specifically for AgIO GPS Packets (ID: 0x01 0x01)
                                 if (calculatedCrc == receivedCrc)
                                 {
-                                    if (msgId1 == 0x7C && msgId2 == 0xD6)
+                                    if (msgId1 == 0x7C && msgId2 == 0xD6 && !isGNSSfromOG1)
                                     {
                                         // Extract data immediately to spend as little time as possible on the network thread
                                         ParseAgIoGpsPacket(data);
@@ -103,7 +104,15 @@ namespace OpenGrade
                                     if (msgId1 == 0x6A && msgId2 == 0xD1)
                                     {
                                         // Extract data immediately to spend as little time as possible on the network thread
+                                        isGNSSfromOG1 = true;
                                         ParseOG1GpsPacket(data);
+                                    }
+
+                                    if (msgId1 == 0x6A && msgId2 == 0xE1)
+                                    {
+                                        isDataFromOGudpBlade = true;
+                                        // Extract data from blade module 1
+                                        ParseOGBlade1Packet(data);
                                     }
                                 }
                             }
@@ -305,6 +314,12 @@ namespace OpenGrade
             }
         }
 
+        private void ParseOGBlade1Packet(byte[] data)
+        {
+            // Implementation for parsing OG Blade 1 packet
+            bladeOffSetSlave = data[8];
+            // to be added, 
+        }
 
         public void SendPgnToLoop(byte[] byteData)
         {

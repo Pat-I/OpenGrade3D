@@ -183,6 +183,25 @@ namespace OpenGrade
         public void RateRelayDataOutToPort()
         //public void RateRelayOutToPort(byte[] items, int numItems)
         {
+            if (isDataFromOGudpBlade)
+            {
+                byte[] message = new byte[14];
+                message[0] = 0x80; // standard AIO header
+                message[1] = 0x81; // PGN header
+                message[2] = 0x61; // SRC address
+                message[3] = 0xBA; // PGN
+                message[4] = 8; // Length
+                // --- INSERT BLADECUTALTITUDE (Bytes 5, 6, 7, 8) ---
+                // Convert the 32-bit integer into its 4 raw bytes and copy them starting at index 5
+                Buffer.BlockCopy(BitConverter.GetBytes(bladeCutAltitude), 0, message, 5, 4);
+                // Remaining payload data
+                message[9] = mc.relayRateData[mc.cutValve];
+                message[10] = mc.relayRateData[mc.bladeOffset];
+                message[11] = 0;
+                message[12] = 0;
+
+                SendPgnToLoop(message);
+            }
             //Tell Arduino to turn section on or off accordingly
             if (spRelay.IsOpen)
             {
@@ -199,6 +218,26 @@ namespace OpenGrade
         public void RateRelaySettingsOutToPort()
         //public void RateRelayOutToPort(byte[] items, int numItems)
         {
+            if (isDataFromOGudpBlade)
+            {
+                byte[] message = new byte[14];
+                message[0] = 0x80; // standard AIO header
+                message[1] = 0x81; // PGN header
+                message[2] = 0x61; // SRC address
+                message[3] = 0xB8; // PGN
+                message[4] = 8; // Length
+                message[5] = mc.relayRateSettings[mc.rsPwmGainUp];
+                message[6] = mc.relayRateSettings[mc.rsPwmGainDown];
+                message[7] = mc.relayRateSettings[mc.rsPwmMinUp];
+                message[8] = mc.relayRateSettings[mc.rsPwmMinDown];
+                message[9] = mc.relayRateSettings[mc.rsPwmMaxUp];
+                message[10] = mc.relayRateSettings[mc.rsPwmMaxDown];
+                message[11] = mc.relayRateSettings[mc.rsIntegralMultiplier];
+                message[12] = mc.relayRateSettings[mc.rsDeadband];
+
+                SendPgnToLoop(message);
+            }
+
             //Tell Arduino to turn section on or off accordingly
             if (spRelay.IsOpen)
             {

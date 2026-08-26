@@ -1811,7 +1811,7 @@ namespace OpenGrade
             {
                     isNTRIP_RequiredOn = true;
                     stripDistance.Text = gStr.gsWaiting;
-                    lblWatch.Text = "Waiting";
+                    lblWatch.Text = "WAITING";
             }
             
 
@@ -1888,6 +1888,15 @@ namespace OpenGrade
 
 
                 isGNSSrecieved++;
+
+                if (isGNSSrecieved > 500)
+                {
+                    //more than 4 second no GNSS data,
+                    isGNSSrecieved = 101;
+                    var form = new FormTimedMessage(4000, "No input", "No GNSS data received");
+                    form.Show();
+                    UpdateFixPosition();
+                }
 
                 if (fiveSecondCounter++ > 500)
                 {

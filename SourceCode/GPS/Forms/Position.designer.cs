@@ -89,7 +89,7 @@ namespace OpenGrade
             }
             
             //must make sure arduinos are kept off
-            else
+            else if (isGNSSrecieved > 100)
             {
                 if (!isGPSPositionInitialized)  mc.ResetAllModuleCommValues();
             }
@@ -316,6 +316,7 @@ namespace OpenGrade
             #region Calculate Heigt
             //reset cut delta for frame
             cutDelta = 9999;
+            bladeCutAltitude = 22000000;
 
             int closestPoint = 0;
             int ptCnt = ct.ptList.Count;
@@ -325,6 +326,7 @@ namespace OpenGrade
             {
 
                 cutDelta = (pn.altitude - ct.zeroAltitude) * 100;
+                bladeCutAltitude = (int)Math.Round(ct.zeroAltitude * 1000);
 
             }
             if (ptCnt > 0)
@@ -992,9 +994,8 @@ namespace OpenGrade
                     //double temp = (double)closestPoint / (double)count2;
                     if (cboxLaserModeOnOff.Checked)
                     {
-
                         cutDelta = (pn.altitude - ct.zeroAltitude) * 100;
-
+                        bladeCutAltitude = (int)Math.Round(ct.zeroAltitude * 1000);
                     }
                     else
                     {
@@ -1002,6 +1003,7 @@ namespace OpenGrade
                         {
                             //in cm
                             cutDelta = (pn.altitude - avgCutAltitude) * 100;
+                            bladeCutAltitude = (int)Math.Round(avgCutAltitude * 1000);
                         }
                     }
                 }
@@ -1033,7 +1035,7 @@ namespace OpenGrade
                 }        
             }
             //blade offset from arduino here
-            if (!spRelay.IsOpen)
+            if (!spRelay.IsOpen || !isDataFromOGudpBlade)
             {
                 bladeOffSetSlave = 0;
             }
