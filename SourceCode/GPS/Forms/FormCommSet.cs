@@ -241,7 +241,7 @@ namespace OpenGrade
         {
             //GPS phrase
             textBoxRcv.Text = mf.recvSentenceSettings;
-            //mf.recvSentenceSettings = "";
+            //mf.recvSentenceSettings = ""
 
             //RateRelay phrases
             txtBoxRecvArduino.Text = mf.mc.serialRecvRelayRateStr;

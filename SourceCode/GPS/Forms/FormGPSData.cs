@@ -33,8 +33,12 @@ namespace OpenGrade
             lblStatus.Text = mf.Status;
             lblHDOP.Text = mf.HDOP;
 
-            tboxSerialFromRelay.Text = mf.mc.serialRecvRelayRateStr;
-            tboxSerialToRelay.Text = mf.mc.relayRateData[0] + "," + mf.mc.relayRateData[1]
+            if (mf.isDataFromOGudpBlade)
+            {
+                tboxSerialFromRelay.Text = "from UDP";
+            }
+            else tboxSerialFromRelay.Text = mf.mc.serialRecvRelayRateStr;
+            tboxSerialToRelay.Text = mf.bladeCutAltitude.ToString() + "," + mf.mc.relayRateData[0] + "," + mf.mc.relayRateData[1]
                  + "," + mf.mc.relayRateData[2] + "," + mf.mc.relayRateData[3] + "," + mf.mc.relayRateData[4] + "," + mf.mc.relayRateData[5]
                  + "," + mf.mc.relayRateData[6] + "," + mf.mc.relayRateData[7]; //setpoint hi lo  
             tboxNMEASerial.Text = mf.recvSentenceSettings;
