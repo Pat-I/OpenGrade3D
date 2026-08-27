@@ -269,8 +269,6 @@ namespace OpenGrade
         public bool isABSameAsFixHeading = true;
         public bool isOnRightSideCurrentLine = true;
 
-        public bool isDrawingRefLine;
-
         //pure pursuit values
         public vec2 goalPointCT = new vec2(0, 0);
 
@@ -491,21 +489,62 @@ namespace OpenGrade
                     gl.End();
                 }
 
-                //Draw a contour line
+                // Draw a contour line
+                bool firstPt = true;
+                int firstContourPt = 0;
+                int lastContourPt = 0;
 
-               
-                
                 gl.LineWidth(2);
-                gl.Color(0.98f, 0.2f, 0.0f);
+                gl.Color(0.98f, 0.2f, 0.0f); // Default Red
+
                 gl.Begin(OpenGL.GL_LINE_STRIP);
                 for (int h = 0; h < ptCount; h++)
                 {
                     if (surveyList[h].code == 2)
+                    {
+                        if (firstPt)
+                        {
+                            firstPt = false;
+                            firstContourPt = h;
+                        }
                         gl.Vertex(surveyList[h].easting, surveyList[h].northing, 0);
-
+                        lastContourPt = h;
+                    }
                 }
-                gl.End();
 
+                if (!firstPt)
+                {
+                    if (recBoundary)//boundary is recording, not closed yet, so draw a dashed yellow line to close the loop
+                    {
+                        // 1. Properly CLOSE the ongoing Red Line Strip first!
+                        gl.End();
+
+                        // 2. Turn on the custom dashed styles and colors
+                        gl.Enable(OpenGL.GL_LINE_STIPPLE);
+                        gl.LineStipple(2, 0xAAAA);
+                        gl.Color(1.0f, 0.9f, 0.0f); // Bright Yellow
+
+                        // 3. Start a brand new, isolated segment to close the boundary loop
+                        gl.Begin(OpenGL.GL_LINES);
+                        gl.Vertex(surveyList[lastContourPt].easting, surveyList[lastContourPt].northing, 0);
+                        gl.Vertex(surveyList[firstContourPt].easting, surveyList[firstContourPt].northing, 0);
+                        gl.End(); // Properly CLOSE the yellow dashed line loop
+
+                        // 4. Cleanup the state machine right away
+                        gl.Disable(OpenGL.GL_LINE_STIPPLE);
+                    }
+                    else
+                    {
+                        // the boundary is closed, so draw a solid red line to close the loop
+                        gl.Vertex(surveyList[firstContourPt].easting, surveyList[firstContourPt].northing, 0);
+                        gl.End();
+                    }
+                }
+                else
+                {
+                    // Safety guard: if no points matched, close the initial Begin() to prevent memory leaks
+                    gl.End();
+                }
 
             }
             else //Grading mode
@@ -1013,6 +1052,7 @@ namespace OpenGrade
                     }
 
                     double lastCode = 2;
+                    int firstZonePt = (boundaryPtCnt - 1);
 
                     gl.LineWidth(2);
                     gl.Color(0.73f, 0.27f, 0.69f);
@@ -1028,17 +1068,20 @@ namespace OpenGrade
                         }
                         else 
                         {
+                            gl.Vertex(boundaryList[firstZonePt].easting, boundaryList[firstZonePt].northing, 0);
                             gl.End();
                             gl.LineWidth(1);
                             gl.Color(0.0f, 0.0f, 0.0f);
                             gl.Begin(OpenGL.GL_LINE_STRIP);
                             gl.Vertex(boundaryList[t].easting, boundaryList[t].northing, 0);
+                            firstZonePt = t;
                         }
                         
 
                         lastCode = boundaryList[t].code;
 
                     }
+                    gl.Vertex(boundaryList[firstZonePt].easting, boundaryList[firstZonePt].northing, 0);
                     gl.End();
                 }
 
