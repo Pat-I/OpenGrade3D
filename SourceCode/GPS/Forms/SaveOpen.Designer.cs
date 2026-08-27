@@ -1910,18 +1910,46 @@ namespace OpenGrade
 
                         double lat = double.Parse(words[0], CultureInfo.InvariantCulture);
                         double lon = double.Parse(words[1], CultureInfo.InvariantCulture);
+                        double altitude = double.Parse(words[2], CultureInfo.InvariantCulture);
                         pn.ConvertWGS84ToLocal(lat, lon, out double Northing, out double Easting);
 
+                        double dist2 = 0;
+                        double dAlt = 0;
+
+                        // Check if we already have points in the list to calculate distance from
+                        if (ct.surveyList.Count > 0)
+                        {
+                            // Get the very last point currently in the list
+                            SurveyPt lastPoint = ct.surveyList[ct.surveyList.Count - 1];
+
+                            // Calculate differences in local coordinates
+                            double dE = Easting - lastPoint.easting;
+                            double dN = Northing - lastPoint.northing;
+                            dAlt = Math.Abs(altitude - lastPoint.altitude);
+                            // Calculate squared distance (Pythagoras: a² + b² = c²)
+                            dist2 = (dE * dE) + (dN * dN);
+                        }
+                        else
+                        {
+                            // If the list is empty, force dist2 to be greater than 4 
+                            // so the very first point of the file is always saved
+                            dist2 = 999;
+                        }
+
+                        // Only add the point if it is more than 3 meters away (since 3² = 9) or if the altitude difference is greater than 0.06 meters and dist 1m
+                        if ((dist2 > 1 && dAlt > 0.06) || dist2 > 9) 
+                        { 
                         SurveyPt point = new SurveyPt(
                             Easting,
                             Northing,
-                            lat ,
-                            lon ,
+                            lat,
+                            lon,
                             double.Parse(words[2], CultureInfo.InvariantCulture),
                             3,
                             int.Parse(words[3], CultureInfo.InvariantCulture));
 
                         ct.surveyList.Add(point);
+                        }
                         //}
                     }
                 }
