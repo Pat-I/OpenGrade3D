@@ -67,7 +67,7 @@ namespace OpenGrade
         private int flagNumberPicked = 0;
 
         //Is it in 2D or 3D, metric or imperial, display lightbar, display grid etc
-        public bool isIn3D = true, isMetric = true, isLightbarOn = true, isGridOn, isSideGuideLines = true, isGradual = false, isGradualMulticolor = true;
+        public bool isIn3D = true, isMetric = true, areDesignPtsOn = true, isGridOn, isSideGuideLines = true, isGradual = false, isGradualMulticolor = true;
 
         public bool isPureDisplayOn = true, isSkyOn = true, isBigAltitudeOn = false;
 

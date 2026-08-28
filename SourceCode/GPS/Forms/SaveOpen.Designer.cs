@@ -348,8 +348,8 @@ namespace OpenGrade
                         isGridOn = Properties.Settings.Default.setMenu_isGridOn;
                         gridToolStripMenuItem.Checked = (isGridOn);
 
-                        isLightbarOn = Properties.Settings.Default.setMenu_isLightbarOn;
-                        lightbarToolStripMenuItem.Checked = isLightbarOn;
+                        areDesignPtsOn = Properties.Settings.Default.setMenu_isLightbarOn;
+                        lightbarToolStripMenuItem.Checked = areDesignPtsOn;
 
                         isPureDisplayOn = Properties.Settings.Default.setMenu_isPureOn;
                         pursuitLineToolStripMenuItem.Checked = isPureDisplayOn;

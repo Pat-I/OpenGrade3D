@@ -146,8 +146,8 @@ namespace OpenGrade
             isLogNMEA = Settings.Default.setMenu_isLogNMEA;
             logNMEAMenuItem.Checked = isLogNMEA;
 
-            isLightbarOn = Settings.Default.setMenu_isLightbarOn;
-            lightbarToolStripMenuItem.Checked = isLightbarOn;
+            areDesignPtsOn = Settings.Default.setMenu_isLightbarOn;
+            lightbarToolStripMenuItem.Checked = areDesignPtsOn;
 
             isPureDisplayOn = Settings.Default.setMenu_isPureOn;
             pursuitLineToolStripMenuItem.Checked = isPureDisplayOn;
@@ -699,10 +699,11 @@ namespace OpenGrade
 
         private void btnCutFillElev_Click(object sender, EventArgs e)
         {
-            if(ct.isElevation)
+            ct.needsRebuildTerrainBuffers = true;
+
+            if (ct.isElevation)
             {
                 ct.isElevation = false;
-                ct.drawTheMap = true;
                 btnCutFillElev.Text = "Cut/Fill";
                 if (ct.isActualCut) btnPropExist.Text = "actual Cut";
                 else if (ct.isActualFill) btnPropExist.Text = "act Cut/Fill";
@@ -710,8 +711,7 @@ namespace OpenGrade
             }
             else
             {
-                ct.isElevation = true;
-                ct.drawTheMap = true;
+                ct.isElevation = true;            
                 btnCutFillElev.Text = "Elevation";
                 if (ct.isExistingElevation) btnPropExist.Text = "Existing";
                 else btnPropExist.Text = "Proposed";
@@ -720,19 +720,19 @@ namespace OpenGrade
 
         private void btnPropExist_Click(object sender, EventArgs e)
         {
-            if(ct.isElevation)
+            ct.needsRebuildTerrainBuffers = true;
+
+            if (ct.isElevation)
             {
                 if(ct.isExistingElevation)
                 {
                     ct.isExistingElevation = false;
                     btnPropExist.Text = "Proposed";
-                    ct.drawTheMap = true;
                 }
                 else
                 {
                     ct.isExistingElevation = true;
                     btnPropExist.Text = "Existing";
-                    ct.drawTheMap = true;
                 }
             }
             else
@@ -743,21 +743,18 @@ namespace OpenGrade
                     {
                         ct.isActualFill = false;
                         btnPropExist.Text = "Proposed";
-                        ct.drawTheMap = true;
                     }
                     else
                     {
                         ct.isActualCut = true;
                         btnPropExist.Text = "actual Cut";
-                        ct.drawTheMap = true;
                     }
                 }
                 else
                 {
                     ct.isActualCut = false;
                     ct.isActualFill = true;
-                    btnPropExist.Text = "act Cut/Fill";
-                    ct.drawTheMap = true;
+                    btnPropExist.Text = "act Cut/Fill";     
                 }
             }
         }
@@ -1008,9 +1005,9 @@ namespace OpenGrade
         }
         private void lightbarToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            isLightbarOn = !isLightbarOn;
-            lightbarToolStripMenuItem.Checked = isLightbarOn;
-            Settings.Default.setMenu_isLightbarOn = isLightbarOn;
+            areDesignPtsOn = !areDesignPtsOn;
+            lightbarToolStripMenuItem.Checked = areDesignPtsOn;
+            Settings.Default.setMenu_isLightbarOn = areDesignPtsOn;
             Settings.Default.Save();
         }
         private void polygonsToolStripMenuItem_Click(object sender, EventArgs e)
