@@ -139,7 +139,8 @@ namespace OpenGrade
             UpdateFixPosition();
         }
 
-        //call for position update after valid NMEA sentence
+        //call for position update after valid NMEA sentence,
+        //this is the beginning of a loop for each GNSS position update
         private void UpdateFixPosition()
         {
             startCounter++;
@@ -147,7 +148,7 @@ namespace OpenGrade
             if (!isGPSPositionInitialized) { InitializeFirstFewGPSPositions(); return; }
 
             #region Roll
-
+            /* //exclude roll correction for now, no offset correction for now
             if (mc.rollRaw != 9999)
             {
                 //calculate how far the antenna moves based on sidehill roll
@@ -166,7 +167,7 @@ namespace OpenGrade
                     pn.northing = (Math.Sin(fixHeading) * rollCorrectionDistance) + pn.northing;
                 }
             }
-
+            */
             //tiltDistance = (pitch * vehicle.antennaHeight);
             ////pn.easting = (Math.Sin(fixHeading) * tiltDistance) + pn.easting;
             //pn.northing = (Math.Cos(fixHeading) * tiltDistance) + pn.northing;

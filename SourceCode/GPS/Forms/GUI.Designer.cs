@@ -352,6 +352,7 @@ namespace OpenGrade
                     }
                 }
                 lblScale.Text = ct.ScaleFactor + " %";
+                ct.needsRebuildTerrainBuffers = true;
             }
             else
             {
@@ -398,6 +399,7 @@ namespace OpenGrade
                 btnColorFillMin.BackColor = System.Drawing.Color.FromArgb(redFillMin, grnFillMin, bluFillMin);
                 btnColorCutMin.BackColor = System.Drawing.Color.FromArgb(redCutMin, grnCutMin, bluCutMin);
             }
+            ct.needsRebuildTerrainBuffers = true;
         }
 
         // Buttons //-----------------------------------------------------------------------
@@ -518,6 +520,7 @@ namespace OpenGrade
             }
             camera.camSetDistance = zoomValue * zoomValue * -1;
             SetZoom();
+            ct.needsRebuildTerrainBuffers = true;
         }
 
         //button for Manual On Off of the sections
@@ -775,6 +778,7 @@ namespace OpenGrade
             else zoomValue += zoomValue * 0.05;
             camera.camSetDistance = zoomValue * zoomValue * -1;
             SetZoom();
+            ct.needsRebuildTerrainBuffers = true;
         }
         private void btnZoomOut_MouseDown(object sender, MouseEventArgs e)
         {
@@ -784,6 +788,7 @@ namespace OpenGrade
 
             camera.camSetDistance = zoomValue * zoomValue * -1;
             SetZoom();
+            ct.needsRebuildTerrainBuffers = true;
         }
 
         //view tilt up down and saving in settings
@@ -791,11 +796,13 @@ namespace OpenGrade
         {
             camera.camPitch -= ((camera.camPitch * 0.03) - 1);
             if (camera.camPitch > 0) camera.camPitch = 0;
+            ct.needsRebuildTerrainBuffers = true;
         }
         private void btnTiltDown_MouseDown(object sender, MouseEventArgs e)
         {
             camera.camPitch += ((camera.camPitch * 0.03) - 1);
             if (camera.camPitch < -80) camera.camPitch = -80;
+            ct.needsRebuildTerrainBuffers = true;
         }
 
         private void btnSnap_Click(object sender, EventArgs e)
@@ -1901,6 +1908,8 @@ namespace OpenGrade
                     if (sp.IsOpen) DoNTRIPSecondRoutine(); // Only when gps port is open
                     else lblWatch.Text = "Ntrip off";
                     fiveSecondCounter = 0;
+                    //rebuild the terrain buffers every 5 seconds, because it only draw around the current position, moving need to rebuild the buffers
+                    ct.needsRebuildTerrainBuffers = true;
                 }
 
                
