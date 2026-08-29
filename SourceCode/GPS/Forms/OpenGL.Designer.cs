@@ -428,7 +428,7 @@ namespace OpenGrade
             gl.MatrixMode(OpenGL.GL_MODELVIEW);
         }
 
-        //main openGL draw function
+        //the second openGL vertical profiledraw function
         private void openGLControlBack_OpenGLDraw(object sender, RenderEventArgs args)
         {
             OpenGL gl = openGLControlBack.OpenGL;
