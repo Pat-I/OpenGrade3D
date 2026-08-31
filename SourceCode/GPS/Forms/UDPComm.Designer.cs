@@ -293,7 +293,7 @@ namespace OpenGrade
                 // Byte 39: int16 IMU Yaw Rate x100
                 short rawImuYaw = BitConverter.ToInt16(data, 39);
                 double imuYaw = rawImuYaw / 100.0;
-                if (Math.Abs(imuYaw) <= 361.0) pn.GPSyawRate = (float)imuYaw;
+                if (Math.Abs(imuYaw) <= 319.0) pn.GPSyawRate = (float)imuYaw;
 
                 // Reset timeout watchdog counter
                 recvCounter = 0;
