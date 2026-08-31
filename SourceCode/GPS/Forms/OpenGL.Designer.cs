@@ -529,19 +529,31 @@ namespace OpenGrade
                     //ct.ptList[closestPoint].lastPassAltitude = pn.altitude;
 
                     //draw if on
-                    //if (cboxLastPass.Checked)
-                    //{
-                    gl.LineWidth(2);
+                    if (cboxLastPass.Checked)
+                    {
+                        //the line of last blade pass, if it exists
+                        gl.LineWidth(2);
                     gl.Begin(OpenGL.GL_LINE_STRIP);
 
                     gl.Color(0.40f, 0.970f, 0.400f);
-                    for (int i = 0; i < elePtCount; i++)
+                    for (int i = 0; i < 101; i++)
                     {
                         if (ct.eleViewList[i].lastPassAltitude > -998)
                             gl.Vertex(i, (((ct.eleViewList[i].lastPassAltitude - centerY) * altitudeWindowGain) + centerY), 0);
                     }
                     gl.End();
-                    //}
+                        //the line of the current soil height ahead of the blade, if it exists
+                        gl.LineWidth(2);
+                        gl.Begin(OpenGL.GL_LINE_STRIP);
+
+                        gl.Color(.8f , 0.2f, 0.4f);
+                        for (int i = 102; i < elePtCount; i++)
+                        {
+                            if (ct.eleViewList[i].lastPassAltitude > -998)
+                                gl.Vertex(i, (((ct.eleViewList[i].lastPassAltitude - centerY) * altitudeWindowGain) + centerY), 0);
+                        }
+                        gl.End();
+                    }
                     //draw the actual elevation lines and blade
                     gl.LineWidth(8);
                     gl.Begin(OpenGL.GL_LINES);
@@ -1177,7 +1189,7 @@ namespace OpenGrade
         private void CalculateMinMaxZoom()
         {
             minFieldX = 0; minFieldY = 9999999;
-            maxFieldX = 300; maxFieldY = -9999999;
+            maxFieldX = 160; maxFieldY = -9999999;
 
             //every time the section turns off and on is a new patch
             int cnt = ct.eleViewList.Count;
@@ -1220,7 +1232,7 @@ namespace OpenGrade
                 maxFieldX = 0; minFieldX = 0; maxFieldY = 0; minFieldY = 0;
                 cameraDistanceZ = 10;
             }
-            else if (maxFieldYdiff > .02 | minFieldYdiff > .02)
+            else //if (maxFieldYdiff > .02 | minFieldYdiff > .02)
             {
                 //Max horizontal
                 cameraDistanceZ = Math.Abs(minFieldX - maxFieldX);

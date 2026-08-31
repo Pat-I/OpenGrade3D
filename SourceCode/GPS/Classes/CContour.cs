@@ -139,7 +139,7 @@ namespace OpenGrade
         }
     }
 
-    // by pat
+    // the list of points for the map, each color sqaure, 1 meter per default,
     public class mapListPt
     {
         public double eastingMap { get; set; }

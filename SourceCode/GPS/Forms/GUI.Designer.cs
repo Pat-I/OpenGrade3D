@@ -1912,8 +1912,6 @@ namespace OpenGrade
                     ct.needsRebuildTerrainBuffers = true;
                 }
 
-               
-
                 //1 for every .10 of a second update all status ,now 100hz was 4hz
                 if (statusUpdateCounter > 9) //eavery 100ms 10hz
                 {
@@ -1949,7 +1947,6 @@ namespace OpenGrade
                         tboxSentence.Text = recvSentenceSettings;
                     }
 
-
                     //the main formgps window
                     if (isMetric)  //metric or imperial
                     {
@@ -1975,8 +1972,6 @@ namespace OpenGrade
                     //not Metric/Standard units sensitive
                     lblHeading.Text = Heading;
                     lblPureSteerAngle.Text = PureSteerAngle;
-
-
 
                     //check for the fix quality
                     if (pn.fixQuality != 4 && lastFixQuality == 4)
@@ -2031,7 +2026,6 @@ namespace OpenGrade
                         }
                     }
                     
-
                     //update the online indicator
                     if (recvCounter > 50)
                     {

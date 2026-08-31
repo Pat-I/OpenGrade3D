@@ -788,23 +788,15 @@ namespace OpenGrade
                     // if the dist is more than 0.5m
                     if (fixDist > 0.25)
                     {
+                        // --- HIGH-PERFORMANCE QUEUE MANAGEMENT (ZÉRO FOR-LOOP) ---
+                        // 1. Instantly eject the oldest element from the front of the queue (index 0).
+                        // .NET handles the sub-level memory shift natively using highly optimized CPU instructions.
+                        ct.eleViewList.RemoveAt(0);
 
-                        //copy each point one count back: 0 take 1, 1 take 2 etc.
-
-                        for (int i = 0; i < 101; i++)
-                        {
-
-
-                            ct.eleViewList[i].lastPassAltitude = ct.eleViewList[i + 1].lastPassAltitude;
-                            ct.eleViewList[i].easting = ct.eleViewList[i + 1].easting;
-                            ct.eleViewList[i].northing = ct.eleViewList[i + 1].northing;
-                            ct.eleViewList[i].heading = ct.eleViewList[i + 1].heading;
-                            ct.eleViewList[i].altitude = ct.eleViewList[i + 1].altitude;
-                            ct.eleViewList[i].cutAltitude = ct.eleViewList[i + 1].cutAltitude;
-
-                        }
-
-                        //for (int i = 0; i < 101; i++) ct.eleViewList[i] = ct.eleViewList[i + 1]; this is not working
+                        // 2. Append the freshly parsed data point directly to the end of the dynamic list.
+                        // (Replace 'newlyCreatedPoint' with your actual local variable holding the new ViewPt data)
+                        ViewPt pointe = new ViewPt(0, 0, -999, 0, -999, -999);                    
+                        ct.eleViewList.Add(pointe);
 
                         // fill the current point (101)
                         ct.eleViewList[101].lastPassAltitude = pn.altitude;
@@ -823,174 +815,176 @@ namespace OpenGrade
                             ct.eleViewList[101].cutAltitude = -999;
                         }
 
-                        // make the look ahead view
-
-                        //but only if the window is showing
-                        if (openGLControlBack.Visible)
+                        // make the look ahead view                     
+                            // 200 points to fill, 102 to 298?
+                            // build list of the 1024 closest points from mapList.
+                            int mapPtCt = ct.mapList.Count;
+                        if (mapPtCt > 4)
                         {
+                            var distancePairs = new List<(int Index, double Distance2)>(mapPtCt);
 
-
-                            // 200 points to fill, 102 to 298? 4 * 49 = 196
-
-                            for (int j = 1; j < 50; j++)
+                            // 1. Calculate squared vehicle-relative distances for all points in mapList
+                            for (int i = 0; i < mapPtCt; i++)
                             {
+                                double dE = pn.easting - ct.mapList[i].eastingMap;
+                                double dN = pn.northing - ct.mapList[i].northingMap;
+                                distancePairs.Add((i, (dE * dE) + (dN * dN)));
+                            }
 
-                                double AheadEasting = pn.easting + Math.Cos(fixHeading + glm.PIBy2) * -2 * j;
-                                double AheadNorthing = pn.northing + Math.Sin(fixHeading - glm.PIBy2) * -2 * j;
+                            int lookPtCt = distancePairs.Count;
+                            mappingDist = ct.mapList[2].drawPtWidthMap;
 
+                            // Pre-calculate angle vectors once outside the step loop to save trig computations
+                            double cosHeading = Math.Cos(fixHeading + glm.PIBy2);
+                            double sinHeading = Math.Sin(fixHeading - glm.PIBy2);
 
-                                double mindist = 1000000;
-                                int ClosestLookAheadPt = 999999;
-                                int lookPtCt = ct.ptList.Count;
-
-                                if (lookPtCt > 0)
+                            // Only calculate if the panel window is showing
+                            if (openGLControlBack.Visible)
+                            {
+                                // Find each closest point for the next 49 points ahead of the vehicle (0.5m increments)
+                                for (int j = 1; j < 50; j++)
                                 {
-                                    for (int m = 0; m < lookPtCt; m++)
-                                    {
-                                        double distA = (AheadEasting - ct.ptList[m].easting) * (AheadEasting - ct.ptList[m].easting) +
-                                            (AheadNorthing - ct.ptList[m].northing) * (AheadNorthing - ct.ptList[m].northing);
+                                    // Projection coordinates ahead of the vehicle
+                                    double lookAheadDist = 0.5 * j;
+                                    double AheadEasting = pn.easting + cosHeading * -lookAheadDist;
+                                    double AheadNorthing = pn.northing + sinHeading * -lookAheadDist;
 
-                                        if (distA < mindist)
+                                    // Since the array is NOT sorted, we can no longer 'break' early based on vehicle distance.
+                                    // Instead, we scan the whole list, but we filter out points that are too far from the vehicle path.
+                                    // Maximum distance a valid point can be from the vehicle is: (LookAhead Distance + Search Radius)
+                                    double maxVehicleDist = lookAheadDist + 6.0; // 6 meters radius limit
+                                    double maxVehicleDist2 = maxVehicleDist * maxVehicleDist;
+
+                                    double mindist = 1000000;
+                                    int closestMapIndex = -1;
+
+                                    if (lookPtCt > 0)
+                                    {
+                                        for (int m = 0; m < lookPtCt; m++)
                                         {
-                                            mindist = distA;
-                                            ClosestLookAheadPt = m;
+                                            // Fast skip: If the point is physically too far from the tractor's path, ignore it
+                                            if (distancePairs[m].Distance2 > maxVehicleDist2) continue;
+
+                                            int currentMapIdx = distancePairs[m].Index;
+
+                                            // Calculate squared distance from current look-ahead target point
+                                            double dE = AheadEasting - ct.mapList[currentMapIdx].eastingMap;
+                                            double dN = AheadNorthing - ct.mapList[currentMapIdx].northingMap;
+                                            double distA = (dE * dE) + (dN * dN);
+
+                                            if (distA < mindist)
+                                            {
+                                                mindist = distA;
+                                                closestMapIndex = currentMapIdx; // True index pointing to ct.mapList
+                                            }
                                         }
                                     }
-                                }
 
+                                    int targetViewIndex = 101 + j;
+                                    ct.eleViewList[targetViewIndex].easting = AheadEasting;
+                                    ct.eleViewList[targetViewIndex].northing = AheadNorthing;
 
-
-
-
-
-
-                                for (int k = 0; k < 4; k++)
-                                {
-                                    ct.eleViewList[101 + j * 4 - k].easting = AheadEasting;
-                                    ct.eleViewList[101 + j * 4 - k].northing = AheadNorthing;
-
-                                    if (ClosestLookAheadPt != 999999 && mindist < 100)
+                                    // Fixed assignment using the true mapped index
+                                    if (closestMapIndex != -1 && mindist < 36.0) // 36 = 6 meters radius limit squared
                                     {
-                                        //ct.eleViewList[101 + j * 10 - k].lastPassAltitude = pn.altitude;
-                                        ct.eleViewList[101 + j * 4 - k].altitude = ct.ptList[ClosestLookAheadPt].altitude;
-                                        ct.eleViewList[101 + j * 4 - k].cutAltitude = ct.ptList[ClosestLookAheadPt].cutAltitude;
-
-
+                                        ct.eleViewList[targetViewIndex].lastPassAltitude = ct.mapList[closestMapIndex].lastPassAltitudeMap;
+                                        ct.eleViewList[targetViewIndex].altitude = ct.mapList[closestMapIndex].altitudeMap;
+                                        ct.eleViewList[targetViewIndex].cutAltitude = ct.mapList[closestMapIndex].cutAltitudeMap;
                                     }
                                     else
                                     {
-                                        //ct.eleViewList[101 + j * 10 - k].lastPassAltitude = pn.altitude;
-                                        ct.eleViewList[101 + j * 4 - k].altitude = -999;
-                                        ct.eleViewList[101 + j * 4 - k].cutAltitude = -999;
-
+                                        ct.eleViewList[targetViewIndex].lastPassAltitude = -999;
+                                        ct.eleViewList[targetViewIndex].altitude = -999;
+                                        ct.eleViewList[targetViewIndex].cutAltitude = -999;
                                     }
-
                                 }
                             }
-                        }
-                        // the last pass stuff for the map
-                        //find the map resolution
-                        if (mappingDist < 1) mappingDist = 10;
 
-                        // check the dist from curent pt to paint
-                        int ptsBehind = 101 - (int)Math.Round(mappingDist * 1.5 + .9);
+                            // the last pass stuff for the map
+                            //find the map resolution
+                            if (mappingDist < 1) mappingDist = 10;
 
-                        double paintEasting = ct.eleViewList[ptsBehind].easting;
-                        double paintNorting = ct.eleViewList[ptsBehind].northing;
-                        double paintHeading = ct.eleViewList[ptsBehind].heading;
-                        double paintAltitude = ct.eleViewList[ptsBehind].altitude;
-                        double paintCutAlt = ct.eleViewList[ptsBehind].cutAltitude;
-                        double paintLastPass = ct.eleViewList[ptsBehind].lastPassAltitude;
+                            // check the dist from curent pt to paint
+                            int ptsBehind = 101 - (int)Math.Round(mappingDist * 1.5 + .9);
 
-                        if (paintAltitude > -998 && paintCutAlt > -998 && paintLastPass > -998)
-                        {
-                            // calculate the number of pts from to make calculation
-                            double paintToolDist = (vehicle.toolWidth - mappingDist) / 2;
+                            double paintEasting = ct.eleViewList[ptsBehind].easting;
+                            double paintNorting = ct.eleViewList[ptsBehind].northing;
+                            double paintHeading = ct.eleViewList[ptsBehind].heading;
+                            double paintAltitude = ct.eleViewList[ptsBehind].altitude;
+                            double paintCutAlt = ct.eleViewList[ptsBehind].cutAltitude;
+                            double paintLastPass = ct.eleViewList[ptsBehind].lastPassAltitude;
 
-                            if (paintToolDist <= 0) paintToolDist = 0;
-
-                            //search for all near pts
-                            int ptct = ct.mapList.Count;
-                            if (ptct > 5)
+                            if (paintAltitude > -998 && paintCutAlt > -998 && paintLastPass > -998)
                             {
-                                mappingDist = ct.mapList[5].drawPtWidthMap;
-                                //double paintDist = (mappingDist * .75) * (mappingDist * .75);
-                                for (int i = 0; i < ptct; i++)
+                                // calculate the number of pts from to make calculation
+                                double paintToolDist = (vehicle.toolWidth - mappingDist) / 2;
+
+                                if (paintToolDist <= 0) paintToolDist = 0;
+
+                                //search for all near pts
+                                int ptct = ct.mapList.Count;
+                                if (ptct > 5)
                                 {
-                                    //double dist = (paintEasting - ct.mapList[i].eastingMap) * (paintEasting - ct.mapList[i].eastingMap) +
-                                    //(paintNorting - ct.mapList[i].northingMap) * (paintNorting - ct.mapList[i].northingMap);
-                                    double distEasting = Math.Abs(paintEasting - ct.mapList[i].eastingMap);
-                                    double distNorthing = Math.Abs(paintNorting - ct.mapList[i].northingMap);
-                                    if (distEasting < mappingDist * .7 && distNorthing < mappingDist * .7)
-                                    //if (dist < paintDist)
+                                    //double paintDist = (mappingDist * .75) * (mappingDist * .75);
+                                    for (int i = 0; i < ptct; i++)
                                     {
-                                        // fill the lastpass value
-                                        if (paintLastPass < ct.mapList[i].lastPassAltitudeMap | ct.mapList[i].lastPassAltitudeMap < -997)
+                                        // Fast skip: If the point is physically too far from the tractor's path, ignore it
+                                        if (distancePairs[i].Distance2 > 144) continue;
+
+                                        //double dist = (paintEasting - ct.mapList[i].eastingMap) * (paintEasting - ct.mapList[i].eastingMap) +
+                                        //(paintNorting - ct.mapList[i].northingMap) * (paintNorting - ct.mapList[i].northingMap);
+                                        double distEasting = Math.Abs(paintEasting - ct.mapList[i].eastingMap);
+                                        double distNorthing = Math.Abs(paintNorting - ct.mapList[i].northingMap);
+                                        if (distEasting < mappingDist * .7 && distNorthing < mappingDist * .7)
+                                        //if (dist < paintDist)
                                         {
-                                            if (paintLastPass < ct.mapList[i].cutAltitudeMap) ct.mapList[i].lastPassAltitudeMap = ct.mapList[i].cutAltitudeMap;
-                                            else ct.mapList[i].lastPassAltitudeMap = paintLastPass;
-                                        }
-                                        // fill the last real pass
-                                        if (ct.mapList[i].cutDeltaMap <= 0) //area to cut
-                                        {
-                                            if (paintLastPass <= ct.mapList[i].cutAltitudeMap) ct.mapList[i].lastPassRealAltitudeMap = ct.mapList[i].cutAltitudeMap;
-                                            else
+                                            // fill the lastpass value
+                                            if (paintLastPass < ct.mapList[i].lastPassAltitudeMap | ct.mapList[i].lastPassAltitudeMap < -997)
+                                            {
+                                                if (paintLastPass < ct.mapList[i].cutAltitudeMap) ct.mapList[i].lastPassAltitudeMap = ct.mapList[i].cutAltitudeMap;
+                                                else ct.mapList[i].lastPassAltitudeMap = paintLastPass;
+                                            }
+                                            // fill the last real pass
+                                            if (ct.mapList[i].cutDeltaMap <= 0) //area to cut
+                                            {
+                                                if (paintLastPass <= ct.mapList[i].cutAltitudeMap) ct.mapList[i].lastPassRealAltitudeMap = ct.mapList[i].cutAltitudeMap;
+                                                else
+                                                {
+                                                    if (ct.mapList[i].lastPassRealAltitudeMap > paintLastPass | ct.mapList[i].lastPassRealAltitudeMap < -997)
+                                                        ct.mapList[i].lastPassRealAltitudeMap = paintLastPass;
+                                                }
+                                            }
+                                            else // area to fill
                                             {
                                                 if (ct.mapList[i].lastPassRealAltitudeMap > paintLastPass | ct.mapList[i].lastPassRealAltitudeMap < -997)
-                                                    ct.mapList[i].lastPassRealAltitudeMap = paintLastPass;
-                                            }
-                                        }
-                                        else // area to fill
-                                        {
-                                            if (ct.mapList[i].lastPassRealAltitudeMap > paintLastPass | ct.mapList[i].lastPassRealAltitudeMap < -997)
-                                            {
+                                                {
 
-                                                if (paintLastPass >= ct.mapList[i].cutAltitudeMap) ct.mapList[i].lastPassRealAltitudeMap = ct.mapList[i].cutAltitudeMap;
-                                                else if (paintLastPass <= ct.mapList[i].altitudeMap) ct.mapList[i].lastPassRealAltitudeMap = ct.mapList[i].altitudeMap;
-                                                else ct.mapList[i].lastPassRealAltitudeMap = paintLastPass;
+                                                    if (paintLastPass >= ct.mapList[i].cutAltitudeMap) ct.mapList[i].lastPassRealAltitudeMap = ct.mapList[i].cutAltitudeMap;
+                                                    else if (paintLastPass <= ct.mapList[i].altitudeMap) ct.mapList[i].lastPassRealAltitudeMap = ct.mapList[i].altitudeMap;
+                                                    else ct.mapList[i].lastPassRealAltitudeMap = paintLastPass;
+                                                }
                                             }
                                         }
                                     }
-                                }
 
 
-                                if (paintToolDist > 0)
-                                {
-                                    for (double h = paintToolDist; h > 0; h -= mappingDist)
+                                    if (paintToolDist > 0)
                                     {
+                                        for (double h = paintToolDist; h > 0; h -= mappingDist)
+                                        {
 
+                                        }
                                     }
                                 }
                             }
-                        }
 
-                        CalculateMinMaxZoom();
+                            CalculateMinMaxZoom();
+                        }
                     }
                 }
 
                 if (minDist < 90000) // original is 15, meter form the line scare, for 5 meter put 25
                 {
-
-
-                    //record last pass
-
-                    ////draw last pass
-                    //if (cboxLastPass.Checked)
-                    //{
-                    //    ct.ptList[closestPoint].lastPassAltitude = pn.altitude;
-                    //    gl.LineWidth(2);
-                    //    gl.Begin(OpenGL.GL_LINE_STRIP);
-
-                    //    //the dashed accent of ground profile
-                    //    gl.Color(0.40f, 0.970f, 0.400f);
-                    //    for (int i = 0; i < ptCnt; i++)
-                    //    {
-                    //        if (ct.ptList[i].lastPassAltitude > 0)
-                    //            gl.Vertex(i, (((ct.ptList[i].lastPassAltitude - centerY) * altitudeWindowGain) + centerY), 0);
-                    //    }
-                    //    gl.End();
-                    //}
-
                     //calculate blade to guideline delta
                     //double temp = (double)closestPoint / (double)count2;
                     if (cboxLaserModeOnOff.Checked)
