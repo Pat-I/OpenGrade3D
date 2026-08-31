@@ -37,7 +37,14 @@ With real position: the field zero easting/northing will be the actual antenna p
 Position Correction in Config/Vehicle/Design Pt
 Position can be corrected manually or automaticly by positionning the blade on the Master Benchmark and pressing "AUTO"
 
+New August 2026:
+UDP capability.
 
+OG3D now can use AgIO from AgOpenGPS as input Software. There are no UDP parameters in OG3D, it simply communicate on the loopback.
+OG3D and AOG can be run side by side
+
+OG3D will automatically use the AgIO GNSS input (USB or AiO board) unless the OG3D GNSS PGN is detected.
+Check the "PGN OG3D.xlsx" file in the "ArduinoCode" folder for PGN description
 
 
 
