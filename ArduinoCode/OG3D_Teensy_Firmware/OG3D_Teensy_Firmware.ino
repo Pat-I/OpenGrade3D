@@ -76,7 +76,7 @@ String inoVersion = ("\r\nOG3D Ver 2026.08.30 (AIO v4 PCB))");
 #endif
 
 // if not in eeprom, overwrite
-#define EEP_Ident 0x54
+#define EEP_Ident 0x56
 
 #include <Wire.h>
 #include <EEPROM.h>
@@ -414,6 +414,7 @@ void loop() {
 
 			//section relays
 			SetPWM();
+			SendUDPbladeData();
 
 #ifdef useLEDs
 			if (pwmValue < 0) {
@@ -430,7 +431,7 @@ void loop() {
 			}
 #endif
 		}
-
+		/*
 		//send empty pgn to AgIO to show activity
 		if (++helloCounter > 200) {
 			Udp.beginPacket(ipDestination, AOGPort);
@@ -438,6 +439,7 @@ void loop() {
 			Udp.endPacket();
 			helloCounter = 0;
 		}
+		*/
 	}  //end of main timed loop
 
 	//This runs continuously, outside of the timed loop, keeps checking for new udpData, etc
@@ -547,35 +549,6 @@ void udpMessageRecv(int sizeToRead) {
 				// udpData[11] -> not used
 				// udpData[12] -> not used
 				// udpData[13] -> Incoming CRC , not verified
-
-				//Send OG3D uint8_t OG3D[] = { 0x80, 0x81, 0x6a, 0xe1, 8, multipleStatus, pwmDrive, cutValve, bladeOffsetOut, leverUpValue, leverSideValue, not used, pwmHist, 0xCC };
-				OG3D[0] = 0x80;  // Preamble 1
-				OG3D[1] = 0x81;  // Preamble 2
-				OG3D[2] = 0x6a;  // Source address
-				OG3D[3] = 0xe1;  // Response PGN ID
-				OG3D[4] = 8;     // Length of payload data blocks (Bytes 5 to 12)
-
-				// Map status bytes directly into global buffer slots
-				OG3D[5] = multipleValue;
-				OG3D[6] = (uint8_t)(pwmDrive >> 4);  // Single byte approximation
-				OG3D[7] = cutValve;
-				OG3D[8] = bladeOffsetOut;
-				OG3D[9] = leverUpValue;
-				OG3D[10] = leverSideValue;
-				OG3D[11] = 0;  // Not used / Padding slot
-				OG3D[12] = pwmHist;
-
-				// 3. Fast CRC checksum calculation over the global frame indexes
-				uint8_t calculatedCrc = 0;
-				for (int i = 2; i < 13; i++) {
-					calculatedCrc += OG3D[i];
-				}
-				GNSS1[13] = calculatedCrc;
-
-				// 4. Send the updated global frame via UDP
-				Udp.beginPacket(ipDestination, 9999);
-				Udp.write(OG3D, 14);  // We pass 14 bytes explicitly
-				Udp.endPacket();
 			} else if (udpData[3] == 0xB8)  //settings from OG3D
 			{
 				pwmGainUp = (int32_t)udpData[5] << 2;
@@ -763,5 +736,37 @@ void ReadFromEEPROM() {
 		pwmMaxDw = 2880;
 		integralMultiplier = 20;
 		deadband = 5;
+		networkAddress = { 192, 168, 5 };
 	}
+}
+
+void SendUDPbladeData() {
+	//Send OG3D uint8_t OG3D[] = { 0x80, 0x81, 0x6a, 0xe1, 8, multipleStatus, pwmDrive, cutValve, bladeOffsetOut, leverUpValue, leverSideValue, not used, pwmHist, 0xCC };
+	OG3D[0] = 0x80;  // Preamble 1
+	OG3D[1] = 0x81;  // Preamble 2
+	OG3D[2] = 0x6a;  // Source address
+	OG3D[3] = 0xe1;  // Response PGN ID
+	OG3D[4] = 8;     // Length of payload data blocks (Bytes 5 to 12)
+
+	// Map status bytes directly into global buffer slots
+	OG3D[5] = multipleValue;
+	OG3D[6] = (uint8_t)(pwmDrive >> 4);  // Single byte approximation
+	OG3D[7] = cutValve;
+	OG3D[8] = bladeOffsetOut;
+	OG3D[9] = leverUpValue;
+	OG3D[10] = leverSideValue;
+	OG3D[11] = 0;  // Not used / Padding slot
+	OG3D[12] = pwmHist;
+
+	// 3. Fast CRC checksum calculation over the global frame indexes
+	uint8_t calculatedCrc = 0;
+	for (int i = 2; i < 13; i++) {
+		calculatedCrc += OG3D[i];
+	}
+	OG3D[13] = calculatedCrc;
+
+	// 4. Send the updated global frame via UDP
+	Udp.beginPacket(ipDestination, 9999);
+	Udp.write(OG3D, 14);  // We pass 14 bytes explicitly
+	Udp.endPacket();
 }
