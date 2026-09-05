@@ -1,9 +1,14 @@
-
+#ifdef isAllInOneBoard
+#define GPS Serial5
+#define GPS_Dual Serial8
+#define GPS_RTK Serial3
+#define RTK_Baud 115200
+#else //v4.5 ----to set to correct values
 #define GPS Serial5//Serial7
 #define GPS_Dual Serial8
 #define GPS_RTK Serial3
 #define RTK_Baud 115200
-
+#endif
 char rxbuffer[512];         //Extra serial rx buffer
 char txbuffer[1023];        //Extra serial tx buffer
 
