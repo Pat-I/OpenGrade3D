@@ -1,107 +1,92 @@
-/*
- * 
- * 
- * 4 Feb 2021, Brian Tischler
- * Like all Arduino code - copied from somewhere else :)
- * So don't claim it as your own
-
+/* 
+ 4 Feb 2021, Brian Tischler
+ Like all Arduino code - copied from somewhere else :)
+ So don't claim it as your own
 Changes by Pat
--Add HPR decoding for UM982
--add analog height sensor reading as current reading
-		lower voltage is active
-		also need the workswitch, high voltage mean active
-		pressure seting is for CANBUS workswitch
-- ISO GPS position can be send, it doesn't work, need to clean the variable put to gather the isobus position
-
-
-
-
  */
 //----------------------------------------------------------
 
 // it can also be used with the AIO
-// uncomment the following line if you're using the All-In-One-Board
+// uncomment the following line if you're using the All-In-One-Board (proto v5)
 #define isAllInOneBoard
+// uncomment the following line if you're using pins for blade offset
+#define bladeOffsetPropLever
+#define bladeOffsetBtn
+#define useLEDs  // LEDs using four outputs
+//User set variables
+//PWM or relay mode
+bool proportionalValve = true;
+//workswitch or work button
+bool workButton = true;  // true for momentary button, false for switch(continus)
+//proportional lever
+bool manualMovePropLever = true;  //if a lever for manual operation is installed
+bool invertManMove = false;
+// blade off set choose betwen lever or btn or none.
+bool invertBladeOffset = false;
+//PWM or relay mode
 
-// GPS forwarding mode: (Serial Bynav etc)
-// - GPS to Serial3, Forward to AgIO via UDP
-// - Forward Ntrip from AgIO (Port 2233) to Serial3
 
-// Panda Mode
-// - GPS to Serial3, Forward to AgIO as Panda via UDP
-// - Forward Ntrip from AgIO (Port 2233) to Serial3
-// - BNO08x Data sent with Panda data
+#ifdef isAllInOneBoard
 
-//This CAN setup is for CANBUS based steering controllers as below:
-//Danfoss PVED-CL & PVED-CLS (Claas, JCB, Massey Fergerson, CaseIH, New Holland, Valtra, Deutz, Lindner)
-//Fendt SCR, S4, Gen6, FendtOne Models need Part:ACP0595080 3rd Party Steering Unlock Installed
-//Late model Valtra & Massey with PVED-CC valve (Steering controller in Main Tractor ECU)
-//!!Model is selected via serial monitor service tool!! (One day we will will get a CANBUS setup page in AgOpen)
+#define DIR_ENABLE 4  //PD4 cytron dir
+#define PWM_OUT 3     //PD3  cytron pwm
+#define WORKSW_PIN 7  //PD7 this pin must be low (to ground) to activate automode IMP on PCB
+#define LEVER_UP A1   // first axle
+#ifdef bladeOffsetBtn
+#define BOFFUP_PIN 8  //signal (to GND) to move the blade offset up 1 cm?
+#define BOFFDW_PIN 6  //offset down
+#endif
+#ifdef bladeOffsetPropLever
+#define LEVER_SIDE A2  // second axle, if used for blade offset
+#endif
+//leds
+#ifdef useLEDs
+#define LED_DW 2    //DO2 led down (if used)
+#define LED_UP 5    //DO5 led up (if used)
+#define LED_AUTO 9  //DO9 led auto
+#define LED_ON A0   //A0 on led
+#endif
+#else  //AiO v4.5 // pin numbers not set yet
 
-//For engage & disengage via CAN or Button on PCB, select "Button" as switch option in AgOpen
-//For engage via AgOpen tablet & disengage via CAN, select "None" as switch option and make sure "Remote" is on the steering wheel icon
-//For engage & disengage via PCB switch only select "Switch" as switch option
-
-//PWM value drives set curve up & down, so you need to set the PWM settings in AgOpen
-//Normal settings P=15, Max=254, Low=5, Min=1 - Note: New version of AgOpen "LowPWM" is removed and "MinPWM" is used as Low for CANBUS setups (MinPWM hardcoded in .ino coded to 1)
-//Some tractors have very fast valves, this smooths out the setpoint from AgOpen
-
-//Workswitch can be operated via PCB or CAN (Will need to setup CAN Messages in ISOBUS section)
-//17.09.2021 - If Pressure Sensor selected, Work switch will be operated when hitch is less than pressure setting (0-250 x 0.4 = 0-100%)
-//             Note: The above is temporary use of unused variable, as one day we will get hitch % added to AgOpen
-//             Note: There is a AgOpenGPS on MechanicTony GitHub with these two labels & picture changed
-
-//Fendt K-Bus - (Not FendtOne models) Note: This also works with Claas thanks to Ryan
-//Big Go/End is operated via hitch control in AgOpen
-//Arduino Hitch settings must be enableded and sent to module
-//"Invert Relays" Uses section 1 to trigger hitch (Again temporary)
-
+#define DIR_ENABLE 4  //PD4 cytron dir
+#define PWM_OUT 3     //PD3  cytron pwm
+#define WORKSW_PIN 7  //PD7 this pin must be low (to ground) to activate automode IMP on PCB
+#define LEVER_UP A1   // first axle
+#ifdef bladeOffsetBtn
+#define BOFFUP_PIN 8  //signal (to GND) to move the blade offset up 1 cm?
+#define BOFFDW_PIN 6  //offset down
+#endif
+#ifdef bladeOffsetPropLever
+#define LEVER_SIDE A2  // second axle, if used for blade offset
+#endif
+//leds
+#ifdef useLEDs
+#define LED_DW 2    //DO2 led down (if used)
+#define LED_UP 5    //DO5 led up (if used)
+#define LED_AUTO 9  //DO9 led auto
+#define LED_ON A0   //A0 on led
+#endif
+#endif
 //----------------------------------------------------------
 
 #ifdef isAllInOneBoard
 String inoVersion = ("\r\nOG3D Ver 2026.08.30 (AIO v5 Proto PCB))");
-#else
+#else  //AiO v4.5
 String inoVersion = ("\r\nOG3D Ver 2026.08.30 (AIO v4 PCB))");
 #endif
 
 ////////////////// User Settings /////////////////////////
-
-//How many degrees before decreasing Max PWM
-#define LOW_HIGH_DEGREES 3.0
-
 /*  PWM Frequency ->
  *   490hz (default) = 0
  *   122hz = 1
  *   3921hz = 2
  */
-#define PWM_Frequency 0
+#define PWM_Frequency 1
 
 /////////////////////////////////////////////
 
 // if not in eeprom, overwrite
-#define EEP_Ident 0x5422
-
-//   ***********  Motor drive connections  **************888
-//Connect ground only for cytron, Connect Ground and +5v for IBT2
-
-//Dir1 for Cytron Dir, Both L and R enable for IBT2
-#define DIR1_RL_ENABLE 6  //4  //PD4
-
-//PWM1 for Cytron PWM, Left PWM for IBT2
-#define PWM1_LPWM 9  //3  //PD3
-
-//Not Connected for Cytron, Right PWM for IBT2
-#define PWM2_RPWM 4  //9 //D9
-
-//--------------------------- Switch Input Pins ------------------------
-
-#define STEERSW_PIN 2   //32
-#define WORKSW_PIN A17  //34
-#define ANAKO_PIN A12   //26
-#define REMOTE_PIN 3    //37 kickout d
-
-#define CONST_180_DIVIDED_BY_PI 57.2957795130823
-#define RAD_TO_DEG_X_10 572.95779513082320876798154814105
+#define EEP_Ident 0x54
 
 #include <Wire.h>
 #include <EEPROM.h>
@@ -150,15 +135,12 @@ EthernetUDP NtripUdp;
 
 //----Teensy 4.1 Ethernet--End---------------------
 
-//----Teensy 4.1 CANBus--Start---------------------
-//#include <FlexCAN_T4.h>
-//FlexCAN_T4<CAN1, RX_SIZE_256, TX_SIZE_256> K_Bus;    //Tractor / Control Bus
-//----Teensy 4.1 CANBus--End-----------------------
-
 //Main loop time variables in microseconds
-const uint16_t LOOP_TIME = 40;  //25Hz
+const uint16_t LOOP_TIME = 5;  //200Hz
 uint32_t lastTime = LOOP_TIME;
 uint32_t currentTime = LOOP_TIME;
+uint32_t watchdogTimer = 0;
+uint32_t loopTimer = 0;
 
 //IMU data
 bool blink;
@@ -180,25 +162,13 @@ float utcTime, geoidalGGA;
 uint8_t fixTypeGGA, satsGGA;
 float hdopGGA, rtkAgeGGA;
 
-const uint16_t WATCHDOG_THRESHOLD = 100;
-const uint16_t WATCHDOG_FORCE_VALUE = WATCHDOG_THRESHOLD + 2;  // Should be greater than WATCHDOG_THRESHOLD
-uint8_t watchdogTimer = WATCHDOG_FORCE_VALUE;
-
-//Parsing PGN
-bool isPGNFound = false, isHeaderFound = false;
-uint8_t pgn = 0, dataLength = 0, idx = 0;
-int16_t tempHeader = 0;
-
 //show life in AgIO - v5.5
 uint8_t helloAgIO[] = { 0x80, 0x81, 0x7f, 0xC7, 1, 0, 0x47 };
-uint8_t helloCounter = 0;
+uint32_t helloCounter = 0;
 
 //Heart beat hello AgIO - v5.6
 uint8_t helloFromAutoSteer[] = { 128, 129, 126, 126, 5, 0, 0, 0, 0, 0, 71 };
 int16_t helloSteerPosition = 0;
-
-
-
 
 //from OG3D board to OG3D 6A E1 -
 uint8_t OG3D[] = { 0x80, 0x81, 0x6a, 0xe1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0xCC };
@@ -208,18 +178,45 @@ int16_t OG3DSize = sizeof(OG3D);
 uint8_t GNSS1[] = { 0x80, 0x81, 0x6a, 0xd1, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xCC };
 int8_t GNSS1_Size = sizeof(GNSS1);
 
-int64_t longitudeOG=200000000, latitudeOG=200000000; // x 1000 000 000
-int32_t altitudeOG=20000000; //mm
-uint16_t dualHeadingOG= 40000, singleHeadingOG=40000, imuHeadingOG=40000;  // x 100
-int16_t dualRollOG=32000, imuRollOG=32000, imuPitchOG=32000, imuYawRateOG=32000, speedOG=32000, hdopOG=0, ageOG=0;  // x100, km/h x 100,
-uint8_t fixQualityOG=0, satNbrOG=0;
-//EEPROM
-int16_t EEread = 0;
+int64_t longitudeOG = 200000000, latitudeOG = 200000000;                                                                          // x 1000 000 000
+int32_t altitudeOG = 20000000;                                                                                                    //mm
+uint16_t dualHeadingOG = 40000, singleHeadingOG = 40000, imuHeadingOG = 40000;                                                    // x 100
+int16_t dualRollOG = 32000, imuRollOG = 32000, imuPitchOG = 32000, imuYawRateOG = 32000, speedOG = 32000, hdopOG = 0, ageOG = 0;  // x100, km/h x 100,
+uint8_t fixQualityOG = 0, satNbrOG = 0;
 
+//Blade control variables
+byte deadband = 5;
+byte cutValve = 100, cutValveReceived = 100;
+int32_t targetAltitude = 20000000;
+//workSwitch
+bool workSwitch = true;  //high is circuit open, low is switch grounded
+bool autoEnable = false;
+bool settingsRecieved = false;
+bool dataRecieved = false;
+byte multipleValue = 0;
+//pwm variables
+byte pwmDrive = 0, pwmDisplay = 0, pwmGainUp = 0, pwmMinUp = 0, pwmGainDw = 0, pwmMinDw = 0, pwmMaxUp = 0, pwmMaxDw = 0, integralMultiplier = 0;
+int pwmValue = 0;
+float pwmValueCalc = 0;
+int plannedValveValue = 0, pwm1ago = 0, pwm2ago = 0, pwm3ago = 0, pwm4ago = 0, pwm5ago = 0;
+float pwmHist = 0;
 
+//AutoControl switch button  ***********************************************************************************************************
+byte currentState = 1;
+byte reading;
+byte previous = 0;
 
-//speed sent as *10
-float gpsSpeed = 0;
+//BladeOffset stuff ************************************************************
+int bladeOffsetIn = 0, bladeOffsetOut = 0;
+
+byte bOUprevious = 0;
+byte bODprevious = 0;
+
+int leverUpValue = 0;
+int leverSideValue = 0;
+int LeverPushValue = 0;
+int onLedTime = 0;
+int autoLedTime = 0;
 
 //*******************************************************************************
 
@@ -229,38 +226,37 @@ void setup() {
 	Serial.print("CPU speed set to: ");
 	Serial.println(F_CPU_ACTUAL);
 
-	//keep pulled high and drag low to activate, noise free safe
-
-	//pinMode(ANAKO_PIN, INPUT_DISABLE);
-	//pinMode(WORKSW_PIN, INPUT_DISABLE);
-	//pinMode(STEERSW_PIN, INPUT_PULLUP);
-	//pinMode(REMOTE_PIN, INPUT_PULLUP);
-	//pinMode(DIR1_RL_ENABLE, OUTPUT);
 	pinMode(13, OUTPUT);
 
-	//pinMode(PWM2_RPWM, OUTPUT);
-
+	pinMode(DIR_ENABLE, OUTPUT);
+	pinMode(PWM_OUT, OUTPUT);
+	//keep pulled high and drag low to activate, noise free safe
+	pinMode(WORKSW_PIN, INPUT_PULLUP);
+	pinMode(LEVER_UP, INPUT_DISABLE);
+#ifdef bladeOffsetBtn
+	pinMode(BOFFUP_PIN, INPUT_PULLUP);
+	pinMode(BOFFDW_PIN, INPUT_PULLUP);
+#endif
+#ifdef bladeOffsetPropLever
+	pinMode(LEVER_SIDE, INPUT_DISABLE);
+#endif
+#ifdef useLEDs
+	pinMode(LED_DW, OUTPUT);
+	pinMode(LED_UP, OUTPUT);
+	pinMode(LED_AUTO, OUTPUT);
+	pinMode(LED_ON, OUTPUT);
+#endif
 	//set up communication
 	//Wire.begin();
 	Serial.begin(115200);
 
-	delay(2000);
+	delay(500);
 #ifdef isAllInOneBoard
 	LEDs.init();
 	LEDs.set(LED_ID::PWR_ETH, PWR_ETH_STATE::PWR_ON);
 #endif
 
-	EEPROM.get(0, EEread);  // read identifier
-
-	if (EEread != EEP_Ident)  // check on first start and write EEPROM
-	{
-		EEPROM.put(0, EEP_Ident);
-		EEPROM.put(60, networkAddress);
-	} else {
-		//EEPROM.get(6, aogConfig);       //Machine
-		//EEPROM.get(10, steerSettings);  // read the Settings
-		EEPROM.get(60, networkAddress);
-	}
+	ReadFromEEPROM();
 
 	//----Teensy 4.1 Ethernet--Start---------------------
 
@@ -296,11 +292,10 @@ void setup() {
 
 	//----Teensy 4.1 Ethernet--End---------------------
 
-	//----Teensy 4.1 CANBus--Start---------------------
+#ifdef isAllInOneBoard
 	LEDs.set(LED_ID::STEER, STEER_STATE::AUTOSTEER_READY);
-	//pinMode(AUTOSTEER_STANDBY_LED, LOW);
-	//pinMode(AUTOSTEER_ACTIVE_LED, LOW);
-	//----Teensy 4.1 CANBus--End---------------------
+#else  //v4.5
+#endif
 
 	Serial.print(inoVersion);
 	Serial.println("\r\nSetup complete, waiting for OG3D");
@@ -312,20 +307,133 @@ void loop() {
 	currentTime = millis();
 
 	//--Main Timed Loop----------------------------------
-	if (currentTime - lastTime >= LOOP_TIME) {
+	if (currentTime - lastTime >= LOOP_TIME) {  //200Hz
 		lastTime = currentTime;
+		loopTimer++;
+		//If connection lost to AgOpenGPS, the watchdog will count up
+		if (watchdogTimer++ > 250) watchdogTimer = 150;
 
-		//If connection lost to AgOpenGPS, the watchdog will count up and turn off steering
-		if (watchdogTimer++ > 250) watchdogTimer = WATCHDOG_FORCE_VALUE;
+		if (dataRecieved || loopTimer > 26)  //as soon as GNSS data is recieved or each 130 ms
+		{
+			dataRecieved = false;
+			loopTimer = 0;
 
-		//read all the switches
-		if (watchdogTimer < WATCHDOG_THRESHOLD) {
-			//We are good to steer
-			//digitalWrite(PWM2_RPWM, 1);
+// On LED settings
+#ifdef useLEDs
+			if (settingsRecieved) {
+				digitalWrite(LED_ON, HIGH);
+				onLedTime = 0;
+			} else {
+				if (onLedTime > 19) onLedTime = 0;
+				if (onLedTime < 11) digitalWrite(LED_ON, HIGH);
+				else digitalWrite(LED_ON, LOW);
+				onLedTime++;
+			}
+
+			// auto LED settings
+			if (workSwitch == 0)  // Auto mode
+			{
+
+				if (autoEnable) {
+					digitalWrite(LED_AUTO, HIGH);
+					autoLedTime = 0;
+				} else {
+					if (autoLedTime > 7) autoLedTime = 0;
+					if (autoLedTime > 3) digitalWrite(LED_AUTO, HIGH);
+					else digitalWrite(LED_AUTO, LOW);
+					autoLedTime++;
+				}
+			} else {
+				digitalWrite(LED_AUTO, LOW);
+				autoLedTime = 0;
+			}
+#endif
+			//safety - turn off if confused
+			if (watchdogTimer > 140) {
+				workSwitch = 1;
+				cutValve = 100;
+				targetAltitude = 22000000;
+			} else {
+				//read the  work switch
+				if (workButton) {
+					//steer Button momentary
+
+					reading = digitalRead(WORKSW_PIN);
+					if (reading == LOW && previous == HIGH) {
+						if (currentState == 1) {
+							currentState = 0;
+							workSwitch = 0;
+						} else {
+							currentState = 1;
+							workSwitch = 1;
+						}
+					}
+					previous = reading;
+
+				} else workSwitch = digitalRead(WORKSW_PIN);  // read work switch
+			}
+
+			//read the inputs for manual blade controls
+			if (manualMovePropLever) {
+				//if a lever for manual operation is installed
+				leverUpValue = analogRead(LEVER_UP);  //
+				if (invertManMove) leverUpValue = map(leverUpValue, 0, 1023, 1023, 0);
+
+			} else leverUpValue = 512;
+				//0 lift -- 512 neutral-- 1023 lower
+
+				//BladeOffset ************************************************
+#ifdef bladeOffsetPropLever
+			leverSideValue = analogRead(LEVER_SIDE);
+			leverSideValue = map(leverSideValue, 0, 1023, 0, 5);
+			if (invertBladeOffset) leverSideValue = map(leverSideValue, 0, 5, 5, 0);
+			//0 offset down -- 2 neutral -- 4-5 offset up
+
+			if (leverSideValue >= 4 && bOUprevious == HIGH) {
+				bladeOffsetOut++;
+			}
+			if (leverSideValue == 0 && bOUprevious == HIGH) {
+				bladeOffsetOut--;
+			}
+			if (leverSideValue >= 1 && leverSideValue <= 3) bOUprevious = HIGH;
+			else bOUprevious = LOW;
+#endif
+
+#ifdef bladeOffsetBtn
+			reading = digitalRead(BOFFUP_PIN);
+			if (reading == LOW && bOUprevious == HIGH) {
+				bladeOffsetOut++;
+			}
+			bOUprevious = reading;
+
+			reading = digitalRead(BOFFDW_PIN);
+			if (reading == LOW && bODprevious == HIGH) {
+				bladeOffsetOut--;
+			}
+			bODprevious = reading;
+#endif
+
+			//section relays
+			SetPWM();
+
+#ifdef useLEDs
+			if (pwmValue < 0) {
+				digitalWrite(LED_DW, HIGH);  // lowering the blade
+				digitalWrite(LED_UP, LOW);
+			}
+			if (pwmValue > 0) {
+				digitalWrite(LED_UP, HIGH);  // lift the blade
+				digitalWrite(LED_DW, LOW);
+			}
+			if (pwmValue == 0) {
+				digitalWrite(LED_UP, LOW);
+				digitalWrite(LED_DW, LOW);
+			}
+#endif
 		}
 
 		//send empty pgn to AgIO to show activity
-		if (++helloCounter > 10) {
+		if (++helloCounter > 200) {
 			Udp.beginPacket(ipDestination, AOGPort);
 			Udp.write(helloAgIO, sizeof(helloAgIO));
 			Udp.endPacket();
@@ -358,25 +466,7 @@ void udpMessageRecv(int sizeToRead) {
 	if (udpData[0] == 0x80 && udpData[1] == 0x81)  //Data
 	{
 		if (udpData[2] == 0x7F) {
-			if (udpData[3] == 0xFE)  //254
-			{
-
-
-				if (blink)
-					digitalWrite(13, HIGH);
-				else digitalWrite(13, LOW);
-				blink = !blink;
-
-				//Serial.println(steerAngleActual);
-				//--------------------------------------------------------------------------
-			}
-
-			if (udpData[3] == 200)  // Hello from AgIO
-			{
-#ifdef isAllInOneBoard
-				LEDs.set(LED_ID::PWR_ETH, PWR_ETH_STATE::AGIO_CONNECTED, true);
-#endif
-			} else if (udpData[3] == 201) {
+			if (udpData[3] == 201) {
 				//make really sure this is the subnet pgn
 				if (udpData[4] == 5 && udpData[5] == 201 && udpData[6] == 201) {
 					networkAddress.ipOne = udpData[7];
@@ -434,21 +524,215 @@ void udpMessageRecv(int sizeToRead) {
 					Serial.println(inoVersion);
 					Serial.println();
 				}
-			} // end 202
-		}  //end 7F
+			}  // end 202
+		}    //end 7F
 		else if (udpData[2] == 0x61) {
 			if (udpData[3] == 0xBA)  //data from OG3D
 			{
-
-
 				if (blink)
 					digitalWrite(13, HIGH);
 				else digitalWrite(13, LOW);
 				blink = !blink;
+#ifdef isAllInOneBoard
+				LEDs.set(LED_ID::PWR_ETH, PWR_ETH_STATE::AGIO_CONNECTED, true);
+#endif
+				//Data recieved, 0x61, 0xBA, 8, targetAltitude(32bits), cutValveReceived, bladeOffsetIn, not used, not used, CRC
+				//reset watchdog
+				watchdogTimer = 0;
+				// Extract 32-bit signed target altitude starting at index 5 (Bytes 5, 6, 7, 8)
+				memcpy(&targetAltitude, &udpData[5], sizeof(int32_t));
 
-				//Send OG3D uint8_t OG3D[] = { 0x80, 0x81, 0x6a, 0xe1, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0xCC };
-				//--------------------------------------------------------------------------
+				// Extract remaining payload single-byte indices
+				cutValveReceived = udpData[9];
+				bladeOffsetIn = udpData[10];
+				// udpData[11] -> not used
+				// udpData[12] -> not used
+				// udpData[13] -> Incoming CRC , not verified
+
+				//Send OG3D uint8_t OG3D[] = { 0x80, 0x81, 0x6a, 0xe1, 8, multipleStatus, pwmDrive, cutValve, bladeOffsetOut, leverUpValue, leverSideValue, not used, pwmHist, 0xCC };
+				OG3D[0] = 0x80;  // Preamble 1
+				OG3D[1] = 0x81;  // Preamble 2
+				OG3D[2] = 0x6a;  // Source address
+				OG3D[3] = 0xe1;  // Response PGN ID
+				OG3D[4] = 8;     // Length of payload data blocks (Bytes 5 to 12)
+
+				// Map status bytes directly into global buffer slots
+				OG3D[5] = multipleValue;
+				OG3D[6] = pwmDrive;  // Single byte (int8_t or uint8_t)
+				OG3D[7] = cutValve;
+				OG3D[8] = bladeOffsetOut;
+				OG3D[9] = leverUpValue;
+				OG3D[10] = leverSideValue;
+				OG3D[11] = 0;  // Not used / Padding slot
+				OG3D[12] = pwmHist;
+
+				// 3. Fast CRC checksum calculation over the global frame indexes
+				uint8_t calculatedCrc = 0;
+				for (int i = 2; i < 13; i++) {
+					calculatedCrc += OG3D[i];
+				}
+				GNSS1[13] = calculatedCrc;
+
+				// 4. Send the updated global frame via UDP
+				Udp.beginPacket(ipDestination, 9999);
+				Udp.write(OG3D, 14);  // We pass 14 bytes explicitly
+				Udp.endPacket();
+			} else if (udpData[3] == 0xB8)  //settings from OG3D
+			{
+				pwmGainUp = udpData[5];
+				pwmGainDw = udpData[6];
+				pwmMinUp = udpData[7];
+				pwmMinDw = udpData[8];
+				pwmMaxUp = udpData[9];
+				pwmMaxDw = udpData[10];
+				integralMultiplier = udpData[11];
+				deadband = udpData[12];
+
+				SaveToEEPROM();
+				settingsRecieved = true;
 			}
 		}
-	}    //end if 80 81 
+	}  //end if 80 81
 }  //end udp callback
+
+void SetPWM(void) {
+	if (workSwitch) autoEnable = true;           // if auto switch is tourned off turn on AutoEnable for the next time auto switch will be turned on
+	if (leverUpValue < 480) autoEnable = false;  //turn off automode when lifting the blade
+	if (leverUpValue > 1000) autoEnable = true;  // tur on automode when lever is fully presed for lowering the blade
+
+	pwmValue = 0;
+
+	//Use the GNSS height is available
+	if (targetAltitude < 20000000) {
+		// reel minus target plus 100. 100 is on target, <100 is too low, lift, >100 is too high, lower
+		cutValve = (uint8_t)constrain(altitudeOG - targetAltitude + 100, 0, 200);
+	}
+
+	if (!workSwitch && autoEnable)  // Auto mode
+	{
+		if (cutValve >= (100 + deadband))  // then lower the blade
+		{
+			pwmValue = -((cutValve - 100 - deadband) * pwmGainDw + pwmMinDw);  //pwmValue is negative
+		}
+		if (cutValve <= (100 - deadband))  // then lift the blade
+		{
+			pwmValue = -((cutValve - 100 + deadband) * pwmGainUp - pwmMinUp);  //pwmValue is positive
+		}
+
+		if (cutValve != 100 && pwmValue != 0)  //calculate some sort of derivative
+		{
+			pwmHist = ((((pwm1ago) + pwm2ago + (pwm3ago) + (pwm4ago) + (pwm5ago / 2.000)) * (sq(integralMultiplier) / 100.0000)) / sq(cutValve - 100.0000));
+
+			//put pwmHist to 0 when the blade cross the line.
+			if (cutValve > 100 && (pwm1ago + pwm2ago + pwm3ago + pwm4ago + pwm5ago) > 0) pwmHist = 0;
+			if (cutValve < 100 && (pwm1ago + pwm2ago + pwm3ago + pwm4ago + pwm5ago) < 0) pwmHist = 0;
+
+			pwmValue = (pwmValue - pwmHist);
+		}
+
+		if (cutValve > 100 && pwmValue > 0) pwmValue = 0;
+
+		if (cutValve > 100 && pwmValue < -pwmMaxDw) pwmValue = -pwmMaxDw;
+
+		if (cutValve < 100 && pwmValue < 0) pwmValue = 0;
+
+		if (cutValve < 100 && pwmValue > pwmMaxUp) pwmValue = pwmMaxUp;
+
+		if (pwmValue > 0 && pwmValue < pwmMinUp) pwmValue = 0;
+
+		if (pwmValue < 0 && pwmValue > -pwmMinDw) pwmValue = 0;
+
+		pwmDrive = abs(pwmValue);
+		plannedValveValue = cutValve;
+	}     // end of automode
+	else  // if manual mode
+	{
+		pwmDrive = 0;
+		plannedValveValue = 100;
+
+		// now give an output value by the lever
+		if (leverUpValue < 480)  // lifting the blade range 480 to 0
+		{
+			pwmValueCalc = (((480 - leverUpValue) / 450.000 * (pwmMaxUp - pwmMinUp)) + pwmMinUp);  // (1 to 480)/450 *(pwmMaxUp-pwmMinUp)+ pwmMinUp
+			pwmValue = pwmValueCalc;
+			if (pwmValue > pwmMaxUp) pwmValue = pwmMaxUp;
+		}
+		if (leverUpValue > 540)  // lovering the blade range 540 to 1024
+		{
+			pwmValueCalc = ((leverUpValue - 540) / 450.000 * -(pwmMaxDw - pwmMinDw) - pwmMinDw);  // (1 to 484)/450*-(pwmMaxDw-pwmMinDw)- pwmMinDw
+			pwmValue = pwmValueCalc;
+			if (pwmValue < -pwmMaxDw) pwmValue = -pwmMaxDw;
+		}
+
+		pwmDrive = abs(pwmValue);
+	}
+	pwm5ago = pwm4ago;
+	pwm4ago = pwm3ago;
+	pwm3ago = pwm2ago;
+	pwm2ago = pwm1ago;
+	pwm1ago = pwmValue;
+
+	if (pwmValue < 0)  // lowering the blade
+	{
+		digitalWrite(DIR_ENABLE, HIGH);
+		//Serial.print("1,");
+	} else {
+		digitalWrite(DIR_ENABLE, LOW);
+		//Serial.print("0,");
+	}
+
+	if (proportionalValve) analogWrite(PWM_OUT, pwmDrive);
+	else {
+		if (pwmDrive > 2) analogWrite(PWM_OUT, 255);
+		else analogWrite(PWM_OUT, 0);
+	}
+
+	//fill byte multipleValue,
+	//bit 0 is 1 if pwmValue > 0
+	//bit 1 is 1 if pwmValue < 0
+	//bit 2 = bool workSwitch
+	//bit 3 = bool autoEnable
+	multipleValue = 0;
+	if (pwmDrive > 0) multipleValue |= (1 << 0);
+	if (pwmDrive < 0) multipleValue |= (1 << 1);
+	if (workSwitch) multipleValue |= (1 << 2);
+	if (autoEnable) multipleValue |= (1 << 3);
+}
+
+void SaveToEEPROM() {
+	EEPROM.update(1, pwmGainUp);
+	EEPROM.update(3, pwmMinUp);
+	EEPROM.update(5, pwmGainDw);
+	EEPROM.update(7, pwmMinDw);
+	EEPROM.update(9, pwmMaxUp);
+	EEPROM.update(11, pwmMaxDw);
+	EEPROM.update(13, integralMultiplier);
+	EEPROM.update(15, deadband);
+	EEPROM.update(17, EEP_Ident);
+	EEPROM.put(60, networkAddress);
+}
+
+void ReadFromEEPROM() {
+	int checkValue;
+	checkValue = EEPROM.read(17);
+	if (checkValue == EEP_Ident) {
+		pwmGainUp = EEPROM.read(1);
+		pwmMinUp = EEPROM.read(3);
+		pwmGainDw = EEPROM.read(5);
+		pwmMinDw = EEPROM.read(7);
+		pwmMaxUp = EEPROM.read(9);
+		pwmMaxDw = EEPROM.read(11);
+		integralMultiplier = EEPROM.read(13);
+		deadband = EEPROM.read(15);
+		EEPROM.get(60, networkAddress);
+	} else {  // default values
+		pwmGainUp = 5;
+		pwmMinUp = 70;
+		pwmGainDw = 5;
+		pwmMinDw = 70;
+		pwmMaxUp = 180;
+		pwmMaxDw = 180;
+		integralMultiplier = 20;
+		deadband = 5;
+	}
+}

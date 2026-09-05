@@ -101,6 +101,7 @@ void GGA_Handler()  //Rec'd GGA
 	// Convert altitude meters to int32_t millimeters (x1000)
 	altitudeOG = (int32_t)round(tempString.toFloat() * 1000.0f);
 
+	dataRecieved = true;
 	// height of geoid
 	parser.getArg(10, geoid);
 
