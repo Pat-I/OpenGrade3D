@@ -10,9 +10,9 @@ Changes by Pat
 // uncomment the following line if you're using the All-In-One-Board (proto v5)
 #define isAllInOneBoard
 // uncomment the following line if you're using pins for blade offset
-#define bladeOffsetPropLever
-#define bladeOffsetBtn
-#define useLEDs  // LEDs using four outputs
+//#define bladeOffsetPropLever
+//#define bladeOffsetBtn
+//#define useLEDs  // LEDs using four outputs
 //User set variables
 //PWM or relay mode
 bool proportionalValve = true;
@@ -28,30 +28,31 @@ bool invertBladeOffset = false;
 
 #ifdef isAllInOneBoard
 
-#define DIR_ENABLE 4  //PD4 cytron dir
-#define PWM_OUT 3     //PD3  cytron pwm
-#define WORKSW_PIN 7  //PD7 this pin must be low (to ground) to activate automode IMP on PCB
-#define LEVER_UP A1   // first axle
+#define PWM_2 5       //onboard driver
+#define PWM_1 6       //onboard driver
+#define SLEEP_PIN 4   // DRV Sleep pin, LOCK output
+#define WORKSW_PIN 2  //PD7 this pin must be low (to ground) to activate automode IMP on PCB --Steer -PIN19
+#define LEVER_UP A15  // first axle -- WAS signal -PIN 32
 #ifdef bladeOffsetBtn
-#define BOFFUP_PIN 8  //signal (to GND) to move the blade offset up 1 cm?
-#define BOFFDW_PIN 6  //offset down
+#define BOFFUP_PIN 3   //signal (to GND) to move the blade offset up 1 cm?
+#define BOFFDW_PIN 26  //offset down
 #endif
 #ifdef bladeOffsetPropLever
-#define LEVER_SIDE A2  // second axle, if used for blade offset
+#define LEVER_SIDE A12  // second axle, if used for blade offset
 #endif
 //leds
 #ifdef useLEDs
-#define LED_DW 2    //DO2 led down (if used)
-#define LED_UP 5    //DO5 led up (if used)
-#define LED_AUTO 9  //DO9 led auto
-#define LED_ON A0   //A0 on led
+#define LED_DW 16    //led down (if used)
+#define LED_UP 17    //led up (if used)
+#define LED_AUTO 33  //led auto
+#define LED_ON 37    //on led
 #endif
 #else  //AiO v4.5 // pin numbers not set yet
 
 #define DIR_ENABLE 4  //PD4 cytron dir
 #define PWM_OUT 3     //PD3  cytron pwm
-#define WORKSW_PIN 7  //PD7 this pin must be low (to ground) to activate automode IMP on PCB
-#define LEVER_UP A1   // first axle
+#define WORKSW_PIN 7  //PD7 this pin must be low (to ground) to activate automode IMP on PCB --to AiOv4 which pin?
+#define LEVER_UP A1   // first axle --to AiOv4 pressure pin?
 #ifdef bladeOffsetBtn
 #define BOFFUP_PIN 8  //signal (to GND) to move the blade offset up 1 cm?
 #define BOFFDW_PIN 6  //offset down
@@ -68,22 +69,11 @@ bool invertBladeOffset = false;
 #endif
 #endif
 //----------------------------------------------------------
-
 #ifdef isAllInOneBoard
 String inoVersion = ("\r\nOG3D Ver 2026.08.30 (AIO v5 Proto PCB))");
 #else  //AiO v4.5
 String inoVersion = ("\r\nOG3D Ver 2026.08.30 (AIO v4 PCB))");
 #endif
-
-////////////////// User Settings /////////////////////////
-/*  PWM Frequency ->
- *   490hz (default) = 0
- *   122hz = 1
- *   3921hz = 2
- */
-#define PWM_Frequency 1
-
-/////////////////////////////////////////////
 
 // if not in eeprom, overwrite
 #define EEP_Ident 0x54
@@ -195,10 +185,11 @@ bool settingsRecieved = false;
 bool dataRecieved = false;
 byte multipleValue = 0;
 //pwm variables
-byte pwmDrive = 0, pwmDisplay = 0, pwmGainUp = 0, pwmMinUp = 0, pwmGainDw = 0, pwmMinDw = 0, pwmMaxUp = 0, pwmMaxDw = 0, integralMultiplier = 0;
-int pwmValue = 0;
+byte integralMultiplier = 0;
+int32_t pwmGainUp = 0, pwmMinUp = 0, pwmGainDw = 0, pwmMinDw = 0, pwmMaxUp = 0, pwmMaxDw = 0;
+int32_t pwmDrive = 0, pwmValue = 0;
 float pwmValueCalc = 0;
-int plannedValveValue = 0, pwm1ago = 0, pwm2ago = 0, pwm3ago = 0, pwm4ago = 0, pwm5ago = 0;
+int32_t lastCutValve = 100;
 float pwmHist = 0;
 
 //AutoControl switch button  ***********************************************************************************************************
@@ -207,7 +198,7 @@ byte reading;
 byte previous = 0;
 
 //BladeOffset stuff ************************************************************
-int bladeOffsetIn = 0, bladeOffsetOut = 0;
+int32_t bladeOffsetIn = 0, bladeOffsetOut = 0;
 
 byte bOUprevious = 0;
 byte bODprevious = 0;
@@ -227,9 +218,16 @@ void setup() {
 	Serial.println(F_CPU_ACTUAL);
 
 	pinMode(13, OUTPUT);
-
+#ifdef isAllInOneBoard
+	pinMode(PWM_1, OUTPUT);
+	pinMode(PWM_2, OUTPUT);
+	pinMode(SLEEP_PIN, OUTPUT);
+	analogWriteFrequency(PWM_1, 100);  // 4482 hz max (FlexPWM)
+	analogWriteFrequency(PWM_2, 100);  // 4482 hz max (FlexPWM)
+#else
 	pinMode(DIR_ENABLE, OUTPUT);
 	pinMode(PWM_OUT, OUTPUT);
+#endif
 	//keep pulled high and drag low to activate, noise free safe
 	pinMode(WORKSW_PIN, INPUT_PULLUP);
 	pinMode(LEVER_UP, INPUT_DISABLE);
@@ -250,6 +248,7 @@ void setup() {
 	//Wire.begin();
 	Serial.begin(115200);
 
+	analogWriteResolution(12);
 	delay(500);
 #ifdef isAllInOneBoard
 	LEDs.init();
@@ -558,7 +557,7 @@ void udpMessageRecv(int sizeToRead) {
 
 				// Map status bytes directly into global buffer slots
 				OG3D[5] = multipleValue;
-				OG3D[6] = pwmDrive;  // Single byte (int8_t or uint8_t)
+				OG3D[6] = (uint8_t)(pwmDrive >> 4);  // Single byte approximation
 				OG3D[7] = cutValve;
 				OG3D[8] = bladeOffsetOut;
 				OG3D[9] = leverUpValue;
@@ -579,12 +578,12 @@ void udpMessageRecv(int sizeToRead) {
 				Udp.endPacket();
 			} else if (udpData[3] == 0xB8)  //settings from OG3D
 			{
-				pwmGainUp = udpData[5];
-				pwmGainDw = udpData[6];
-				pwmMinUp = udpData[7];
-				pwmMinDw = udpData[8];
-				pwmMaxUp = udpData[9];
-				pwmMaxDw = udpData[10];
+				pwmGainUp = (int32_t)udpData[5] << 2;
+				pwmGainDw = (int32_t)udpData[6] << 2;
+				pwmMinUp = (int32_t)udpData[7] << 4;
+				pwmMinDw = (int32_t)udpData[8] << 4;
+				pwmMaxUp = (int32_t)udpData[9] << 4;
+				pwmMaxDw = (int32_t)udpData[10] << 4;
 				integralMultiplier = udpData[11];
 				deadband = udpData[12];
 
@@ -610,68 +609,98 @@ void SetPWM(void) {
 
 	if (!workSwitch && autoEnable)  // Auto mode
 	{
-		if (cutValve >= (100 + deadband))  // then lower the blade
-		{
-			pwmValue = -((cutValve - 100 - deadband) * pwmGainDw + pwmMinDw);  //pwmValue is negative
-		}
-		if (cutValve <= (100 - deadband))  // then lift the blade
-		{
-			pwmValue = -((cutValve - 100 + deadband) * pwmGainUp - pwmMinUp);  //pwmValue is positive
-		}
+		// Local processing optimization variables
+		int32_t error = (int32_t)cutValve - 100;  // Positive if too high, Negative if too low
+		int32_t absError = abs(error);
 
-		if (cutValve != 100 && pwmValue != 0)  //calculate some sort of derivative
+		// 1. Calculate raw target PWM based on deadbands
+		if (absError <= deadband) {
+			pwmValue = 0;
+		} else if (error > 0)  // Lower the blade (pwmValue is negative)
 		{
-			pwmHist = ((((pwm1ago) + pwm2ago + (pwm3ago) + (pwm4ago) + (pwm5ago / 2.000)) * (sq(integralMultiplier) / 100.0000)) / sq(cutValve - 100.0000));
-
-			//put pwmHist to 0 when the blade cross the line.
-			if (cutValve > 100 && (pwm1ago + pwm2ago + pwm3ago + pwm4ago + pwm5ago) > 0) pwmHist = 0;
-			if (cutValve < 100 && (pwm1ago + pwm2ago + pwm3ago + pwm4ago + pwm5ago) < 0) pwmHist = 0;
-
-			pwmValue = (pwmValue - pwmHist);
+			pwmValue = -((error - deadband) * pwmGainDw + pwmMinDw);
+		} else  // Lift the blade (pwmValue is positive)
+		{
+			pwmValue = -((error + deadband) * pwmGainUp - pwmMinUp);
 		}
 
-		if (cutValve > 100 && pwmValue > 0) pwmValue = 0;
+		// 2. DAMPING AND DERIVATIVE CALCULATIONS
+		if (error != 0 && pwmValue != 0) {
+			// If the blade approaches the center quickly, this drops PWM to zero instantly.
+			// 2. PROXIMITY-BASED DAMPING AND DERIVATIVE CALCULATIONS
 
-		if (cutValve > 100 && pwmValue < -pwmMaxDw) pwmValue = -pwmMaxDw;
+			// Calculate the real physical movement velocity of the valve/blade
+			// (Positive if moving up, Negative if moving down)
+			int32_t valveVelocity = (int32_t)cutValve - (int32_t)lastCutValve;
 
-		if (cutValve < 100 && pwmValue < 0) pwmValue = 0;
+			// ONLY APPLY DAMPING IF: The blade is actively moving TOWARDS the center line (100)
+			// - Error > 0 (too high) AND Velocity < 0 (moving down)
+			// - Error < 0 (too low)  AND Velocity > 0 (moving up)
+			if (integralMultiplier > 0 && ((error > 0 && valveVelocity < 0) || (error < 0 && valveVelocity > 0))) {
+				// PROXIMITY BRAKING FORMULA (Pure Integer Math):
+				// We square the velocity, multiply by your 0-255 byte factor, and divide by remaining error.
+				int32_t proximityBrake = (valveVelocity * valveVelocity * (int32_t)integralMultiplier) / absError;
 
-		if (cutValve < 100 && pwmValue > pwmMaxUp) pwmValue = pwmMaxUp;
+				// Oppose the ongoing movement to soften the landing near the deadband zone
+				if (error > 0) {
+					pwmValue += proximityBrake;      // Reduces negative downward PWM (brings it closer to 0)
+					if (pwmValue > 0) pwmValue = 0;  // Prevent braking from reversing the valve direction
+				} else {
+					pwmValue -= proximityBrake;      // Reduces positive upward PWM
+					if (pwmValue < 0) pwmValue = 0;  // Prevent braking from reversing the valve direction
+				}
+			}
+		}
 
-		if (pwmValue > 0 && pwmValue < pwmMinUp) pwmValue = 0;
-
-		if (pwmValue < 0 && pwmValue > -pwmMinDw) pwmValue = 0;
+		// 3. Ultra-fast hardware boundary clamping using native constrain rules
+		if (error > 0)  // Guarding downward movements
+		{
+			pwmValue = constrain(pwmValue, -pwmMaxDw, 0);
+			if (pwmValue > -pwmMinDw) pwmValue = 0;  // Enforce minimum pressure floor
+		} else                                     // Guarding upward movements
+		{
+			pwmValue = constrain(pwmValue, 0, pwmMaxUp);
+			if (pwmValue < pwmMinUp) pwmValue = 0;  // Enforce minimum pressure floor
+		}
 
 		pwmDrive = abs(pwmValue);
-		plannedValveValue = cutValve;
-	}     // end of automode
-	else  // if manual mode
+		lastCutValve = cutValve;
+	} else  // Manual Mode (Lever operations)
 	{
 		pwmDrive = 0;
-		plannedValveValue = 100;
+		lastCutValve = 100;
 
-		// now give an output value by the lever
-		if (leverUpValue < 480)  // lifting the blade range 480 to 0
+		if (leverUpValue < 480)  // Lifting the blade range 480 down to 0
 		{
-			pwmValueCalc = (((480 - leverUpValue) / 450.000 * (pwmMaxUp - pwmMinUp)) + pwmMinUp);  // (1 to 480)/450 *(pwmMaxUp-pwmMinUp)+ pwmMinUp
-			pwmValue = pwmValueCalc;
-			if (pwmValue > pwmMaxUp) pwmValue = pwmMaxUp;
-		}
-		if (leverUpValue > 540)  // lovering the blade range 540 to 1024
+			pwmValueCalc = (((480 - leverUpValue) * 0.0022222f) * (pwmMaxUp - pwmMinUp)) + pwmMinUp;  // 1/450 = 0.0022222
+			pwmValue = constrain(pwmValueCalc, pwmMinUp, pwmMaxUp);
+		} else if (leverUpValue > 540)  // Lowering the blade range 540 up to 1024
 		{
-			pwmValueCalc = ((leverUpValue - 540) / 450.000 * -(pwmMaxDw - pwmMinDw) - pwmMinDw);  // (1 to 484)/450*-(pwmMaxDw-pwmMinDw)- pwmMinDw
-			pwmValue = pwmValueCalc;
-			if (pwmValue < -pwmMaxDw) pwmValue = -pwmMaxDw;
+			pwmValueCalc = (((leverUpValue - 540) * 0.0022222f) * -(pwmMaxDw - pwmMinDw)) - pwmMinDw;
+			pwmValue = constrain(pwmValueCalc, -pwmMaxDw, -pwmMinDw);
+		} else {
+			pwmValue = 0;
 		}
 
 		pwmDrive = abs(pwmValue);
 	}
-	pwm5ago = pwm4ago;
-	pwm4ago = pwm3ago;
-	pwm3ago = pwm2ago;
-	pwm2ago = pwm1ago;
-	pwm1ago = pwmValue;
-
+#ifdef isAllInOneBoard
+	if (pwmValue == 0)  // dont move
+	{
+		analogWrite(PWM_2, 0);
+		analogWrite(PWM_1, 0);
+	} else if (pwmValue > 0)  // lift
+	{
+		digitalWrite(SLEEP_PIN, HIGH);
+		analogWrite(PWM_2, 0);
+		analogWrite(PWM_1, pwmDrive);
+	} else  //lower
+	{
+		digitalWrite(SLEEP_PIN, HIGH);
+		analogWrite(PWM_2, pwmDrive);
+		analogWrite(PWM_1, 0);
+	}
+#else  //AiO v4.5
 	if (pwmValue < 0)  // lowering the blade
 	{
 		digitalWrite(DIR_ENABLE, HIGH);
@@ -683,10 +712,10 @@ void SetPWM(void) {
 
 	if (proportionalValve) analogWrite(PWM_OUT, pwmDrive);
 	else {
-		if (pwmDrive > 2) analogWrite(PWM_OUT, 255);
+		if (pwmDrive > 2) analogWrite(PWM_OUT, 4095);
 		else analogWrite(PWM_OUT, 0);
 	}
-
+#endif
 	//fill byte multipleValue,
 	//bit 0 is 1 if pwmValue > 0
 	//bit 1 is 1 if pwmValue < 0
@@ -700,38 +729,38 @@ void SetPWM(void) {
 }
 
 void SaveToEEPROM() {
-	EEPROM.update(1, pwmGainUp);
-	EEPROM.update(3, pwmMinUp);
-	EEPROM.update(5, pwmGainDw);
-	EEPROM.update(7, pwmMinDw);
-	EEPROM.update(9, pwmMaxUp);
-	EEPROM.update(11, pwmMaxDw);
-	EEPROM.update(13, integralMultiplier);
-	EEPROM.update(15, deadband);
-	EEPROM.update(17, EEP_Ident);
+	EEPROM.put(4, pwmGainUp);
+	EEPROM.put(8, pwmMinUp);
+	EEPROM.put(12, pwmGainDw);
+	EEPROM.put(16, pwmMinDw);
+	EEPROM.put(20, pwmMaxUp);
+	EEPROM.put(24, pwmMaxDw);
+	EEPROM.update(28, integralMultiplier);
+	EEPROM.update(32, deadband);
+	EEPROM.update(2, EEP_Ident);
 	EEPROM.put(60, networkAddress);
 }
 
 void ReadFromEEPROM() {
 	int checkValue;
-	checkValue = EEPROM.read(17);
+	checkValue = EEPROM.read(2);
 	if (checkValue == EEP_Ident) {
-		pwmGainUp = EEPROM.read(1);
-		pwmMinUp = EEPROM.read(3);
-		pwmGainDw = EEPROM.read(5);
-		pwmMinDw = EEPROM.read(7);
-		pwmMaxUp = EEPROM.read(9);
-		pwmMaxDw = EEPROM.read(11);
-		integralMultiplier = EEPROM.read(13);
-		deadband = EEPROM.read(15);
+		EEPROM.get(4, pwmGainUp);
+		EEPROM.get(8, pwmMinUp);
+		EEPROM.get(12, pwmGainDw);
+		EEPROM.get(16, pwmMinDw);
+		EEPROM.get(20, pwmMaxUp);
+		EEPROM.get(24, pwmMaxDw);
+		integralMultiplier = EEPROM.read(28);
+		deadband = EEPROM.read(32);
 		EEPROM.get(60, networkAddress);
 	} else {  // default values
-		pwmGainUp = 5;
-		pwmMinUp = 70;
-		pwmGainDw = 5;
-		pwmMinDw = 70;
-		pwmMaxUp = 180;
-		pwmMaxDw = 180;
+		pwmGainUp = 40;
+		pwmMinUp = 1100;
+		pwmGainDw = 40;
+		pwmMinDw = 1100;
+		pwmMaxUp = 2880;
+		pwmMaxDw = 2880;
 		integralMultiplier = 20;
 		deadband = 5;
 	}
