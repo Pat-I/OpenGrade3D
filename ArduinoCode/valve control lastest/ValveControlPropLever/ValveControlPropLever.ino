@@ -100,7 +100,7 @@ bool isDataFound = false, isSettingFound = false;
 int header = 0, tempHeader = 0, temp;
 
 //The variables used for storage
-byte relayHi = 0, relayLo = 0, cutValve = 100;
+byte cutValve = 100;
 
 //workSwitch
 byte workSwitch = 1;  //high is circuit open, low is switch grounded
