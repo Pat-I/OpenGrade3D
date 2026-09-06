@@ -995,11 +995,43 @@ namespace OpenGrade
                     }
                     else
                     {
-                        if (avgCutAltitude > -998)
+                        if (avgCutAltitude >= -997)
                         {
                             //in cm
                             cutDelta = (pn.altitude - avgCutAltitude) * 100;
                             bladeCutAltitude = (int)Math.Round(avgCutAltitude * 1000);
+                            cutDeltaToBlade = cutDelta;
+
+                            //here if we also have an avgAltitude we add the offsets
+                            if (avgAltitude >= -997)
+                            {
+                                double offset = avgAltitude - avgCutAltitude; // offset in meters, positive if cutting, negative if filling
+
+                                if (offset < 0) //filling
+                                {
+                                    // --- SIGN-PRESERVING FILTER ---
+                                    // 1. Find the smallest absolute distance between the two variables
+                                    double smallestAbs = Math.Min(Math.Abs(vehicle.setDistUnderFill), Math.Abs(offset));
+                                    // 2. REPLACEMENT FOR COPYSIGN: If setDistUnderFill is negative, make smallestAbs negative. Otherwise, keep it positive.
+                                    double safeValue = (vehicle.setDistUnderFill < 0) ? -smallestAbs : smallestAbs;
+                                    // Apply it to your loop variable
+                                    cutDeltaToBlade += safeValue*100; //cutdelta is positive when the blade need to lower, so we add safeValue to go even lower
+                                    avgCutAltitude -= safeValue; //a positive safeValue mean we want to fill lower, so we subtract it from the cut altitude
+                                }
+                                else //cutting
+                                {
+                                    // --- SIGN-PRESERVING FILTER ---
+                                    // 1. Find the smallest absolute distance between the two variables
+                                    double smallestAbs = Math.Min(Math.Abs(vehicle.setDistAboveCut), Math.Abs(offset));
+                                    // 2. REPLACEMENT FOR COPYSIGN: If setDistAboveCut is negative, make smallestAbs negative. Otherwise, keep it positive.
+                                    double safeValue = (vehicle.setDistAboveCut < 0) ? -smallestAbs : smallestAbs;
+                                    // Apply it to your loop variable
+                                    cutDeltaToBlade -= safeValue*100; //cutdelta is positive when the blade need to lower, so we substract safeValue to stay higher
+                                    avgCutAltitude += safeValue; //a positive safeValue mean we want to cut higher, so we add it to the cut altitude
+                                }
+
+                                bladeCutAltitude = (int)Math.Round(avgCutAltitude * 1000);
+                            }
                         }
                     }
                 }
@@ -1007,26 +1039,26 @@ namespace OpenGrade
             #endregion Calculate Heigh
 
             #region Send to blade port
-            if (cutDelta == 9999)
+            if (cutDeltaToBlade == 9999)
             {
                 //Output to serial for blade control 
                 mc.relayRateData[mc.cutValve] = (byte)(100);
             }
             else
             {
-                if (cutDelta < -9.9) //par Pat
+                if (cutDeltaToBlade < -9.9) //par Pat
                 {
                     mc.relayRateData[mc.cutValve] = (byte)(1);
                 }
                 else
                 {
-                    if (cutDelta > 9.9)
+                    if (cutDeltaToBlade > 9.9)
                     {
                         mc.relayRateData[mc.cutValve] = (byte)(199);
                     }
                     else
                     {
-                        mc.relayRateData[mc.cutValve] = (byte)((cutDelta * 10) + 100);
+                        mc.relayRateData[mc.cutValve] = (byte)((cutDeltaToBlade * 10) + 100);
                     }
                 }        
             }

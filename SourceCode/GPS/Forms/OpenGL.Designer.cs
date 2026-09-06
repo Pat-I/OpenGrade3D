@@ -13,7 +13,7 @@ namespace OpenGrade
         public double[] frustum = new double[24];
 
         //difference between blade tip and guide line
-        public double cutDelta;
+        public double cutDelta, cutDeltaToBlade;
         public int bladeCutAltitude { get; set; } = 22000000;
         public int bladeOffSetMaster = 0;// in cm
         public int bladeOffSetSlave = 0; // in cm
