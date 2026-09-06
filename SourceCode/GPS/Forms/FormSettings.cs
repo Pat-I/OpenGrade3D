@@ -11,7 +11,7 @@ namespace OpenGrade
        //class variables
         private readonly FormGPS mf = null;
 
-        private double antennaHeight, minSlope, toolWidth, viewDistUnderGnd, viewDistAboveGnd, gradeDistFromLine, maxCuttingDepth;
+        private double antennaHeight, minSlope, toolWidth, setDistUnderFill, setDistAboveCut, gradeDistFromLine, maxCuttingDepth;
         private byte PwmGainUp, PwmGainDown, PwmMaxUp, PwmMaxDown, PwmMinUp, PwmMinDown, IntegralMultiplier, Deadband;
         private readonly double metImp2m, m2MetImp, metFt2m, m2metFt;
 
@@ -117,17 +117,17 @@ namespace OpenGrade
 
             //Display settings to what it is in the settings page------------------------------------------------
 
-            viewDistUnderGnd = Properties.Vehicle.Default.setVehicle_ViewDistUnderGnd;
-            viewDistAboveGnd = Properties.Vehicle.Default.setVehicle_ViewDistAboveGnd;
+            setDistUnderFill = Properties.Vehicle.Default.setVehicle_ViewDistUnderGnd;
+            setDistAboveCut = Properties.Vehicle.Default.setVehicle_ViewDistAboveGnd;
             gradeDistFromLine = Properties.Vehicle.Default.setVehicle_GradeDistFromLine; //badly named, its used for the display map resolution
 
-            nudViewDistUnderGnd.ValueChanged -= nudViewDistUnderGnd_ValueChanged;
-            nudViewDistUnderGnd.Value = (decimal)(viewDistUnderGnd * m2MetImp);
-            nudViewDistUnderGnd.ValueChanged += nudViewDistUnderGnd_ValueChanged;
+            nudSetDistUnderFill.ValueChanged -= nudSetDistUnderFill_ValueChanged;
+            nudSetDistUnderFill.Value = (decimal)(setDistUnderFill * m2MetImp);
+            nudSetDistUnderFill.ValueChanged += nudSetDistUnderFill_ValueChanged;
 
-            nudViewDistAboveGnd.ValueChanged -= nudViewDistAboveGnd_ValueChanged;
-            nudViewDistAboveGnd.Value = (decimal)(viewDistAboveGnd * m2MetImp);
-            nudViewDistAboveGnd.ValueChanged += nudViewDistAboveGnd_ValueChanged;
+            nudSetDistAboveCut.ValueChanged -= nudSetDistAboveCut_ValueChanged;
+            nudSetDistAboveCut.Value = (decimal)(setDistAboveCut * m2MetImp);
+            nudSetDistAboveCut.ValueChanged += nudSetDistAboveCut_ValueChanged;
 
             nudGradeDistFromLine.ValueChanged -= nudGradeDistFromLine_ValueChanged;
             nudGradeDistFromLine.Value = (decimal)(gradeDistFromLine * m2metFt);
@@ -189,11 +189,11 @@ namespace OpenGrade
 
             //Display settings -------------------------------------------------------------------------------
 
-            mf.vehicle.viewDistUnderGnd = viewDistUnderGnd;
-            Properties.Vehicle.Default.setVehicle_ViewDistUnderGnd = mf.vehicle.viewDistUnderGnd;
+            mf.vehicle.setDistUnderFill = setDistUnderFill;
+            Properties.Vehicle.Default.setVehicle_ViewDistUnderGnd = mf.vehicle.setDistUnderFill;
 
-            mf.vehicle.viewDistAboveGnd = viewDistAboveGnd;
-            Properties.Vehicle.Default.setVehicle_ViewDistAboveGnd = mf.vehicle.viewDistAboveGnd;
+            mf.vehicle.setDistAboveCut = setDistAboveCut;
+            Properties.Vehicle.Default.setVehicle_ViewDistAboveGnd = mf.vehicle.setDistAboveCut;
 
             mf.vehicle.gradeDistFromLine = gradeDistFromLine; //badly named, its used for the display map resolution
             Properties.Vehicle.Default.setVehicle_GradeDistFromLine = mf.vehicle.gradeDistFromLine;
@@ -324,12 +324,12 @@ namespace OpenGrade
             mf.KeypadToNUD((NumericUpDown)sender, this);
         }
 
-        private void nudViewDistAboveGnd_Click(object sender, EventArgs e)
+        private void nudSetDistAboveCut_Click(object sender, EventArgs e)
         {
             mf.KeypadToNUD((NumericUpDown)sender, this);
         }
 
-        private void nudViewDistUnderGnd_Click(object sender, EventArgs e)
+        private void nudSetDistUnderFill_Click(object sender, EventArgs e)
         {
             mf.KeypadToNUD((NumericUpDown)sender, this);
         }
@@ -477,15 +477,15 @@ namespace OpenGrade
 
         #region Display //----------------------------------------------------
 
-        private void nudViewDistUnderGnd_ValueChanged(object sender, EventArgs e)
+        private void nudSetDistUnderFill_ValueChanged(object sender, EventArgs e)
         {
-            viewDistUnderGnd = (double)nudViewDistUnderGnd.Value * metImp2m;
+            setDistUnderFill = (double)nudSetDistUnderFill.Value * metImp2m;
             
         }
 
-        private void nudViewDistAboveGnd_ValueChanged(object sender, EventArgs e)
+        private void nudSetDistAboveCut_ValueChanged(object sender, EventArgs e)
         {
-            viewDistAboveGnd = (double)nudViewDistAboveGnd.Value * metImp2m;
+            setDistAboveCut = (double)nudSetDistAboveCut.Value * metImp2m;
             
         }
 

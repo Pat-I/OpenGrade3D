@@ -941,7 +941,7 @@ namespace OpenGrade
                                 {
                                     CalcPtOnLineMap(closestPoint, closestPointMap2, h, i, out distanceFromAline, out eastingApt, out northingApt, out altitudeApt, out cutAltApt);
 
-                                    if (ct.ptList[closestPointMap2].cutAltitude > 0 && ct.ptList[closestPoint].cutAltitude > 0)
+                                    if (ct.ptList[closestPointMap2].cutAltitude >= -998 && ct.ptList[closestPoint].cutAltitude >= -998)
                                     {
                                         NoLineAverageCutAlt += cutAltApt;
                                         NoLineCutCount++;
@@ -958,7 +958,7 @@ namespace OpenGrade
                                 {
                                     CalcPtOnLineMap(closestPoint, closestPointMap3, h, i, out distanceFromBline, out eastingBpt, out northingBpt, out altitudeBpt, out cutAltBpt);
 
-                                    if (ct.ptList[closestPointMap3].cutAltitude > 0 && ct.ptList[closestPoint].cutAltitude > 0)
+                                    if (ct.ptList[closestPointMap3].cutAltitude >= -998 && ct.ptList[closestPoint].cutAltitude >= -998)
                                     {
                                         NoLineAverageCutAlt += cutAltBpt;
                                         NoLineCutCount++;
@@ -974,7 +974,7 @@ namespace OpenGrade
                                 {
                                     CalcPtOnLineMap(closestPointMap2, closestPointMap4, h, i, out distanceFromCline, out eastingCpt, out northingCpt, out altitudeCpt, out cutAltCpt);
 
-                                    if (ct.ptList[closestPointMap4].cutAltitude > 0 && ct.ptList[closestPointMap2].cutAltitude > 0)
+                                    if (ct.ptList[closestPointMap4].cutAltitude >= -998 && ct.ptList[closestPointMap2].cutAltitude >= -998)
                                     {
                                         NoLineAverageCutAlt += cutAltCpt;
                                         NoLineCutCount++;
@@ -990,7 +990,7 @@ namespace OpenGrade
                                 {
                                     CalcPtOnLineMap(closestPointMap3, closestPointMap4, h, i, out distanceFromDline, out eastingDpt, out northingDpt, out altitudeDpt, out cutAltDpt);
 
-                                    if (ct.ptList[closestPointMap4].cutAltitude > 0 && ct.ptList[closestPointMap3].cutAltitude > 0)
+                                    if (ct.ptList[closestPointMap4].cutAltitude >= -998 && ct.ptList[closestPointMap3].cutAltitude >= -998)
                                     {
                                         NoLineAverageCutAlt += cutAltDpt;
                                         NoLineCutCount++;
@@ -1253,14 +1253,14 @@ namespace OpenGrade
                 if (cameraDistanceZ < 10) cameraDistanceZ = 10;
                 if (cameraDistanceZ > 6000) cameraDistanceZ = 6000;
 
-                maxFieldY = (maxFieldY + .01 + vehicle.viewDistAboveGnd);
-                minFieldY = (minFieldY - .01 - vehicle.viewDistUnderGnd);
+                maxFieldY = (maxFieldY + .01);
+                minFieldY = (minFieldY - .01);
 
 
                 centerX = (maxFieldX + minFieldX) / 2.0;
                 centerY = ((maxFieldY) + (minFieldY)) / 2.0;
-                if (isMetric) stripMinMax.Text=(minFieldY + vehicle.viewDistUnderGnd).ToString("N2") + ":" + (maxFieldY - vehicle.viewDistAboveGnd).ToString("N2");
-                else stripMinMax.Text = ((minFieldY + vehicle.viewDistUnderGnd)/.0254/12).ToString("N2") + ":" + ((maxFieldY - vehicle.viewDistAboveGnd)/.0254/12).ToString("N2");
+                if (isMetric) stripMinMax.Text=minFieldY.ToString("N2") + ":" + maxFieldY.ToString("N2");
+                else stripMinMax.Text = (minFieldY/.0254/12).ToString("N2") + ":" + (maxFieldY/.0254/12).ToString("N2");
             }
         }
 
