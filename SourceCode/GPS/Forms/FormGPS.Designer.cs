@@ -30,10 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormGPS));
-            ProgBar.cBlendItems cBlendItems5 = new ProgBar.cBlendItems();
-            ProgBar.cFocalPoints cFocalPoints5 = new ProgBar.cFocalPoints();
-            ProgBar.cBlendItems cBlendItems6 = new ProgBar.cBlendItems();
-            ProgBar.cFocalPoints cFocalPoints6 = new ProgBar.cFocalPoints();
+            ProgBar.cBlendItems cBlendItems1 = new ProgBar.cBlendItems();
+            ProgBar.cFocalPoints cFocalPoints1 = new ProgBar.cFocalPoints();
+            ProgBar.cBlendItems cBlendItems2 = new ProgBar.cBlendItems();
+            ProgBar.cFocalPoints cFocalPoints2 = new ProgBar.cFocalPoints();
             this.openGLControl = new SharpGL.OpenGLControl();
             this.contextMenuStripOpenGL = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteFlagToolOpenGLContextMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,7 +55,7 @@
             this.resetALLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.colorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.sectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bladeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fieldToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.MapColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rstColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -435,19 +435,19 @@
             // colorsToolStripMenuItem
             // 
             this.colorsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.sectionToolStripMenuItem,
+            this.bladeToolStripMenuItem,
             this.fieldToolStripMenuItem1,
             this.MapColorToolStripMenuItem});
             this.colorsToolStripMenuItem.Name = "colorsToolStripMenuItem";
             this.colorsToolStripMenuItem.Size = new System.Drawing.Size(297, 40);
             this.colorsToolStripMenuItem.Text = "Colors";
             // 
-            // sectionToolStripMenuItem
+            // bladeToolStripMenuItem
             // 
-            this.sectionToolStripMenuItem.Name = "sectionToolStripMenuItem";
-            this.sectionToolStripMenuItem.Size = new System.Drawing.Size(223, 40);
-            this.sectionToolStripMenuItem.Text = "Section";
-            this.sectionToolStripMenuItem.Click += new System.EventHandler(this.sectionToolStripMenuItem_Click);
+            this.bladeToolStripMenuItem.Name = "bladeToolStripMenuItem";
+            this.bladeToolStripMenuItem.Size = new System.Drawing.Size(223, 40);
+            this.bladeToolStripMenuItem.Text = "Blade";
+            this.bladeToolStripMenuItem.Click += new System.EventHandler(this.bladeToolStripMenuItem_Click);
             // 
             // fieldToolStripMenuItem1
             // 
@@ -1724,13 +1724,13 @@
             // 
             this.pbarCutBelow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.pbarCutBelow.BarBackColor = System.Drawing.SystemColors.ControlLight;
-            cBlendItems5.iColor = new System.Drawing.Color[] {
+            cBlendItems1.iColor = new System.Drawing.Color[] {
         System.Drawing.Color.Navy,
         System.Drawing.Color.Blue};
-            cBlendItems5.iPoint = new float[] {
+            cBlendItems1.iPoint = new float[] {
         0F,
         1F};
-            this.pbarCutBelow.BarColorBlend = cBlendItems5;
+            this.pbarCutBelow.BarColorBlend = cBlendItems1;
             this.pbarCutBelow.BarColorSolid = System.Drawing.Color.Black;
             this.pbarCutBelow.BarColorSolidB = System.Drawing.Color.Red;
             this.pbarCutBelow.BarLengthValue = ((short)(40));
@@ -1748,9 +1748,9 @@
             this.pbarCutBelow.CylonInterval = ((short)(1));
             this.pbarCutBelow.CylonMove = 5F;
             this.pbarCutBelow.FillDirection = ProgBar.ProgBarPlus.eFillDirection.Down_Left;
-            cFocalPoints5.CenterPoint = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints5.CenterPoint")));
-            cFocalPoints5.FocusScales = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints5.FocusScales")));
-            this.pbarCutBelow.FocalPoints = cFocalPoints5;
+            cFocalPoints1.CenterPoint = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints1.CenterPoint")));
+            cFocalPoints1.FocusScales = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints1.FocusScales")));
+            this.pbarCutBelow.FocalPoints = cFocalPoints1;
             this.pbarCutBelow.Location = new System.Drawing.Point(1231, 493);
             this.pbarCutBelow.Name = "pbarCutBelow";
             this.pbarCutBelow.Orientation = ProgBar.ProgBarPlus.eOrientation.Vertical;
@@ -1764,13 +1764,13 @@
             // 
             this.pbarCutAbove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbarCutAbove.BarBackColor = System.Drawing.SystemColors.ControlLight;
-            cBlendItems6.iColor = new System.Drawing.Color[] {
+            cBlendItems2.iColor = new System.Drawing.Color[] {
         System.Drawing.Color.Navy,
         System.Drawing.Color.Blue};
-            cBlendItems6.iPoint = new float[] {
+            cBlendItems2.iPoint = new float[] {
         0F,
         1F};
-            this.pbarCutAbove.BarColorBlend = cBlendItems6;
+            this.pbarCutAbove.BarColorBlend = cBlendItems2;
             this.pbarCutAbove.BarColorSolid = System.Drawing.Color.Black;
             this.pbarCutAbove.BarColorSolidB = System.Drawing.Color.LimeGreen;
             this.pbarCutAbove.BarLengthValue = ((short)(40));
@@ -1787,9 +1787,9 @@
             this.pbarCutAbove.Corners.UpperRight = ((short)(0));
             this.pbarCutAbove.CylonInterval = ((short)(1));
             this.pbarCutAbove.CylonMove = 5F;
-            cFocalPoints6.CenterPoint = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints6.CenterPoint")));
-            cFocalPoints6.FocusScales = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints6.FocusScales")));
-            this.pbarCutAbove.FocalPoints = cFocalPoints6;
+            cFocalPoints2.CenterPoint = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints2.CenterPoint")));
+            cFocalPoints2.FocusScales = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints2.FocusScales")));
+            this.pbarCutAbove.FocalPoints = cFocalPoints2;
             this.pbarCutAbove.Location = new System.Drawing.Point(1231, 343);
             this.pbarCutAbove.Name = "pbarCutAbove";
             this.pbarCutAbove.Orientation = ProgBar.ProgBarPlus.eOrientation.Vertical;
@@ -2431,7 +2431,7 @@
         private System.Windows.Forms.ToolStripMenuItem fieldToolStripMenuItem;
         private System.Windows.Forms.ToolStripProgressBar stripOnlineGPS;
         private System.Windows.Forms.ToolStripMenuItem colorsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem sectionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem bladeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fieldToolStripMenuItem1;
         private System.Windows.Forms.ToolStripProgressBar stripOnlineAutoSteer;
         private System.Windows.Forms.ToolStripMenuItem logNMEAMenuItem;

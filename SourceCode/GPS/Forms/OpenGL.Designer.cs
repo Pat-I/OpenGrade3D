@@ -109,7 +109,7 @@ namespace OpenGrade
                 gl.Enable(OpenGL.GL_BLEND);
 
                 //section patch color
-                gl.Color(redSections, grnSections, bluSections, (byte)160);
+                gl.Color(redBlade, grnBlade, bluBlade, (byte)160);
                 if (isDrawPolygons) gl.PolygonMode(OpenGL.GL_FRONT, OpenGL.GL_LINE);
 
                 gl.PolygonMode(OpenGL.GL_FRONT, OpenGL.GL_FILL);
@@ -176,7 +176,20 @@ namespace OpenGrade
                 //gl.DrawText(40, 120, 1, 0.5, 1, "Courier", 12, " frame msec " + Convert.ToString((int)(frameTime)));
 
                 //draw the vehicle/implement
-                vehicle.DrawVehicle();
+                //vehicle.DrawVehicle();
+                //translate and rotate at pivot axle
+                gl.Translate(pn.easting, pn.northing, 0);
+                gl.Rotate(glm.toDegrees(-fixHeading), 0.0, 0.0, 1.0);
+                
+                //tool           
+                gl.Color(redBlade, grnBlade, bluBlade);
+                gl.LineWidth(8.0f);
+                gl.Begin(OpenGL.GL_LINES);
+                gl.Vertex(-vehicle.toolWidth * 0.5, 0, 0);
+                gl.Vertex(vehicle.toolWidth * 0.5, 0, 0);
+                gl.End();
+
+                gl.LineWidth(1);
 
                 //Back to normal
                 gl.Color(0.98f, 0.98f, 0.98f);

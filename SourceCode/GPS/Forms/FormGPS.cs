@@ -34,7 +34,7 @@ namespace OpenGrade
         public string ablinesDirectory;
 
         //colors for sections and field background
-        private byte redSections, grnSections, bluSections;
+        private byte redBlade, grnBlade, bluBlade;
 
         public byte redField, grnField, bluField;
 
