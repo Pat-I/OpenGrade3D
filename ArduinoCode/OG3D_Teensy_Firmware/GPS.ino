@@ -1,22 +1,22 @@
 #ifdef isAllInOneBoard
-#define GPS Serial5
+#define GPS1 Serial5
 #define GPS_Dual Serial8
 #define GPS_RTK Serial3
 #define RTK_Baud 115200
-#else //v4.5 ----to set to correct values
-#define GPS Serial5//Serial7
+#else                //v4.5 ----to set to correct values
+#define GPS1 Serial5  //Serial7
 #define GPS_Dual Serial8
 #define GPS_RTK Serial3
 #define RTK_Baud 115200
 #endif
-char rxbuffer[512];         //Extra serial rx buffer
-char txbuffer[1023];        //Extra serial tx buffer
+char rxbuffer[512];   //Extra serial rx buffer
+char txbuffer[1023];  //Extra serial tx buffer
 
-char rxbuffer_GPS_Dual[512];   //Extra serial rx buffer
-char rxbuffer_RTK[1023];       //Extra serial rx buffer
+char rxbuffer_GPS_Dual[512];  //Extra serial rx buffer
+char rxbuffer_RTK[1023];      //Extra serial rx buffer
 
 char nmeaBuffer[200];
-int count=0;
+int count = 0;
 bool stringComplete = false;
 
 int test = 0;
@@ -29,11 +29,10 @@ int relposnedByteCount = 0;
 
 //**************************************************************
 
-void GPS_setup()
-{
-GPS.begin(460800);
-  GPS.addMemoryForRead(rxbuffer, 512);
-  GPS.addMemoryForWrite(txbuffer, 1023);
+void GPS_setup() {
+  GPS1.begin(460800);
+  GPS1.addMemoryForRead(rxbuffer, 512);
+  GPS1.addMemoryForWrite(txbuffer, 1023);
 
   GPS_RTK.begin(RTK_Baud);
   GPS_RTK.addMemoryForRead(rxbuffer_RTK, 1023);
@@ -52,26 +51,22 @@ GPS.begin(460800);
 
 //**************************************************************
 
-void Panda_GPS()
-{
-    while (GPS.available())
-    {
-        parser << GPS.read();
-    }   
+void Panda_GPS() {
+  while (GPS1.available()) {
+    parser << GPS1.read();
+  }
 }
 
-bool calcChecksum()
-{
-    CK_A = 0;
-    CK_B = 0;
+bool calcChecksum() {
+  CK_A = 0;
+  CK_B = 0;
 
-    for (int i = 2; i < 70; i++)
-    {
-        CK_A = CK_A + ackPacket[i];
-        CK_B = CK_B + CK_A;
-    }
+  for (int i = 2; i < 70; i++) {
+    CK_A = CK_A + ackPacket[i];
+    CK_B = CK_B + CK_A;
+  }
 
-    return (CK_A == ackPacket[70] && CK_B == ackPacket[71]);
+  return (CK_A == ackPacket[70] && CK_B == ackPacket[71]);
 }
 
 //**************************************************************
@@ -80,34 +75,32 @@ bool calcChecksum()
 
 //**************************************************************
 
-void Forward_Ntrip()
-{
+void Forward_Ntrip() {
 
-//Check for UDP Packet (Ntrip 2233)
-    int NtripSize = NtripUdp.parsePacket();
-    
-    if (NtripSize) 
-    {
-        NtripUdp.read(NtripData, NtripSize);
-        //Serial.print("Ntrip Data ="); 
-        //Serial.write(NtripData, sizeof(NtripData)); 
-        //Serial.write(10);
-        //Serial.println("Ntrip Forwarded");
-        GPS.write(NtripData, NtripSize); 
-        //LEDs.queueBlueFlash(LED_ID::GPS);
-    }
+  //Check for UDP Packet (Ntrip 2233)
+  int NtripSize = NtripUdp.parsePacket();
 
-//Check for Radio RTK
-    if (GPS_RTK.available())
-    {
-        GPS.write(GPS_RTK.read());
-    }
+  if (NtripSize) {
+    NtripUdp.read(NtripData, NtripSize);
+    //Serial.print("Ntrip Data =");
+    //Serial.write(NtripData, sizeof(NtripData));
+    //Serial.write(10);
+    //Serial.println("Ntrip Forwarded");
+    GPS1.write(NtripData, NtripSize);
+#ifdef isAllInOneBoard
+    LEDs.queueBlueFlash(LED_ID::GPS);
+#endif
+  }
+
+  //Check for Radio RTK
+  if (GPS_RTK.available()) {
+    GPS1.write(GPS_RTK.read());
+  }
 }
-    
+
 //-------------------------------------------------------------------------------------------------
 
-void clearBufferArray()
-{
+void clearBufferArray() {
   /*
   for (int i=0; i<count; i++)
   {
@@ -115,9 +108,7 @@ void clearBufferArray()
     stringComplete = false;
   }
   */
-  
+
   strcpy(nmeaBuffer, "");
   stringComplete = false;
-
 }
-     

@@ -100,6 +100,8 @@ namespace OpenGrade
 
         public void ProcessFixPosition()
         {
+            if (dataFromOGudpBlade++ >= 25) dataFromOGudpBlade = 20; //reset the counter if it gets too high
+
             isGNSSrecieved = 0;
             //if saving a file ignore any movement
             if (isSavingFile) return;
@@ -1030,7 +1032,7 @@ namespace OpenGrade
                 }        
             }
             //blade offset from arduino here
-            if (!spRelay.IsOpen || !isDataFromOGudpBlade)
+            if (!spRelay.IsOpen || dataFromOGudpBlade <= 15)
             {
                 bladeOffSetSlave = 0;
             }

@@ -81,9 +81,10 @@ String inoVersion = ("\r\nOG3D Ver 2026.08.30 (AIO v4 PCB))");
 #include <Wire.h>
 #include <EEPROM.h>
 #include "zNMEAParser.h"
+#ifdef isAllInOneBoard
 #include "LEDS.h"
 LEDS LEDs = LEDS(1000, 255, 64, 127);  // 1000ms RGB update, 255/64/127 RGB brightness balance levels for v5.0a
-
+#endif
 /* A parser is declared with 3 handlers at most */
 NMEAParser<3> parser;
 
@@ -182,13 +183,13 @@ int32_t targetAltitude = 20000000;
 bool workSwitch = true;  //high is circuit open, low is switch grounded
 bool autoEnable = false;
 bool settingsRecieved = false;
-bool dataRecieved = false;
+int32_t dataGNSSrecieved = 180;
 byte multipleValue = 0;
 //pwm variables
 byte integralMultiplier = 0;
 int32_t pwmGainUp = 0, pwmMinUp = 0, pwmGainDw = 0, pwmMinDw = 0, pwmMaxUp = 0, pwmMaxDw = 0;
 int32_t pwmDrive = 0, pwmValue = 0;
-float pwmValueCalc = 0;
+int32_t pwmValueCalc = 0;
 int32_t lastCutValve = 100;
 float pwmHist = 0;
 
@@ -203,17 +204,18 @@ int32_t bladeOffsetIn = 0, bladeOffsetOut = 0;
 byte bOUprevious = 0;
 byte bODprevious = 0;
 
-int leverUpValue = 0;
-int leverSideValue = 0;
-int LeverPushValue = 0;
-int onLedTime = 0;
-int autoLedTime = 0;
+int32_t leverUpValue = 0;
+int32_t leverUpCenterValue = 512;
+int32_t leverSideValue = 0;
+int32_t LeverPushValue = 0;
+int32_t onLedTime = 0;
+int32_t autoLedTime = 0;
 
 //*******************************************************************************
 
 void setup() {
 	delay(500);                //Small delay so serial can monitor start up
-	set_arm_clock(450000000);  //Set CPU speed to 450mhz
+	set_arm_clock(150000000);  //Set CPU speed to 150mhz
 	Serial.print("CPU speed set to: ");
 	Serial.println(F_CPU_ACTUAL);
 
@@ -253,6 +255,7 @@ void setup() {
 #ifdef isAllInOneBoard
 	LEDs.init();
 	LEDs.set(LED_ID::PWR_ETH, PWR_ETH_STATE::PWR_ON);
+	LEDs.updateLoop();
 #endif
 
 	ReadFromEEPROM();
@@ -262,8 +265,29 @@ void setup() {
 	delay(500);
 
 	Ethernet.begin(mac, 0);  // Start Ethernet with IP 0.0.0.0
+	if (manualMovePropLever) {
+		// calbrate to center
+		int32_t centerCal = 0;
+		leverUpCenterValue = 0;
+		centerCal = analogRead(LEVER_UP);
+		if (invertManMove) centerCal = map(centerCal, 0, 1023, 1023, 0);
+		leverUpCenterValue += centerCal;
+		delay(1);
+		centerCal = analogRead(LEVER_UP);
+		if (invertManMove) centerCal = map(centerCal, 0, 1023, 1023, 0);
+		leverUpCenterValue += centerCal;
+		delay(1);
+		centerCal = analogRead(LEVER_UP);
+		if (invertManMove) centerCal = map(centerCal, 0, 1023, 1023, 0);
+		leverUpCenterValue += centerCal;
+		delay(1);
+		centerCal = analogRead(LEVER_UP);
+		if (invertManMove) centerCal = map(centerCal, 0, 1023, 1023, 0);
+		leverUpCenterValue += centerCal;
 
-	delay(500);
+		leverUpCenterValue = (leverUpCenterValue >> 2);
+	}
+	delay(200);
 
 	//grab the ip from EEPROM
 	ip[0] = networkAddress.ipOne;
@@ -283,16 +307,22 @@ void setup() {
 	NtripUdp.begin(NtripPort);
 
 	if (Udp.begin(localPort))  // Eth_UDP.h
+	{
+#ifdef isAllInOneBoard
 		LEDs.set(LED_ID::PWR_ETH, PWR_ETH_STATE::ETH_READY);
-	else
+#endif
+	} else {
+#ifdef isAllInOneBoard
 		LEDs.set(LED_ID::PWR_ETH, PWR_ETH_STATE::NO_ETH);
-
+#endif
+	}
 	GPS_setup();
 
 	//----Teensy 4.1 Ethernet--End---------------------
 
 #ifdef isAllInOneBoard
 	LEDs.set(LED_ID::STEER, STEER_STATE::AUTOSTEER_READY);
+	LEDs.updateLoop();
 #else  //v4.5
 #endif
 
@@ -309,12 +339,21 @@ void loop() {
 	if (currentTime - lastTime >= LOOP_TIME) {  //200Hz
 		lastTime = currentTime;
 		loopTimer++;
+
+#ifdef isAllInOneBoard
+		LEDs.updateLoop();
+#endif
+		if (dataGNSSrecieved++ >= 200) {
+			dataGNSSrecieved = 180;
+			altitudeOG = 22000000;
+		}
 		//If connection lost to AgOpenGPS, the watchdog will count up
 		if (watchdogTimer++ > 250) watchdogTimer = 150;
 
-		if (dataRecieved || loopTimer > 26)  //as soon as GNSS data is recieved or each 130 ms
+		if (dataGNSSrecieved <= 95 || (loopTimer >= 40 && watchdogTimer >= 149) || (watchdogTimer == 2 && dataGNSSrecieved >= 170))
+		//the loop trigger if a GNSS posititon is received, or blade data without GNSS, or 200ms Without any data
 		{
-			dataRecieved = false;
+			if (dataGNSSrecieved <= 100) dataGNSSrecieved = 100;
 			loopTimer = 0;
 
 // On LED settings
@@ -378,7 +417,7 @@ void loop() {
 				leverUpValue = analogRead(LEVER_UP);  //
 				if (invertManMove) leverUpValue = map(leverUpValue, 0, 1023, 1023, 0);
 
-			} else leverUpValue = 512;
+			} else leverUpValue = leverUpCenterValue;
 				//0 lift -- 512 neutral-- 1023 lower
 
 				//BladeOffset ************************************************
@@ -535,7 +574,7 @@ void udpMessageRecv(int sizeToRead) {
 				else digitalWrite(13, LOW);
 				blink = !blink;
 #ifdef isAllInOneBoard
-				LEDs.set(LED_ID::PWR_ETH, PWR_ETH_STATE::AGIO_CONNECTED, true);
+				LEDs.set(LED_ID::PWR_ETH, PWR_ETH_STATE::AGIO_CONNECTED);
 #endif
 				//Data recieved, 0x61, 0xBA, 8, targetAltitude(32bits), cutValveReceived, bladeOffsetIn, not used, not used, CRC
 				//reset watchdog
@@ -551,6 +590,7 @@ void udpMessageRecv(int sizeToRead) {
 				// udpData[13] -> Incoming CRC , not verified
 			} else if (udpData[3] == 0xB8)  //settings from OG3D
 			{
+				digitalWrite(13, HIGH);
 				pwmGainUp = (int32_t)udpData[5] << 2;
 				pwmGainDw = (int32_t)udpData[6] << 2;
 				pwmMinUp = (int32_t)udpData[7] << 4;
@@ -568,9 +608,11 @@ void udpMessageRecv(int sizeToRead) {
 }  //end udp callback
 
 void SetPWM(void) {
-	if (workSwitch) autoEnable = true;           // if auto switch is tourned off turn on AutoEnable for the next time auto switch will be turned on
-	if (leverUpValue < 480) autoEnable = false;  //turn off automode when lifting the blade
-	if (leverUpValue > 1000) autoEnable = true;  // tur on automode when lever is fully presed for lowering the blade
+	int32_t leverCenterDeadbandUnder = leverUpCenterValue - 15;
+	int32_t leverCenterDeadbandAbove = leverUpCenterValue + 15;
+	if (workSwitch) autoEnable = true;                                // if auto switch is tourned off turn on AutoEnable for the next time auto switch will be turned on
+	if (leverUpValue < leverCenterDeadbandUnder) autoEnable = false;  //turn off automode when lifting the blade
+	if (leverUpValue > 900) autoEnable = true;                        // tur on automode when lever is fully presed for lowering the blade
 
 	pwmValue = 0;
 
@@ -643,13 +685,13 @@ void SetPWM(void) {
 		pwmDrive = 0;
 		lastCutValve = 100;
 
-		if (leverUpValue < 480)  // Lifting the blade range 480 down to 0
+		if (leverUpValue < leverCenterDeadbandUnder)  // Lifting the blade range 480 down to 0
 		{
-			pwmValueCalc = (((480 - leverUpValue) * 0.0022222f) * (pwmMaxUp - pwmMinUp)) + pwmMinUp;  // 1/450 = 0.0022222
+			pwmValueCalc = (int)(((float)(leverCenterDeadbandUnder - leverUpValue) / leverCenterDeadbandUnder) * (pwmMaxUp - pwmMinUp)) + pwmMinUp;
 			pwmValue = constrain(pwmValueCalc, pwmMinUp, pwmMaxUp);
-		} else if (leverUpValue > 540)  // Lowering the blade range 540 up to 1024
+		} else if (leverUpValue > leverCenterDeadbandAbove)  // Lowering the blade range 540 up to 1024
 		{
-			pwmValueCalc = (((leverUpValue - 540) * 0.0022222f) * -(pwmMaxDw - pwmMinDw)) - pwmMinDw;
+			pwmValueCalc = (int)(((float)(leverUpValue - leverCenterDeadbandAbove) / (1024.0f - leverCenterDeadbandAbove)) * -(pwmMaxDw - pwmMinDw)) - pwmMinDw;
 			pwmValue = constrain(pwmValueCalc, -pwmMaxDw, -pwmMinDw);
 		} else {
 			pwmValue = 0;
@@ -695,8 +737,8 @@ void SetPWM(void) {
 	//bit 2 = bool workSwitch
 	//bit 3 = bool autoEnable
 	multipleValue = 0;
-	if (pwmDrive > 0) multipleValue |= (1 << 0);
-	if (pwmDrive < 0) multipleValue |= (1 << 1);
+	if (pwmValue > 0) multipleValue |= (1 << 0);
+	if (pwmValue < 0) multipleValue |= (1 << 1);
 	if (workSwitch) multipleValue |= (1 << 2);
 	if (autoEnable) multipleValue |= (1 << 3);
 }
@@ -753,7 +795,7 @@ void SendUDPbladeData() {
 	OG3D[6] = (uint8_t)(pwmDrive >> 4);  // Single byte approximation
 	OG3D[7] = cutValve;
 	OG3D[8] = bladeOffsetOut;
-	OG3D[9] = leverUpValue;
+	OG3D[9] = (uint8_t)(leverUpValue >> 2);
 	OG3D[10] = leverSideValue;
 	OG3D[11] = 0;  // Not used / Padding slot
 	OG3D[12] = pwmHist;

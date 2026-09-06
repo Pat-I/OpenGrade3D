@@ -183,7 +183,7 @@ namespace OpenGrade
         public void RateRelayDataOutToPort()
         //public void RateRelayOutToPort(byte[] items, int numItems)
         {
-            if (isDataFromOGudpBlade)
+            if (dataFromOGudpBlade <= 15)
             {
                 byte[] message = new byte[14];
                 message[0] = 0x80; // standard AIO header
@@ -218,7 +218,7 @@ namespace OpenGrade
         public void RateRelaySettingsOutToPort()
         //public void RateRelayOutToPort(byte[] items, int numItems)
         {
-            if (isDataFromOGudpBlade)
+              if (dataFromOGudpBlade <= 15)
             {
                 byte[] message = new byte[14];
                 message[0] = 0x80; // standard AIO header

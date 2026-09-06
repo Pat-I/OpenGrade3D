@@ -30,10 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormGPS));
-            ProgBar.cBlendItems cBlendItems7 = new ProgBar.cBlendItems();
-            ProgBar.cFocalPoints cFocalPoints7 = new ProgBar.cFocalPoints();
-            ProgBar.cBlendItems cBlendItems8 = new ProgBar.cBlendItems();
-            ProgBar.cFocalPoints cFocalPoints8 = new ProgBar.cFocalPoints();
+            ProgBar.cBlendItems cBlendItems5 = new ProgBar.cBlendItems();
+            ProgBar.cFocalPoints cFocalPoints5 = new ProgBar.cFocalPoints();
+            ProgBar.cBlendItems cBlendItems6 = new ProgBar.cBlendItems();
+            ProgBar.cFocalPoints cFocalPoints6 = new ProgBar.cFocalPoints();
             this.openGLControl = new SharpGL.OpenGLControl();
             this.contextMenuStripOpenGL = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteFlagToolOpenGLContextMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -207,6 +207,7 @@
             this.lblCentreValue = new System.Windows.Forms.Label();
             this.btnUseSavedAGS = new System.Windows.Forms.Button();
             this.btnBuildFromElevation = new System.Windows.Forms.Button();
+            this.btnModuleStatus = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControl)).BeginInit();
             this.contextMenuStripOpenGL.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.openGLControlBack)).BeginInit();
@@ -1723,13 +1724,13 @@
             // 
             this.pbarCutBelow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.pbarCutBelow.BarBackColor = System.Drawing.SystemColors.ControlLight;
-            cBlendItems7.iColor = new System.Drawing.Color[] {
+            cBlendItems5.iColor = new System.Drawing.Color[] {
         System.Drawing.Color.Navy,
         System.Drawing.Color.Blue};
-            cBlendItems7.iPoint = new float[] {
+            cBlendItems5.iPoint = new float[] {
         0F,
         1F};
-            this.pbarCutBelow.BarColorBlend = cBlendItems7;
+            this.pbarCutBelow.BarColorBlend = cBlendItems5;
             this.pbarCutBelow.BarColorSolid = System.Drawing.Color.Black;
             this.pbarCutBelow.BarColorSolidB = System.Drawing.Color.Red;
             this.pbarCutBelow.BarLengthValue = ((short)(40));
@@ -1747,9 +1748,9 @@
             this.pbarCutBelow.CylonInterval = ((short)(1));
             this.pbarCutBelow.CylonMove = 5F;
             this.pbarCutBelow.FillDirection = ProgBar.ProgBarPlus.eFillDirection.Down_Left;
-            cFocalPoints7.CenterPoint = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints7.CenterPoint")));
-            cFocalPoints7.FocusScales = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints7.FocusScales")));
-            this.pbarCutBelow.FocalPoints = cFocalPoints7;
+            cFocalPoints5.CenterPoint = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints5.CenterPoint")));
+            cFocalPoints5.FocusScales = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints5.FocusScales")));
+            this.pbarCutBelow.FocalPoints = cFocalPoints5;
             this.pbarCutBelow.Location = new System.Drawing.Point(1231, 493);
             this.pbarCutBelow.Name = "pbarCutBelow";
             this.pbarCutBelow.Orientation = ProgBar.ProgBarPlus.eOrientation.Vertical;
@@ -1763,13 +1764,13 @@
             // 
             this.pbarCutAbove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbarCutAbove.BarBackColor = System.Drawing.SystemColors.ControlLight;
-            cBlendItems8.iColor = new System.Drawing.Color[] {
+            cBlendItems6.iColor = new System.Drawing.Color[] {
         System.Drawing.Color.Navy,
         System.Drawing.Color.Blue};
-            cBlendItems8.iPoint = new float[] {
+            cBlendItems6.iPoint = new float[] {
         0F,
         1F};
-            this.pbarCutAbove.BarColorBlend = cBlendItems8;
+            this.pbarCutAbove.BarColorBlend = cBlendItems6;
             this.pbarCutAbove.BarColorSolid = System.Drawing.Color.Black;
             this.pbarCutAbove.BarColorSolidB = System.Drawing.Color.LimeGreen;
             this.pbarCutAbove.BarLengthValue = ((short)(40));
@@ -1786,9 +1787,9 @@
             this.pbarCutAbove.Corners.UpperRight = ((short)(0));
             this.pbarCutAbove.CylonInterval = ((short)(1));
             this.pbarCutAbove.CylonMove = 5F;
-            cFocalPoints8.CenterPoint = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints8.CenterPoint")));
-            cFocalPoints8.FocusScales = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints8.FocusScales")));
-            this.pbarCutAbove.FocalPoints = cFocalPoints8;
+            cFocalPoints6.CenterPoint = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints6.CenterPoint")));
+            cFocalPoints6.FocusScales = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints6.FocusScales")));
+            this.pbarCutAbove.FocalPoints = cFocalPoints6;
             this.pbarCutAbove.Location = new System.Drawing.Point(1231, 343);
             this.pbarCutAbove.Name = "pbarCutAbove";
             this.pbarCutAbove.Orientation = ProgBar.ProgBarPlus.eOrientation.Vertical;
@@ -2270,12 +2271,24 @@
             this.btnBuildFromElevation.Visible = false;
             this.btnBuildFromElevation.Click += new System.EventHandler(this.btnBuildFromElevation_Click);
             // 
+            // btnModuleStatus
+            // 
+            this.btnModuleStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnModuleStatus.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnModuleStatus.Location = new System.Drawing.Point(1170, 580);
+            this.btnModuleStatus.Name = "btnModuleStatus";
+            this.btnModuleStatus.Size = new System.Drawing.Size(60, 60);
+            this.btnModuleStatus.TabIndex = 243;
+            this.btnModuleStatus.Text = "board";
+            this.btnModuleStatus.UseVisualStyleBackColor = true;
+            // 
             // FormGPS
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ClientSize = new System.Drawing.Size(1306, 684);
+            this.Controls.Add(this.btnModuleStatus);
             this.Controls.Add(this.btnBuildFromElevation);
             this.Controls.Add(this.btnUseSavedAGS);
             this.Controls.Add(this.lblCentreValue);
@@ -2542,6 +2555,7 @@
         private System.Windows.Forms.Label lblCentreValue;
         private System.Windows.Forms.Button btnUseSavedAGS;
         private System.Windows.Forms.Button btnBuildFromElevation;
+        private System.Windows.Forms.Button btnModuleStatus;
     }
 }
 
