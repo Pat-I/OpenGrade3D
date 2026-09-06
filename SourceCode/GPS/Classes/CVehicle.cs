@@ -39,8 +39,8 @@ namespace OpenGrade
         public byte deadband;
 
         //Display Settings for this vehicle
-        public double viewDistUnderGnd;
-        public double viewDistAboveGnd;
+        public double setDistUnderFill;
+        public double setDistAboveCut;
         public double gradeDistFromLine;
 
         public CVehicle(OpenGL _gl, FormGPS _f)
@@ -61,8 +61,8 @@ namespace OpenGrade
             minSlope = Properties.Vehicle.Default.setVehicle_minSlope;
 
             maxCuttingDepth = Properties.Vehicle.Default.setVehicle_MaxCuttingDepth;
-            viewDistUnderGnd = Properties.Vehicle.Default.setVehicle_ViewDistUnderGnd;
-            viewDistAboveGnd = Properties.Vehicle.Default.setVehicle_ViewDistAboveGnd;
+            setDistUnderFill = Properties.Vehicle.Default.setVehicle_ViewDistUnderGnd;
+            setDistAboveCut = Properties.Vehicle.Default.setVehicle_ViewDistAboveGnd;
             gradeDistFromLine = Properties.Vehicle.Default.setVehicle_GradeDistFromLine; //badly named, its used for the display map resolution
             bladeOffset = Properties.Vehicle.Default.setVehicle_bladeOffset;
         }

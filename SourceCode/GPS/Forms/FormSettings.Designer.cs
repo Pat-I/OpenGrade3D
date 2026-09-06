@@ -48,9 +48,9 @@
             this.nudAntennaHeight = new System.Windows.Forms.NumericUpDown();
             this.tabDisplay = new System.Windows.Forms.TabPage();
             this.label24 = new System.Windows.Forms.Label();
-            this.nudViewDistUnderGnd = new System.Windows.Forms.NumericUpDown();
+            this.nudSetDistUnderFill = new System.Windows.Forms.NumericUpDown();
             this.label20 = new System.Windows.Forms.Label();
-            this.nudViewDistAboveGnd = new System.Windows.Forms.NumericUpDown();
+            this.nudSetDistAboveCut = new System.Windows.Forms.NumericUpDown();
             this.label16 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.nudGradeDistFromLine = new System.Windows.Forms.NumericUpDown();
@@ -73,6 +73,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.tabDesingPt = new System.Windows.Forms.TabPage();
+            this.label35 = new System.Windows.Forms.Label();
             this.btnSendCorr = new System.Windows.Forms.Button();
             this.label34 = new System.Windows.Forms.Label();
             this.label33 = new System.Windows.Forms.Label();
@@ -95,7 +96,6 @@
             this.lblInchesCm = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
             this.bntOK = new System.Windows.Forms.Button();
-            this.label35 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabVehicle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMaxCuttingDepth)).BeginInit();
@@ -103,8 +103,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudToolWidth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudAntennaHeight)).BeginInit();
             this.tabDisplay.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudViewDistUnderGnd)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudViewDistAboveGnd)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSetDistUnderFill)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSetDistAboveCut)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudGradeDistFromLine)).BeginInit();
             this.tabValve.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPwmMinUp)).BeginInit();
@@ -308,9 +308,9 @@
             // tabDisplay
             // 
             this.tabDisplay.Controls.Add(this.label24);
-            this.tabDisplay.Controls.Add(this.nudViewDistUnderGnd);
+            this.tabDisplay.Controls.Add(this.nudSetDistUnderFill);
             this.tabDisplay.Controls.Add(this.label20);
-            this.tabDisplay.Controls.Add(this.nudViewDistAboveGnd);
+            this.tabDisplay.Controls.Add(this.nudSetDistAboveCut);
             this.tabDisplay.Controls.Add(this.label16);
             this.tabDisplay.Controls.Add(this.label14);
             this.tabDisplay.Controls.Add(this.nudGradeDistFromLine);
@@ -323,34 +323,44 @@
             resources.ApplyResources(this.label24, "label24");
             this.label24.Name = "label24";
             // 
-            // nudViewDistUnderGnd
+            // nudSetDistUnderFill
             // 
-            resources.ApplyResources(this.nudViewDistUnderGnd, "nudViewDistUnderGnd");
-            this.nudViewDistUnderGnd.Maximum = new decimal(new int[] {
+            resources.ApplyResources(this.nudSetDistUnderFill, "nudSetDistUnderFill");
+            this.nudSetDistUnderFill.Maximum = new decimal(new int[] {
             999,
             0,
             0,
             0});
-            this.nudViewDistUnderGnd.Name = "nudViewDistUnderGnd";
-            this.nudViewDistUnderGnd.ValueChanged += new System.EventHandler(this.nudViewDistUnderGnd_ValueChanged);
-            this.nudViewDistUnderGnd.Click += new System.EventHandler(this.nudViewDistUnderGnd_Click);
+            this.nudSetDistUnderFill.Minimum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            -2147483648});
+            this.nudSetDistUnderFill.Name = "nudSetDistUnderFill";
+            this.nudSetDistUnderFill.ValueChanged += new System.EventHandler(this.nudSetDistUnderFill_ValueChanged);
+            this.nudSetDistUnderFill.Click += new System.EventHandler(this.nudSetDistUnderFill_Click);
             // 
             // label20
             // 
             resources.ApplyResources(this.label20, "label20");
             this.label20.Name = "label20";
             // 
-            // nudViewDistAboveGnd
+            // nudSetDistAboveCut
             // 
-            resources.ApplyResources(this.nudViewDistAboveGnd, "nudViewDistAboveGnd");
-            this.nudViewDistAboveGnd.Maximum = new decimal(new int[] {
+            resources.ApplyResources(this.nudSetDistAboveCut, "nudSetDistAboveCut");
+            this.nudSetDistAboveCut.Maximum = new decimal(new int[] {
             999,
             0,
             0,
             0});
-            this.nudViewDistAboveGnd.Name = "nudViewDistAboveGnd";
-            this.nudViewDistAboveGnd.ValueChanged += new System.EventHandler(this.nudViewDistAboveGnd_ValueChanged);
-            this.nudViewDistAboveGnd.Click += new System.EventHandler(this.nudViewDistAboveGnd_Click);
+            this.nudSetDistAboveCut.Minimum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            -2147483648});
+            this.nudSetDistAboveCut.Name = "nudSetDistAboveCut";
+            this.nudSetDistAboveCut.ValueChanged += new System.EventHandler(this.nudSetDistAboveCut_ValueChanged);
+            this.nudSetDistAboveCut.Click += new System.EventHandler(this.nudSetDistAboveCut_Click);
             // 
             // label16
             // 
@@ -620,6 +630,11 @@
             this.tabDesingPt.Name = "tabDesingPt";
             this.tabDesingPt.UseVisualStyleBackColor = true;
             // 
+            // label35
+            // 
+            resources.ApplyResources(this.label35, "label35");
+            this.label35.Name = "label35";
+            // 
             // btnSendCorr
             // 
             resources.ApplyResources(this.btnSendCorr, "btnSendCorr");
@@ -829,11 +844,6 @@
             this.bntOK.UseVisualStyleBackColor = true;
             this.bntOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
-            // label35
-            // 
-            resources.ApplyResources(this.label35, "label35");
-            this.label35.Name = "label35";
-            // 
             // FormSettings
             // 
             resources.ApplyResources(this, "$this");
@@ -858,8 +868,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudAntennaHeight)).EndInit();
             this.tabDisplay.ResumeLayout(false);
             this.tabDisplay.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudViewDistUnderGnd)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudViewDistAboveGnd)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSetDistUnderFill)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudSetDistAboveCut)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudGradeDistFromLine)).EndInit();
             this.tabValve.ResumeLayout(false);
             this.tabValve.PerformLayout();
@@ -924,9 +934,9 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button bntValveSettingsSend;
         private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.NumericUpDown nudViewDistUnderGnd;
+        private System.Windows.Forms.NumericUpDown nudSetDistUnderFill;
         private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.NumericUpDown nudViewDistAboveGnd;
+        private System.Windows.Forms.NumericUpDown nudSetDistAboveCut;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.NumericUpDown nudGradeDistFromLine;

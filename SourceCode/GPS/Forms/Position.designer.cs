@@ -554,7 +554,7 @@ namespace OpenGrade
                 {
                     CalcPtOnLine(closestPoint, closestPointMap2, out distanceFromAline, out eastingApt, out northingApt, out altitudeApt, out cutAltApt);
 
-                    if (ct.ptList[closestPointMap2].cutAltitude > 0 && ct.ptList[closestPoint].cutAltitude > 0)
+                    if (ct.ptList[closestPointMap2].cutAltitude >= -998 && ct.ptList[closestPoint].cutAltitude >= -998)
                     {
                         NoLineAverageCutAlt += cutAltApt;
                         NoLineCutCount++;
@@ -571,7 +571,7 @@ namespace OpenGrade
                 {
                     CalcPtOnLine(closestPoint, closestPointMap3, out distanceFromBline, out eastingBpt, out northingBpt, out altitudeBpt, out cutAltBpt);
 
-                    if (ct.ptList[closestPointMap3].cutAltitude > 0 && ct.ptList[closestPoint].cutAltitude > 0)
+                    if (ct.ptList[closestPointMap3].cutAltitude >= -998 && ct.ptList[closestPoint].cutAltitude >= -998)
                     {
                         NoLineAverageCutAlt += cutAltBpt;
                         NoLineCutCount++;
@@ -587,7 +587,7 @@ namespace OpenGrade
                 {
                     CalcPtOnLine(closestPointMap2, closestPointMap4, out distanceFromCline, out eastingCpt, out northingCpt, out altitudeCpt, out cutAltCpt);
 
-                    if (ct.ptList[closestPointMap4].cutAltitude > 0 && ct.ptList[closestPointMap2].cutAltitude > 0)
+                    if (ct.ptList[closestPointMap4].cutAltitude >= -998 && ct.ptList[closestPointMap2].cutAltitude >= -998)
                     {
                         NoLineAverageCutAlt += cutAltCpt;
                         NoLineCutCount++;
@@ -603,7 +603,7 @@ namespace OpenGrade
                 {
                     CalcPtOnLine(closestPointMap3, closestPointMap4, out distanceFromDline, out eastingDpt, out northingDpt, out altitudeDpt, out cutAltDpt);
 
-                    if (ct.ptList[closestPointMap4].cutAltitude > 0 && ct.ptList[closestPointMap3].cutAltitude > 0)
+                    if (ct.ptList[closestPointMap4].cutAltitude >= -998 && ct.ptList[closestPointMap3].cutAltitude >= -998)
                     {
                         NoLineAverageCutAlt += cutAltDpt;
                         NoLineCutCount++;
@@ -718,24 +718,23 @@ namespace OpenGrade
                 }
                 else // blade is somewere between 4 points (or less) AND at least 2 pts and ONE line are used
                 {
-                    double sumofCloseDist = 1 / distanceFromAline + 1 / distanceFromBline + 1 / distanceFromCline + 1 / distanceFromDline;
-
-                    avgAltitude = ((altitudeApt / distanceFromAline) + (altitudeBpt / distanceFromBline) +
-                    (altitudeCpt / distanceFromCline) + (altitudeDpt / distanceFromDline)) / sumofCloseDist;
-
-                    if (cutAltApt < -997)
+                    if (cutAltApt < -997) //
                     {
                         avgCutAltitude = ct.ptList[closestPoint].cutAltitude;
+                        avgAltitude = ct.ptList[closestPoint].altitude;
                     }
                     else if (cutAltBpt < -997 | cutAltCpt < -997 | cutAltDpt < -997)
                     {
                         avgCutAltitude = cutAltApt;
+                        avgAltitude = altitudeApt;
 
                     }
                     else
                     {
-                        avgCutAltitude = (cutAltApt / distanceFromAline + cutAltBpt / distanceFromBline +
-                    cutAltCpt / distanceFromCline + cutAltDpt / distanceFromDline) / sumofCloseDist;
+                        double sumofCloseDist = 1 / distanceFromAline + 1 / distanceFromBline + 1 / distanceFromCline + 1 / distanceFromDline;
+
+                        avgAltitude = ((altitudeApt / distanceFromAline) + (altitudeBpt / distanceFromBline) + (altitudeCpt / distanceFromCline) + (altitudeDpt / distanceFromDline)) / sumofCloseDist;
+                        avgCutAltitude = (cutAltApt / distanceFromAline + cutAltBpt / distanceFromBline + cutAltCpt / distanceFromCline + cutAltDpt / distanceFromDline) / sumofCloseDist;
 
                     }
 
