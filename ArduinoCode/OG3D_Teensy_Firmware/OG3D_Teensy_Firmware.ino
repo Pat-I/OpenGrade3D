@@ -30,7 +30,7 @@ bool invertBladeOffset = false;
 
 #define PWM_2 5       //onboard driver
 #define PWM_1 6       //onboard driver
-#define SLEEP_PIN 4   // DRV Sleep pin, LOCK output
+#define LOCK_PIN 4   // DRV Sleep pin, LOCK output
 #define WORKSW_PIN 2  //PD7 this pin must be low (to ground) to activate automode IMP on PCB --Steer -PIN19
 #define LEVER_UP A15  // first axle -- WAS signal -PIN 32
 #ifdef bladeOffsetBtn
@@ -82,6 +82,8 @@ String inoVersion = ("\r\nOG3D Ver 2026.08.30 (AIO v4 PCB))");
 #include <EEPROM.h>
 #include "zNMEAParser.h"
 #ifdef isAllInOneBoard
+#include <Adafruit_PWMServoDriver.h>
+Adafruit_PWMServoDriver pcaSection = Adafruit_PWMServoDriver(0x44);  //the section and lock driver
 #include "LEDS.h"
 LEDS LEDs = LEDS(1000, 255, 64, 127);  // 1000ms RGB update, 255/64/127 RGB brightness balance levels for v5.0a
 #endif
@@ -223,7 +225,7 @@ void setup() {
 #ifdef isAllInOneBoard
 	pinMode(PWM_1, OUTPUT);
 	pinMode(PWM_2, OUTPUT);
-	pinMode(SLEEP_PIN, OUTPUT);
+	pinMode(LOCK_PIN, OUTPUT);
 	analogWriteFrequency(PWM_1, 100);  // 4482 hz max (FlexPWM)
 	analogWriteFrequency(PWM_2, 100);  // 4482 hz max (FlexPWM)
 #else
@@ -247,15 +249,32 @@ void setup() {
 	pinMode(LED_ON, OUTPUT);
 #endif
 	//set up communication
-	//Wire.begin();
+	Wire.begin();
 	Serial.begin(115200);
 
 	analogWriteResolution(12);
 	delay(500);
 #ifdef isAllInOneBoard
+	digitalWrite(LOCK_PIN, LOW);
+	pcaSection.begin();
+	pcaSection.setPWMFreq(100);
+	delay(2);
 	LEDs.init();
 	LEDs.set(LED_ID::PWR_ETH, PWR_ETH_STATE::PWR_ON);
+	delay(2);
 	LEDs.updateLoop();
+	pcaSection.setPWM(14, 0, 0);  //desactivate AUX circuit
+	pcaSection.setPWM(15, 0, 0);  //activate LOCK circuit
+	delay(20);
+	pcaSection.setPWM(14, 0, 4095);  //activate AUX circuit
+	pcaSection.setPWM(15, 0, 4095);  //activate LOCK circuit
+	delay(10);
+	pcaSection.setPWM(15, 0, 0);  //desactivate LOCK circuit
+	delay(10);
+	pcaSection.setPWM(15, 0, 4095);  //activate LOCK circuit
+	delay(1000);
+	pcaSection.setPWM(14, 0, 0);  //desactivate AUX circuit
+	pcaSection.setPWM(15, 0, 0);  //desactivate LOCK circuit
 #endif
 
 	ReadFromEEPROM();
@@ -706,12 +725,12 @@ void SetPWM(void) {
 		analogWrite(PWM_1, 0);
 	} else if (pwmValue > 0)  // lift
 	{
-		digitalWrite(SLEEP_PIN, HIGH);
+		digitalWrite(LOCK_PIN, HIGH);
 		analogWrite(PWM_2, 0);
 		analogWrite(PWM_1, pwmDrive);
 	} else  //lower
 	{
-		digitalWrite(SLEEP_PIN, HIGH);
+		digitalWrite(LOCK_PIN, HIGH);
 		analogWrite(PWM_2, pwmDrive);
 		analogWrite(PWM_1, 0);
 	}

@@ -66,7 +66,7 @@ namespace OpenGrade
             gradeDistFromLine = Properties.Vehicle.Default.setVehicle_GradeDistFromLine; //badly named, its used for the display map resolution
             bladeOffset = Properties.Vehicle.Default.setVehicle_bladeOffset;
         }
-
+        /*
         public void DrawVehicle()
         {
             //translate and rotate at pivot axle
@@ -84,8 +84,8 @@ namespace OpenGrade
             //gl.Vertex(2.0, -antennaPivot, 0.0);
             //gl.End();
 
-            //tool
-            gl.Color(0.95f, 0.90f, 0.0f);
+            //tool           
+            gl.Color(0.40f, 0.0f, 0.60f);
             gl.LineWidth(8.0f);
             gl.Begin(OpenGL.GL_LINES);
             gl.Vertex(-toolWidth/2, 0, 0);
@@ -94,6 +94,7 @@ namespace OpenGrade
 
             gl.LineWidth(1);
         }
+        */
     }
 }
 

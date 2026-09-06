@@ -354,9 +354,9 @@ namespace OpenGrade
                         isPureDisplayOn = Properties.Settings.Default.setMenu_isPureOn;
                         pursuitLineToolStripMenuItem.Checked = isPureDisplayOn;
 
-                        redSections = Properties.Settings.Default.setF_SectionColorR;
-                        grnSections = Properties.Settings.Default.setF_SectionColorG;
-                        bluSections = Properties.Settings.Default.setF_SectionColorB;
+                        redBlade = Properties.Settings.Default.setF_SectionColorR;
+                        grnBlade = Properties.Settings.Default.setF_SectionColorG;
+                        bluBlade = Properties.Settings.Default.setF_SectionColorB;
                         redField = Properties.Settings.Default.setF_FieldColorR;
                         grnField = Properties.Settings.Default.setF_FieldColorG;
                         bluField = Properties.Settings.Default.setF_FieldColorB;

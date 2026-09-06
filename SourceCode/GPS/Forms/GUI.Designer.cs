@@ -103,9 +103,9 @@ namespace OpenGrade
             grnField = (Settings.Default.setF_FieldColorG);
             bluField = (Settings.Default.setF_FieldColorB);
 
-            redSections = Settings.Default.setF_SectionColorR;
-            grnSections = Settings.Default.setF_SectionColorG;
-            bluSections = Settings.Default.setF_SectionColorB;
+            redBlade = Settings.Default.setF_SectionColorR;
+            grnBlade = Settings.Default.setF_SectionColorG;
+            bluBlade = Settings.Default.setF_SectionColorB;
 
             redCut = Settings.Default.setF_CutColorR;
             grnCut = Settings.Default.setF_CutColorG;
@@ -1105,7 +1105,7 @@ namespace OpenGrade
         }
 
         //setting color off Options Menu
-        private void sectionToolStripMenuItem_Click(object sender, EventArgs e)
+        private void bladeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //color picker for sections
             ColorDialog colorDlg = new ColorDialog
@@ -1113,21 +1113,21 @@ namespace OpenGrade
                 FullOpen = true,
                 AnyColor = true,
                 SolidColorOnly = false,
-                Color = Color.FromArgb(255, redSections, grnSections, bluSections)
+                Color = Color.FromArgb(255, redBlade, grnBlade, bluBlade)
             };
 
             if (colorDlg.ShowDialog() != DialogResult.OK) return;
 
-            redSections = colorDlg.Color.R;
-            if (redSections > 253) redSections = 253;
-            grnSections = colorDlg.Color.G;
-            if (grnSections > 253) grnSections = 253;
-            bluSections = colorDlg.Color.B;
-            if (bluSections > 253) bluSections = 253;
+            redBlade = colorDlg.Color.R;
+            if (redBlade > 253) redBlade = 253;
+            grnBlade = colorDlg.Color.G;
+            if (grnBlade > 253) grnBlade = 253;
+            bluBlade = colorDlg.Color.B;
+            if (bluBlade > 253) bluBlade = 253;
 
-            Settings.Default.setF_SectionColorR = redSections;
-            Settings.Default.setF_SectionColorG = grnSections;
-            Settings.Default.setF_SectionColorB = bluSections;
+            Settings.Default.setF_SectionColorR = redBlade;
+            Settings.Default.setF_SectionColorG = grnBlade;
+            Settings.Default.setF_SectionColorB = bluBlade;
             Settings.Default.Save();
         }
         private void GradToolStrip_Click(object sender, EventArgs e)
