@@ -20,7 +20,16 @@ namespace OpenGrade
         private readonly EndPoint epAgIO = new IPEndPoint(IPAddress.Parse("127.255.255.255"), 17777);
         public bool isUDPNetworkConnected = false;
         public bool isGNSSfromOG1 = false;
-        public bool isDataFromOGudpBlade = false;
+        public int dataFromOGudpBlade = 1024;
+        //data from blade module 1
+        public bool bladeFromModuleUp = false;
+        public bool bladeFromModuleDown = false;
+        public bool bladeFromModuleReady = false;
+        public bool bladeFromModuleActive = false;
+        public byte bladeFromModulePWM = 0;
+        public byte bladeFromModuleLever = 0;
+
+
         // Verrou pour empêcher les accès simultanés aux données de positionnement (Thread-safety)
         private readonly object _positionLock = new object();
 
@@ -31,7 +40,21 @@ namespace OpenGrade
         {
             // Arrêter une éventuelle instance précédente
             ShutdownUDPNetwork();
-
+            //INITIALISATION UNIQUE DU SOCKET DE RENVOI
+            try
+            {
+                if (loopBackSocket == null)
+                {
+                    loopBackSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                    loopBackSocket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+                    System.Diagnostics.Debug.WriteLine("[UDP-INIT] loopBackSocket créé avec succès dans LoadUDPNetwork !");
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[UDP-INIT-ERROR] Échec de création du loopBackSocket");
+            }
+            // --------------------------------------------------------------
             _udpCts = new CancellationTokenSource();
 
             // Lancement de la tâche d'écoute en arrière-plan sans bloquer l'UI
@@ -104,13 +127,12 @@ namespace OpenGrade
                                     if (msgId1 == 0x6A && msgId2 == 0xD1)
                                     {
                                         // Extract data immediately to spend as little time as possible on the network thread
-                                        isGNSSfromOG1 = true;
                                         ParseOG1GpsPacket(data);
                                     }
 
                                     if (msgId1 == 0x6A && msgId2 == 0xE1)
                                     {
-                                        isDataFromOGudpBlade = true;
+                                        dataFromOGudpBlade = 0;
                                         // Extract data from blade module 1
                                         ParseOGBlade1Packet(data);
                                     }
@@ -135,6 +157,7 @@ namespace OpenGrade
 
             if (lon == double.MaxValue || lat == double.MaxValue) return;
 
+            if (isSimulatorOn) closeSimulator();
             // Sécurisation de l'écriture dans l'objet partagé 'pn'
             lock (_positionLock)
             {
@@ -217,7 +240,9 @@ namespace OpenGrade
 
             // If coordinates match a sentinel value (e.g. 181°/361° scaled), abort early
             if (Math.Abs(lon) > 181.0 || Math.Abs(lat) > 91.0) return;
-
+            //valid data received from OG1, close simulator if it was on
+            if (isSimulatorOn) closeSimulator();
+            isGNSSfromOG1 = true;
             // --- 2. THREAD-SAFE DATA POPULATION ---
             lock (_positionLock)
             {
@@ -317,8 +342,19 @@ namespace OpenGrade
         private void ParseOGBlade1Packet(byte[] data)
         {
             // Implementation for parsing OG Blade 1 packet
+            byte temp = data[5];
+            bladeFromModuleUp = (temp & (1 << 0)) != 0;
+            bladeFromModuleDown = (temp & (1 << 1)) != 0;
+            bladeFromModuleReady = (temp & (1 << 2)) == 0;
+            bladeFromModuleActive = (temp & (1 << 3)) != 0;
+
+            bladeFromModulePWM = data[6];
+            //cutvalve value is in data[7] but not used for now
             bladeOffSetSlave = data[8];
-            // to be added, 
+            bladeFromModuleLever = data[9];
+            //side lever data[10]
+            ////not used data[11]
+            //pwmhist data[12]
         }
 
         public void SendPgnToLoop(byte[] byteData)
@@ -348,11 +384,16 @@ namespace OpenGrade
         {
             try
             {
-                loopBackSocket?.EndSend(asyncResult);
+                // CORRECTION CRITIQUE : Utiliser EndSendTo au lieu de EndSend pour l'UDP
+                if (loopBackSocket != null)
+                {
+                    int bytesSent = loopBackSocket.EndSendTo(asyncResult);
+                }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Erreur fin envoi UDP: {ex.Message}");
+                // Si le CRC ou le socket réseau bloque, l'erreur exacte s'affichera ici au lieu de bloquer l'application
+                System.Diagnostics.Debug.WriteLine($"[UDP-ERROR] Échec de la fin d'envoi UDP : {ex.Message}");
             }
         }
     }

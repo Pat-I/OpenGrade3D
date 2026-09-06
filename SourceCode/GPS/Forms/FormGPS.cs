@@ -86,6 +86,8 @@ namespace OpenGrade
 
         public uint isGNSSrecieved = 0;
 
+        public bool isSimulatorOn = false;
+
         //Zoom variables
         public double gridZoom;
 

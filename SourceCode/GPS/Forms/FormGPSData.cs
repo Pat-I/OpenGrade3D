@@ -33,9 +33,44 @@ namespace OpenGrade
             lblStatus.Text = mf.Status;
             lblHDOP.Text = mf.HDOP;
 
-            if (mf.isDataFromOGudpBlade)
+            if (mf.dataFromOGudpBlade <= 15)
             {
-                tboxSerialFromRelay.Text = "from UDP";
+                // --- HIGH-PERFORMANCE STRING BUILDER FOR LIVE TELEMETRY ---
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+                // 1. Evaluate PWM and Direction States
+                if (mf.bladeFromModulePWM == 0)
+                {
+                    sb.Append("Blade Still");
+                }
+                else
+                {
+                    sb.Append(mf.bladeFromModulePWM);
+                    if (mf.bladeFromModuleUp) sb.Append(" Up");
+                    else if (mf.bladeFromModuleDown) sb.Append(" Down");
+                }
+
+                sb.Append(" | "); // Separator for readability
+
+                // 2. Evaluate Operating System Modes
+                
+                if (mf.bladeFromModuleReady)
+                {
+                    if (mf.bladeFromModuleActive)
+                    {
+                        sb.Append("Automode Active");
+                    } 
+                    else sb.Append("Automode Ready");
+                }
+                else
+                {
+                    sb.Append("Manual Mode");
+                }
+
+                sb.Append(" | "); // Separator
+
+                sb.Append("Lever Value: ").Append(mf.bladeFromModuleLever);
+                tboxSerialFromRelay.Text = sb.ToString();
             }
             else tboxSerialFromRelay.Text = mf.mc.serialRecvRelayRateStr;
             tboxSerialToRelay.Text = mf.bladeCutAltitude.ToString() + "," + mf.mc.relayRateData[0] + "," + mf.mc.relayRateData[1]

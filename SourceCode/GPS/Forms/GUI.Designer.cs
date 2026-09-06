@@ -160,11 +160,13 @@ namespace OpenGrade
             {
                 panelSimControls.Visible = true;
                 timerSim.Enabled = true;
+                isSimulatorOn = true;
             }
             else
             {
                 panelSimControls.Visible = false;
                 timerSim.Enabled = false;
+                isSimulatorOn = false;
             }
 
             //btnDoneDraw.Enabled = false;
@@ -1072,7 +1074,7 @@ namespace OpenGrade
                 panelSimControls.Visible = true;
                 nudElevation.Visible = true;
                 timerSim.Enabled = true;
-                //ct.isSimulatorOn = true;
+                isSimulatorOn = true;
                 SerialPortCloseGPS();
             }
             else
@@ -1080,7 +1082,7 @@ namespace OpenGrade
                 panelSimControls.Visible = false;
                 nudElevation.Visible = false;
                 timerSim.Enabled = false;
-                //ct.isSimulatorOn = false;
+                isSimulatorOn = false;
             }
 
             Settings.Default.setMenu_isSimulatorOn = simulatorOnToolStripMenuItem.Checked;
@@ -1095,7 +1097,7 @@ namespace OpenGrade
                 panelSimControls.Visible = false;
                 nudElevation.Visible = false;
                 timerSim.Enabled = false;
-                //ct.isSimulatorOn = false;
+                isSimulatorOn = false;
             
 
             Settings.Default.setMenu_isSimulatorOn = false;
@@ -2035,6 +2037,37 @@ namespace OpenGrade
                         //tboxSentence.Text = gStr.gsNoSentenceData;
                     }
                     else stripOnlineGPS.Value = 100;
+
+                    //module button color
+                    if(dataFromOGudpBlade <= 15)
+                    {
+                        if (bladeFromModuleReady)
+                        {
+                            if (bladeFromModuleActive)
+                            {
+                                //"Automode Active"
+                                btnModuleStatus.BackColor = Color.LimeGreen;
+                                btnModuleStatus.Text = "AUTO";
+                            }
+                            else //"Automode Ready"
+                            {
+                                if (btnModuleStatus.BackColor == Color.Orange) btnModuleStatus.BackColor = Color.Yellow;
+                                else btnModuleStatus.BackColor = Color.Orange;
+                                btnModuleStatus.Text = "READY";
+                            }
+                        }
+                        else
+                        {
+                            //"Manual Mode"
+                            btnModuleStatus.BackColor = Color.Red;
+                            btnModuleStatus.Text = "MAN";
+                        }
+                    }
+                    else //not connected
+                    {
+                        btnModuleStatus.BackColor = Color.Gray;
+                        btnModuleStatus.Text = "NC";
+                    }
                 }
                 //wait till timer fires again.  
             }

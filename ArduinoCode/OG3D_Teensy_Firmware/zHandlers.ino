@@ -76,9 +76,10 @@ void GGA_Handler()  //Rec'd GGA
 	tempString = fixQuality;
 	fixTypeGGA = tempString.toInt();
 	fixQualityOG = fixTypeGGA;
-	//LEDs.setGpsLED(fixTypeGGA);
+#ifdef isAllInOneBoard
+	LEDs.setGpsLED(fixTypeGGA);
 	//LEDs.toggleTeensyLED();
-
+#endif
 	// satellite #
 	parser.getArg(6, numSats);
 
@@ -101,7 +102,7 @@ void GGA_Handler()  //Rec'd GGA
 	// Convert altitude meters to int32_t millimeters (x1000)
 	altitudeOG = (int32_t)round(tempString.toFloat() * 1000.0f);
 
-	dataRecieved = true;
+	dataGNSSrecieved = 0;
 	// height of geoid
 	parser.getArg(10, geoid);
 
