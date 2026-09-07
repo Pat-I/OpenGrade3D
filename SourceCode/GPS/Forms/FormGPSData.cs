@@ -25,7 +25,7 @@ namespace OpenGrade
             lblEasting.Text = mf.FixEasting;
             lblLatitude.Text = mf.Latitude;
             lblLongitude.Text = mf.Longitude;
-            lblAltitude.Text = mf.Altitude;
+            lblAltitude.Text = mf.GNSSaltitude;
 
             //other sat and GPS info
             lblFixQuality.Text = mf.FixQuality;
