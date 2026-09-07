@@ -9,6 +9,8 @@ Changes by Pat
 // it can also be used with the AIO
 // uncomment the following line if you're using the All-In-One-Board (proto v5)
 #define isAllInOneBoard
+// uncomment the following for debug
+//#define debugOG
 // uncomment the following line if you're using pins for blade offset
 //#define bladeOffsetPropLever
 //#define bladeOffsetBtn
@@ -578,10 +580,6 @@ void udpMessageRecv(int sizeToRead) {
 		else if (udpData[2] == 0x61) {
 			if (udpData[3] == 0xBA)  //data from OG3D
 			{
-				if (blink)
-					digitalWrite(13, HIGH);
-				else digitalWrite(13, LOW);
-				blink = !blink;
 #ifdef isAllInOneBoard
 				LEDs.set(LED_ID::PWR_ETH, PWR_ETH_STATE::AGIO_CONNECTED);
 #endif
