@@ -546,7 +546,7 @@ namespace OpenGrade
                 {
                     eastingOffset = (mf.pn.easting  + mf.pn.eastingOffset) - mf.ct.boundaryList[0].easting;
                     northingOffset = (mf.pn.northing + mf.pn.northingOffset) - mf.ct.boundaryList[0].northing;
-                    altitudeOffset = mf.ct.boundaryList[0].altitude - (mf.pn.altitude - mf.pn.altitudeOffset);
+                    altitudeOffset = mf.ct.boundaryList[0].altitude - (mf.pn.bladeAltitude - mf.pn.altitudeOffset);
 
                     mf.pn.eastingOffset = eastingOffset;
                     mf.pn.northingOffset = northingOffset;

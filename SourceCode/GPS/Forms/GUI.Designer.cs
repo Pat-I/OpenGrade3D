@@ -768,7 +768,7 @@ namespace OpenGrade
         private void btnFlag_Click(object sender, EventArgs e)
         {
             int nextflag = flagPts.Count + 1;
-            CFlag flagPt = new CFlag(pn.latitude, pn.longitude, pn.altitude, pn.easting, pn.northing, flagColor, nextflag);
+            CFlag flagPt = new CFlag(pn.latitude, pn.longitude, pn.bladeAltitude, pn.easting, pn.northing, flagColor, nextflag);
             flagPts.Add(flagPt);
             FileSaveFlags();
         }
@@ -884,7 +884,7 @@ namespace OpenGrade
         }
         private void btnZeroAltitude_Click(object sender, EventArgs e)
         {
-            ct.zeroAltitude = pn.altitude;
+            ct.zeroAltitude = pn.bladeAltitude;
         }
 
 
@@ -1798,8 +1798,8 @@ namespace OpenGrade
             }
         }
 
-        public string Altitude { get { return pn.altitude.ToString("0.000"); } }
-        public string AltitudeFeet { get { return (pn.altitude * 3.28084).ToString("0.00"); } }
+        public string Altitude { get { return pn.bladeAltitude.ToString("0.000"); } }
+        public string AltitudeFeet { get { return (pn.bladeAltitude * 3.28084).ToString("0.00"); } }
 
         public Texture ParticleTexture { get; set; }
 
@@ -1958,7 +1958,7 @@ namespace OpenGrade
                         //status strip values
                         stripDistance.Text = Convert.ToString((UInt16)(userDistance)) + " m";
                         lblAltitude.Text = Altitude;
-                        btnZeroAltitude.Text = (pn.altitude - ct.zeroAltitude).ToString("N2");
+                        btnZeroAltitude.Text = (pn.bladeAltitude - ct.zeroAltitude).ToString("N2");
                     }
                     else  //Imperial Measurements
                     {
@@ -1968,7 +1968,7 @@ namespace OpenGrade
                         //status strip values
                         stripDistance.Text = Convert.ToString((UInt16)(userDistance * 3.28084)) + " ft";
                         lblAltitude.Text = AltitudeFeet;
-                        btnZeroAltitude.Text = ((pn.altitude - ct.zeroAltitude) * glm.m2ft).ToString("N2");
+                        btnZeroAltitude.Text = ((pn.bladeAltitude - ct.zeroAltitude) * glm.m2ft).ToString("N2");
                     }
 
                     //not Metric/Standard units sensitive

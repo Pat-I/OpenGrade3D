@@ -76,7 +76,7 @@ namespace OpenGrade
         public double northingOffset, eastingOffset, altitudeOffset;
 
         //other GIS Info
-        public double altitude, speed;
+        public double bladeAltitude, GNSSantennaAltitude, speed;
         public double headingTrue, hdop, ageDiff;
         public double GPSroll, GPSpitch, GPSyawRate;
 
@@ -243,9 +243,9 @@ namespace OpenGrade
                 double.TryParse(words[8], NumberStyles.Float, CultureInfo.InvariantCulture, out hdop);
 
                 //altitude
-                double.TryParse(words[9], NumberStyles.Float, CultureInfo.InvariantCulture, out altitude);
+                double.TryParse(words[9], NumberStyles.Float, CultureInfo.InvariantCulture, out GNSSantennaAltitude);
                 //altitude -= mf.vehicle.antennaHeight;
-                altitude -= (mf.vehicle.antennaHeight + mf.vehicle.bladeOffset - altitudeOffset);
+                bladeAltitude = GNSSantennaAltitude - (mf.vehicle.antennaHeight + mf.vehicle.bladeOffset - altitudeOffset);
                 //altitude = altitude - mf.vehicle.antennaHeight + mf.vehicle.bladeOffset;
 
                 //age of differential
@@ -354,7 +354,8 @@ namespace OpenGrade
                 double.TryParse(words[8], NumberStyles.Float, CultureInfo.InvariantCulture, out hdop);
 
                 //altitude
-                double.TryParse(words[9], NumberStyles.Float, CultureInfo.InvariantCulture, out altitude);
+                double.TryParse(words[9], NumberStyles.Float, CultureInfo.InvariantCulture, out GNSSantennaAltitude);
+                bladeAltitude = GNSSantennaAltitude - (mf.vehicle.antennaHeight + mf.vehicle.bladeOffset - altitudeOffset);
 
                 //kph for speed - knots read
                 double.TryParse(words[11], NumberStyles.Float, CultureInfo.InvariantCulture, out speed);
@@ -466,7 +467,8 @@ namespace OpenGrade
 
 
                 //altitude
-                double.TryParse(words[9], NumberStyles.Float, CultureInfo.InvariantCulture, out altitude);
+                double.TryParse(words[9], NumberStyles.Float, CultureInfo.InvariantCulture, out GNSSantennaAltitude);
+                bladeAltitude = GNSSantennaAltitude - (mf.vehicle.antennaHeight + mf.vehicle.bladeOffset - altitudeOffset);
 
                 //age
                 double.TryParse(words[10], NumberStyles.Float, CultureInfo.InvariantCulture, out ageDiff);

@@ -193,7 +193,7 @@ namespace OpenGrade
                 message[4] = 8; // Length
                 // --- INSERT BLADECUTALTITUDE (Bytes 5, 6, 7, 8) ---
                 // Convert the 32-bit integer into its 4 raw bytes and copy them starting at index 5
-                Buffer.BlockCopy(BitConverter.GetBytes(bladeCutAltitude), 0, message, 5, 4);
+                Buffer.BlockCopy(BitConverter.GetBytes(GNSScutAltitude), 0, message, 5, 4);
                 // Remaining payload data
                 message[9] = mc.relayRateData[mc.cutValve];
                 message[10] = mc.relayRateData[mc.bladeOffset];
