@@ -8,13 +8,13 @@ Changes by Pat
 
 // it can also be used with the AIO
 // uncomment the following line if you're using the All-In-One-Board (proto v5)
-#define isAllInOneBoard
+//#define isAllInOneBoard //commented for AiO v4
 // uncomment the following for debug
 //#define debugOG
 // uncomment the following line if you're using pins for blade offset
 //#define bladeOffsetPropLever
 //#define bladeOffsetBtn
-//#define useLEDs  // LEDs using four outputs
+//#define useLEDs  // LEDs using four outputs, do not use: not implemented
 //User set variables
 //PWM or relay mode
 bool proportionalValve = true;
@@ -32,42 +32,43 @@ bool invertBladeOffset = false;
 
 #define PWM_2 5       //onboard driver
 #define PWM_1 6       //onboard driver
-#define LOCK_PIN 4    // DRV Sleep pin, LOCK output
-#define WORKSW_PIN 2  //PD7 this pin must be low (to ground) to activate automode IMP on PCB --Steer -PIN19
+#define LOCK_PIN 4    //LOCK output
+#define AUTOMODE_PIN 2  //this pin must be low (to ground) to activate automode IMP on PCB --Steer -PIN19
 #define LEVER_UP A15  // first axle -- WAS signal -PIN 32
 #ifdef bladeOffsetBtn
-#define BOFFUP_PIN 3   //signal (to GND) to move the blade offset up 1 cm?
-#define BOFFDW_PIN 26  //offset down
+#define BOFFUP_PIN 0   //signal (to GND) to move the blade offset up 1 cm?
+#define BOFFDW_PIN 0  //offset down
 #endif
 #ifdef bladeOffsetPropLever
-#define LEVER_SIDE A12  // second axle, if used for blade offset
+#define LEVER_SIDE A0  // second axle, if used for blade offset
 #endif
 //leds
 #ifdef useLEDs
-#define LED_DW 16    //led down (if used)
-#define LED_UP 17    //led up (if used)
-#define LED_AUTO 33  //led auto
-#define LED_ON 37    //on led
+#define LED_DW 0    //led down (if used)
+#define LED_UP 0    //led up (if used)
+#define LED_AUTO 0  //led auto
+#define LED_ON 0    //on led
 #endif
 #else  //AiO v4.5 // pin numbers not set yet
 
-#define DIR_ENABLE 4  //PD4 cytron dir
-#define PWM_OUT 3     //PD3  cytron pwm
-#define WORKSW_PIN 7  //PD7 this pin must be low (to ground) to activate automode IMP on PCB --to AiOv4 which pin?
-#define LEVER_UP A1   // first axle --to AiOv4 pressure pin?
+#define DIR_ENABLE 6  //PD4 cytron dir
+#define PWM_OUT 4     //PD3  cytron pwm
+#define LOCK_PIN 5    //LOCK output
+#define AUTOMODE_PIN 32  //this pin must be low (to ground) to activate automode IMP on PCB --the AiOv4 steerPin
+#define LEVER_UP A10   // first axle --to AiOv4 pressure pin
 #ifdef bladeOffsetBtn
-#define BOFFUP_PIN 8  //signal (to GND) to move the blade offset up 1 cm?
-#define BOFFDW_PIN 6  //offset down
+#define BOFFUP_PIN 0  //signal (to GND) to move the blade offset up 1 cm?
+#define BOFFDW_PIN 0  //offset down
 #endif
 #ifdef bladeOffsetPropLever
-#define LEVER_SIDE A2  // second axle, if used for blade offset
+#define LEVER_SIDE A0  // second axle, if used for blade offset
 #endif
 //leds
 #ifdef useLEDs
-#define LED_DW 2    //DO2 led down (if used)
-#define LED_UP 5    //DO5 led up (if used)
-#define LED_AUTO 9  //DO9 led auto
-#define LED_ON A0   //A0 on led
+#define LED_DW 0    //led down (if used)
+#define LED_UP 0   //led up (if used)
+#define LED_AUTO 0  //led auto
+#define LED_ON 0   //on led
 #endif
 #endif
 //----------------------------------------------------------
@@ -234,9 +235,10 @@ void setup() {
 #else
 	pinMode(DIR_ENABLE, OUTPUT);
 	pinMode(PWM_OUT, OUTPUT);
+	analogWriteFrequency(PWM_OUT, 100);  // 4482 hz max (FlexPWM)
 #endif
 	//keep pulled high and drag low to activate, noise free safe
-	pinMode(WORKSW_PIN, INPUT_PULLUP);
+	pinMode(AUTOMODE_PIN, INPUT_PULLUP);
 	pinMode(LEVER_UP, INPUT_DISABLE);
 #ifdef bladeOffsetBtn
 	pinMode(BOFFUP_PIN, INPUT_PULLUP);
@@ -252,12 +254,13 @@ void setup() {
 	pinMode(LED_ON, OUTPUT);
 #endif
 	//set up communication
-	Wire.begin();
+	
 	Serial.begin(115200);
-
 	analogWriteResolution(12);
-	delay(500);
+	delay(100);
 #ifdef isAllInOneBoard
+Wire.begin();
+delay(100);
 	digitalWrite(LOCK_PIN, LOW);
 	delay(2);
 	LEDs.init();
@@ -407,7 +410,7 @@ void loop() {
 				if (workButton) {
 					//steer Button momentary
 
-					reading = digitalRead(WORKSW_PIN);
+					reading = digitalRead(AUTOMODE_PIN);
 					if (reading == LOW && previous == HIGH) {
 						if (currentState == 1) {
 							currentState = 0;
@@ -419,7 +422,7 @@ void loop() {
 					}
 					previous = reading;
 
-				} else workSwitch = digitalRead(WORKSW_PIN);  // read work switch
+				} else workSwitch = digitalRead(AUTOMODE_PIN);  // read work switch
 			}
 
 			//read the inputs for manual blade controls
