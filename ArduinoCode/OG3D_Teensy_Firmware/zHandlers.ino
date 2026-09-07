@@ -164,50 +164,71 @@ void ZDA_Handler() {
 
 void BuildNmea(void) {
 	//GNSS sent to OG3D
+	//Blink the Teensy LED to show an incomming GGA
+	if (blink)
+		digitalWrite(13, HIGH);
+	else digitalWrite(13, LOW);
+	blink = !blink;
 	//uint8_t GNSS1[] = { 0x80, 0x81, 0x6a, 0xd1, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xCC };
 	//int8_t GNSS1_Size = sizeof(GNSS1);
 	// longitudeOG, latitudeOG, altitudeOG, dualHeadingOG, singleHeadingOG, dualRollOG, speedOG, imuHeadingOG, imuRollOG, imuPitchOG, imuYawRateOG, hdopOG, ageOG, fixQualityOG, satNbrOG;
 
 	// We NO LONGER allocate 'uint8_t GNSS1[48]' here because it is already global!
 	// This completely removes allocation overhead from the loop.
+	if (fixQualityOG >= 1 && fixQualityOG <= 5) {
+		// 1. Refresh the dynamic headers just in case
+		GNSS1[0] = 0x80;
+		GNSS1[1] = 0x81;
+		GNSS1[2] = 0x6A;  // Message ID 1
+		GNSS1[3] = 0xD1;  // Message ID 2
+		GNSS1[4] = 42;    // Payload length
 
-	// 1. Refresh the dynamic headers just in case
-	GNSS1[0] = 0x80;
-	GNSS1[1] = 0x81;
-	GNSS1[2] = 0x6A;  // Message ID 1
-	GNSS1[3] = 0xD1;  // Message ID 2
-	GNSS1[4] = 42;    // Payload length
+		// 2. Serialize your parameters directly into your pre-allocated global array
+		memcpy(&GNSS1[5], &longitudeOG, sizeof(int64_t));
+		memcpy(&GNSS1[13], &latitudeOG, sizeof(int64_t));
+		memcpy(&GNSS1[21], &altitudeOG, sizeof(int32_t));
+		memcpy(&GNSS1[25], &dualHeadingOG, sizeof(uint16_t));
+		memcpy(&GNSS1[27], &singleHeadingOG, sizeof(uint16_t));
+		memcpy(&GNSS1[29], &dualRollOG, sizeof(int16_t));
+		memcpy(&GNSS1[31], &speedOG, sizeof(int16_t));
 
-	// 2. Serialize your parameters directly into your pre-allocated global array
-	memcpy(&GNSS1[5], &longitudeOG, sizeof(int64_t));
-	memcpy(&GNSS1[13], &latitudeOG, sizeof(int64_t));
-	memcpy(&GNSS1[21], &altitudeOG, sizeof(int32_t));
-	memcpy(&GNSS1[25], &dualHeadingOG, sizeof(uint16_t));
-	memcpy(&GNSS1[27], &singleHeadingOG, sizeof(uint16_t));
-	memcpy(&GNSS1[29], &dualRollOG, sizeof(int16_t));
-	memcpy(&GNSS1[31], &speedOG, sizeof(int16_t));
+		memcpy(&GNSS1[33], &imuHeadingOG, sizeof(uint16_t));
+		memcpy(&GNSS1[35], &imuRollOG, sizeof(int16_t));
+		memcpy(&GNSS1[37], &imuPitchOG, sizeof(int16_t));
+		memcpy(&GNSS1[39], &imuYawRateOG, sizeof(int16_t));
+		memcpy(&GNSS1[41], &hdopOG, sizeof(int16_t));
+		memcpy(&GNSS1[43], &ageOG, sizeof(int16_t));
 
-	memcpy(&GNSS1[33], &imuHeadingOG, sizeof(uint16_t));
-	memcpy(&GNSS1[35], &imuRollOG, sizeof(int16_t));
-	memcpy(&GNSS1[37], &imuPitchOG, sizeof(int16_t));
-	memcpy(&GNSS1[39], &imuYawRateOG, sizeof(int16_t));
-	memcpy(&GNSS1[41], &hdopOG, sizeof(int16_t));
-	memcpy(&GNSS1[43], &ageOG, sizeof(int16_t));
+		GNSS1[45] = fixQualityOG;
+		GNSS1[46] = satNbrOG;
 
-	GNSS1[45] = fixQualityOG;
-	GNSS1[46] = satNbrOG;
+		// 3. Fast CRC checksum calculation over the global frame indexes
+		uint8_t calculatedCrc = 0;
+		for (int i = 2; i < 47; i++) {
+			calculatedCrc += GNSS1[i];
+		}
+		GNSS1[47] = calculatedCrc;
 
-	// 3. Fast CRC checksum calculation over the global frame indexes
-	uint8_t calculatedCrc = 0;
-	for (int i = 2; i < 47; i++) {
-		calculatedCrc += GNSS1[i];
+		// 4. Send the updated global frame via UDP
+		Udp.beginPacket(ipDestination, 9999);
+		Udp.write(GNSS1, 48);  // We pass 48 bytes explicitly
+		Udp.endPacket();
+
+#ifdef debugOG
+		Serial.print("Valid position: long: ");
+		Serial.print(longitudeOG);
+		Serial.print(", lat:");
+		Serial.println(latitudeOG);
+#endif
+
+	} else {
+//debug: not a good GNSS Fix to send
+#ifdef debugOG
+		Serial.print("No valid position, quality is: ");
+		Serial.println(fixQualityOG);
+#endif
 	}
-	GNSS1[47] = calculatedCrc;
-
-	// 4. Send the updated global frame via UDP
-	Udp.beginPacket(ipDestination, 9999);
-	Udp.write(GNSS1, 48);  // We pass 48 bytes explicitly
-	Udp.endPacket();
+	fixQualityOG = 255;
 }
 
 void CalculateChecksum(void) {

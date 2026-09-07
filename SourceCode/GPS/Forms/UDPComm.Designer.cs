@@ -230,13 +230,23 @@ namespace OpenGrade
         private void ParseOG1GpsPacket(byte[] data)
         {
             // --- 1. PRE-EXTRACTION AND SENTINEL CHECK FOR COORDINATES ---
-            // Byte 5 to 12: int64 longitude scaled by 1000,000,000
+            // Byte 5 to 12: int64 longitude scaled by 1,000,000,000 (DDMM.MMMM format)
             long rawLon = BitConverter.ToInt64(data, 5);
-            double lon = rawLon / 1000000000.0;
+            double nmeaLon = rawLon / 1000000000.0; // Brings it back to 7356.78910
 
-            // Byte 13 to 20: int64 latitude scaled by 1000,000,000
+            // Convert NMEA DDMM.MMMM to true Decimal Degrees
+            double lonDeg = Math.Truncate(nmeaLon / 100.0);       // Isolates 73.0
+            double lonMin = nmeaLon - (lonDeg * 100.0);          // Isolates 56.78910
+            double lon = lonDeg + (lonMin / 60.0);                // 73 + (56.78910 / 60) -> 73.946485°
+
+            // Byte 13 to 20: int64 latitude scaled by 1,000,000,000 (DDMM.MMMM format)
             long rawLat = BitConverter.ToInt64(data, 13);
-            double lat = rawLat / 1000000000.0;
+            double nmeaLat = rawLat / 1000000000.0; // Brings it back to 4512.34567
+
+            // Convert NMEA DDMM.MMMM to true Decimal Degrees
+            double latDeg = Math.Truncate(nmeaLat / 100.0);       // Isolates 45.0
+            double latMin = nmeaLat - (latDeg * 100.0);          // Isolates 12.34567
+            double lat = latDeg + (latMin / 60.0);                // 45 + (12.34567 / 60) ->
 
             // If coordinates match a sentinel value (e.g. 181°/361° scaled), abort early
             if (Math.Abs(lon) > 181.0 || Math.Abs(lat) > 91.0) return;
