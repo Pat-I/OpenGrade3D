@@ -1078,7 +1078,7 @@ namespace OpenGrade
 
             mc.relayRateData[mc.bladeOffset] = (byte)(bladeOffSetMaster + 100);
 
-            GNSScutAltitude = bladeCutAltitude + (int)(vehicle.antennaHeight * 1000) - (int)(pn.altitudeOffset * 1000);
+            GNSScutAltitude = bladeCutAltitude + (int)(vehicle.antennaHeight * 1000) + (int)(vehicle.bladeOffset * 1000) - (int)(pn.altitudeOffset * 1000);
             RateRelayDataOutToPort();
             #endregion
 
