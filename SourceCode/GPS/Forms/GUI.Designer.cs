@@ -1798,8 +1798,10 @@ namespace OpenGrade
             }
         }
 
-        public string Altitude { get { return pn.bladeAltitude.ToString("0.000"); } }
-        public string AltitudeFeet { get { return (pn.bladeAltitude * 3.28084).ToString("0.00"); } }
+        public string BladeAltitude { get { return pn.bladeAltitude.ToString("0.000"); } }
+        public string BladeAltitudeFeet { get { return (pn.bladeAltitude * 3.28084).ToString("0.00"); } }
+        public string GNSSaltitude { get { return pn.GNSSantennaAltitude.ToString("0.000"); } }
+        public string GNSSaltitudeFeet { get { return (pn.GNSSantennaAltitude * 3.28084).ToString("0.00"); } }
 
         public Texture ParticleTexture { get; set; }
 
@@ -1957,7 +1959,7 @@ namespace OpenGrade
 
                         //status strip values
                         stripDistance.Text = Convert.ToString((UInt16)(userDistance)) + " m";
-                        lblAltitude.Text = Altitude;
+                        lblAltitude.Text = BladeAltitude;
                         btnZeroAltitude.Text = (pn.bladeAltitude - ct.zeroAltitude).ToString("N2");
                     }
                     else  //Imperial Measurements
@@ -1967,7 +1969,7 @@ namespace OpenGrade
 
                         //status strip values
                         stripDistance.Text = Convert.ToString((UInt16)(userDistance * 3.28084)) + " ft";
-                        lblAltitude.Text = AltitudeFeet;
+                        lblAltitude.Text = BladeAltitudeFeet;
                         btnZeroAltitude.Text = ((pn.bladeAltitude - ct.zeroAltitude) * glm.m2ft).ToString("N2");
                     }
 
