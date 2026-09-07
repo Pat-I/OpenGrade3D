@@ -345,7 +345,7 @@ namespace OpenGrade
                     if (markBM)
                     {
                         surveyList.Clear();
-                        SurveyPt point = new SurveyPt(mf.pn.easting, mf.pn.northing, mf.pn.latitude, mf.pn.longitude, mf.pn.altitude, 0, mf.pn.fixQuality);
+                        SurveyPt point = new SurveyPt(mf.pn.easting, mf.pn.northing, mf.pn.latitude, mf.pn.longitude, mf.pn.bladeAltitude, 0, mf.pn.fixQuality);
                         surveyList.Add(point);
 
                         nearestSurveyEasting = mf.pn.easting;
@@ -389,7 +389,7 @@ namespace OpenGrade
                             {
                                 mf.pn.ConvertLocalToWGS84(sideNorthing, sideEasting, out double Lat, out double Lon);
 
-                                SurveyPt point = new SurveyPt(sideEasting, sideNorthing, Lat, Lon, mf.pn.altitude, 2, mf.pn.fixQuality) ;
+                                SurveyPt point = new SurveyPt(sideEasting, sideNorthing, Lat, Lon, mf.pn.bladeAltitude, 2, mf.pn.fixQuality) ;
                                 surveyList.Add(point);
 
                                 nearestSurveyEasting = mf.pn.easting;
@@ -420,12 +420,12 @@ namespace OpenGrade
                                 }
                             }
 
-                            existingHeight = Math.Abs(existingHeight - mf.pn.altitude);
+                            existingHeight = Math.Abs(existingHeight - mf.pn.bladeAltitude);
 
                             // if there is no point 3 metre around or the height difference is significant, add a point
                             if ((minSurveyDistance > 1 && existingHeight > 0.1) || minSurveyDistance > 9)
                             {
-                                SurveyPt point = new SurveyPt(mf.pn.easting, mf.pn.northing, mf.pn.latitude, mf.pn.longitude, mf.pn.altitude, 3, mf.pn.fixQuality);
+                                SurveyPt point = new SurveyPt(mf.pn.easting, mf.pn.northing, mf.pn.latitude, mf.pn.longitude, mf.pn.bladeAltitude, 3, mf.pn.fixQuality);
                                 surveyList.Add(point);
 
                                 nearestSurveyEasting = mf.pn.easting;

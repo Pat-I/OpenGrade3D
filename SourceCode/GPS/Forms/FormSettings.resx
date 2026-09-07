@@ -817,7 +817,7 @@
     <value>455, 37</value>
   </data>
   <data name="nudGradeDistFromLine.Size" type="System.Drawing.Size, System.Drawing">
-    <value>147, 72</value>
+    <value>192, 72</value>
   </data>
   <data name="nudGradeDistFromLine.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>

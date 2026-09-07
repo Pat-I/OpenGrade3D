@@ -319,7 +319,7 @@ namespace OpenGrade
             #region Calculate Heigt
             //reset cut delta for frame
             cutDelta = 9999;
-            bladeCutAltitude = 22000000;
+            GNSScutAltitude = bladeCutAltitude = 22000000;
 
             int closestPoint = 0;
             int ptCnt = ct.ptList.Count;
@@ -328,7 +328,7 @@ namespace OpenGrade
             if (cboxLaserModeOnOff.Checked)
             {
 
-                cutDelta = (pn.altitude - ct.zeroAltitude) * 100;
+                cutDelta = (pn.bladeAltitude - ct.zeroAltitude) * 100;
                 bladeCutAltitude = (int)Math.Round(ct.zeroAltitude * 1000);
 
             }
@@ -800,7 +800,7 @@ namespace OpenGrade
                         ct.eleViewList.Add(pointe);
 
                         // fill the current point (101)
-                        ct.eleViewList[101].lastPassAltitude = pn.altitude;
+                        ct.eleViewList[101].lastPassAltitude = pn.bladeAltitude;
                         ct.eleViewList[101].easting = pn.easting;
                         ct.eleViewList[101].northing = pn.northing;
                         ct.eleViewList[101].heading = fixHeading;
@@ -990,7 +990,7 @@ namespace OpenGrade
                     //double temp = (double)closestPoint / (double)count2;
                     if (cboxLaserModeOnOff.Checked)
                     {
-                        cutDelta = (pn.altitude - ct.zeroAltitude) * 100;
+                        cutDelta = (pn.bladeAltitude - ct.zeroAltitude) * 100;
                         bladeCutAltitude = (int)Math.Round(ct.zeroAltitude * 1000);
                     }
                     else
@@ -998,7 +998,7 @@ namespace OpenGrade
                         if (avgCutAltitude >= -997)
                         {
                             //in cm
-                            cutDelta = (pn.altitude - avgCutAltitude) * 100;
+                            cutDelta = (pn.bladeAltitude - avgCutAltitude) * 100;
                             bladeCutAltitude = (int)Math.Round(avgCutAltitude * 1000);
                             cutDeltaToBlade = cutDelta;
 
@@ -1078,6 +1078,7 @@ namespace OpenGrade
 
             mc.relayRateData[mc.bladeOffset] = (byte)(bladeOffSetMaster + 100);
 
+            GNSScutAltitude = bladeCutAltitude + (int)(vehicle.antennaHeight * 1000);
             RateRelayDataOutToPort();
             #endregion
 

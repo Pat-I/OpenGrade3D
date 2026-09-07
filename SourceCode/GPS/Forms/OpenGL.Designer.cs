@@ -15,6 +15,8 @@ namespace OpenGrade
         //difference between blade tip and guide line
         public double cutDelta, cutDeltaToBlade;
         public int bladeCutAltitude { get; set; } = 22000000;
+
+        public int GNSScutAltitude { get; set; } = 22000000;
         public int bladeOffSetMaster = 0;// in cm
         public int bladeOffSetSlave = 0; // in cm
         private double minDist;
@@ -571,7 +573,7 @@ namespace OpenGrade
                     gl.LineWidth(8);
                     gl.Begin(OpenGL.GL_LINES);
                     gl.Color(0.95f, 0.90f, 0.0f);
-                    gl.Vertex(101, (((pn.altitude - centerY) * altitudeWindowGain) + centerY), 0);
+                    gl.Vertex(101, (((pn.bladeAltitude - centerY) * altitudeWindowGain) + centerY), 0);
                     gl.Vertex(101, 10000, 0);
                     gl.End();
 
@@ -579,8 +581,8 @@ namespace OpenGrade
                     gl.LineWidth(1);
                     gl.Begin(OpenGL.GL_LINES);
                     gl.Color(0.57f, 0.80f, 0.00f);
-                    gl.Vertex(-5, (((pn.altitude - centerY) * altitudeWindowGain) + centerY), 0);
-                    gl.Vertex(305, (((pn.altitude - centerY) * altitudeWindowGain) + centerY), 0);
+                    gl.Vertex(-5, (((pn.bladeAltitude - centerY) * altitudeWindowGain) + centerY), 0);
+                    gl.Vertex(305, (((pn.bladeAltitude - centerY) * altitudeWindowGain) + centerY), 0);
                     gl.Vertex(101, -10000, 0);
                     gl.Vertex(101, 10000, 0);
                     gl.End();
@@ -606,7 +608,7 @@ namespace OpenGrade
                     gl.Color(0.0f, 0.0f, 0.0f);
                     gl.PointSize(8);
                     gl.Begin(OpenGL.GL_POINTS);
-                    gl.Vertex(101, (((pn.altitude - centerY) * altitudeWindowGain) + centerY), 0);
+                    gl.Vertex(101, (((pn.bladeAltitude - centerY) * altitudeWindowGain) + centerY), 0);
                     gl.End();
 
                 }

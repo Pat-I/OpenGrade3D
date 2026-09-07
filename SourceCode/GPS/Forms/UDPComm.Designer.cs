@@ -183,7 +183,11 @@ namespace OpenGrade
 
                 // Altitude
                 float tempAlt = BitConverter.ToSingle(data, 37);
-                if (tempAlt != float.MaxValue) pn.altitude = tempAlt;
+                if (tempAlt != float.MaxValue)
+                {
+                    pn.GNSSantennaAltitude = tempAlt;
+                    pn.bladeAltitude = pn.GNSSantennaAltitude - (vehicle.antennaHeight + vehicle.bladeOffset - pn.altitudeOffset);
+                }
 
                 // Satellites & Fix
                 ushort sats = BitConverter.ToUInt16(data, 41);
@@ -293,7 +297,8 @@ namespace OpenGrade
                 int rawAltMm = BitConverter.ToInt32(data, 21);
                 if (rawAltMm <= 20000000) // Lower than 20,000 meters in mm
                 {
-                    pn.altitude = (float)(rawAltMm / 1000.0);
+                    pn.GNSSantennaAltitude = (float)(rawAltMm / 1000.0);
+                    pn.bladeAltitude = pn.GNSSantennaAltitude - (vehicle.antennaHeight + vehicle.bladeOffset - pn.altitudeOffset);
                 }
 
                 // Satellites (Byte 46: single byte)

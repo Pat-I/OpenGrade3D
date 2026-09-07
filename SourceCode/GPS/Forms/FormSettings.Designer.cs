@@ -374,7 +374,13 @@
             // 
             // nudGradeDistFromLine
             // 
+            this.nudGradeDistFromLine.DecimalPlaces = 2;
             resources.ApplyResources(this.nudGradeDistFromLine, "nudGradeDistFromLine");
+            this.nudGradeDistFromLine.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
             this.nudGradeDistFromLine.Maximum = new decimal(new int[] {
             999,
             0,
@@ -384,10 +390,10 @@
             1,
             0,
             0,
-            0});
+            65536});
             this.nudGradeDistFromLine.Name = "nudGradeDistFromLine";
             this.nudGradeDistFromLine.Value = new decimal(new int[] {
-            2,
+            1,
             0,
             0,
             0});
