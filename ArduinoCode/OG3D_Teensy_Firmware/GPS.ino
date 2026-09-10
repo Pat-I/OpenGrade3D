@@ -1,11 +1,11 @@
-#ifdef isAllInOneBoard
+#ifdef isAllInOneBoardProto
 #define GPS1 Serial5
 #define GPS_Dual Serial8
 #define GPS_RTK Serial3
 #define RTK_Baud 115200
 #else                //v4.5 ----to set to correct values
-#define GPS1 Serial5  //Serial7
-#define GPS_Dual Serial8
+#define GPS1 Serial7
+#define GPS_Dual Serial2
 #define GPS_RTK Serial3
 #define RTK_Baud 115200
 #endif
@@ -87,7 +87,7 @@ void Forward_Ntrip() {
     //Serial.write(10);
     //Serial.println("Ntrip Forwarded");
     GPS1.write(NtripData, NtripSize);
-#ifdef isAllInOneBoard
+#ifdef isAllInOneBoardProto
     LEDs.queueBlueFlash(LED_ID::GPS);
 #endif
   }
