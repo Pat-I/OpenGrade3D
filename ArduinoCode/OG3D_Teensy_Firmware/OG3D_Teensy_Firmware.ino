@@ -8,7 +8,7 @@ Changes by Pat
 
 // it can also be used with the AIO
 // uncomment the following line if you're using the All-In-One-Board (proto v5)
-//#define isAllInOneBoard //commented for AiO v4
+//#define isAllInOneBoardProto //commented for AiO v4
 // uncomment the following for debug
 //#define debugOG
 // uncomment the following line if you're using pins for blade offset
@@ -17,6 +17,8 @@ Changes by Pat
 //#define useLEDs  // LEDs using four outputs, do not use: not implemented
 //User set variables
 //PWM or relay mode
+int32_t joystickVerDeadband = 30; // the deadband from center to the point it gives a moving signal, the 0-5V range is 0-1023
+int32_t joystickVerUpperLimit = 800; // the point were automode will kick in again, typically pretty high, when you command the valve down fast.
 bool proportionalValve = true;
 //workswitch or work button
 bool workButton = true;  // true for momentary button, false for switch(continus)
@@ -28,7 +30,7 @@ bool invertBladeOffset = false;
 //PWM or relay mode
 
 
-#ifdef isAllInOneBoard
+#ifdef isAllInOneBoardProto
 
 #define PWM_2 5       //onboard driver
 #define PWM_1 6       //onboard driver
@@ -72,10 +74,10 @@ bool invertBladeOffset = false;
 #endif
 #endif
 //----------------------------------------------------------
-#ifdef isAllInOneBoard
-String inoVersion = ("\r\nOG3D Ver 2026.08.30 (AIO v5 Proto PCB))");
+#ifdef isAllInOneBoardProto
+String inoVersion = ("\r\nOG3D Ver 2026.09.07 (AIO v5 Proto PCB))");
 #else  //AiO v4.5
-String inoVersion = ("\r\nOG3D Ver 2026.08.30 (AIO v4 PCB))");
+String inoVersion = ("\r\nOG3D Ver 2026.09.07 (AIO v4 PCB))");
 #endif
 
 // if not in eeprom, overwrite
@@ -84,7 +86,7 @@ String inoVersion = ("\r\nOG3D Ver 2026.08.30 (AIO v4 PCB))");
 #include <Wire.h>
 #include <EEPROM.h>
 #include "zNMEAParser.h"
-#ifdef isAllInOneBoard
+#ifdef isAllInOneBoardProto
 #include <Adafruit_PWMServoDriver.h>
 Adafruit_PWMServoDriver outputs = Adafruit_PWMServoDriver(0x44);  //the section and lock driver
 #include "outputs.h"
@@ -226,7 +228,7 @@ void setup() {
 	Serial.println(F_CPU_ACTUAL);
 
 	pinMode(13, OUTPUT);
-#ifdef isAllInOneBoard
+#ifdef isAllInOneBoardProto
 	pinMode(PWM_1, OUTPUT);
 	pinMode(PWM_2, OUTPUT);
 	pinMode(LOCK_PIN, OUTPUT);
@@ -258,7 +260,7 @@ void setup() {
 	Serial.begin(115200);
 	analogWriteResolution(12);
 	delay(100);
-#ifdef isAllInOneBoard
+#ifdef isAllInOneBoardProto
 Wire.begin();
 delay(100);
 	digitalWrite(LOCK_PIN, LOW);
@@ -322,11 +324,11 @@ delay(100);
 
 	if (Udp.begin(localPort))  // Eth_UDP.h
 	{
-#ifdef isAllInOneBoard
+#ifdef isAllInOneBoardProto
 		LEDs.set(LED_ID::PWR_ETH, PWR_ETH_STATE::ETH_READY);
 #endif
 	} else {
-#ifdef isAllInOneBoard
+#ifdef isAllInOneBoardProto
 		LEDs.set(LED_ID::PWR_ETH, PWR_ETH_STATE::NO_ETH);
 #endif
 	}
@@ -334,7 +336,7 @@ delay(100);
 
 	//----Teensy 4.1 Ethernet--End---------------------
 
-#ifdef isAllInOneBoard
+#ifdef isAllInOneBoardProto
 	LEDs.set(LED_ID::STEER, STEER_STATE::AUTOSTEER_READY);
 	LEDs.updateLoop();
 #else  //v4.5
@@ -354,7 +356,7 @@ void loop() {
 		lastTime = currentTime;
 		loopTimer++;
 
-#ifdef isAllInOneBoard
+#ifdef isAllInOneBoardProto
 		LEDs.updateLoop();
 #endif
 		if (dataGNSSrecieved++ >= 200) {
@@ -583,7 +585,7 @@ void udpMessageRecv(int sizeToRead) {
 		else if (udpData[2] == 0x61) {
 			if (udpData[3] == 0xBA)  //data from OG3D
 			{
-#ifdef isAllInOneBoard
+#ifdef isAllInOneBoardProto
 				LEDs.set(LED_ID::PWR_ETH, PWR_ETH_STATE::AGIO_CONNECTED);
 #endif
 				//Data recieved, 0x61, 0xBA, 8, targetAltitude(32bits), cutValveReceived, bladeOffsetIn, not used, not used, CRC
@@ -618,11 +620,11 @@ void udpMessageRecv(int sizeToRead) {
 }  //end udp callback
 
 void SetPWM(void) {
-	int32_t leverCenterDeadbandUnder = leverUpCenterValue - 15;
-	int32_t leverCenterDeadbandAbove = leverUpCenterValue + 15;
+	int32_t leverCenterDeadbandUnder = leverUpCenterValue - joystickVerDeadband;
+	int32_t leverCenterDeadbandAbove = leverUpCenterValue + joystickVerDeadband;
 	if (workSwitch) autoEnable = true;                                // if auto switch is tourned off turn on AutoEnable for the next time auto switch will be turned on
 	if (leverUpValue < leverCenterDeadbandUnder) autoEnable = false;  //turn off automode when lifting the blade
-	if (leverUpValue > 900) autoEnable = true;                        // tur on automode when lever is fully presed for lowering the blade
+	if (leverUpValue > joystickVerUpperLimit) autoEnable = true;                        // tur on automode when lever is fully presed for lowering the blade
 
 	pwmValue = 0;
 
@@ -709,7 +711,7 @@ void SetPWM(void) {
 
 		pwmDrive = abs(pwmValue);
 	}
-#ifdef isAllInOneBoard
+#ifdef isAllInOneBoardProto
 	if (pwmValue == 0)  // dont move
 	{
 		analogWrite(PWM_2, 0);

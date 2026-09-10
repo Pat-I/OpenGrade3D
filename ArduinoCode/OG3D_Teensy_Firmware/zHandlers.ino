@@ -76,7 +76,7 @@ void GGA_Handler()  //Rec'd GGA
 	tempString = fixQuality;
 	fixTypeGGA = tempString.toInt();
 	fixQualityOG = fixTypeGGA;
-#ifdef isAllInOneBoard
+#ifdef isAllInOneBoardProto
 	LEDs.setGpsLED(fixTypeGGA);
 	//LEDs.toggleTeensyLED();
 #endif
