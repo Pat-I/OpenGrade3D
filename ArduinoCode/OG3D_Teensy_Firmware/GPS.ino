@@ -3,7 +3,12 @@
 #define GPS_Dual Serial8
 #define GPS_RTK Serial3
 #define RTK_Baud 115200
-#else                //v4.5 ----to set to correct values
+
+#define RS232_OUT Serial7
+#define RS323_OUT_baud 57600
+char rxbuffer_RS232_out[1023];
+char txbuffer_RS232_out[1023];
+#else  //v4.5 ----to set to correct values
 #define GPS1 Serial7
 #define GPS_Dual Serial2
 #define GPS_RTK Serial3
@@ -36,7 +41,11 @@ void GPS_setup() {
 
   GPS_RTK.begin(RTK_Baud);
   GPS_RTK.addMemoryForRead(rxbuffer_RTK, 1023);
-
+#ifdef isAllInOneBoardProto
+  RS232_OUT.begin(RS323_OUT_baud);
+  RS232_OUT.addMemoryForRead(rxbuffer_RS232_out, 1023);
+  RS232_OUT.addMemoryForWrite(txbuffer_RS232_out, 1023);
+#endif
   // the dash means wildcard
   parser.setErrorHandler(errorHandler);
   parser.addHandler("G-GGA", GGA_Handler);
@@ -86,10 +95,11 @@ void Forward_Ntrip() {
     //Serial.write(NtripData, sizeof(NtripData));
     //Serial.write(10);
     //Serial.println("Ntrip Forwarded");
-    GPS1.write(NtripData, NtripSize);
 #ifdef isAllInOneBoardProto
-    LEDs.queueBlueFlash(LED_ID::GPS);
+    RS232_OUT.write(NtripData, NtripSize);
+    //LEDs.queueBlueFlash(LED_ID::GPS);
 #endif
+    GPS1.write(NtripData, NtripSize);
   }
 
   //Check for Radio RTK
