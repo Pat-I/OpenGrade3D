@@ -38,6 +38,10 @@ namespace OpenGrade
                 // --- HIGH-PERFORMANCE STRING BUILDER FOR LIVE TELEMETRY ---
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
 
+                sb.Append("Delta(mm): ");
+                sb.Append((int)(mf.bladeFromModuleCutValve - 100));
+                sb.Append(" | "); // Separator for readability
+
                 // 1. Evaluate PWM and Direction States
                 if (mf.bladeFromModulePWM == 0)
                 {

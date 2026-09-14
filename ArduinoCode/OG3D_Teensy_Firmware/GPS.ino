@@ -98,6 +98,11 @@ void Forward_Ntrip() {
 #ifdef isAllInOneBoardProto
     RS232_OUT.write(NtripData, NtripSize);
     //LEDs.queueBlueFlash(LED_ID::GPS);
+    //Blink the Teensy LED to show an incomming GGA
+	if (blink)
+		digitalWrite(13, HIGH);
+	else digitalWrite(13, LOW);
+	blink = !blink;
 #endif
     GPS1.write(NtripData, NtripSize);
   }

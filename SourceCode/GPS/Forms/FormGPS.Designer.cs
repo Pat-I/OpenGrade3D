@@ -30,10 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormGPS));
-            ProgBar.cBlendItems cBlendItems1 = new ProgBar.cBlendItems();
-            ProgBar.cFocalPoints cFocalPoints1 = new ProgBar.cFocalPoints();
-            ProgBar.cBlendItems cBlendItems2 = new ProgBar.cBlendItems();
-            ProgBar.cFocalPoints cFocalPoints2 = new ProgBar.cFocalPoints();
+            ProgBar.cBlendItems cBlendItems3 = new ProgBar.cBlendItems();
+            ProgBar.cFocalPoints cFocalPoints3 = new ProgBar.cFocalPoints();
+            ProgBar.cBlendItems cBlendItems4 = new ProgBar.cBlendItems();
+            ProgBar.cFocalPoints cFocalPoints4 = new ProgBar.cFocalPoints();
             this.openGLControl = new SharpGL.OpenGLControl();
             this.contextMenuStripOpenGL = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteFlagToolOpenGLContextMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -100,8 +100,8 @@
             this.toolstripAutoSteerConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.stripSelectMode = new System.Windows.Forms.ToolStripStatusLabel();
             this.stripTopoLocation = new System.Windows.Forms.ToolStripStatusLabel();
-            this.stripOnlineGPS = new System.Windows.Forms.ToolStripProgressBar();
-            this.stripOnlineAutoSteer = new System.Windows.Forms.ToolStripProgressBar();
+            this.pbarPWMup = new System.Windows.Forms.ToolStripProgressBar();
+            this.pbarPWMdown = new System.Windows.Forms.ToolStripProgressBar();
             this.lblNorthing = new System.Windows.Forms.Label();
             this.lblEasting = new System.Windows.Forms.Label();
             this.lblSpeed = new System.Windows.Forms.Label();
@@ -696,8 +696,8 @@
             this.toolStripDropDownButton2,
             this.stripSelectMode,
             this.stripTopoLocation,
-            this.stripOnlineGPS,
-            this.stripOnlineAutoSteer});
+            this.pbarPWMup,
+            this.pbarPWMdown});
             this.statusStrip1.Location = new System.Drawing.Point(0, 643);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
@@ -861,7 +861,7 @@
             this.stripSelectMode.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.stripSelectMode.Margin = new System.Windows.Forms.Padding(0);
             this.stripSelectMode.Name = "stripSelectMode";
-            this.stripSelectMode.Size = new System.Drawing.Size(436, 41);
+            this.stripSelectMode.Size = new System.Drawing.Size(405, 41);
             this.stripSelectMode.Spring = true;
             this.stripSelectMode.Text = "Grade Mode";
             this.stripSelectMode.Click += new System.EventHandler(this.stripSelectMode_Click);
@@ -876,22 +876,24 @@
             this.stripTopoLocation.Text = "-- : ----- : -----";
             this.stripTopoLocation.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // stripOnlineGPS
+            // pbarPWMup
             // 
-            this.stripOnlineGPS.AutoSize = false;
-            this.stripOnlineGPS.ForeColor = System.Drawing.Color.DarkTurquoise;
-            this.stripOnlineGPS.Name = "stripOnlineGPS";
-            this.stripOnlineGPS.Size = new System.Drawing.Size(16, 35);
-            this.stripOnlineGPS.Value = 1;
+            this.pbarPWMup.AutoSize = false;
+            this.pbarPWMup.ForeColor = System.Drawing.Color.DarkTurquoise;
+            this.pbarPWMup.Maximum = 255;
+            this.pbarPWMup.Name = "pbarPWMup";
+            this.pbarPWMup.Size = new System.Drawing.Size(16, 35);
+            this.pbarPWMup.Value = 1;
             // 
-            // stripOnlineAutoSteer
+            // pbarPWMdown
             // 
-            this.stripOnlineAutoSteer.AutoToolTip = true;
-            this.stripOnlineAutoSteer.ForeColor = System.Drawing.Color.Chartreuse;
-            this.stripOnlineAutoSteer.Name = "stripOnlineAutoSteer";
-            this.stripOnlineAutoSteer.Size = new System.Drawing.Size(16, 35);
-            this.stripOnlineAutoSteer.ToolTipText = "Arduino";
-            this.stripOnlineAutoSteer.Value = 1;
+            this.pbarPWMdown.AutoToolTip = true;
+            this.pbarPWMdown.ForeColor = System.Drawing.Color.Chartreuse;
+            this.pbarPWMdown.Maximum = 255;
+            this.pbarPWMdown.Name = "pbarPWMdown";
+            this.pbarPWMdown.Size = new System.Drawing.Size(16, 35);
+            this.pbarPWMdown.ToolTipText = "Arduino";
+            this.pbarPWMdown.Value = 1;
             // 
             // lblNorthing
             // 
@@ -1724,13 +1726,13 @@
             // 
             this.pbarCutBelow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.pbarCutBelow.BarBackColor = System.Drawing.SystemColors.ControlLight;
-            cBlendItems1.iColor = new System.Drawing.Color[] {
+            cBlendItems3.iColor = new System.Drawing.Color[] {
         System.Drawing.Color.Navy,
         System.Drawing.Color.Blue};
-            cBlendItems1.iPoint = new float[] {
+            cBlendItems3.iPoint = new float[] {
         0F,
         1F};
-            this.pbarCutBelow.BarColorBlend = cBlendItems1;
+            this.pbarCutBelow.BarColorBlend = cBlendItems3;
             this.pbarCutBelow.BarColorSolid = System.Drawing.Color.Black;
             this.pbarCutBelow.BarColorSolidB = System.Drawing.Color.Red;
             this.pbarCutBelow.BarLengthValue = ((short)(40));
@@ -1748,9 +1750,9 @@
             this.pbarCutBelow.CylonInterval = ((short)(1));
             this.pbarCutBelow.CylonMove = 5F;
             this.pbarCutBelow.FillDirection = ProgBar.ProgBarPlus.eFillDirection.Down_Left;
-            cFocalPoints1.CenterPoint = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints1.CenterPoint")));
-            cFocalPoints1.FocusScales = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints1.FocusScales")));
-            this.pbarCutBelow.FocalPoints = cFocalPoints1;
+            cFocalPoints3.CenterPoint = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints3.CenterPoint")));
+            cFocalPoints3.FocusScales = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints3.FocusScales")));
+            this.pbarCutBelow.FocalPoints = cFocalPoints3;
             this.pbarCutBelow.Location = new System.Drawing.Point(1231, 493);
             this.pbarCutBelow.Name = "pbarCutBelow";
             this.pbarCutBelow.Orientation = ProgBar.ProgBarPlus.eOrientation.Vertical;
@@ -1764,13 +1766,13 @@
             // 
             this.pbarCutAbove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.pbarCutAbove.BarBackColor = System.Drawing.SystemColors.ControlLight;
-            cBlendItems2.iColor = new System.Drawing.Color[] {
+            cBlendItems4.iColor = new System.Drawing.Color[] {
         System.Drawing.Color.Navy,
         System.Drawing.Color.Blue};
-            cBlendItems2.iPoint = new float[] {
+            cBlendItems4.iPoint = new float[] {
         0F,
         1F};
-            this.pbarCutAbove.BarColorBlend = cBlendItems2;
+            this.pbarCutAbove.BarColorBlend = cBlendItems4;
             this.pbarCutAbove.BarColorSolid = System.Drawing.Color.Black;
             this.pbarCutAbove.BarColorSolidB = System.Drawing.Color.LimeGreen;
             this.pbarCutAbove.BarLengthValue = ((short)(40));
@@ -1787,9 +1789,9 @@
             this.pbarCutAbove.Corners.UpperRight = ((short)(0));
             this.pbarCutAbove.CylonInterval = ((short)(1));
             this.pbarCutAbove.CylonMove = 5F;
-            cFocalPoints2.CenterPoint = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints2.CenterPoint")));
-            cFocalPoints2.FocusScales = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints2.FocusScales")));
-            this.pbarCutAbove.FocalPoints = cFocalPoints2;
+            cFocalPoints4.CenterPoint = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints4.CenterPoint")));
+            cFocalPoints4.FocusScales = ((System.Drawing.PointF)(resources.GetObject("cFocalPoints4.FocusScales")));
+            this.pbarCutAbove.FocalPoints = cFocalPoints4;
             this.pbarCutAbove.Location = new System.Drawing.Point(1231, 343);
             this.pbarCutAbove.Name = "pbarCutAbove";
             this.pbarCutAbove.Orientation = ProgBar.ProgBarPlus.eOrientation.Vertical;
@@ -2429,11 +2431,11 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripMenuItem gPSDataToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem fieldToolStripMenuItem;
-        private System.Windows.Forms.ToolStripProgressBar stripOnlineGPS;
+        private System.Windows.Forms.ToolStripProgressBar pbarPWMup;
         private System.Windows.Forms.ToolStripMenuItem colorsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem bladeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fieldToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripProgressBar stripOnlineAutoSteer;
+        private System.Windows.Forms.ToolStripProgressBar pbarPWMdown;
         private System.Windows.Forms.ToolStripMenuItem logNMEAMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripUnitsMenu;
         private System.Windows.Forms.ToolStripMenuItem metricToolStrip;
