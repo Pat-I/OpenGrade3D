@@ -2031,14 +2031,14 @@ namespace OpenGrade
                     }
                     
                     //update the online indicator
-                    if (recvCounter > 50)
+                    if (recvCounter > 120)
                     {
-                        stripOnlineGPS.Value = 1;
+                        isGnssOnline = false;
                         lblEasting.Text = "-";
                         lblNorthing.Text = gStr.gsNoGPS;
                         //tboxSentence.Text = gStr.gsNoSentenceData;
                     }
-                    else stripOnlineGPS.Value = 100;
+                    else isGnssOnline = true;
 
                     //module button color
                     if(dataFromOGudpBlade <= 15)
@@ -2064,11 +2064,30 @@ namespace OpenGrade
                             btnModuleStatus.BackColor = Color.Red;
                             btnModuleStatus.Text = "MAN";
                         }
+
+                        //the PWM labels
+                        if (bladeFromModuleDown)
+                        {
+                            pbarPWMdown.Value = bladeFromModulePWM;
+                            pbarPWMup.Value = 0;
+                        }
+                        else if (bladeFromModuleUp)
+                        {
+                            pbarPWMdown.Value = 0;
+                            pbarPWMup.Value = bladeFromModulePWM;
+                        }
+                        else
+                        {
+                            pbarPWMdown.Value = 0;
+                            pbarPWMup.Value = 0;
+                        }
                     }
                     else //not connected
                     {
                         btnModuleStatus.BackColor = Color.Gray;
                         btnModuleStatus.Text = "NC";
+                        pbarPWMdown.Value = 0;
+                        pbarPWMup.Value = 0;
                     }
                 }
                 //wait till timer fires again.  

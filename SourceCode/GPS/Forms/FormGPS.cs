@@ -76,6 +76,8 @@ namespace OpenGrade
         //bool for whether or not a job is active
         public bool isJobStarted = false, isAreaOnRight = true, isAutoSteerBtnOn = false, isFolderCreated = true;
 
+        //bool for  board connections
+        public bool isGnssOnline = false;
         // Manual, 3 states possible
         public enum btnStates { Off, Rec, RecBnd, Work, StandBy }
 
@@ -1209,7 +1211,7 @@ namespace OpenGrade
             {
                 isFolderCreated = false;
 
-                if (stripOnlineGPS.Value == 1)
+                if (!isGnssOnline)
                 {
                     var form = new FormTimedMessage(3000, gStr.gsNoGPS, gStr.gsIsGPSOff);
                     form.Show();

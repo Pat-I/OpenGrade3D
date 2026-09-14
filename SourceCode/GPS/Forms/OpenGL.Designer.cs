@@ -377,7 +377,7 @@ namespace OpenGrade
                 {
                     // no auto save for now
                     
-                    if (isJobStarted && stripOnlineGPS.Value != 1)
+                    if (isJobStarted && isGnssOnline)
                     {
                         //auto save the field patches, contours accumulated so far
                         //FileSaveField();

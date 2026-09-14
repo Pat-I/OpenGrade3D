@@ -27,6 +27,7 @@ namespace OpenGrade
         public bool bladeFromModuleReady = false;
         public bool bladeFromModuleActive = false;
         public byte bladeFromModulePWM = 0;
+        public byte bladeFromModuleCutValve = 0;
         public byte bladeFromModuleLever = 0;
 
 
@@ -364,12 +365,13 @@ namespace OpenGrade
             bladeFromModuleActive = (temp & (1 << 3)) != 0;
 
             bladeFromModulePWM = data[6];
-            //cutvalve value is in data[7] but not used for now
+            bladeFromModuleCutValve = data[7];
             bladeOffSetSlave = data[8];
             bladeFromModuleLever = data[9];
             //side lever data[10]
             ////not used data[11]
             //pwmhist data[12]
+            pbarPWMup.Value = bladeFromModulePWM;
         }
 
         public void SendPgnToLoop(byte[] byteData)

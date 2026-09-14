@@ -130,9 +130,6 @@ namespace OpenGrade
 
                 MessageBox.Show(e.Message + "\n\r" + "\n\r" + "Go to Settings -> COM Ports to Fix", "No AutoSteer Port Active");
 
-                //update port status label
-                stripOnlineAutoSteer.Value = 1;
-
                 Properties.Settings.Default.setPort_wasAutoSteerConnected = false;
                 Properties.Settings.Default.Save();
             }
@@ -141,10 +138,6 @@ namespace OpenGrade
             {
                 spAutoSteer.DiscardOutBuffer();
                 spAutoSteer.DiscardInBuffer();
-
-                //update port status label
-                stripOnlineAutoSteer.Value = 100;
-
 
                 Properties.Settings.Default.setPort_portNameAutoSteer = portNameAutoSteer;
                 Properties.Settings.Default.setPort_wasAutoSteerConnected = true;
@@ -163,9 +156,6 @@ namespace OpenGrade
                     WriteErrorLog("Closing steer Port" + e.ToString());
                     MessageBox.Show(e.Message, "Connection already terminated??");
                 }
-
-                //update port status label
-                stripOnlineAutoSteer.Value = 1;
 
                 Properties.Settings.Default.setPort_wasAutoSteerConnected = false;
                 Properties.Settings.Default.Save();
@@ -430,7 +420,7 @@ namespace OpenGrade
                 //MessageBox.Show(exc.Message + "\n\r" + "\n\r" + "Go to Settings -> COM Ports to Fix", "No Serial Port Active");
                 WriteErrorLog("Open GPS Port " + e.ToString());
 
-                stripOnlineGPS.Value = 1;
+                isGnssOnline = false;
 
                 //SettingsPageOpen(0);
             }
@@ -463,7 +453,7 @@ namespace OpenGrade
                 }
 
                 //update port status labels
-                stripOnlineGPS.Value = 1;
+                isGnssOnline = false;
 
                 sp.Dispose();
             }
