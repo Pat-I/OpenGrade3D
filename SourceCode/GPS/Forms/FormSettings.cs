@@ -51,6 +51,7 @@ namespace OpenGrade
         private void FormSettings_Load(object sender, EventArgs e)
         {
             //Vehicle settings to what it is in the settings page------------------------------------------------
+            lblVehicleName.Text = mf.vehiclefileName;
             antennaHeight = Properties.Vehicle.Default.setVehicle_antennaHeight;
             toolWidth = Properties.Vehicle.Default.setVehicle_toolWidth;
             minSlope = Properties.Vehicle.Default.setVehicle_minSlope * 100;
@@ -256,6 +257,8 @@ namespace OpenGrade
 
             Properties.Settings.Default.Save();
             Properties.Vehicle.Default.Save();
+            //Save to current vehicle file
+            mf.FileSaveVehicleAuto();
             //CalculateMinMaxZoom();
 
             //back to FormGPS

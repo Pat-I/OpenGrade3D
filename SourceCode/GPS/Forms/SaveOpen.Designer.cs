@@ -56,83 +56,120 @@ namespace OpenGrade
 
             if (saveDialog.ShowDialog() == DialogResult.OK)
             {
-                vehiclefileName = Path.GetFileNameWithoutExtension(saveDialog.FileName) + " - ";
+                vehiclefileName = Path.GetFileNameWithoutExtension(saveDialog.FileName);
                 Properties.Vehicle.Default.setVehicle_Name = vehiclefileName;
                 Properties.Vehicle.Default.Save();
 
-                using (StreamWriter writer = new StreamWriter(saveDialog.FileName))
-                {
-                    writer.WriteLine("Version," + " OpenGrade3D v1.0");
-                    writer.WriteLine("Wheelbase," + Properties.Vehicle.Default.setVehicle_wheelbase.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("AntennaHeight," + Properties.Vehicle.Default.setVehicle_antennaHeight.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("ToolWidth," + Properties.Vehicle.Default.setVehicle_toolWidth.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("MinimumSlope," + Properties.Vehicle.Default.setVehicle_minSlope.ToString(CultureInfo.InvariantCulture));
-
-
-                    writer.WriteLine("IsMetric," + Properties.Settings.Default.setMenu_isMetric.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("IsGridOn," + Properties.Settings.Default.setMenu_isGridOn.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("IsLightBarOn," + Properties.Settings.Default.setMenu_isLightbarOn.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("IsPurePursuitLineOn," + Properties.Settings.Default.setMenu_isPureOn.ToString(CultureInfo.InvariantCulture));
-
-                    writer.WriteLine("FieldColorR," + Properties.Settings.Default.setF_FieldColorR.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("FieldColorG," + Properties.Settings.Default.setF_FieldColorG.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("FieldColorB," + Properties.Settings.Default.setF_FieldColorB.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("SectionColorR," + Properties.Settings.Default.setF_SectionColorR.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("SectionColorG," + Properties.Settings.Default.setF_SectionColorG.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("SectionColorB," + Properties.Settings.Default.setF_SectionColorB.ToString(CultureInfo.InvariantCulture));
-
-                    writer.WriteLine("IMUPitchZero," + Properties.Settings.Default.setIMU_pitchZero.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("IMURollZero," + Properties.Settings.Default.setIMU_rollZero.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("IsLogNMEA," + Properties.Settings.Default.setMenu_isLogNMEA.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("MinFixStep," + Properties.Settings.Default.setF_minFixStep.ToString(CultureInfo.InvariantCulture));
-
-                    writer.WriteLine("pidP," + Properties.Settings.Default.setAS_Kp.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("pidI," + Properties.Settings.Default.setAS_Ki.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("pidD," + Properties.Settings.Default.setAS_Kd.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("pidO," + Properties.Settings.Default.setAS_Ko.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("SteerAngleOffset," + Properties.Settings.Default.setAS_steerAngleOffset.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("minPWM," + Properties.Settings.Default.setAS_minSteerPWM.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("MaxIntegral," + Properties.Settings.Default.setAS_maxIntegral.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("CountsPerDegree," + Properties.Settings.Default.setAS_countsPerDegree.ToString(CultureInfo.InvariantCulture));
-
-                    writer.WriteLine("GoalPointLookAhead," + Properties.Vehicle.Default.setVehicle_goalPointLookAhead.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("MaxSteerAngle," + Properties.Vehicle.Default.setVehicle_maxSteerAngle.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("MaxAngularVelocity," + Properties.Vehicle.Default.setVehicle_maxAngularVelocity.ToString(CultureInfo.InvariantCulture));
-
-                    writer.WriteLine("Pwm Gain Up," + Properties.Vehicle.Default.setVehicle_pwmGainUp.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("Pwm Gain Down," + Properties.Vehicle.Default.setVehicle_pwmGainDown.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("Pwm Min Up," + Properties.Vehicle.Default.setVehicle_pwmMinUp.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("Pwm Min Down," + Properties.Vehicle.Default.setVehicle_pwmMinDown.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("Pwm Max Up," + Properties.Vehicle.Default.setVehicle_pwmMaxUp.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("Pwm Max Down," + Properties.Vehicle.Default.setVehicle_pwmMaxDown.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("Integral Multiplier," + Properties.Vehicle.Default.setVehicle_integralMultiplier.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("Deadband," + Properties.Vehicle.Default.setVehicle_deadband.ToString(CultureInfo.InvariantCulture));
-
-                    writer.WriteLine("ViewDistUnderGnd," + Properties.Vehicle.Default.setVehicle_ViewDistUnderGnd.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("ViewDistAboveGnd," + Properties.Vehicle.Default.setVehicle_ViewDistAboveGnd.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("Map Resolution," + Properties.Vehicle.Default.setVehicle_GradeDistFromLine.ToString(CultureInfo.InvariantCulture)); //badly named, its used for the display map resolution
-                    writer.WriteLine("MaxCuttingDepth," + Properties.Vehicle.Default.setVehicle_MaxCuttingDepth.ToString(CultureInfo.InvariantCulture));
-                    writer.WriteLine("Blade Offset," + Properties.Vehicle.Default.setVehicle_bladeOffset.ToString(CultureInfo.InvariantCulture));
-
-                    writer.WriteLine("Empty," + "10");
-                    writer.WriteLine("Empty," + "10");
-                    writer.WriteLine("Empty," + "10");
-                    writer.WriteLine("Empty," + "10");
-                    writer.WriteLine("Empty," + "10");
-                    writer.WriteLine("Empty," + "10");
-                    writer.WriteLine("Empty," + "10");
-                    writer.WriteLine("Empty," + "10");
-                    writer.WriteLine("Empty," + "10");
-                    writer.WriteLine("Empty," + "10");
-                }
+                WriteVehicleFile(saveDialog.FileName);
 
                 //little show to say saved and where
                 var form = new FormTimedMessage(3000, "Saved in Folder: ", dirVehicle);
                 form.Show();
             }
-
         }
 
+        public void FileSaveVehicleAuto()
+        {
+            //retrieve the vehicle name from the settings
+            string nameOnly = vehiclefileName;
+
+            //if the name is empty, call the standard save dialog
+            if (string.IsNullOrEmpty(nameOnly))
+            {
+                FileSaveVehicle();
+                return;
+            }
+
+            //  Reconstruct the full path to the vehicle file based on the vehicles directory and the name
+            string fullPath = Path.Combine(vehiclesDirectory, nameOnly + ".txt");
+
+            // if the file exists, perform the auto-save; otherwise, call the standard save dialog
+            if (File.Exists(fullPath))
+            {
+                try
+                {
+                    WriteVehicleFile(fullPath);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Vehicle AutoSave Error : " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                // if the file doesn't exist, call the standard save dialog to create a new vehicle file
+                FileSaveVehicle();
+            }
+        }
+
+        private void WriteVehicleFile(string filePath)
+        {
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                writer.WriteLine("Version," + " OpenGrade3D v1.0");
+                writer.WriteLine("Wheelbase," + Properties.Vehicle.Default.setVehicle_wheelbase.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("AntennaHeight," + Properties.Vehicle.Default.setVehicle_antennaHeight.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("ToolWidth," + Properties.Vehicle.Default.setVehicle_toolWidth.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("MinimumSlope," + Properties.Vehicle.Default.setVehicle_minSlope.ToString(CultureInfo.InvariantCulture));
+
+
+                writer.WriteLine("IsMetric," + Properties.Settings.Default.setMenu_isMetric.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("IsGridOn," + Properties.Settings.Default.setMenu_isGridOn.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("IsLightBarOn," + Properties.Settings.Default.setMenu_isLightbarOn.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("IsPurePursuitLineOn," + Properties.Settings.Default.setMenu_isPureOn.ToString(CultureInfo.InvariantCulture));
+
+                writer.WriteLine("FieldColorR," + Properties.Settings.Default.setF_FieldColorR.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("FieldColorG," + Properties.Settings.Default.setF_FieldColorG.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("FieldColorB," + Properties.Settings.Default.setF_FieldColorB.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("SectionColorR," + Properties.Settings.Default.setF_SectionColorR.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("SectionColorG," + Properties.Settings.Default.setF_SectionColorG.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("SectionColorB," + Properties.Settings.Default.setF_SectionColorB.ToString(CultureInfo.InvariantCulture));
+
+                writer.WriteLine("IMUPitchZero," + Properties.Settings.Default.setIMU_pitchZero.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("IMURollZero," + Properties.Settings.Default.setIMU_rollZero.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("IsLogNMEA," + Properties.Settings.Default.setMenu_isLogNMEA.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("MinFixStep," + Properties.Settings.Default.setF_minFixStep.ToString(CultureInfo.InvariantCulture));
+
+                writer.WriteLine("pidP," + Properties.Settings.Default.setAS_Kp.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("pidI," + Properties.Settings.Default.setAS_Ki.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("pidD," + Properties.Settings.Default.setAS_Kd.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("pidO," + Properties.Settings.Default.setAS_Ko.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("SteerAngleOffset," + Properties.Settings.Default.setAS_steerAngleOffset.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("minPWM," + Properties.Settings.Default.setAS_minSteerPWM.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("MaxIntegral," + Properties.Settings.Default.setAS_maxIntegral.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("CountsPerDegree," + Properties.Settings.Default.setAS_countsPerDegree.ToString(CultureInfo.InvariantCulture));
+
+                writer.WriteLine("GoalPointLookAhead," + Properties.Vehicle.Default.setVehicle_goalPointLookAhead.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("MaxSteerAngle," + Properties.Vehicle.Default.setVehicle_maxSteerAngle.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("MaxAngularVelocity," + Properties.Vehicle.Default.setVehicle_maxAngularVelocity.ToString(CultureInfo.InvariantCulture));
+
+                writer.WriteLine("Pwm Gain Up," + Properties.Vehicle.Default.setVehicle_pwmGainUp.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("Pwm Gain Down," + Properties.Vehicle.Default.setVehicle_pwmGainDown.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("Pwm Min Up," + Properties.Vehicle.Default.setVehicle_pwmMinUp.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("Pwm Min Down," + Properties.Vehicle.Default.setVehicle_pwmMinDown.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("Pwm Max Up," + Properties.Vehicle.Default.setVehicle_pwmMaxUp.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("Pwm Max Down," + Properties.Vehicle.Default.setVehicle_pwmMaxDown.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("Integral Multiplier," + Properties.Vehicle.Default.setVehicle_integralMultiplier.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("Deadband," + Properties.Vehicle.Default.setVehicle_deadband.ToString(CultureInfo.InvariantCulture));
+
+                writer.WriteLine("ViewDistUnderGnd," + Properties.Vehicle.Default.setVehicle_ViewDistUnderGnd.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("ViewDistAboveGnd," + Properties.Vehicle.Default.setVehicle_ViewDistAboveGnd.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("Map Resolution," + Properties.Vehicle.Default.setVehicle_GradeDistFromLine.ToString(CultureInfo.InvariantCulture)); //badly named, its used for the display map resolution
+                writer.WriteLine("MaxCuttingDepth," + Properties.Vehicle.Default.setVehicle_MaxCuttingDepth.ToString(CultureInfo.InvariantCulture));
+                writer.WriteLine("Blade Offset," + Properties.Vehicle.Default.setVehicle_bladeOffset.ToString(CultureInfo.InvariantCulture));
+
+                writer.WriteLine("Empty," + "10");
+                writer.WriteLine("Empty," + "10");
+                writer.WriteLine("Empty," + "10");
+                writer.WriteLine("Empty," + "10");
+                writer.WriteLine("Empty," + "10");
+                writer.WriteLine("Empty," + "10");
+                writer.WriteLine("Empty," + "10");
+                writer.WriteLine("Empty," + "10");
+                writer.WriteLine("Empty," + "10");
+                writer.WriteLine("Empty," + "10");
+            }
+        }
         //function to open a previously saved field
         public void FileOpenVehicle()
         {
@@ -293,9 +330,8 @@ namespace OpenGrade
                         line = reader.ReadLine();
 
                         //fill in the current variables with restored data
-                        vehiclefileName = Path.GetFileNameWithoutExtension(ofd.FileName) + " - ";
+                        vehiclefileName = Path.GetFileNameWithoutExtension(ofd.FileName);
                         Properties.Vehicle.Default.setVehicle_Name = vehiclefileName;
-
                         Properties.Settings.Default.Save();
                         Properties.Vehicle.Default.Save();
 
