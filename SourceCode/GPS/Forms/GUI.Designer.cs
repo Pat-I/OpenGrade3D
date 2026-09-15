@@ -2041,7 +2041,7 @@ namespace OpenGrade
                     else isGnssOnline = true;
 
                     //module button color
-                    if(dataFromOGudpBlade <= 15)
+                    if(dataFromOGudpBlade <= 15 || spRelay.IsOpen)
                     {
                         if (bladeFromModuleReady)
                         {

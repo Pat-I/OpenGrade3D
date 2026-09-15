@@ -1066,6 +1066,13 @@ namespace OpenGrade
             if (!spRelay.IsOpen || dataFromOGudpBlade <= 15)
             {
                 bladeOffSetSlave = 0;
+                bladeFromModuleUp = false;
+                bladeFromModuleDown = false;
+                bladeFromModuleReady = false;
+                bladeFromModuleActive = false;
+                bladeFromModulePWM = 0;
+                bladeFromModuleCutValve = 0;
+                bladeFromModuleLever = 0;
             }
 
             bladeOffSetMaster = (int)numBladeOffset.Value;

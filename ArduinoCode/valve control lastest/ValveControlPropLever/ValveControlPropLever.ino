@@ -1,8 +1,8 @@
 /*
   AOG Section Control
 */
-char arduinoDate[] = "2025-05-22";
-char arduinoVersion[] = "v 2.0.0";
+char arduinoDate[] = "2026-09-15";
+char arduinoVersion[] = "v 2.0.1";
 
 // by Pat
 // to be used with OpenGrade3D v1.1.xx and OpenGrade v2.2.xx
@@ -98,6 +98,7 @@ byte deadband = 5;
 //Communication with AgOpenGPS
 bool isDataFound = false, isSettingFound = false;
 int header = 0, tempHeader = 0, temp;
+byte multipleValue = 0;  // the first byte sent back to OG3D
 
 //The variables used for storage
 byte cutValve = 100;
@@ -220,13 +221,10 @@ void loop() {
       }
 
       //safety - turn off if confused
-      if (watchdogTimer > 140) 
-      {
+      if (watchdogTimer > 140) {
         workSwitch = 1;
         cutValve = 100;
-      }
-      else
-      {
+      } else {
         //read the  work switch
         if (workButton) {
           //steer Button momentary
@@ -340,16 +338,11 @@ void loop() {
     watchdogTimer = 0;
 
     //Print data to openGrade, MUST send 8 bytes!
-    //valve direction,pwm value,cutvalve,blade offset,opt,opt,opt,opt
+    //multipleValue,pwm value,cutvalve,blade offset,opt,opt,opt,opt
 
-    if (pwmValue < 0)  // lowering the blade
-    {
-      Serial.print("1,");
-    } else Serial.print("0,");
-
-
+    Serial.print(multipleValue);
+    Serial.print(",");
     Serial.print(String((int)pwmDrive) + ",");
-
     Serial.print(cutValve);
     Serial.print(",");
     Serial.print(bladeOffsetOut);  // 100 mean no movement, 0 mean not active, in mm
@@ -490,6 +483,18 @@ void SetPWM(void) {
   pwm3ago = pwm2ago;
   pwm2ago = pwm1ago;
   pwm1ago = pwmValue;
+
+  //fill byte multipleValue,
+  //bit 0 is 1 if pwmValue > 0
+  //bit 1 is 1 if pwmValue < 0
+  //bit 2 = bool workSwitch
+  //bit 3 = bool autoEnable
+  multipleValue = 0;
+  if (pwmValue > 0) multipleValue |= (1 << 0);
+  if (pwmValue < 0) multipleValue |= (1 << 1);
+  if (workSwitch) multipleValue |= (1 << 2);
+  if (autoEnable) multipleValue |= (1 << 3);
+  multipleValue |= (1 << 7);  // permanent 1 to show OG3D to read the value
 }
 
 void SaveToEEPROM() {
