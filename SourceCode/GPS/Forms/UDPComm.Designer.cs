@@ -371,7 +371,6 @@ namespace OpenGrade
             //side lever data[10]
             ////not used data[11]
             //pwmhist data[12]
-            pbarPWMup.Value = bladeFromModulePWM;
         }
 
         public void SendPgnToLoop(byte[] byteData)

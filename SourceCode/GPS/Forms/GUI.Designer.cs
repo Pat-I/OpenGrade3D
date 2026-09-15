@@ -704,8 +704,6 @@ namespace OpenGrade
 
         private void btnCutFillElev_Click(object sender, EventArgs e)
         {
-            ct.needsRebuildTerrainBuffers = true;
-
             if (ct.isElevation)
             {
                 ct.isElevation = false;
@@ -721,6 +719,8 @@ namespace OpenGrade
                 if (ct.isExistingElevation) btnPropExist.Text = "Existing";
                 else btnPropExist.Text = "Proposed";
             }
+
+            fillCutFillLbl();
         }
 
         private void btnPropExist_Click(object sender, EventArgs e)
