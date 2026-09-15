@@ -257,16 +257,31 @@ namespace OpenGrade
             {
                 //first 2 used for display mainly in autosteer window chart as strings
                 //parse the values
-
-                //int.TryParse(words[0], out valve direction
-                //int.TryParse(words[1], out pwmValue
-                //int.TryParse(words[2], out cutvalve
+                bladeFromModuleUp = false;
+                bladeFromModuleDown = false;
+                bladeFromModuleReady = false;
+                bladeFromModuleActive = false;
+                bladeFromModulePWM = 0;
+                bladeFromModuleCutValve = 0;
+                bladeFromModuleLever = 0;
+                byte multipleValue = 0;
+                byte.TryParse(words[0], out multipleValue);
+                byte.TryParse(words[1], out bladeFromModulePWM);
+                byte.TryParse(words[2], out bladeFromModuleCutValve);
                 int.TryParse(words[3], out bladeOffSetSlave);
-                //int.TryParse(words[4], out mc.steerSwitchValue);//exemple
+                byte.TryParse(words[4], out bladeFromModuleLever);
                 //int.TryParse(words[5],
                 //int.TryParse(words[6],
                 //int.TryParse(words[7],
                 //int.TryParse(words[8],
+                if((multipleValue & 0x80) != 0)
+                {
+                    bladeFromModuleUp = (multipleValue & (1 << 0)) != 0;
+                    bladeFromModuleDown = (multipleValue & (1 << 1)) != 0;
+                    bladeFromModuleReady = (multipleValue & (1 << 2)) == 0;
+                    bladeFromModuleActive = (multipleValue & (1 << 3)) != 0;
+                }
+
                 return;
             }
             
