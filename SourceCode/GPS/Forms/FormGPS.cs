@@ -948,8 +948,8 @@ namespace OpenGrade
             {
                 openGLControl.Height = 300;
                 pbarCutAbove.Height = openGLControlBack.Height / 2;
-                pbarCutBelow.Height = pbarCutAbove.Height;
-                pbarCutBelow.Top = pbarCutAbove.Top + pbarCutAbove.Height;
+                pbarPWMup.Height = pbarPWMdown.Height = pbarCutBelow.Height = pbarCutAbove.Height;
+                pbarPWMdown.Top = pbarCutBelow.Top = pbarCutAbove.Top + pbarCutAbove.Height;
             }
             else
             {
