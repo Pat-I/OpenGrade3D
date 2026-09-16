@@ -2039,56 +2039,7 @@ namespace OpenGrade
                         //tboxSentence.Text = gStr.gsNoSentenceData;
                     }
                     else isGnssOnline = true;
-
-                    //module button color
-                    if(dataFromOGudpBlade <= 15 || spRelay.IsOpen)
-                    {
-                        if (bladeFromModuleReady)
-                        {
-                            if (bladeFromModuleActive)
-                            {
-                                //"Automode Active"
-                                btnModuleStatus.BackColor = Color.LimeGreen;
-                                btnModuleStatus.Text = "AUTO";
-                            }
-                            else //"Automode Ready"
-                            {
-                                if (btnModuleStatus.BackColor == Color.Orange) btnModuleStatus.BackColor = Color.Yellow;
-                                else btnModuleStatus.BackColor = Color.Orange;
-                                btnModuleStatus.Text = "READY";
-                            }
-                        }
-                        else
-                        {
-                            //"Manual Mode"
-                            btnModuleStatus.BackColor = Color.Red;
-                            btnModuleStatus.Text = "MAN";
-                        }
-
-                        //the PWM labels
-                        if (bladeFromModuleDown)
-                        {
-                            pbarPWMdown.Value = bladeFromModulePWM;
-                            pbarPWMup.Value = 0;
-                        }
-                        else if (bladeFromModuleUp)
-                        {
-                            pbarPWMdown.Value = 0;
-                            pbarPWMup.Value = bladeFromModulePWM;
-                        }
-                        else
-                        {
-                            pbarPWMdown.Value = 0;
-                            pbarPWMup.Value = 0;
-                        }
-                    }
-                    else //not connected
-                    {
-                        btnModuleStatus.BackColor = Color.Gray;
-                        btnModuleStatus.Text = "NC";
-                        pbarPWMdown.Value = 0;
-                        pbarPWMup.Value = 0;
-                    }
+  
                 }
                 //wait till timer fires again.  
             }
@@ -2098,6 +2049,57 @@ namespace OpenGrade
             }
             else stopTheProgram = false;
 
+        }
+
+        public void UpdateModuleDataBtn(byte moduleConnected)
+        {
+            if (moduleConnected == 1)
+            {
+                if (bladeFromModuleReady)
+                {
+                    if (bladeFromModuleActive)
+                    {
+                        //"Automode Active"
+                        btnModuleStatus.BackColor = Color.LimeGreen;
+                        btnModuleStatus.Text = "AUTO";
+                    }
+                    else //"Automode Ready"
+                    {
+                        if (btnModuleStatus.BackColor == Color.Orange) btnModuleStatus.BackColor = Color.Yellow;
+                        else btnModuleStatus.BackColor = Color.Orange;
+                        btnModuleStatus.Text = "READY";
+                    }
+                }
+                else
+                {
+                    //"Manual Mode"
+                    btnModuleStatus.BackColor = Color.Red;
+                    btnModuleStatus.Text = "MAN";
+                }
+                //the PWM labels
+                if (bladeFromModuleDown)
+                {
+                    pbarPWMdown.Value = bladeFromModulePWM;
+                    pbarPWMup.Value = 0;
+                }
+                else if (bladeFromModuleUp)
+                {
+                    pbarPWMdown.Value = 0;
+                    pbarPWMup.Value = bladeFromModulePWM;
+                }
+                else
+                {
+                    pbarPWMdown.Value = 0;
+                    pbarPWMup.Value = 0;
+                }
+            }
+            else //not connected
+            {
+                btnModuleStatus.BackColor = Color.Gray;
+                btnModuleStatus.Text = "NC";
+                pbarPWMdown.Value = 0;
+                pbarPWMup.Value = 0;
+            }
         }
 
         public bool KeypadToNUD(NudlessNumericUpDown sender, Form owner)

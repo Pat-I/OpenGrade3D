@@ -282,23 +282,10 @@ namespace OpenGrade
                     bladeFromModuleActive = (multipleValue & (1 << 3)) != 0;
                 }
 
+                UpdateModuleDataBtn(1);
+
                 return;
             }
-            
-            ////the ArdRelay sentence to be parsed
-            //sentence = sentence.Substring(0, end);
-            //string[] words = sentence.Split(',');
-            //if (words.Length !=3) return;
-
-            ////fill in the holes
-            ////int.TryParse(words[0], out mc);
-            //int.TryParse(words[0], out mc.incomingInt);
-            //rc.rateActual = (double)mc.incomingInt*0.01;
-
-            //int.TryParse(words[1], out mc.incomingInt);
-            //rc.volumeActual = mc.incomingInt;
-
-            //int.TryParse(words[2], out mc.);
         }
 
         //the delegate for thread

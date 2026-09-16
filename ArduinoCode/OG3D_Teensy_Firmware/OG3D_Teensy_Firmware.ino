@@ -8,7 +8,7 @@ Changes by Pat
 
 // it can also be used with the AIO
 // uncomment the following line if you're using the All-In-One-Board (proto v5)
-//#define isAllInOneBoardProto //commented for AiO v4
+//#define isAllInOneBoardProto  //commented for AiO v4
 // uncomment the following for debug
 //#define debugOG
 // uncomment the following line if you're using pins for blade offset
@@ -17,8 +17,8 @@ Changes by Pat
 //#define useLEDs  // LEDs using four outputs, do not use: not implemented
 //User set variables
 //PWM or relay mode
-int32_t joystickVerDeadband = 30; // the deadband from center to the point it gives a moving signal, the 0-5V range is 0-1023
-int32_t joystickVerUpperLimit = 800; // the point were automode will kick in again, typically pretty high, when you command the valve down fast.
+int32_t joystickVerDeadband = 30;     // the deadband from center to the point it gives a moving signal, the 0-5V range is 0-1023
+int32_t joystickVerUpperLimit = 700;  // the point were automode will kick in again, typically pretty high, when you command the valve down fast.
 bool proportionalValve = true;
 //workswitch or work button
 bool workButton = true;  // true for momentary button, false for switch(continus)
@@ -32,13 +32,13 @@ bool invertBladeOffset = false;
 
 #ifdef isAllInOneBoardProto
 
-#define PWM_2 5       //onboard driver
-#define PWM_1 6       //onboard driver
-#define LOCK_PIN 4    //LOCK output
+#define PWM_2 5         //onboard driver
+#define PWM_1 6         //onboard driver
+#define LOCK_PIN 4      //LOCK output
 #define AUTOMODE_PIN 2  //this pin must be low (to ground) to activate automode IMP on PCB --Steer -PIN19
-#define LEVER_UP A15  // first axle -- WAS signal -PIN 32
+#define LEVER_UP A15    // first axle -- WAS signal -PIN 32
 #ifdef bladeOffsetBtn
-#define BOFFUP_PIN 0   //signal (to GND) to move the blade offset up 1 cm?
+#define BOFFUP_PIN 0  //signal (to GND) to move the blade offset up 1 cm?
 #define BOFFDW_PIN 0  //offset down
 #endif
 #ifdef bladeOffsetPropLever
@@ -53,11 +53,11 @@ bool invertBladeOffset = false;
 #endif
 #else  //AiO v4.5 // pin numbers not set yet
 
-#define DIR_ENABLE 6  //PD4 cytron dir
-#define PWM_OUT 4     //PD3  cytron pwm
-#define LOCK_PIN 5    //LOCK output
+#define DIR_ENABLE 6     //PD4 cytron dir
+#define PWM_OUT 4        //PD3  cytron pwm
+#define LOCK_PIN 5       //LOCK output
 #define AUTOMODE_PIN 32  //this pin must be low (to ground) to activate automode IMP on PCB --the AiOv4 steerPin
-#define LEVER_UP A10   // first axle --to AiOv4 pressure pin
+#define LEVER_UP A10     // first axle --to AiOv4 pressure pin
 #ifdef bladeOffsetBtn
 #define BOFFUP_PIN 0  //signal (to GND) to move the blade offset up 1 cm?
 #define BOFFDW_PIN 0  //offset down
@@ -68,16 +68,16 @@ bool invertBladeOffset = false;
 //leds
 #ifdef useLEDs
 #define LED_DW 0    //led down (if used)
-#define LED_UP 0   //led up (if used)
+#define LED_UP 0    //led up (if used)
 #define LED_AUTO 0  //led auto
-#define LED_ON 0   //on led
+#define LED_ON 0    //on led
 #endif
 #endif
 //----------------------------------------------------------
 #ifdef isAllInOneBoardProto
-String inoVersion = ("\r\nOG3D Ver 2026.09.07 (AIO v5 Proto PCB))");
+String inoVersion = ("\r\nOG3D Ver 2026.09.15 (AIO v5 Proto PCB))");
 #else  //AiO v4.5
-String inoVersion = ("\r\nOG3D Ver 2026.09.07 (AIO v4 PCB))");
+String inoVersion = ("\r\nOG3D Ver 2026.09.15 (AIO v4 PCB))");
 #endif
 
 // if not in eeprom, overwrite
@@ -212,7 +212,8 @@ int32_t bladeOffsetIn = 0, bladeOffsetOut = 0;
 byte bOUprevious = 0;
 byte bODprevious = 0;
 
-int32_t leverUpValue = 0;
+int32_t leverUpValue = 512;
+int32_t leverUpValueRaw = 512;
 int32_t leverUpCenterValue = 512;
 int32_t leverSideValue = 0;
 int32_t LeverPushValue = 0;
@@ -256,13 +257,13 @@ void setup() {
 	pinMode(LED_ON, OUTPUT);
 #endif
 	//set up communication
-	
+
 	Serial.begin(115200);
 	analogWriteResolution(12);
 	delay(100);
 #ifdef isAllInOneBoardProto
-Wire.begin();
-delay(100);
+	Wire.begin();
+	delay(100);
 	digitalWrite(LOCK_PIN, LOW);
 	delay(2);
 	LEDs.init();
@@ -359,6 +360,18 @@ void loop() {
 #ifdef isAllInOneBoardProto
 		LEDs.updateLoop();
 #endif
+
+		//read the inputs for manual blade controls at 200hz
+		if (manualMovePropLever) {
+			//if a lever for manual operation is installed
+			leverUpValueRaw = analogRead(LEVER_UP);  //
+			if (invertManMove) leverUpValueRaw = map(leverUpValueRaw, 0, 1023, 1023, 0);
+
+			leverUpValue += leverUpValueRaw;
+			leverUpValue = leverUpValue >> 1;
+		}  //else leverUpValue = leverUpCenterValue; 512 at start.
+		//0 lift -- 512 neutral-- 1023 lower
+
 		if (dataGNSSrecieved++ >= 200) {
 			dataGNSSrecieved = 180;
 			altitudeOG = 22000000;
@@ -427,16 +440,7 @@ void loop() {
 				} else workSwitch = digitalRead(AUTOMODE_PIN);  // read work switch
 			}
 
-			//read the inputs for manual blade controls
-			if (manualMovePropLever) {
-				//if a lever for manual operation is installed
-				leverUpValue = analogRead(LEVER_UP);  //
-				if (invertManMove) leverUpValue = map(leverUpValue, 0, 1023, 1023, 0);
-
-			} else leverUpValue = leverUpCenterValue;
-				//0 lift -- 512 neutral-- 1023 lower
-
-				//BladeOffset ************************************************
+			//BladeOffset ************************************************
 #ifdef bladeOffsetPropLever
 			leverSideValue = analogRead(LEVER_SIDE);
 			leverSideValue = map(leverSideValue, 0, 1023, 0, 5);
@@ -624,7 +628,7 @@ void SetPWM(void) {
 	int32_t leverCenterDeadbandAbove = leverUpCenterValue + joystickVerDeadband;
 	if (workSwitch) autoEnable = true;                                // if auto switch is tourned off turn on AutoEnable for the next time auto switch will be turned on
 	if (leverUpValue < leverCenterDeadbandUnder) autoEnable = false;  //turn off automode when lifting the blade
-	if (leverUpValue > joystickVerUpperLimit) autoEnable = true;                        // tur on automode when lever is fully presed for lowering the blade
+	if (leverUpValue > joystickVerUpperLimit) autoEnable = true;      // tur on automode when lever is fully presed for lowering the blade
 
 	pwmValue = 0;
 
@@ -632,7 +636,7 @@ void SetPWM(void) {
 	if (targetAltitude < 20000000) {
 		// reel minus target plus 100. 100 is on target, <100 is too low, lift, >100 is too high, lower
 		cutValve = (uint8_t)constrain(altitudeOG - targetAltitude + 100, 0, 200);
-	}
+	} else cutValve = cutValveReceived;
 
 	if (!workSwitch && autoEnable)  // Auto mode
 	{
@@ -728,7 +732,7 @@ void SetPWM(void) {
 		analogWrite(PWM_1, 0);
 	}
 #else  //AiO v4.5
-	if (pwmValue < 0)  // lowering the blade
+	if (pwmValue < 0)                    // lowering the blade
 	{
 		digitalWrite(DIR_ENABLE, HIGH);
 		//Serial.print("1,");

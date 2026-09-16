@@ -45,13 +45,13 @@ namespace OpenGrade
                 // 1. Evaluate PWM and Direction States
                 if (mf.bladeFromModulePWM == 0)
                 {
-                    sb.Append("Blade Still");
+                    sb.Append("--");
                 }
                 else
                 {
                     sb.Append(mf.bladeFromModulePWM);
                     if (mf.bladeFromModuleUp) sb.Append(" Up");
-                    else if (mf.bladeFromModuleDown) sb.Append(" Down");
+                    else if (mf.bladeFromModuleDown) sb.Append(" Dn");
                 }
 
                 sb.Append(" | "); // Separator for readability

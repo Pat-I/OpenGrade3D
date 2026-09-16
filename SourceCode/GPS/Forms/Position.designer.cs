@@ -1063,8 +1063,9 @@ namespace OpenGrade
                 }        
             }
             //blade offset from arduino here
-            if (!spRelay.IsOpen || dataFromOGudpBlade <= 15)
+            if (!spRelay.IsOpen && dataFromOGudpBlade >= 15)
             {
+                UpdateModuleDataBtn(0);// not connected
                 bladeOffSetSlave = 0;
                 bladeFromModuleUp = false;
                 bladeFromModuleDown = false;
@@ -1082,6 +1083,7 @@ namespace OpenGrade
                 bladeOffSetMaster += (bladeOffSetSlave - 100);
                 numBladeOffset.Value = (decimal)(bladeOffSetMaster);
             }
+            bladeOffSetSlave = 0;
 
             mc.relayRateData[mc.bladeOffset] = (byte)(bladeOffSetMaster + 100);
 

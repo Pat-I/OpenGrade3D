@@ -371,6 +371,7 @@ namespace OpenGrade
             //side lever data[10]
             ////not used data[11]
             //pwmhist data[12]
+            UpdateModuleDataBtn(1);
         }
 
         public void SendPgnToLoop(byte[] byteData)
