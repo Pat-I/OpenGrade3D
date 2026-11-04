@@ -56,7 +56,7 @@ void GGA_Handler()  //Rec'd GGA
 	parser.getArg(2, latNS);
 	// Convert decimal latitude to int64_t with 10^9 scaling (Sub-millimeter)
 	// If Southern hemisphere, make the coordinate negative
-	latitudeOG = (int64_t)round(atof(tempString.c_str()) * 1000000000.0);
+	latitudeOG = (int64_t)llround(atof(tempString.c_str()) * 1000000000.0);
 	if (latNS[0] == 'S') latitudeOG = -latitudeOG;
 
 	// longitude
@@ -68,7 +68,7 @@ void GGA_Handler()  //Rec'd GGA
 	parser.getArg(4, lonEW);
 	// Convert decimal longitude to int64_t with 10^9 scaling
 	// If Western hemisphere, make the coordinate negative
-	longitudeOG = (int64_t)round(atof(tempString.c_str()) * 1000000000.0);
+	longitudeOG = (int64_t)llround(atof(tempString.c_str()) * 1000000000.0);
 	if (lonEW[0] == 'W') longitudeOG = -longitudeOG;
 
 	// fix quality

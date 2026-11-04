@@ -17,8 +17,8 @@ Changes by Pat
 //#define useLEDs  // LEDs using four outputs, do not use: not implemented
 //User set variables
 //PWM or relay mode
-int32_t joystickVerDeadband = 30;     // the deadband from center to the point it gives a moving signal, the 0-5V range is 0-1023
-int32_t joystickVerUpperLimit = 700;  // the point were automode will kick in again, typically pretty high, when you command the valve down fast.
+int32_t joystickVerDeadband = 80;     // the deadband from center to the point it gives a moving signal, the 0-5V range is 0-1023
+int32_t joystickVerUpperLimit = 750;  // the point were automode will kick in again, typically pretty high, when you command the valve down fast.
 bool proportionalValve = true;
 //workswitch or work button
 bool workButton = true;  // true for momentary button, false for switch(continus)
@@ -635,7 +635,7 @@ void SetPWM(void) {
 	//Use the GNSS height is available
 	if (targetAltitude < 20000000) {
 		// reel minus target plus 100. 100 is on target, <100 is too low, lift, >100 is too high, lower
-		cutValve = (uint8_t)constrain(altitudeOG - targetAltitude + 100, 0, 200);
+		cutValve = (uint8_t)constrain(altitudeOG - targetAltitude + 100, 1, 199);
 	} else cutValve = cutValveReceived;
 
 	if (!workSwitch && autoEnable)  // Auto mode
