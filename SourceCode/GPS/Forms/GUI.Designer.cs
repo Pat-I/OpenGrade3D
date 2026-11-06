@@ -915,10 +915,12 @@ namespace OpenGrade
                 return;
             }
             FileOpenVehicle();
+            UpdateTitleBar();
         }
         private void saveVehicleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FileSaveVehicle();
+            UpdateTitleBar();
         }
         private void fieldToolStripMenuItem_Click(object sender, EventArgs e)
         {

@@ -141,6 +141,7 @@
             0,
             0,
             0});
+            this.nudThisPort.Visible = false;
             // 
             // label9
             // 
@@ -151,6 +152,7 @@
             this.label9.Size = new System.Drawing.Size(43, 23);
             this.label9.TabIndex = 75;
             this.label9.Text = "Port";
+            this.label9.Visible = false;
             // 
             // label10
             // 
@@ -171,6 +173,7 @@
             this.label2.Size = new System.Drawing.Size(45, 19);
             this.label2.TabIndex = 78;
             this.label2.Text = "9999";
+            this.label2.Visible = false;
             // 
             // label7
             // 
@@ -178,9 +181,9 @@
             this.label7.Font = new System.Drawing.Font("Tahoma", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.Location = new System.Drawing.Point(5, 8);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(565, 23);
+            this.label7.Size = new System.Drawing.Size(337, 23);
             this.label7.TabIndex = 70;
-            this.label7.Text = "** You must RESTART OpenGrade for any changes to take effect!\r\n";
+            this.label7.Text = "** Start AgIO to automatically use UDP";
             // 
             // btnSerialCancel
             // 
@@ -209,6 +212,7 @@
             this.btnSerialOK.Text = "Save";
             this.btnSerialOK.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.btnSerialOK.UseVisualStyleBackColor = true;
+            this.btnSerialOK.Visible = false;
             this.btnSerialOK.Click += new System.EventHandler(this.btnSerialOK_Click);
             // 
             // label3
@@ -220,6 +224,7 @@
             this.label3.Size = new System.Drawing.Size(18, 19);
             this.label3.TabIndex = 84;
             this.label3.Text = "0";
+            this.label3.Visible = false;
             // 
             // label4
             // 
@@ -263,6 +268,7 @@
             this.nudAutoSteerPort.Name = "nudAutoSteerPort";
             this.nudAutoSteerPort.Size = new System.Drawing.Size(96, 30);
             this.nudAutoSteerPort.TabIndex = 80;
+            this.nudAutoSteerPort.Visible = false;
             // 
             // tboxAutoSteerIP
             // 
@@ -272,6 +278,7 @@
             this.tboxAutoSteerIP.Size = new System.Drawing.Size(167, 30);
             this.tboxAutoSteerIP.TabIndex = 79;
             this.tboxAutoSteerIP.Text = "192.168.5.255";
+            this.tboxAutoSteerIP.Visible = false;
             this.tboxAutoSteerIP.Validating += new System.ComponentModel.CancelEventHandler(this.tboxAutoSteerIP_Validating);
             // 
             // label8
@@ -283,6 +290,7 @@
             this.label8.Size = new System.Drawing.Size(45, 19);
             this.label8.TabIndex = 90;
             this.label8.Text = "8888";
+            this.label8.Visible = false;
             this.label8.Click += new System.EventHandler(this.label8_Click);
             // 
             // label11
@@ -337,6 +345,7 @@
             0,
             0,
             0});
+            this.nudRateRelayPort.Visible = false;
             // 
             // tboxRateRelayIP
             // 
@@ -346,6 +355,7 @@
             this.tboxRateRelayIP.Size = new System.Drawing.Size(167, 30);
             this.tboxRateRelayIP.TabIndex = 85;
             this.tboxRateRelayIP.Text = "192.168.5.255";
+            this.tboxRateRelayIP.Visible = false;
             this.tboxRateRelayIP.TextChanged += new System.EventHandler(this.tboxRateRelayIP_TextChanged);
             // 
             // groupBox1
