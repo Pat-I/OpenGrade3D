@@ -236,22 +236,22 @@ namespace OpenGrade
         {
             // --- 1. PRE-EXTRACTION AND SENTINEL CHECK FOR COORDINATES ---
             // Byte 5 to 12: int64 longitude scaled by 1,000,000,000 (DDMM.MMMM format)
-            long rawLon = BitConverter.ToInt64(data, 5);
+            Int64 rawLon = BitConverter.ToInt64(data, 5);
             double nmeaLon = rawLon / 1000000000.0; // Brings it back to 7356.78910
 
             // Convert NMEA DDMM.MMMM to true Decimal Degrees
             double lonDeg = Math.Truncate(nmeaLon / 100.0);       // Isolates 73.0
-            double lonMin = nmeaLon - (lonDeg * 100.0);          // Isolates 56.78910
-            double lon = lonDeg + (lonMin / 60.0);                // 73 + (56.78910 / 60) -> 73.946485°
+            double lonMin = nmeaLon - (lonDeg * 100.0);           // Isolates 56.78910
+            double lon = lonDeg + (lonMin / 60.0);    // (73 + (56.78910 / 60)) * -1 -> -73.946485°
 
             // Byte 13 to 20: int64 latitude scaled by 1,000,000,000 (DDMM.MMMM format)
-            long rawLat = BitConverter.ToInt64(data, 13);
+            Int64 rawLat = BitConverter.ToInt64(data, 13);
             double nmeaLat = rawLat / 1000000000.0; // Brings it back to 4512.34567
 
             // Convert NMEA DDMM.MMMM to true Decimal Degrees
             double latDeg = Math.Truncate(nmeaLat / 100.0);       // Isolates 45.0
-            double latMin = nmeaLat - (latDeg * 100.0);          // Isolates 12.34567
-            double lat = latDeg + (latMin / 60.0);                // 45 + (12.34567 / 60) ->
+            double latMin = nmeaLat - (latDeg * 100.0);           // Isolates 12.34567
+            double lat = latDeg + (latMin / 60.0);    // 45 + (12.34567 / 60) -> 45.205761°
 
             // If coordinates match a sentinel value (e.g. 181°/361° scaled), abort early
             if (Math.Abs(lon) > 181.0 || Math.Abs(lat) > 91.0) return;
@@ -298,7 +298,7 @@ namespace OpenGrade
                 int rawAltMm = BitConverter.ToInt32(data, 21);
                 if (rawAltMm <= 20000000) // Lower than 20,000 meters in mm
                 {
-                    pn.GNSSantennaAltitude = (float)(rawAltMm / 1000.0);
+                    pn.GNSSantennaAltitude = rawAltMm / 1000.0;
                     pn.bladeAltitude = pn.GNSSantennaAltitude - (vehicle.antennaHeight + vehicle.bladeOffset - pn.altitudeOffset);
                 }
 
