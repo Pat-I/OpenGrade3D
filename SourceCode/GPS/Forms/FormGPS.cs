@@ -804,7 +804,7 @@ namespace OpenGrade
            
             HideTabControl();
 
-
+            UpdateTitleBar();
         }           
 
 
@@ -1234,8 +1234,7 @@ namespace OpenGrade
                     JobClose();
                 }
 
-                if (isJobStarted) Text = "OpenGrade3D - " + currentFieldDirectory;
-                else Text = "OpenGrade3D";
+                UpdateTitleBar();
             }
 
             //close the current job and ask how to or if to save
@@ -1255,6 +1254,11 @@ namespace OpenGrade
                         break;
                 }
             }
+        }
+
+        private void UpdateTitleBar() {
+            if (isJobStarted) Text = "OpenGrade3D - " + vehiclefileName + " - " + currentFieldDirectory;
+            else Text = "OpenGrade3D - " + vehiclefileName;
         }
 
         //take the distance from object and convert to camera data
@@ -1301,7 +1305,7 @@ namespace OpenGrade
             FileSaveMapPt();
 
             JobClose();
-            Text = "OpenGrade3D";
+            UpdateTitleBar();
         }
 
         //function called by menu items to delete a selected flag

@@ -153,7 +153,7 @@ void VTG_Handler() {
 	singleHeadingOG = (uint16_t)fastParseNmeaToInt(vtgHeading, 2);
 
 	// vtg Speed knots (Index 7 is KPH field, or index 4 for Knots multiplied to KPH)
-	parser.getArg(7, speedKPH);  // Parsing the KPH index directly is safer
+	parser.getArg(6, speedKPH);  // Parsing the KPH index directly is safer
 	// Convert speed KPH to int16_t scaled by 100
 	speedOG = (int16_t)fastParseNmeaToInt(speedKPH, 2);
 }
@@ -181,8 +181,7 @@ void ZDA_Handler() {
 void BuildNmea(void) {
 	//GNSS sent to OG3D
 	//Blink the Teensy LED to show an incomming GGA
-	if (blink)
-		digitalWrite(13, HIGH);
+	if (blink) digitalWrite(13, HIGH);
 	else digitalWrite(13, LOW);
 	blink = !blink;
 	//uint8_t GNSS1[] = { 0x80, 0x81, 0x6a, 0xd1, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xCC };
@@ -191,14 +190,15 @@ void BuildNmea(void) {
 
 	// We NO LONGER allocate 'uint8_t GNSS1[48]' here because it is already global!
 	// This completely removes allocation overhead from the loop.
-	if (fixTypeOG >= 1 && fixTypeOG <= 5) {
-		// 1. Refresh the dynamic headers just in case
-		GNSS1[0] = 0x80;
-		GNSS1[1] = 0x81;
-		GNSS1[2] = 0x6A;  // Message ID 1
-		GNSS1[3] = 0xD1;  // Message ID 2
-		GNSS1[4] = 42;    // Payload length
 
+	// 1. Refresh the dynamic headers just in case
+	GNSS1[0] = 0x80;
+	GNSS1[1] = 0x81;
+	GNSS1[2] = 0x6A;  // Message ID 1
+	GNSS1[3] = 0xD1;  // Message ID 2
+	GNSS1[4] = 42;    // Payload length
+
+	if (fixTypeOG >= 1 && fixTypeOG <= 5) {
 		// 2. Serialize your parameters directly into your pre-allocated global array
 		memcpy(&GNSS1[5], &longitudeOG, sizeof(int64_t));
 		memcpy(&GNSS1[13], &latitudeOG, sizeof(int64_t));
@@ -217,19 +217,6 @@ void BuildNmea(void) {
 
 		GNSS1[45] = fixTypeOG;
 		GNSS1[46] = satNbrOG;
-
-		// 3. Fast CRC checksum calculation over the global frame indexes
-		uint8_t calculatedCrc = 0;
-		for (int i = 2; i < 47; i++) {
-			calculatedCrc += GNSS1[i];
-		}
-		GNSS1[47] = calculatedCrc;
-
-		// 4. Send the updated global frame via UDP
-		Udp.beginPacket(ipDestination, 9999);
-		Udp.write(GNSS1, 48);  // We pass 48 bytes explicitly
-		Udp.endPacket();
-
 #ifdef debugOG
 		Serial.print("Latitude (String): ");
 		Serial.println(latitude);
@@ -240,12 +227,43 @@ void BuildNmea(void) {
 #endif
 
 	} else {
+		memcpy(&GNSS1[5], 20000000000000, sizeof(int64_t));
+		memcpy(&GNSS1[13], 20000000000000, sizeof(int64_t));
+		memcpy(&GNSS1[21], 21000000, sizeof(int32_t));
+		memcpy(&GNSS1[25], 0, sizeof(uint16_t));
+		memcpy(&GNSS1[27], 0, sizeof(uint16_t));
+		memcpy(&GNSS1[29], 0, sizeof(int16_t));
+		memcpy(&GNSS1[31], 0, sizeof(int16_t));
+
+		memcpy(&GNSS1[33], &imuHeadingOG, sizeof(uint16_t));
+		memcpy(&GNSS1[35], &imuRollOG, sizeof(int16_t));
+		memcpy(&GNSS1[37], &imuPitchOG, sizeof(int16_t));
+		memcpy(&GNSS1[39], &imuYawRateOG, sizeof(int16_t));
+		memcpy(&GNSS1[41], &hdopOG, sizeof(int16_t));
+		memcpy(&GNSS1[43], &ageOG, sizeof(int16_t));
+
+		GNSS1[45] = fixTypeOG;
+		GNSS1[46] = 0;
 //debug: not a good GNSS Fix to send
 #ifdef debugOG
 		Serial.print("No valid position, quality is: ");
 		Serial.println(fixTypeOG);
 #endif
 	}
+
+	// 3. Fast CRC checksum calculation over the global frame indexes
+	uint8_t calculatedCrc = 0;
+	for (int i = 2; i < 47; i++) {
+		calculatedCrc += GNSS1[i];
+	}
+	GNSS1[47] = calculatedCrc;
+
+	// 4. Send the updated global frame via UDP
+	Udp.beginPacket(ipDestination, 9999);
+	Udp.write(GNSS1, 48);  // We pass 48 bytes explicitly
+	Udp.endPacket();
+
+
 	fixTypeOG = 255;
 }
 

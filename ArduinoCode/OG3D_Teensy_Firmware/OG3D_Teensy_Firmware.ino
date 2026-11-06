@@ -93,8 +93,8 @@ Adafruit_PWMServoDriver outputs = Adafruit_PWMServoDriver(0x44);  //the section 
 #include "LEDS.h"
 LEDS LEDs = LEDS(1000, 255, 64, 127);  // 1000ms RGB update, 255/64/127 RGB brightness balance levels for v5.0a
 #endif
-/* A parser is declared with 3 handlers at most */
-NMEAParser<3> parser;
+/* A parser is declared with 5 handlers at most */
+NMEAParser<5> parser;
 
 //Used to set CPU speed
 extern "C" uint32_t set_arm_clock(uint32_t frequency);  // required prototype
@@ -171,8 +171,8 @@ int16_t OG3DSize = sizeof(OG3D);
 uint8_t GNSS1[] = { 0x80, 0x81, 0x6a, 0xd1, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xCC };
 int8_t GNSS1_Size = sizeof(GNSS1);
 
-int64_t longitudeOG = 200000000, latitudeOG = 200000000;                                                                          // x 1000 000 000
-int32_t altitudeOG = 20000000;                                                                                                    //mm
+int64_t longitudeOG = 20000000000000, latitudeOG = 20000000000000;                                                                          // x 1000 000 000
+int32_t altitudeOG = 21000000;                                                                                                    //mm
 uint16_t dualHeadingOG = 40000, singleHeadingOG = 40000, imuHeadingOG = 40000;                                                    // x 100
 int16_t dualRollOG = 32000, imuRollOG = 32000, imuPitchOG = 32000, imuYawRateOG = 32000, speedOG = 32000, hdopOG = 0, ageOG = 0;  // x100, km/h x 100,
 uint8_t fixTypeOG = 0, satNbrOG = 0;

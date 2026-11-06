@@ -287,7 +287,7 @@ namespace OpenGrade
                 // Speed (Byte 31: uint16 Speed x100)
                 ushort rawSpeed = BitConverter.ToUInt16(data, 31);
                 double speed = rawSpeed / 100.0;
-                if (speed <= 500.0) pn.speed = (float)speed; // Assuming max logical speed 500 km/h
+                if (speed <= 300.0) pn.speed = (float)speed; // Assuming max logical speed 500 km/h
 
                 // Roll (Byte 29: int16 Roll x100)
                 short rawRoll = BitConverter.ToInt16(data, 29);
