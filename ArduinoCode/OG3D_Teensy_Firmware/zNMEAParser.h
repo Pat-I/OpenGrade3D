@@ -69,7 +69,7 @@ template <size_t S> class NMEAParser {
        are not bufferized, 82 - 6 + 1 = 77 chars  are enough.
        is enough.
     */
-    static const uint8_t kSentenceMaxSize = 90;
+    static const uint8_t kSentenceMaxSize = 150;
 
   private:
     /*

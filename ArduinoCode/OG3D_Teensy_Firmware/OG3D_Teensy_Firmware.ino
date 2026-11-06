@@ -155,12 +155,6 @@ double rollDual = 0;
 double relPosD = 0;
 double heading = 0;
 
-//GPS Data
-double pivotLat = 0, pivotLon = 0, fixHeading = 0, pivotAltitude = 0;
-float utcTime, geoidalGGA;
-uint8_t fixTypeGGA, satsGGA;
-float hdopGGA, rtkAgeGGA;
-
 //show life in AgIO - v5.5
 uint8_t helloAgIO[] = { 0x80, 0x81, 0x7f, 0xC7, 1, 0, 0x47 };
 uint32_t helloCounter = 0;
@@ -181,7 +175,7 @@ int64_t longitudeOG = 200000000, latitudeOG = 200000000;                        
 int32_t altitudeOG = 20000000;                                                                                                    //mm
 uint16_t dualHeadingOG = 40000, singleHeadingOG = 40000, imuHeadingOG = 40000;                                                    // x 100
 int16_t dualRollOG = 32000, imuRollOG = 32000, imuPitchOG = 32000, imuYawRateOG = 32000, speedOG = 32000, hdopOG = 0, ageOG = 0;  // x100, km/h x 100,
-uint8_t fixQualityOG = 0, satNbrOG = 0;
+uint8_t fixTypeOG = 0, satNbrOG = 0;
 
 //Blade control variables
 byte deadband = 5;

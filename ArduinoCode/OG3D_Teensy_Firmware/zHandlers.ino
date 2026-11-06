@@ -23,21 +23,69 @@ char speedKnots[10] = {};
 char speedKPH[10] = {};
 
 //HPR
-bool useHPR = false;
-bool dualReadyHPR = false;
-float hprHeading = 0;
-float hprRoll = 0;
 char hprSolQuality[12] = {};
-
-// IMU
-char imuHeading[6];
-char imuRoll[6];
-char imuPitch[6];
-char imuYawRate[6];
 
 // If odd characters showed up.
 void errorHandler() {
 	//nothing at the moment
+}
+
+// Fast linear parser optimized for ARM processors
+// targetDecimals: 9 for latitude/longitude (10^9), 3 for altitude (10^3)
+int64_t fastParseNmeaToInt(const char* str, int targetDecimals) {
+	if (!str || *str == '\0') return 0;
+
+	int64_t result = 0;
+	bool isNegative = false;
+	int decimalCount = 0;
+	bool countingDecimals = false;
+
+	// Handle optional sign
+	if (*str == '-') {
+		isNegative = true;
+		str++;
+	} else if (*str == '+') {
+		str++;
+	}
+
+	// Fast single-pass reading
+	while (*str != '\0') {
+		char c = *str;
+
+		if (c == '.') {
+			countingDecimals = true;
+			str++;
+			continue;
+		}
+
+		// Skip invalid characters or spaces
+		if (c < '0' || c > '9') {
+			str++;
+			continue;
+		}
+
+		// Ignore remaining decimals if target scale is already reached
+		if (countingDecimals && decimalCount >= targetDecimals) {
+			str++;
+			continue;
+		}
+
+		// Direct integer accumulation by base-10 shifting
+		result = (result * 10) + (c - '0');
+
+		if (countingDecimals) {
+			decimalCount++;
+		}
+		str++;
+	}
+
+	// Add trailing zeros if string had fewer decimals than expected (Zero padding)
+	while (decimalCount < targetDecimals) {
+		result *= 10;
+		decimalCount++;
+	}
+
+	return isNegative ? -result : result;
 }
 
 void GGA_Handler()  //Rec'd GGA
@@ -45,77 +93,52 @@ void GGA_Handler()  //Rec'd GGA
 	// fix time
 	parser.getArg(0, fixTime);
 
-	String tempString = fixTime;
-	utcTime = tempString.toFloat();
-
 	// latitude
 	parser.getArg(1, latitude);
-	tempString = latitude;
-	pivotLat = tempString.toFloat();
-
 	parser.getArg(2, latNS);
 	// Convert decimal latitude to int64_t with 10^9 scaling (Sub-millimeter)
 	// If Southern hemisphere, make the coordinate negative
-	latitudeOG = (int64_t)llround(atof(tempString.c_str()) * 1000000000.0);
+	latitudeOG = fastParseNmeaToInt(latitude, 9);
 	if (latNS[0] == 'S') latitudeOG = -latitudeOG;
 
 	// longitude
 	parser.getArg(3, longitude);
-	tempString = longitude;
-	pivotLon = tempString.toFloat();
-	pivotLon *= -1;
-
 	parser.getArg(4, lonEW);
 	// Convert decimal longitude to int64_t with 10^9 scaling
 	// If Western hemisphere, make the coordinate negative
-	longitudeOG = (int64_t)llround(atof(tempString.c_str()) * 1000000000.0);
+	longitudeOG = fastParseNmeaToInt(longitude, 9);
 	if (lonEW[0] == 'W') longitudeOG = -longitudeOG;
 
 	// fix quality
 	parser.getArg(5, fixQuality);
-	tempString = fixQuality;
-	fixTypeGGA = tempString.toInt();
-	fixQualityOG = fixTypeGGA;
+	fixTypeOG = atoi(fixQuality);
 #ifdef isAllInOneBoardProto
-	LEDs.setGpsLED(fixTypeGGA);
+	LEDs.setGpsLED(fixTypeOG);
 	//LEDs.toggleTeensyLED();
 #endif
 	// satellite #
 	parser.getArg(6, numSats);
-
-	tempString = numSats;
-	satsGGA = tempString.toInt();
-	satNbrOG = satsGGA;
+	satNbrOG = atoi(numSats);
 
 	// HDOP
 	parser.getArg(7, HDOP);
-
-	tempString = HDOP;
-	hdopGGA = tempString.toFloat();
 	// Convert HDOP float to int16_t scaled by 100
-	hdopOG = (int16_t)round(tempString.toFloat() * 100.0f);
+	hdopOG = (int16_t)fastParseNmeaToInt(HDOP, 2);
 
 	// altitude
 	parser.getArg(8, altitude);
-	tempString = altitude;
-	pivotAltitude = tempString.toFloat();
 	// Convert altitude meters to int32_t millimeters (x1000)
-	altitudeOG = (int32_t)round(tempString.toFloat() * 1000.0f);
+	altitudeOG = (int32_t)fastParseNmeaToInt(altitude, 3);
 
-	dataGNSSrecieved = 0;
 	// height of geoid
 	parser.getArg(10, geoid);
 
-	tempString = geoid;
-	geoidalGGA = tempString.toFloat();
-
 	// time of last DGPS update
 	parser.getArg(12, ageDGPS);
-
-	tempString = ageDGPS;
-	rtkAgeGGA = tempString.toFloat();
 	// Convert DGPS update correction age float to int16_t scaled by 100
-	ageOG = (int16_t)round(tempString.toFloat() * 100.0f);
+	ageOG = (int16_t)fastParseNmeaToInt(ageDGPS, 2);
+
+	dataGNSSrecieved = 0;
 
 	BuildNmea();  //Build & send data GPS data to AgIO
 }
@@ -126,35 +149,28 @@ void VTG_Handler() {
 	//      ,heading,T,headMag,M, knots ,N, kPH   ,K,mode *
 	// vtg heading
 	parser.getArg(0, vtgHeading);
-	String tempString = vtgHeading;
 	// Convert single heading to uint16_t scaled by 100
-	singleHeadingOG = (uint16_t)round(tempString.toFloat() * 100.0f);
+	singleHeadingOG = (uint16_t)fastParseNmeaToInt(vtgHeading, 2);
 
 	// vtg Speed knots (Index 7 is KPH field, or index 4 for Knots multiplied to KPH)
 	parser.getArg(7, speedKPH);  // Parsing the KPH index directly is safer
-	tempString = speedKPH;
 	// Convert speed KPH to int16_t scaled by 100
-	speedOG = (int16_t)round(tempString.toFloat() * 100.0f);
+	speedOG = (int16_t)fastParseNmeaToInt(speedKPH, 2);
 }
 
 void HPR_Handler() {
 	//$GNHPR,074615.00,320.9610,-66.1712,000.0000,4,47,0.00,0999*45
 	//      , time    , heading, pitch  , roll,qual,sat,age,stn *checksum
 
-	char tempHPR[10] = {};
+	char tempHPR[15] = {};
 	parser.getArg(1, tempHPR);
-	hprHeading = atof(tempHPR);
 
-	String tempString = tempHPR;
-	fixHeading = tempString.toFloat();
 	// Convert dual receiver heading to uint16_t scaled by 100
-	dualHeadingOG = (uint16_t)round(tempString.toFloat() * 100.0f);
+	dualHeadingOG = (uint16_t)fastParseNmeaToInt(tempHPR, 2);
 
 	parser.getArg(2, tempHPR);
-	hprRoll = atof(tempHPR);
-	tempString = tempHPR;
 	// Convert dual receiver pitch/roll to int16_t scaled by 100
-	dualRollOG = (int16_t)round(tempString.toFloat() * 100.0f);
+	dualRollOG = (int16_t)fastParseNmeaToInt(tempHPR, 2);
 
 	parser.getArg(3, hprSolQuality);
 }
@@ -171,11 +187,11 @@ void BuildNmea(void) {
 	blink = !blink;
 	//uint8_t GNSS1[] = { 0x80, 0x81, 0x6a, 0xd1, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xCC };
 	//int8_t GNSS1_Size = sizeof(GNSS1);
-	// longitudeOG, latitudeOG, altitudeOG, dualHeadingOG, singleHeadingOG, dualRollOG, speedOG, imuHeadingOG, imuRollOG, imuPitchOG, imuYawRateOG, hdopOG, ageOG, fixQualityOG, satNbrOG;
+	// longitudeOG, latitudeOG, altitudeOG, dualHeadingOG, singleHeadingOG, dualRollOG, speedOG, imuHeadingOG, imuRollOG, imuPitchOG, imuYawRateOG, hdopOG, ageOG, fixTypeOG, satNbrOG;
 
 	// We NO LONGER allocate 'uint8_t GNSS1[48]' here because it is already global!
 	// This completely removes allocation overhead from the loop.
-	if (fixQualityOG >= 1 && fixQualityOG <= 5) {
+	if (fixTypeOG >= 1 && fixTypeOG <= 5) {
 		// 1. Refresh the dynamic headers just in case
 		GNSS1[0] = 0x80;
 		GNSS1[1] = 0x81;
@@ -199,7 +215,7 @@ void BuildNmea(void) {
 		memcpy(&GNSS1[41], &hdopOG, sizeof(int16_t));
 		memcpy(&GNSS1[43], &ageOG, sizeof(int16_t));
 
-		GNSS1[45] = fixQualityOG;
+		GNSS1[45] = fixTypeOG;
 		GNSS1[46] = satNbrOG;
 
 		// 3. Fast CRC checksum calculation over the global frame indexes
@@ -215,20 +231,22 @@ void BuildNmea(void) {
 		Udp.endPacket();
 
 #ifdef debugOG
-		Serial.print("Valid position: long: ");
-		Serial.print(longitudeOG);
-		Serial.print(", lat:");
-		Serial.println(latitudeOG);
+		Serial.print("Latitude (String): ");
+		Serial.println(latitude);
+		Serial.printf("LatitudeOG (int64): %lld\n\n", latitudeOG);
+		Serial.print("Longitude (String): ");
+		Serial.println(longitude);
+		Serial.printf("LongitudeOG (int64): %lld\n\n", longitudeOG);
 #endif
 
 	} else {
 //debug: not a good GNSS Fix to send
 #ifdef debugOG
 		Serial.print("No valid position, quality is: ");
-		Serial.println(fixQualityOG);
+		Serial.println(fixTypeOG);
 #endif
 	}
-	fixQualityOG = 255;
+	fixTypeOG = 255;
 }
 
 void CalculateChecksum(void) {
